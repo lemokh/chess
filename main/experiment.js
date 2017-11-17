@@ -1,22 +1,6 @@
-//===============================================================================================
-// {
-//   piece: string, // pawn, rook, knight, bishop, queen or king
-//   owner: int,    // 0 for white or 1 for black
-//   x: int,        // 0-7 where 0 is the leftmost column (or "A")
-//   y: int,        // 0-7 where 0 is the top row (or "8" in the board below)
-//   prevX: int,    // 0-7, presents this piece's previous x, only given if this is the piece that was just moved
-//   prevY: int     // 0-7, presents this piece's previous y, only given if this is the piece that was just moved
-// }
-// ---------------------------------------------------------------------------------------------
-// outputBoard(pieces); logs all the board's pieces
-// The piece with prevX and prevY properties appears light gray on board where it last was
-// prevX/Y indicate game's previous move --> doesn't seem important
-// ---------------------------------------------------------------------------------------------
-//***************************************************************************************************************
+//\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 
-// last case to cover (to avoid check mate):
-//   does any same-side piece check the checking piece
-//   if checking piece within king's 8 nearest spaces, can king eat the attacking piece?
+
 function isCheck(pieces, player) { // returns either array of checking pieces or false
   let whiteKing, blackKing, clearPath, knightMoves, bishopMoves, rookMoves;
   // debugger;
@@ -238,4 +222,3 @@ isCheck([
   {piece: "king", owner: 0, x: 4, y: 7},
   {piece: "pawn", owner: 1, x: 5, y: 6}
 ], 0);
-*/
