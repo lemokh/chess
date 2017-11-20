@@ -1,6 +1,6 @@
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 
-var whiteKing, blackKing, clearPath, knightMoves, bishopMoves, rookMoves, kingClear, kingSpaces, whites, blacks;
+var whiteKing, blackKing, clearPath, knightMoves, bishopMoves, rookMoves, kingClear, kingSpaces, attackingSpace, whites, blacks;
 
 function checkingKing(somePiece) { // returns true/false if piece checks opposing king 
     
@@ -161,19 +161,19 @@ function checkingKing(somePiece) { // returns true/false if piece checks opposin
   }
 
 function isCheck(pieces, player) { // returns either array of checking pieces or false
+  setKings(pieces);
   if (player === 0) { inCheck(whiteKing); }
   else { inCheck(blackKing); }
 } // end of isCheck
 
 //===============================================================================================
 function isMate(pieces, player) { // returns true/false if king checkmated
-
   //===============================================================================================
-  function checkingSpace(somePiece, space) { // mimics checkingKing(somePiece)
-    // returns true/false if any piece attacks space
-    // write the default switch case here...
-    return;    
-  }
+  // function checkingSpace(somePiece, space) { // mimics checkingKing(somePiece)
+  //   // returns true/false if any piece attacks space
+  //   // write the default switch case here...
+  //   return;    
+  // }
   //===============================================================================================
   function kingFree(king, opposingSide) { // return true/false if king evades check mate
     
@@ -189,15 +189,16 @@ function isMate(pieces, player) { // returns true/false if king checkmated
     // --> use this array to see if any of these places are under check
     
       return kingSpaces.forEach((space, index, object) => { // for each space surrounding king
-        if ({x: item.x, y: item.y} === space) return object.splice(index, 1); // if piece occupyies space, try next
-        // SEES IF each OPPOSING piece checks SPACE
-        if (checkingSpace(opposingSide[index], space)) return space;
+        if ({x: item.x, y: item.y} === space) return object.splice(index, 1); // if piece occupyies space, try next piece
+        
+        // sees if each OPPOSING piece checks space
+        if (checkingKing(opposingSide[index], space)) return space;
         return object.splice(index, 1);
-      
-        // let attackingSpace = {x: opposingSide[index].x, y: opposingSide[index].y};
+        
+        // attackingSpace = {x: opposingSide[index].x, y: opposingSide[index].y};
         // if (kingMoves.includes(attackingSpace)) {
-          // if (checkingSpace(attackingSpace)) { isMate() returns false; }
-        // }
+        //   if (checkingKing(attackingSpace) ;
+        // } return object.splice(index, 1);
         
       });
     });
