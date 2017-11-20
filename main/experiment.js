@@ -2,10 +2,7 @@
 
 var whiteKing, blackKing, clearPath, knightMoves, bishopMoves, rookMoves, kingClear, kingSpaces, whites, blacks;
 
-function isCheck(pieces, player) { // returns either array of checking pieces or false
-  // debugger;
-  
-  function checkingKing(somePiece) { // returns true/false if piece checks opposing king 
+function checkingKing(somePiece) { // returns true/false if piece checks opposing king 
     
     function knightAttacks(knight, king) { // returns true/false if knight checks king
       
@@ -146,23 +143,24 @@ function isCheck(pieces, player) { // returns either array of checking pieces or
     const attackers = pieces.map((item, index, object) => { // returns a map of pieces checking king
       if (checkingKing(item)) { return item; }
       return object.splice(index, 1);
-  }
     });
     if (attackers.length > 0) { return attackers; }
     else { return false; }
   }
+  function setKings(pieces) { // sets whiteKing & blackKing values
+    pieces.forEach(function(item) { 
+      if (item.piece === 'king') {
+        if (item.owner === 0) { whiteKing = item; } // cover for more multiple white kings?
+        else { blackKing = item; }
+      }
+      else { // since not a king, add piece to whites or blacks array
+        if (item.owner === 0) { whites.push(item); }
+        else { blacks.push(item); }
+      }
+    });
+  }
 
-  pieces.forEach(function(item) { // sets whiteKing & blackKing values
-    if (item.piece === 'king') {
-      if (item.owner === 0) { whiteKing = item; } // cover for more multiple white kings?
-      else { blackKing = item; }
-    }
-    else { // since not a king, add piece to whites or blacks array
-      if (item.owner === 0) { whites.push(item); }
-      else { blacks.push(item); }
-    }
-  });
-  
+function isCheck(pieces, player) { // returns either array of checking pieces or false
   if (player === 0) { inCheck(whiteKing); }
   else { inCheck(blackKing); }
 } // end of isCheck
