@@ -149,7 +149,6 @@ function isCheck(pieces, player) { // returns either array of checking pieces or
       case 'rook':
        if (somePiece.owner === 0) return rookAttacks(somePiece, blackKing); // sees if white rook checks blackKing
        return rookAttacks(somePiece, whiteKing); // see if black rook checks whiteKing
-       break;
       case 'queen':
         if (somePiece.owner === 0) return queenAttacks(somePiece, blackKing); // sees if white queen checks blackKing
         return queenAttacks(somePiece, whiteKing); // sees if black queen checks whiteKing
