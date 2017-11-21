@@ -146,7 +146,7 @@ function inCheck(king) { // discerns whether king is in check
   else { return false; }
 }
   
-function setKings(pieces) { // sets whiteKing & blackKing values
+function setSides(pieces) { // sets whiteKing & blackKing values
   pieces.forEach(function(item) { 
     if (item.piece === 'king') {
       if (item.owner === 0) { whiteKing = item; } // cover for more multiple white kings?
@@ -161,7 +161,7 @@ function setKings(pieces) { // sets whiteKing & blackKing values
 //===============================================================================================  
 //===============================================================================================
 function isCheck(pieces, player) { // returns either array of checking pieces or false
-  setKings(pieces);
+  setSides(pieces);
   if (player === 0) { inCheck(whiteKing); }
   else { inCheck(blackKing); }
 } // end of isCheck
