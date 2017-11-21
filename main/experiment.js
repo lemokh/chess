@@ -105,7 +105,7 @@ function rookAttacks(rook, king) { // returns true/false
     return rookMoves.forEach((space) => { // & for each space rook attacks enroute to king
       if ({x: item.x, y: item.y} === space) { clearPath = false; } // item blocks rook's path to king
     });
-  }); return clearPath; // returns true if no pieces block, else false
+  }); return clearPath; // returns true/false if no pieces block
 } // end of rookAttacks
 
 function queenAttacks(queen, king) { // returns true/false if queen checks king
@@ -158,18 +158,17 @@ function setKings(pieces) { // sets whiteKing & blackKing values
     }
   });
 }
-
+//===============================================================================================  
+//===============================================================================================
 function isCheck(pieces, player) { // returns either array of checking pieces or false
   setKings(pieces);
   if (player === 0) { inCheck(whiteKing); }
   else { inCheck(blackKing); }
 } // end of isCheck
-
+//===============================================================================================
 //===============================================================================================
 function isMate(pieces, player) { // returns true/false if king checkmated
-  //===============================================================================================
   
-  //===============================================================================================
   function kingFree(king, opposingSideArr) { // return true/false if king evades check mate
     
     kingSpaces = [{x: king.x - 1, y: king.y}, {x: king.x - 1, y: king.y + 1}, {x: king.x, y: king.y + 1}, {x: king.x + 1, y: king.y + 1}, {x: king.x + 1, y: king.y}, {x: king.x + 1, y: king.y - 1}, {x: king.x, y: king.y - 1}, {x: king.x - 1, y: king.y - 1}];
@@ -181,10 +180,9 @@ function isMate(pieces, player) { // returns true/false if king checkmated
       if (place.x > 7 || place.y > 7) return object.splice(index, 1);
     });
     
+    // array of spaces where king may avoid check mate  
     const kingFreeSpaces = pieces.map(function(item) { // for each attacking piece on board
-    // returns array of spaces where king may avoid check mate
-    // --> use this array to see if any of these places are under check
-    
+      // sees if any of these places are under check
       return kingSpaces.forEach((space, index, object) => { // for each space surrounding king
         if ({x: item.x, y: item.y} === space) return object.splice(index, 1); // if piece occupyies space, try next piece
         
