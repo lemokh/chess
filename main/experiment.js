@@ -70,8 +70,8 @@ function bishopAttacks (bishop, king) { // returns true/false if bishop checks k
 } // end of bishopAttacks
 
 function rookAttacks(rook, king) { // returns true/false
-  rookMoves = []; clearPath = true;
-   // will contain all spaces that rook attacks enroute to king
+  clearPath = true;
+  rookMoves = []; // will contain all spaces that rook attacks enroute to king
   
   // pushes all spaces between Ys of bishop & king
   if (rook.x === king.x) { // rook & king share column x
@@ -169,13 +169,13 @@ function isCheck(pieces, player) { // returns either array of checking pieces or
 //===============================================================================================
 function isMate(pieces, player) { // returns true/false if king checkmated
   
-  function kingFree(king, opposingSideArr) { // return true/false if king evades check mate
+  function kingFree(king, opposingSideArr) { // returns true/false if king evades check mate
     
     kingSpaces = [{x: king.x - 1, y: king.y}, {x: king.x - 1, y: king.y + 1}, {x: king.x, y: king.y + 1}, {x: king.x + 1, y: king.y + 1}, {x: king.x + 1, y: king.y}, {x: king.x + 1, y: king.y - 1}, {x: king.x, y: king.y - 1}, {x: king.x - 1, y: king.y - 1}];
     
     attackingSpace = {x: opposingSideArr[index].x, y: opposingSideArr[index].y};
     
-    kingSpaces.forEach((place, index, object) => { // remove any off-board kingSpaces
+    kingSpaces.forEach((place, index, object) => { // removes any off-board kingSpaces
       if (place.x < 0 || place.y < 0) return object.splice(index, 1);
       if (place.x > 7 || place.y > 7) return object.splice(index, 1);
     });
@@ -198,6 +198,7 @@ function isMate(pieces, player) { // returns true/false if king checkmated
   if (player === 0) { return kingFree(whiteKing, whites); }
   else { return kingFree(blackKing, blacks); }
 }
+//===============================================================================================  
 //===============================================================================================
 /*
 
