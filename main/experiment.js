@@ -1,6 +1,6 @@
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
 
-var whiteKing, blackKing, clearPath, knightMoves, bishopMoves, rookMoves, kingClear, kingSpaces, attackingSpace, whites, blacks;
+var whiteKing, blackKing, clearPath, knightMoves, bishopMoves, rookMoves, kingClear, kingSpaces, attackingSpace, whites = [], blacks = [];
 
 function checkingKing(somePiece) { // returns true/false if piece checks opposing king 
     
@@ -133,12 +133,12 @@ function checkingKing(somePiece) { // returns true/false if piece checks opposin
       case 'queen':
         if (somePiece.owner === 0) return queenAttacks(somePiece, blackKing); // sees if white queen checks blackKing
         return queenAttacks(somePiece, whiteKing); // sees if black queen checks whiteKing
-      default: return;
+      // default: return;  WRITE THIS FOR SOMEPIECE AS SPACE
     }
   }
   
   function inCheck(king) { // discerns whether king is in check
-    whites = [], blacks = [];
+    setKings(pieces);
     
     const attackers = pieces.map((item, index, object) => { // returns a map of pieces checking king
       if (checkingKing(item)) { return item; }
@@ -147,6 +147,7 @@ function checkingKing(somePiece) { // returns true/false if piece checks opposin
     if (attackers.length > 0) { return attackers; }
     else { return false; }
   }
+  
   function setKings(pieces) { // sets whiteKing & blackKing values
     pieces.forEach(function(item) { 
       if (item.piece === 'king') {
@@ -174,7 +175,7 @@ function isMate(pieces, player) { // returns true/false if king checkmated
   //   // write default switch case here...
   // }
   //===============================================================================================
-  function kingFree(king, opposingSide) { // return true/false if king evades check mate
+  function kingFree(king, opposingSideArr) { // return true/false if king evades check mate
     
     kingSpaces = [{x: king.x - 1, y: king.y}, {x: king.x - 1, y: king.y + 1}, {x: king.x, y: king.y + 1}, {x: king.x + 1, y: king.y + 1}, {x: king.x + 1, y: king.y}, {x: king.x + 1, y: king.y - 1}, {x: king.x, y: king.y - 1}, {x: king.x - 1, y: king.y - 1}];
     
@@ -190,11 +191,11 @@ function isMate(pieces, player) { // returns true/false if king checkmated
       return kingSpaces.forEach((space, index, object) => { // for each space surrounding king
         if ({x: item.x, y: item.y} === space) return object.splice(index, 1); // if piece occupyies space, try next piece
         
-        // sees if each OPPOSING piece checks space
-        if (checkingKing(opposingSide[index], space)) return space;
+        // sees if each OPPOSING piece chefcks space
+        if (checkingKing(opposingSideArr[index], space)) return space;
         return object.splice(index, 1);
         
-        // attackingSpace = {x: opposingSide[index].x, y: opposingSide[index].y};
+        // attackingSpace = {x: opposingSideArr[index].x, y: opposingSideArr[index].y};
         // if (kingMoves.includes(attackingSpace)) {
         //   if (checkingKing(attackingSpace) ;
         // } return object.splice(index, 1);
