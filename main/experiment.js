@@ -133,7 +133,7 @@ function checkingKing(somePiece) { // returns true/false if piece checks opposin
       case 'queen':
         if (somePiece.owner === 0) return queenAttacks(somePiece, blackKing); // sees if white queen checks blackKing
         return queenAttacks(somePiece, whiteKing); // sees if black queen checks whiteKing
-      // default: 
+      default: return;
     }
   }
   
@@ -171,8 +171,7 @@ function isMate(pieces, player) { // returns true/false if king checkmated
   //===============================================================================================
   // function checkingSpace(somePiece, space) { // mimics checkingKing(somePiece)
   //   // returns true/false if any piece attacks space
-  //   // write the default switch case here...
-  //   return;    
+  //   // write default switch case here...
   // }
   //===============================================================================================
   function kingFree(king, opposingSide) { // return true/false if king evades check mate
