@@ -1,4 +1,32 @@
 /*cancel defaults*/
+
 /*use sass variables*/
+
 /*use flexbox*/
 
+body {
+  background-color: green;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+board {
+  display: flex;
+  background-color: blue;
+  width: 50%;
+  height: 50%;
+}
+
+.row {
+  flex-direction: row;
+  background-color: teal;
+  height: 10%;
+  width: 50%;
+}
+
+div {
+  background-color: white;
+  height: 30px;
+  width: 13%;
+}
