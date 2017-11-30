@@ -1,11 +1,6 @@
-/*cancel defaults*/
-
-/*use sass variables*/
-
-/*use flexbox*/
-
 body {
   background-image: url('https://github.com/lemokh/Photos/blob/master/texture1.jpg?raw=true');
+  background-repeat: repeat;
 }
 
 board {
@@ -24,10 +19,14 @@ board {
 
 div {
   display: flex;
-  background-color: peru;
+  background-color: #827276;
   height: 40px;
   width: 40px;
   border: 5px;
   z-index: 100;
   margin: 2px;
+}
+
+.white {
+  background-color: #F2D5BC;
 }
