@@ -5,28 +5,30 @@
 /*use flexbox*/
 
 body {
-  background-color: green;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  background-color: maroon;
 }
 
 board {
   display: flex;
-  background-color: blue;
-  width: 50%;
-  height: 50%;
+  flex-flow: column nowrap;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: black;
 }
 
 .row {
+  display: flex;
   flex-direction: row;
-  background-color: teal;
-  height: 10%;
-  width: 50%;
 }
 
 div {
-  background-color: white;
-  height: 30px;
-  width: 13%;
+  display: flex;
+  background-color: peru;
+  height: 40px;
+  width: 40px;
+  border: 5px;
+  z-index: 100;
+  margin: 2px;
 }
