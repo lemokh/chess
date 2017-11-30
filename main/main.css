@@ -10,7 +10,7 @@ body {
 
 board {
   display: flex;
-  flex-flow: column nowrap;
+  flex-direction: column;
   position: absolute;
   top: 50%;
   left: 50%;
