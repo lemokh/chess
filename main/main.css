@@ -1,11 +1,10 @@
 body {
   background-image: url('https://github.com/lemokh/Photos/blob/master/texture1.jpg?raw=true');
-  background-repeat: repeat;
 }
 
 board {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -14,19 +13,30 @@ board {
 
 .row {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
 }
 
 div {
-  display: flex;
-  background-color: #827276;
   height: 65px;
   width: 65px;
-  border: 5px;
-  z-index: 100;
   margin: 2px;
+  padding: 8px;
 }
 
 .white {
   background-color: #F2D5BC;
+}
+
+.black {
+  background-color: #827276;
+}
+
+.white img {
+  width: 50px;
+  height: 50px;
+}
+
+.black img {
+  width: 50px;
+  height: 50px;
 }
