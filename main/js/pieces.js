@@ -41,18 +41,18 @@ let whites = [
   { name: 'pawn', x: "6", y: "6", image: 'https://github.com/lemokh/Photos/blob/master/bluePawn.png?raw=true' },
   { name: 'pawn', x: "7", y: "6", image: 'https://github.com/lemokh/Photos/blob/master/bluePawn.png?raw=true' },
 
-  { name: 'knight', x: "1", y: "7", image: '' },
-  { name: 'knight', x: "6", y: "7", image: '' },
+  { name: 'knight', x: "1", y: "7", image: 'https://github.com/lemokh/Photos/blob/master/blueKnight.png?raw=true' },
+  { name: 'knight', x: "6", y: "7", image: 'https://github.com/lemokh/Photos/blob/master/blueKnight.png?raw=true' },
 
-  { name: 'bishop', x: "2", y: "7", image: '' },
-  { name: 'bishop', x: "5", y: "7", image: '' },
+  { name: 'bishop', x: "2", y: "7", image: 'https://github.com/lemokh/Photos/blob/master/blueBishop.png?raw=true' },
+  { name: 'bishop', x: "5", y: "7", image: 'https://github.com/lemokh/Photos/blob/master/blueBishop.png?raw=true' },
 
-  { name: 'rook', x: "0", y: "7", image: '' },
-  { name: 'rook', x: "7", y: "7", image: '' },
+  { name: 'rook', x: "0", y: "7", image: 'https://github.com/lemokh/Photos/blob/master/blueRook.png?raw=true' },
+  { name: 'rook', x: "7", y: "7", image: 'https://github.com/lemokh/Photos/blob/master/blueRook.png?raw=true' },
 
-  { name: 'queen', x: "3", y: "7", image: '' },
+  { name: 'queen', x: "3", y: "7", image: 'https://github.com/lemokh/Photos/blob/master/blueQueen.png?raw=true' },
 
-  { name: 'king', x: "4", y: "7", image: '' }
+  { name: 'king', x: "4", y: "7", image: 'https://github.com/lemokh/Photos/blob/master/blueKing.png?raw=true' }
 ];
 
 let pieces = [blacks, whites].reduce((b, w) => b.concat(w), []);
