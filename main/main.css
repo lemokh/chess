@@ -17,26 +17,30 @@ board {
 }
 
 div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 65px;
   width: 65px;
   margin: 2px;
   padding: 8px;
+  border-radius: 2px;
 }
 
 .white {
-  background-color: #F2D5BC;
+  background-color: #1A3E51;
 }
 
 .black {
-  background-color: #827276;
+  background-color: #865541;
 }
 
 .white img {
-  width: 50px;
-  height: 50px;
+  width: 80px;
+  height: 80px;
 }
 
 .black img {
-  width: 50px;
-  height: 50px;
+  width: 80px;
+  height: 80px;
 }
