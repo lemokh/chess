@@ -68,7 +68,7 @@ function isCheck(pieces, player) { // returns EITHER an array of checking pieces
 
     function knightAttacks(knight, king) { // returns true/false if knight checks king
       knightMoves = []; // will contain the two spaces where knight might check king
-      //console.log([knight, king]);
+      // console.log([knight, king]);
       if (knight.x < king.x) { // if knight is left of king
         if (knight.y < king.y) { // and if knight is above king
           knightMoves.push({ x: knight.x + 1, y: knight.y + 2 });
@@ -159,7 +159,6 @@ function isCheck(pieces, player) { // returns EITHER an array of checking pieces
     function rookAttacks(rook, king) { // returns true/false
       rookMoves = [];
       clearPath = true; // to hold all spaces that rook attacks enroute to king
-
       // pushes all spaces between Ys of bishop & king
       if (rook.x === king.x) { // rook & king share column x
         if (rook.y < king.y) { // & rook below king
@@ -208,17 +207,12 @@ function isCheck(pieces, player) { // returns EITHER an array of checking pieces
 
     switch (somePiece.piece) { // conditions for each piece (except king) to check opposing king
       case 'pawn':
+        // console.log('found');
         if (somePiece.owner === 0) { // sees if white pawn checks blackKing or if black pawn checks whiteKing
           if ([somePiece.x - 1, somePiece.x + 1].includes(blackKing.x)) return blackKing.y === (somePiece.y - 1);
         }
         else if ([somePiece.x - 1, somePiece.x + 1].includes(whiteKing.x)) return whiteKing.y === (somePiece.y + 1);
         return false;
-
-        //      if ([somePiece.x - 1, somePiece.x + 1].includes(space.x)) { // side of somePiece is already known
-        //        if (somePiece.owner === 0) return space.y === (somePiece.y - 1);
-        //        return space.y === (somePiece.y + 1);
-        //      } return false;
-
       case 'knight':
         if (somePiece.owner === 0) return knightAttacks(somePiece, blackKing); // sees if white knight checks blackKing
         return knightAttacks(somePiece, whiteKing); // sees if black knight checks whiteKing
@@ -234,23 +228,16 @@ function isCheck(pieces, player) { // returns EITHER an array of checking pieces
     }
   }
 
-  function inCheck(attackingArmy, king) { // discerns whether king is in check
+  function inCheck(opposingSide, king) { // discerns whether king is in check
     // console.log(attackingArmy);
     kingAttackers = []; // to contain an array of pieces checking king
 
-    attackingArmy.forEach((item) => {
+    opposingSide.forEach((item) => {
       if (checkingKing(item, king)) { kingAttackers.push(item); }
     });
     // console.log(kingAttackers);
-    if (kingAttackers.length > 0) {
-      console.log(kingAttackers);
-      // return kingAttackers;
-      isMate(pieces);
-    }
-    else {
-      console.log(false);
-      return false;
-    }
+    if (kingAttackers.length > 0) { return kingAttackers; }
+    else { return false; }
   }
 
   pieces.forEach(function(item) { // sets whiteKing & blackKing values
