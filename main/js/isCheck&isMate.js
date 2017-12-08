@@ -457,15 +457,16 @@ function isMate(pieces, player) { // returns true/false if king checkmated
 
     ].map((space) => { // keeps only on-board kingSpaces
       if (space.x >= 0 && space.x <= 7) {
-        if (space.y <= 7 && space.y <= 7) return space;
+        if (space.y <= 7 && space.y <= 7) { return space; }
       }
     }).filter((item) => { return item !== undefined; });
 
     pieces.forEach((piece) => { // pushes each occupied space to storage
       if (kingSpaces.includes({ x: piece.x, y: piece.y })) {
-        storge.push({ x: piece.x, y: piece.y });
+        storage.push({ x: piece.x, y: piece.y });
       }
     });
+
     storage.forEach((item) => { // removes each storage item from kingSpace
       kingSpaces.splice(kingSpaces.indexOf(item), 1);
     });
@@ -513,7 +514,7 @@ function isMate(pieces, player) { // returns true/false if king checkmated
         });
         //***********************************************
 
-        if (counterAttackers === []) return false;
+        if (counterAttackers === []) { console.log(false); return false; }
       }
       else {
         whites.forEach((piece) => {
@@ -529,7 +530,7 @@ function isMate(pieces, player) { // returns true/false if king checkmated
           possibleCounterAttackers.splice(possibleCounterAttackers.indexOf(item), 1);
         });
 
-        if (counterAttackers === []) return false;
+        if (counterAttackers === []) { console.log(false); return false; }
       }
     }
   }
