@@ -274,7 +274,7 @@ function isCheck(pieces, player) { // returns EITHER an array of checking pieces
 function isMate(pieces, player) { // returns true/false if king checkmated
   //===============================================================================================
   function checkingSpace(somePiece, space) { // returns true/false if opposing piece checks space 
-    // somePiece ==== opposingSide(index)
+    // somePiece === a piece in opposingSide
 
     function knightAttacks(knight, king) { // returns true/false if knight checks king
       knightMoves = []; // will contain the two spaces where knight might check king
@@ -418,7 +418,7 @@ function isMate(pieces, player) { // returns true/false if king checkmated
 
     switch (somePiece.piece) { // conditions for each opposing piece (except king) to check space
       case 'pawn':
-        if ([somePiece.x - 1, somePiece.x + 1].includes(space.x)) { // side of somePiece is already known
+        if ([somePiece.x - 1, somePiece.x + 1].includes(space.x)) {
           if (somePiece.owner === 0) return space.y === (somePiece.y - 1);
           return space.y === (somePiece.y + 1);
         }
