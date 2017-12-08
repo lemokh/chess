@@ -418,26 +418,18 @@ function isMate(pieces, player) { // returns true/false if king checkmated
 
     switch (somePiece.piece) { // conditions for each opposing piece (except king) to check space
       case 'pawn':
-        if (somePiece.owner === 0) { // sees if white pawn checks blackKing or if black pawn checks whiteKing
-          if ([somePiece.x - 1, somePiece.x + 1].includes(blackKing.x)) return blackKing.y === (somePiece.y - 1);
+        if ([somePiece.x - 1, somePiece.x + 1].includes(space.x)) { // side of somePiece is already known
+          if (somePiece.owner === 0) return space.y === (somePiece.y - 1);
+          return space.y === (somePiece.y + 1);
         }
-        else if ([somePiece.x - 1, somePiece.x + 1].includes(whiteKing.x)) return whiteKing.y === (somePiece.y + 1);
         return false;
-        //         if ([somePiece.x - 1, somePiece.x + 1].includes(space.x)) { // side of somePiece is already known
-        //           if (somePiece.owner === 0) return space.y === (somePiece.y - 1);
-        //           return space.y === (somePiece.y + 1);
-        //         } return false;
       case 'knight':
-        if (somePiece.owner === 0) return knightAttacks(somePiece, space); // sees if white knight checks space
         return knightAttacks(somePiece, space); // sees if black knight checks space
       case 'bishop':
-        if (somePiece.owner === 0) return bishopAttacks(somePiece, space); // sees if white bishop checks space
         return bishopAttacks(somePiece, space); // sees if black bishop checks space
       case 'rook':
-        if (somePiece.owner === 0) return rookAttacks(somePiece, space); // sees if white rook checks space
         return rookAttacks(somePiece, space); // see if black rook checks space
       case 'queen':
-        if (somePiece.owner === 0) return queenAttacks(somePiece, space); // sees if white queen checks space
         return queenAttacks(somePiece, space); // sees if black queen checks space
     }
   }
@@ -467,18 +459,18 @@ function isMate(pieces, player) { // returns true/false if king checkmated
       }
     });
 
-    storage.forEach((item) => { // removes each storage item from kingSpace
+    storage.forEach((item) => { // removes each storage item from kingSpaces
       kingSpaces.splice(kingSpaces.indexOf(item), 1);
     });
 
     kingFreeSpaces = kingSpaces.map((space) => { // for each space in kingSpaces
-      // if no opposing piece attacks that space
+      // if no opposing piece attacks that space, add that space to kingFreeSpaces
       if (opposingSide.every((piece) => {!checkingSpace(piece, space); })) { return space; }
     }).filter((item) => { return item !== undefined; });
 
-    if (kingFreeSpaces.length > 0) return true; // returns true if king can move out of check
+    if (kingFreeSpaces.length > 0) { console.log(true); return true; } // returns true if king can move out of check
 
-    else { // is the attacker inCheck by an opposing piece?
+    else { // sees if the attacker inCheck by an opposing piece
 
       // kingSpaces.forEach((space) => {
       // if ( kingSpaces.includes( the checking piece ) ) {
@@ -490,19 +482,15 @@ function isMate(pieces, player) { // returns true/false if king checkmated
       let counterAttackers = []; // each king's piece checking the attacker's space
       storage = [];
 
-      if (opposingSide === whites) {
-
-        blacks.forEach((piece) => {
-          if (pinnedPieces.includes(piece)) { return; }
-          else { possibleCounterAttackers.push(piece); }
+      if (opposingSide === whites) { // if white defends
+        blacks.forEach((piece) => { // for each black piece (except king)
+          if (pinnedPieces.includes(piece)) { return; } // if black piece is pinned, try next
+          else { possibleCounterAttackers.push(piece);
+            storage.push(piece); } // else collect black piece
         });
 
-        possibleCounterAttackers.forEach((piece) => {
-          if (pinnedPieces.includes(piece)) { storage.push(piece); }
-        });
-
-        storage.forEach((item) => { // removes each storage item from kingSpace
-          possibleCounterAttackers.splice(possibleCounterAttackers.indexOf(item), 1);
+        storage.forEach((item, index) => { // removes each storage item from possibleCounterAttackers
+          possibleCounterAttackers.splice(index, 1);
         });
 
         //***********************************************
@@ -516,8 +504,8 @@ function isMate(pieces, player) { // returns true/false if king checkmated
 
         if (counterAttackers === []) { console.log(false); return false; }
       }
-      else {
-        whites.forEach((piece) => {
+      else { // since black defends
+        whites.forEach((piece) => { // for each white piece (exept king)
           if (pinnedPieces.includes({ x: piece.x, y: piece.y })) { return; }
           else { possibleCounterAttackers.push({ x: piece.x, y: piece.y }); }
         });
