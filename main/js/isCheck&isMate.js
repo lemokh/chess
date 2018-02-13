@@ -472,8 +472,10 @@ function isMate(pieces, player) { // returns true/false if king checkmated
       if (opposingSide === whites) { // if white defends
         blacks.forEach((piece) => { // for each black piece (except king)
           if (pinnedPieces.includes(piece)) { return; } // if black piece is pinned, try next
-          else { possibleCounterAttackers.push(piece);
-            storage.push(piece); } // else collect black piece
+          else {
+            possibleCounterAttackers.push(piece);
+            storage.push(piece);
+          } // else collect black piece
         });
 
         storage.forEach((item, index) => { // removes each storage item from possibleCounterAttackers
