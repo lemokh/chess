@@ -1,4 +1,5 @@
-function kingFree(king, opposingSideArr) { // returns true/false if king evades check mate
+function kingFree(king, opposingSideArr) {
+  // returns true/false if king evades check mate
 
   kingSpaces = [{ x: king.x - 1, y: king.y }, { x: king.x - 1, y: king.y + 1 }, { x: king.x, y: king.y + 1 }, { x: king.x + 1, y: king.y + 1 }, { x: king.x + 1, y: king.y }, { x: king.x + 1, y: king.y - 1 }, { x: king.x, y: king.y - 1 }, { x: king.x - 1, y: king.y - 1 }];
 

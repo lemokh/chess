@@ -1,120 +1,140 @@
-//===============================================================================================
-// {
-//   piece: string, // pawn, rook, knight, bishop, queen or king
-//   owner: int,    // 0 for white or 1 for black
-//   x: int,        // 0-7 where 0 is the leftmost column (or "A")
-//   y: int,        // 0-7 where 0 is the top row (or "8" in the board below)
-//   prevX: int,    // 0-7, presents this piece's previous x, only given if this is the piece that was just moved
-//   prevY: int     // 0-7, presents this piece's previous y, only given if this is the piece that was just moved
-// }
-// ---------------------------------------------------------------------------------------------
-// outputBoard(pieces); logs all the board's pieces
-// The piece with prevX and prevY properties appears light gray on board where it last was
-// prevX/Y indicate game's previous move --> doesn't seem important
-// ---------------------------------------------------------------------------------------------
-//***************************************************************************************************************
+var whiteKing, blackKing, knightMoves, bishopMoves, bishopX, bishopY, rookMoves, kingSpaces, kingOpenSpaces, occupiedKingSpaces, kingAttackers, defenders, pinnedPieces, checkedPaths, nails, whites, blacks;
 
-// last case to cover (to avoid check mate):
-//   does any same-side piece check the checking piece
-//   if checking piece within king's 8 nearest spaces, can king eat the attacking piece?
-function isCheck(pieces, player) { // returns either array of checking pieces or false
-  let whiteKing, blackKing, clearPath, knightMoves, bishopMoves, rookMoves;
-  // debugger;
+function isCheck(pieces, player) { // returns EITHER an array of checking pieces OR false
 
-  function checkingKing(somePiece) { // returns true/false if piece checks opposing king 
+  whites = [];
+  blacks = [];
+  pinnedPieces = [];
+  checkedPaths = [];
+
+  function checkingKing(somePiece, king) { // returns true/false if piece checks opposing king
 
     function knightAttacks(knight, king) { // returns true/false if knight checks king
+      // console.log([knight, king]);
 
-      knightMoves = []; // will contain the two spaces where knight might check king
+      knightMoves = []; // contains the two spaces where knight might check king
 
       if (knight.x < king.x) { // if knight is left of king
-        if (knight.y < king.y) { // and if knight is below king
+        if (knight.y < king.y) { // and if knight is above king
           knightMoves.push({ x: knight.x + 1, y: knight.y + 2 });
           knightMoves.push({ x: knight.x + 2, y: knight.y + 1 });
         }
-        else { // knight is left of and above king
+        else { // knight is left of and below king
           knightMoves.push({ x: knight.x + 1, y: knight.y - 2 });
           knightMoves.push({ x: knight.x + 2, y: knight.y - 1 });
         }
       }
       else { // knight is right of king
-        if (knight.y < king.y) { // and knight is below king
+        if (knight.y < king.y) { // and knight is above king
           knightMoves.push({ x: knight.x - 1, y: knight.y + 2 });
           knightMoves.push({ x: knight.x - 2, y: knight.y + 1 });
         }
-        else { // knight is right of and above king
+        else { // knight is right of and below king
           knightMoves.push({ x: knight.x - 1, y: knight.y - 2 });
           knightMoves.push({ x: knight.x - 2, y: knight.y - 1 });
         }
       }
-      return knightMoves.includes({ x: king.x, y: king.y });
-    }
+      for (let i = 0; i < knightMoves.length; i++) {
+        if (knightMoves[i].x === king.x) {
+          if (knightMoves[i].y === king.y) { return true; }
+        }
+      }
+    } // end of knightAttacks
 
     function bishopAttacks(bishop, king) { // returns true/false if bishop checks king
+      // console.log('bishop');
 
-      bishopMoves = []; // will contain all spaces bishop attacks enroute to king
-      clearPath = true;
+      bishopMoves = []; // contains all spaces bishop attacks enroute to king
+      bishopX = bishop.x;
+      bishopY = bishop.y;
+      nails = [];
 
-      if (bishop.x < king.x) { // if bishop is left of king
-        if (bishop.y < king.y) { // and if bishop is below king
-          while (bishop.x <= king.x && bishop.y >= king.y) { // push all x & y between bishop & king
-            bishop.x += 1;
-            bishop.y += 1;
-            bishopMoves.push({ x: bishop.x, y: bishop.y });
+      if (bishop.x === king.x) { return false; }
+      if (bishop.y === king.y) { return false; }
+
+      if (bishop.x < king.x) { // if bishop is left of king (LEFT BOARD SIDE)
+
+        if (bishop.y < king.y) { // and if bishop is above king (FIRST QUADRANT)
+          if (king.x - bishop.x === king.y - bishop.y) { // if bishop aligns with king
+            while (bishopX < king.x - 1) { // collect all attacking spaces between them
+              bishopX += 1;
+              bishopY += 1;
+              bishopMoves.push({ x: bishopX, y: bishopY });
+            } // console.log(bishopMoves);
           }
+          else { return false; } // bishop can't attack king
         }
-        else { // bishop is left of and above king
-          while (bishop.x <= king.x && bishop.y >= king.y) { // push all x & y between bishop & king
-            bishop.x += 1;
-            bishop.y -= 1;
-            bishopMoves.push({ x: bishop.x, y: bishop.y });
+        else { // bishop is left of and below king (THIRD QUADRANT)
+          if (king.x - bishop.x === bishop.y - king.y) { // if bishop aligns with king
+            while (bishopX < king.x - 1) { // collect all attacking spaces between them
+              bishopX += 1;
+              bishopY -= 1;
+              bishopMoves.push({ x: bishopX, y: bishopY });
+            } // console.log(bishopMoves);
+          }
+          else { return false; } // bishop can't attack king
+        }
+      }
+      else { // bishop is right of king (RIGHT BOARD SIDE)
+        if (bishop.y < king.y) { // and bishop is above king (SECOND QUADRANT)
+          if (bishop.x - king.x === king.y - bishop.y) { // if bishop aligns with king
+            while (bishopX > king.x + 1) { // collect all attacking spaces between them
+              bishopX -= 1;
+              bishopY += 1;
+              bishopMoves.push({ x: bishopX, y: bishopY });
+            } // console.log(bishopMoves);
+          }
+          else { return false; } // bishop can't attack king  
+        }
+        else { // bishop is right of and below king (FOURTH QUADRANT)
+          if (bishop.x - king.x === bishop.y - king.y) { // if bishop aligns with king
+            while (bishopX > king.x + 1) { // collect all attacking spaces between them
+              bishopX -= 1;
+              bishopY -= 1;
+              bishopMoves.push({ x: bishopX, y: bishopY });
+            } // console.log(bishopMoves);
+          }
+          else { return false; } // bishop can't attack king 
+        }
+      } // console.log(bishopMoves);
+      // sees if any piece obstructs bishop's check
+
+      // sees if any piece obstructs bishop's check  
+      for (let i = 0; i < pieces.length; i++) { // for each piece on board 
+        for (let k = 0; k < bishopMoves.length; k++) { // for each space bishop moves enroute to king
+          if (pieces[i].x === bishopMoves[k].x) {
+            if (pieces[i].y === bishopMoves[k].y) {
+              nails.push(pieces[i]);
+            }
           }
         }
       }
-      else { // bishop is right of king
-        if (bishop.y < king.y) { // and bishop is below king
-          while (bishop.x >= king.x && bishop.y <= king.y) { // push all x & y between bishop & king
-            bishop.x -= 1;
-            bishop.y += 1;
-            bishopMoves.push({ x: bishop.x, y: bishop.y });
-          }
-        }
-        else { // bishop is right of and above king
-          while (bishop.x >= king.x && bishop.y >= king.y) { // push all x & y between bishop & king
-            bishop.x -= 1;
-            bishop.y -= 1;
-            bishopMoves.push({ x: bishop.x, y: bishop.y });
-          }
+      if (nails.length === 1) {
+        if (nails[0].owner !== bishop.owner) {
+          pinnedPieces.push(nails[0]);
         }
       }
-      if (bishopMoves.includes({ x: king.x, y: king.y })) { // if bishop aligns with king
-        // sees if any piece obstructs bishop's check
-        pieces.forEach((item) => { // for each piece on board (except this bishop & that king)
-          if (clearPath === false) return;
-          if (item.piece === 'rook' && item.owner === bishop.owner) return;
-          if (item.piece === 'king' && item.owner === king.owner) return;
-          return bishopMoves.forEach((space) => { // & for each space bishop attacks enroute to king
-            if ({ x: item.x, y: item.y } === space) { clearPath = false; } // item blocks bishop's path to king
-          });
+      if (nails.length === 0) {
+        bishopMoves.forEach(move => {
+          checkedPaths.push(move);
         });
-        return clearPath; // returns true if no pieces block, else false
-      }
-      return false; // since bishop doesn't align with king
+        return true;
+      } // returns true if no pieces block, else returns false
+      else { return false; }
     } // end of bishopAttacks
 
     function rookAttacks(rook, king) { // returns true/false
-      clearPath = true;
-      rookMoves = []; // will contain all spaces that rook attacks enroute to king
-
+      rookMoves = [];
+      nails = []; // holds all spaces that rook attacks enroute to king
       // pushes all spaces between Ys of bishop & king
       if (rook.x === king.x) { // rook & king share column x
         if (rook.y < king.y) { // & rook below king
-          for (let i = rook.y; i <= king.y; i++) { // rook.y++
+          for (let i = rook.y + 1; i < king.y; i++) { // rook.y++
             rookMoves.push({ x: king.x, y: i });
           }
         }
         else { // & rook above king 
-          for (let i = rook.y; i > king.y; i--) { // rook.y--
+          for (let i = rook.y - 1; i > king.y; i--) { // rook.y--
             rookMoves.push({ x: king.x, y: i });
           }
         }
@@ -122,40 +142,51 @@ function isCheck(pieces, player) { // returns either array of checking pieces or
       // pushes all spaces between Xs of bishop & king
       else if (rook.y === king.y) { // rook & king share row y
         if (rook.x < king.x) { // & rook left of king
-          for (let i = rook.x; i < king.x; i++) { // rook.x++
+          for (let i = rook.x + 1; i < king.x; i++) { // rook.x++
             rookMoves.push({ x: i, y: king.y });
           }
         }
         else { // & rook right of king
-          for (let i = rook.x; i > king.x; i--) { // rook.x--
+          for (let i = rook.x - 1; i > king.x; i--) { // rook.x--
             rookMoves.push({ x: i, y: king.y });
           }
         }
       }
-      else { return false; } // since rook not aligns with king
+      else { return false; } // rook can't check king
       // sees if any piece blocks rook's check
-      pieces.forEach((item) => { // for each piece on board (except this rook & that king)
-        if (clearPath === false) return;
-        if (item.piece === 'rook' && item.owner === rook.owner) return;
-        if (item.piece === 'king' && item.owner === king.owner) return;
-        return rookMoves.forEach((space) => { // & for each space rook attacks enroute to king
-          if ({ x: item.x, y: item.y } === space) { clearPath = false; } // item blocks rook's path to king
+      for (let i = 0; i < pieces.length; i++) { // for each piece on board 
+        for (let k = 0; k < rookMoves.length; k++) { // & each space rook moves enroute to king
+          if (pieces[i].x === rookMoves[k].x) {
+            if (pieces[i].y === rookMoves[k].y) {
+              nails.push(pieces[i]);
+            }
+          }
+        }
+      }
+      if (nails.length === 1) {
+        if (nails[0].owner !== rook.owner) {
+          pinnedPieces.push(nails[0])
+        }
+      }
+      if (nails.length === 0) {
+        rookMoves.forEach(move => {
+          checkedPaths.push(move);
         });
-      });
-      return clearPath; // returns true if no pieces block, else false
+        return true;
+      } // returns true if no pieces block, else returns false
+      else { return false; }
     } // end of rookAttacks
 
     function queenAttacks(queen, king) { // returns true/false if queen checks king
       return (bishopAttacks(queen, king) || rookAttacks(queen, king));
     }
 
-    // console.log(somePiece.piece);
     switch (somePiece.piece) { // conditions for each piece (except king) to check opposing king
       case 'pawn':
-        if (somePiece.owner === 0) { // sees if white pawn checks blackKing or else if black pawn checks whiteKing
-          if ([somePiece.x - 1, somePiece.x + 1].includes(blackKing.x)) return blackKing.y === somePiece.y - 1;
+        if (somePiece.owner === 0) { // sees if white pawn checks blackKing or if black pawn checks whiteKing
+          if ([somePiece.x - 1, somePiece.x + 1].includes(blackKing.x)) return blackKing.y === (somePiece.y - 1);
         }
-        else if ([somePiece.x - 1, somePiece.x + 1].includes(whiteKing.x)) return whiteKing.y === somePiece.y + 1;
+        else if ([somePiece.x - 1, somePiece.x + 1].includes(whiteKing.x)) return whiteKing.y === (somePiece.y + 1);
         return false;
       case 'knight':
         if (somePiece.owner === 0) return knightAttacks(somePiece, blackKing); // sees if white knight checks blackKing
@@ -169,34 +200,20 @@ function isCheck(pieces, player) { // returns either array of checking pieces or
       case 'queen':
         if (somePiece.owner === 0) return queenAttacks(somePiece, blackKing); // sees if white queen checks blackKing
         return queenAttacks(somePiece, whiteKing); // sees if black queen checks whiteKing
-        // default: 
     }
   }
 
-  function inCheck(king) { // discerns whether king is in check
-    const attackers = pieces.map((item) => { // returns a map of pieces checking king
-      if (checkingKing(item)) { return item; }
-      return null;
-    });
-    if (attackers.length > 0) { return attackers; }
+  function inCheck(opposingSide, king) { // discerns if check
+
+    kingAttackers = []; // contains pieces checking king
+
+    opposingSide.forEach(item => {
+      if (checkingKing(item, king)) { kingAttackers.push(item); }
+    }); //console.log(kingAttackers);
+
+    if (kingAttackers.length > 0) { return kingAttackers; }
     else { return false; }
   }
-
-  pieces.forEach(function(item) { // sets whiteKing & blackKing values
-    if (item.piece === 'king') {
-      if (item.owner === 0) { whiteKing = item; } // cover for more multiple white kings?
-      else { blackKing = item; }
-    }
-  });
-
-  if (player === 0) return inCheck(whiteKing);
-  return inCheck(blackKing);
-} // end of isCheck
-
-//===============================================================================================
-function isMate(pieces, player) { // returns true/false if king checkmated
-  let kingClear, whiteKing, blackKing, whites = [],
-    blacks = [];
 
   pieces.forEach(function(item) { // sets whiteKing & blackKing values
     if (item.piece === 'king') {
@@ -208,51 +225,427 @@ function isMate(pieces, player) { // returns true/false if king checkmated
       else { blacks.push(item); }
     }
   });
-  //===============================================================================================
-  function checkingSpace(somePiece, space) { // mimics checkingKing(somePiece)
-    // returns true/false if any piece attacks space
-    // write the default switch case here...
 
-  }
-  //===============================================================================================
-  function kingFree(king, opposingSide) { // return true/false if king evades check mate
-
-    let kingSpaces = [{ x: king.x - 1, y: king.y }, { x: king.x - 1, y: king.y + 1 }, { x: king.x, y: king.y + 1 }, { x: king.x + 1, y: king.y + 1 }, { x: king.x + 1, y: king.y }, { x: king.x + 1, y: king.y - 1 }, { x: king.x, y: king.y - 1 }, { x: king.x - 1, y: king.y - 1 }];
-
-    kingSpaces.forEach((place) => { // remove any off-board kingSpaces
-      if (place.x < 0 || place.y < 0) return null;
-      if (place.x > 7 || place.y > 7) return null;
-    });
-
-    const kingFreeSpaces = pieces.map(function(item) { // for each attacking piece on board
-      // returns array of spaces where king may avoid check mate
-      // --> use this array to see if any of these places are under check
-
-      return kingSpaces.forEach((space, index) => { // for each space surrounding king
-        if ({ x: item.x, y: item.y } === space) return null; // if piece occupyies space, try next
-        // SEES IF each OPPOSING piece checks SPACE
-        if (checkingSpace(opposingSide[index], space)) return space;
-        return null;
-
-        // let attackingSpace = {x: opposingSide[index].x, y: opposingSide[index].y};
-        // if (kingMoves.includes(attackingSpace)) {
-        // if (checkingSpace(attackingSpace)) { isMate() returns false; }
-        // }
-
-      });
-    });
-    return kingFreeSpaces.length === 0; // returns true/false if king can move out of check
-  }
-
-  if (player === 0) return kingFree(whiteKing, whites);
-  return kingFree(blackKing, blacks);
+  if (player === 0) { return inCheck(blacks, whiteKing); }
+  else { return inCheck(whites, blackKing); }
 }
-//===============================================================================================
-/*
+//=================================================================================================
+//=================================================================================================
+function isMate(pieces, player) {
+  // returns true/false if king checkmate --> player = turn to avoid checkmate 
+  //===============================================================================================
+  if (!(isCheck(pieces, player))) { return false; }
+  if (kingAttackers.length > 1) { return true; }
+  // console.log(kingAttackers); // WORKS! -->  OPTIMIZE kingAttackers INTO kingAttacker
+  //===============================================================================================
+  function checkingSpace(somePiece, checkSpace) { // returns true/false if opposing piece checks space 
+    // somePiece is an index in the opposingSide array ---> checkSpace is the target piece
 
-isCheck([
-  {piece: "king", owner: 1, x: 4, y: 0},
-  {piece: "king", owner: 0, x: 4, y: 7},
-  {piece: "pawn", owner: 1, x: 5, y: 6}
-], 0);
-*/
+    function knightAttacks(knight, checkSpace) { // returns true/false if knight can checkSpace
+      knightMoves = []; // contains the two spaces where knight might checkSpace
+
+      if (knight.x < checkSpace.x) { // if knight is left of checkSpace
+        if (knight.y < checkSpace.y) { // and if knight is above checkSpace
+          knightMoves.push({ x: knight.x + 1, y: knight.y + 2 });
+          knightMoves.push({ x: knight.x + 2, y: knight.y + 1 });
+        }
+        else { // knight is left of and below checkSpace
+          knightMoves.push({ x: knight.x + 1, y: knight.y - 2 });
+          knightMoves.push({ x: knight.x + 2, y: knight.y - 1 });
+        }
+      }
+      else { // knight is right of checkSpace
+        if (knight.y < checkSpace.y) { // and knight is above checkSpace
+          knightMoves.push({ x: knight.x - 1, y: knight.y + 2 });
+          knightMoves.push({ x: knight.x - 2, y: knight.y + 1 });
+        }
+        else { // knight is right of and below checkSpace
+          knightMoves.push({ x: knight.x - 1, y: knight.y - 2 });
+          knightMoves.push({ x: knight.x - 2, y: knight.y - 1 });
+        }
+      }
+      for (let i = 0; i < knightMoves.length; i++) {
+        if (knightMoves[i].x === checkSpace.x) {
+          if (knightMoves[i].y === checkSpace.y) return true;
+        }
+      }
+    } // end of knightAttacks --> returns true/false if knight can checkSpace
+
+    function bishopAttacks(bishop, checkSpace) { // returns true/false if bishop can checkSpace
+
+      bishopMoves = []; // contains all spaces bishop attacks enroute to checkSpace
+      nails = []; // collects possible pinnedPieces
+      bishopX = bishop.x;
+      bishopY = bishop.y;
+
+
+      if (bishop.x === checkSpace.x) { return false; }
+      if (bishop.y === checkSpace.y) { return false; }
+
+      if (bishop.x < checkSpace.x) { // if bishop is left of king (LEFT BOARD SIDE)
+
+        if (bishop.y < checkSpace.y) { // and if bishop is above king (FIRST QUADRANT)
+          if (checkSpace.x - bishop.x === checkSpace.y - bishop.y) { // if bishop aligns with king
+            while (bishopX < checkSpace.x - 1) { // collects all attacking spaces between them
+              bishopX += 1;
+              bishopY += 1;
+              bishopMoves.push({ x: bishopX, y: bishopY });
+            }
+          }
+          else { return false; } // bishop cannot checkSpace
+        }
+        else { // bishop is left of and below checkSpace (THIRD QUADRANT)
+          if (checkSpace.x - bishop.x === bishop.y - checkSpace.y) { // if bishop aligns with checkSpace
+            while (bishopX < checkSpace.x - 1) { // collects all attacking spaces between them
+              bishopX += 1;
+              bishopY -= 1;
+              bishopMoves.push({ x: bishopX, y: bishopY });
+            }
+          }
+          else { return false; } // bishop cannot checkSpace
+        }
+      }
+      else { // bishop is right of checkSpace (RIGHT BOARD SIDE)
+        if (bishop.y < checkSpace.y) { // and bishop is above checkSpace (SECOND QUADRANT)
+          if (bishop.x - checkSpace.x === checkSpace.y - bishop.y) { // if bishop aligns with checkSpace
+            while (bishopX > checkSpace.x + 1) { // collects all attacking spaces between them
+              bishopX -= 1;
+              bishopY += 1;
+              bishopMoves.push({ x: bishopX, y: bishopY });
+            } // console.log(bishopMoves);
+          }
+          else { return false; } // bishop cannot checkSpace  
+        }
+        else { // bishop is right of and below checkSpace (FOURTH QUADRANT)
+          if (bishop.x - checkSpace.x === bishop.y - checkSpace.y) { // if bishop aligns with checkSpace
+            while (bishopX > checkSpace.x + 1) { // collects all attacking spaces between them
+              bishopX -= 1;
+              bishopY -= 1;
+              bishopMoves.push({ x: bishopX, y: bishopY });
+            } // console.log(bishopMoves);
+          }
+          else { return false; } // bishop can't attack king 
+        }
+      } // console.log(bishopMoves);
+
+      // sees if any piece obstructs bishop's check  
+      for (let i = 0; i < pieces.length; i++) { // for each piece on board 
+        for (let k = 0; k < bishopMoves.length; k++) { // for each space bishop moves enroute to checkSpace
+          if (pieces[i].x === bishopMoves[k].x) {
+            if (pieces[i].y === bishopMoves[k].y) {
+              nails.push(pieces[i]);
+            }
+          }
+        }
+      }
+      if (nails.length === 1) {
+        if (nails[0].owner !== bishop.owner) {
+          pinnedPieces.push(nails[0])
+        }
+      }
+      return nails.length === 0; // returns true if no pieces block, else returns false
+    } // end of bishopAttacks
+
+    function rookAttacks(rook, checkSpace) { // returns true/false if rook can checkSpace
+      rookMoves = [];
+      nails = []; // holds all spaces that rook attacks enroute to checkSpace
+      // pushes all spaces between Ys of rook & checkSpace
+      if (rook.x === checkSpace.x) { // rook & checkSpace share column x
+        if (rook.y < checkSpace.y) { // & rook below checkSpace
+          for (let i = rook.y + 1; i < checkSpace.y; i++) { // rook.y++
+            rookMoves.push({ x: checkSpace.x, y: i });
+          }
+        }
+        else { // & rook above checkSpace 
+          for (let i = rook.y - 1; i > checkSpace.y; i--) { // rook.y--
+            rookMoves.push({ x: checkSpace.x, y: i });
+          }
+        }
+      }
+      // pushes all spaces between Xs of rook & checkSpace
+      else if (rook.y === checkSpace.y) { // rook & checkSpace share row y
+        if (rook.x < checkSpace.x) { // & rook left of checkSpace
+          for (let i = rook.x + 1; i < checkSpace.x; i++) { // rook.x++
+            rookMoves.push({ x: i, y: checkSpace.y });
+          }
+        }
+        else { // & rook right of checkSpace
+          for (let i = rook.x - 1; i > checkSpace.x; i--) { // rook.x--
+            rookMoves.push({ x: i, y: checkSpace.y });
+          }
+        }
+      }
+      else { return false; } // rook can't check checkSpace
+      // sees if any piece blocks rook's check
+      for (let i = 0; i < pieces.length; i++) { // for each piece on board 
+        for (let k = 0; k < rookMoves.length; k++) { // & each space rook moves enroute to checkSpace
+          if (pieces[i].x === rookMoves[k].x) {
+            if (pieces[i].y === rookMoves[k].y) {
+              nails.push(pieces[i]);
+            }
+          }
+        }
+      }
+      if (nails.length === 1) {
+        if (nails[0].owner !== rook.owner) {
+          pinnedPieces.push(nails[0])
+        }
+      }
+      return nails.length === 0; // returns true if no pieces block, else returns false
+    } // end of rookAttacks 
+
+    function queenAttacks(queen, checkSpace) { // returns true/false if queen can checkSpace
+      return (bishopAttacks(queen, checkSpace) || rookAttacks(queen, checkSpace));
+    }
+
+    function kingAttacks(king, checkSpace) { // returns true if king can attack checkSpace
+      switch (checkSpace.x) {
+        case king.x - 1:
+          return (checkSpace.y === king.y + 1) || (checkSpace.y === king.y) || (checkSpace.y === king.y - 1);
+        case king.x:
+          return (checkSpace.y === king.y + 1) || (checkSpace.y === king.y - 1);
+        case king.x + 1:
+          return (checkSpace.y === king.y + 1) || (checkSpace.y === king.y) || (checkSpace.y === king.y - 1);
+      }
+    }
+
+    switch (somePiece.piece) { // conditions for each piece to checkSpace
+      case 'pawn': // ADD PAWN JUMP TWO & ENPASSANT
+        // console.log(checkSpace.x);
+        if ([somePiece.x - 1, somePiece.x + 1].includes(checkSpace.x)) { // sees if pawn can checkSpace
+          if (somePiece.owner === 0) return checkSpace.y === (somePiece.y - 1);
+          return checkSpace.y === (somePiece.y + 1);
+        }
+        return false;
+      case 'knight':
+        return knightAttacks(somePiece, checkSpace); // sees if knight can checkSpace
+      case 'bishop':
+        return bishopAttacks(somePiece, checkSpace); // sees if bishop can checkSpace
+      case 'rook':
+        return rookAttacks(somePiece, checkSpace); // sees if rook can checkSpace
+      case 'queen':
+        return queenAttacks(somePiece, checkSpace); // sees if queen can checkSpace
+      case 'king':
+        return kingAttacks(somePiece, checkSpace); // sees if king can checkSpace
+    }
+  } // returns true/false if somePiece checks space
+  //===============================================================================================
+  function checkMate(opposingSide, opposingKing, king, kingSide) { // returns true/false if check mate
+
+    occupiedKingSpaces = []; // contains {x,y} of all pieces surrounding king
+
+    kingSpaces = [
+
+      { x: king.x - 1, y: king.y },
+      { x: king.x - 1, y: king.y + 1 },
+      { x: king.x, y: king.y + 1 },
+      { x: king.x + 1, y: king.y + 1 },
+      { x: king.x + 1, y: king.y },
+      { x: king.x + 1, y: king.y - 1 },
+      { x: king.x, y: king.y - 1 },
+      { x: king.x - 1, y: king.y - 1 }
+
+    ].map(space => { // keeps only on-board kingSpaces
+      if (space.x >= 0 && space.x <= 7) {
+        if (space.y <= 7 && space.y <= 7) { return space; }
+      }
+    }).filter(item => { return item !== undefined; });
+
+    for (let i = 0; i < pieces.length; i++) {
+      for (let k = 0; k < kingSpaces.length; k++) {
+        if (kingSpaces[k].x === pieces[i].x) {
+          if (kingSpaces[k].y === pieces[i].y) {
+            occupiedKingSpaces.push({ x: pieces[i].x, y: pieces[i].y });
+          }
+        }
+      }
+    } // populates occupiedKingSpaces array --> WORKS!
+
+    function exclusion(res1, res2) {
+      return res1.filter(obj => { // obj --> each item in res1
+        return !res2.some(obj2 => { // obj --> each item in res2
+          return obj.x === obj2.x && obj.y === obj2.y
+        }) // returns true if at least one doesn't match x & y
+      });
+    }
+
+    let vacantKingSpaces = exclusion(kingSpaces, occupiedKingSpaces);
+    // console.log(vacantKingSpaces); // WORKS!
+
+    kingOpenSpaces = vacantKingSpaces.map(space => { // for each vacant king space
+      // if every opposing piece fails to check that vacant king space, then return that vacant space   
+      if (opposingSide.every(piece => {
+          return !checkingSpace(piece, space);
+        })) { return space; }
+    }).filter(item => { return item !== undefined; }); // populates kingSpaces free from attack
+
+    // console.log(kingOpenSpaces); // WORKS! --> []
+
+    if (kingOpenSpaces.length > 0) { return false; } // not checkmate
+    //============================================================================================================
+    else { // since king can't move: can king/kingSide EAT checking piece or BLOCK its checking path?
+
+      let defenders = [],
+        pawnDefenders = [];
+
+      for (let i = 0; i < kingSide.length; i++) { // if unpinned, add to defenders
+        // console.log(!pinnedPieces.includes(kingSide[i])); // WORKS!
+        if (kingSide[i].piece === 'pawn') {
+          if (!pinnedPieces.includes(kingSide[i])) {
+            pawnDefenders.push(kingSide[i]);
+          }
+        }
+        else if (!pinnedPieces.includes(kingSide[i])) {
+          defenders.push(kingSide[i]);
+        }
+      }
+      // populates defenders & pawnDefenders with unpinned kingSide pieces --> WORKS!
+
+      function blockCheck() { // RETURNS FALSE IF ANY DEFENDERS BLOCK CHECK
+        for (let k = 0; k < checkedPaths.length; k++) {
+          for (let i = 0; i < pawnDefenders.length; i++) {
+            if (pawnDefenders[i].x === checkedPaths[k].x) { // if Xs align
+              if (pawnDefenders[i].owner === 0) { // if white pawn
+                if (pawnDefenders[i].y === 6) { // if first move
+                  if (pawnDefenders[i].y - 1 === checkedPaths[k].y) { return false; }
+                  if (pawnDefenders[i].y - 2 === checkedPaths[k].y) { return false; }
+                  // pawn can block check, not a mate
+                } // since not first move
+                else if (pawnDefenders[i].y - 1 === checkedPaths[k].y) { return false; }
+                // pawn can block check, not a mate
+              } // since black pawn =====================================
+              else {
+                if (pawnDefenders[i].y === 1) { // if first move
+                  if (pawnDefenders[i].y + 1 === checkedPaths[k].y) { return false; }
+                  if (pawnDefenders[i].y + 2 === checkedPaths[k].y) { return false; }
+                  // pawn can block check, not a mate
+                } // since not first move
+                else if (pawnDefenders[i].x === checkedPaths[k].x) {
+                  if (pawnDefenders[i].y + 1 === checkedPaths[k].y) { return false; }
+                  // pawn can block check, not a mate
+                }
+              }
+            }
+          } // ends pawnDefender for-loop
+          for (let j = 0; j < defenders.length; j++) { // for each defender
+            if (checkingSpace(defenders[j], checkedPaths[k])) { return false; }
+            // defender can block check, not a mate
+          }
+        } // sees if any defenders can block any checkedPaths space
+        return true; // check mate
+      } // RETURNS TRUE/FALSE IF CHECK MATE --> WORKS!
+
+      // 1. EN PASSANT? --> if king's attacker is a pawn, is en passant possible? --> WORKS!
+      if (kingAttackers[0].piece === "pawn") {
+        if (kingAttackers[0].prevY === kingAttackers[0].y + 2) { // white pawn
+          for (let p = 0; p < pawnDefenders.length; p++) {
+            if (kingAttackers[0].y === pawnDefenders[p].y) { // Y aligns
+              if (pawnDefenders[p].x === kingAttackers[0].x - 1) { // left
+                return false; // pawnDefender eats kingAttacker
+              }
+              if (pawnDefenders[p].x === kingAttackers[0].x + 1) { // right
+                return false; // pawnDefender eats kingAttacker
+              }
+            }
+          }
+        }
+        else if (kingAttackers[0].prevY === kingAttackers[0].y - 2) { // black pawn
+          for (let p = 0; p < pawnDefenders.length; p++) {
+            if (kingAttackers[0].y === pawnDefenders[p].y) { // Y aligns
+              if (pawnDefenders[p].x === kingAttackers[0].x + 1) { // left
+                return false; // pawnDefender eats kingAttacker
+              }
+              if (pawnDefenders[p].x === kingAttackers[0].x - 1) { // right
+                return false; // pawnDefender eats kingAttacker
+              }
+            }
+          }
+        }
+      }
+
+      // 2. IS KINGATTACKER COVERED?
+
+      // does opposingKing cover kingAttacker?
+      if (checkingSpace(opposingKing, kingAttackers[0])) { // opposingKing covers attacker
+        return blockCheck();
+      }
+
+      // do any opposingSide pieces cover kingAttacker?
+      if (opposingSide.length > 1) { // if only one, opposingSide[0] is kingAttackers[0]
+        for (let i = 0; i < opposingSide.length; i++) {
+          if (checkingSpace(opposingSide[i], kingAttackers[0])) {
+            return blockCheck();
+          } // opposingSide covers attacker
+        }
+      }
+
+      // 3. SINCE UNCOVERED, IS KINGATTACKER EATABLE?
+
+      // does king EAT its attacker?
+      if (checkingSpace(king, kingAttackers[0])) { return false; } // king EATS, not mate
+
+      // do any defenders Eat king's attacker? --> WORKS!
+      for (let j = 0; j < defenders.length; j++) {
+        if (checkingSpace(defenders[j], kingAttackers[0])) { return false; }
+      } // defender EATS, not mate
+
+      // do any Pawndefenders Eat king's attacker? --> WORKS!
+      for (let k = 0; k < pawnDefenders.length; k++) {
+        if (checkingSpace(pawnDefenders[k], kingAttackers[0])) { return false; }
+      } // PawnDefender EATS, not mate
+
+      // 3. SINCE UNEATABLE, IS KINGATTACKER'S PATH BLOCKABLE?
+      return blockCheck();
+    }
+  } // returns true/false if check mate
+  //===============================================================================================
+  //===============================================================================================
+  if (player === 0) { return checkMate(blacks, blackKing, whiteKing, whites); }
+  else { return checkMate(whites, whiteKing, blackKing, blacks); }
+} // returns true/false if check mate
+
+
+
+// TESTS ==============================================================================
+
+// console.log( isMate( 
+//   [ { piece: 'king', owner: 1, x: 5, y: 3 },
+//   { piece: 'pawn', owner: 0, x: 4, y: 4, prevX: 4, prevY: 6 },
+//   { piece: 'pawn', owner: 0, x: 5, y: 6 },
+//   { piece: 'king', owner: 0, x: 4, y: 7 },
+//   { piece: 'knight', owner: 0, x: 2, y: 5 },
+//   { piece: 'pawn', owner: 1, x: 3, y: 4 },
+//   { piece: 'knight', owner: 1, x: 3, y: 3 },
+//   { piece: 'pawn', owner: 1, x: 4, y: 3 },
+//   { piece: 'bishop', owner: 1, x: 4, y: 2 },
+//   { piece: 'rook', owner: 1, x: 5, y: 2 },
+//   { piece: 'queen', owner: 0, x: 6, y: 5 } ], 1)
+// ); 
+// FALSE --> EN PASSANT --> WORKS!
+
+
+// console.log( isMate(
+//   [ { piece: 'pawn', owner: 0, x: 6, y: 4 },
+//   { piece: 'pawn', owner: 0, x: 5, y: 5 },
+//   { piece: 'pawn', owner: 0, x: 3, y: 6 },
+//   { piece: 'pawn', owner: 0, x: 4, y: 6 },
+//   { piece: 'pawn', owner: 0, x: 7, y: 6 },
+//   { piece: 'king', owner: 0, x: 4, y: 7 },
+//   { piece: 'bishop', owner: 0, x: 5, y: 7 },
+//   { piece: 'knight', owner: 0, x: 6, y: 7 },
+//   { piece: 'rook', owner: 0, x: 7, y: 7 },
+//   { piece: 'queen', owner: 1, x: 7, y: 4, prevX: 3, prevY: 0 },
+//   { piece: 'king', owner: 1, x: 4, y: 0 } ], 0)
+// ); 
+//  FALSE --> KING CAN MOVE! --> WORKS!
+
+
+// console.log( isMate( // DRAW & TEST ALL FAILING CASES!
+//   [ { piece: 'king', owner: 1, x: 4, y: 0 },
+//   { piece: 'pawn', owner: 0, x: 4, y: 6 },
+//   { piece: 'pawn', owner: 0, x: 5, y: 6 },
+//   { piece: 'king', owner: 0, x: 4, y: 7 },
+//   { piece: 'rook', owner: 0, x: 5, y: 7 },
+//   { piece: 'rook', owner: 1, x: 3, y: 7, prevX: 3, prevY: 0 } ], 0)
+// ); 
+// FALSE --> KING CAN EAT! --> WORKS!
