@@ -1,5 +1,5 @@
-// write a function that changes piece data on each move 
-// and rerenders those two spaces
+// write a function that changes piece data on each move
+//  and re-renders those two spaces
 
 /*global Vue*/
 /*global pieces*/
