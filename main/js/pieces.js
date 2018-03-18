@@ -1,5 +1,5 @@
 function insert(arr) {
-  arr.forEach((item) => {
+  arr.forEach(item => {
     const id = item.x + item.y;
     const img = document.createElement("img");
     img.src = item.image;
