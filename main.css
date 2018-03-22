@@ -3,6 +3,20 @@ body {
     /* backdrop-filter: contrast(110%); */
     filter: brightness(115%);
 }
+player1 {
+  display: flex;
+  flex-direction: column;
+}
+clock1 {
+  display: flex;
+}
+player2 {
+  display: flex;
+  flex-direction: column;
+}
+clock2 {
+  display: flex;
+}
 board {
   display: flex;
   flex-direction: row;
@@ -46,7 +60,7 @@ https://github.com/lemokh/Photos/blob/master/siennaSquare.jpg?raw=true
   height: 80px;
 }
 .mainLit {
-  background-color: purple;
+  background-color: #DD84DD;
   background-blend-mode: luminosity;
 }
 .lit {

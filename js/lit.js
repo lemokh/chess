@@ -10,7 +10,7 @@ function lit(activeSide, opponentSide) {
 
         document.getElementById(mainLitDiv).addEventListener('click', function unLit() {
             document.getElementById(mainLitDiv).classList.remove('mainLit');
-            litDivs.forEach(item => {
+            litDivs.forEach(item => { // removes all lit spaces
                 document.getElementById(item).classList.remove('lit');
             });
         });
