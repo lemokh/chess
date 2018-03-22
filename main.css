@@ -1,0 +1,60 @@
+body {
+    background-image: url('images/boardBody.jpg');
+    /* backdrop-filter: contrast(110%); */
+    filter: brightness(115%);
+}
+board {
+  display: flex;
+  flex-direction: row;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+/*   background-color: #865541; */
+  filter: drop-shadow(0px 0px 5000px) invert(2%);
+}
+.column {
+  display: flex;
+  flex-direction: column;
+  filter: grayscale(15%);
+}
+div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 65px;
+  width: 65px;
+  margin: 2px;
+  padding: 8px;
+}
+.black {
+  background-image: url('images/boardDark.jpg');
+  /* background-color: #1A3E51; #F2D5BC; #F5ECE2; */  
+}
+.white {
+  background-image: url('images/boardLight.jpg');
+  /* background-color: #865541; #A07461; #697B6B; #827276; 
+https://github.com/lemokh/Photos/blob/master/siennaSquare.jpg?raw=true
+  */
+}
+.white img {
+  width: 80px;
+  height: 80px;
+}
+.black img {
+  width: 80px;
+  height: 80px;
+}
+.mainLit {
+  background-color: purple;
+  background-blend-mode: luminosity;
+}
+.lit {
+  /* background:
+    linear-gradient(purple 0%, red 90%), 
+    linear-gradient(to right, purple 0%, yellow 90%); */
+  /* background-blend-mode: screen, difference, lighten; */
+  background-color: pink;
+  background-blend-mode: luminosity;
+  
+}
