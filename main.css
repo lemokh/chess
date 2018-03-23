@@ -1,9 +1,9 @@
 body {
   background-image: url('images/boardBody.jpg');
   /*backdrop-filter: contrast(110%);*/
-  /*filter: brightness(115%);*/
-  /*background-color: #F0FFFF;*/
-  /*background-blend-mode: luminosity;*/
+  filter: brightness(115%);
+  background-color: #F0FFFF;
+  background-blend-mode: luminosity;
 }
 
 game {
