@@ -1,28 +1,35 @@
 body {
   background-image: url('images/boardBody.jpg');
-  /* backdrop-filter: contrast(110%); */
-  filter: brightness(115%);
+  /*backdrop-filter: contrast(110%);*/
+  /*filter: brightness(115%);*/
+  /*background-color: #F0FFFF;*/
+  /*background-blend-mode: luminosity;*/
 }
 
 game {
   display: flex;
-  flex-direction: row;
+  flex-flow: row;
+  padding: 50px;
 }
 
 player1 {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  background-color: rgba(205, 92, 92, 0.1);
-  background-blend-mode: luminosity;
+  /*background-color: rgba(219, 112, 147, 0.05);*/
+  background-color: black;
+  /*background-blend-mode: luminosity;*/
+  opacity: .2;
 }
 
 player2 {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  background-color: rgba(205, 92, 92, 0.1);
-  background-blend-mode: luminosity;
+  /*background-color: rgba(219, 112, 147, 0.05);*/
+  /*background-blend-mode: screen;*/
+  background-color: black;
+  opacity: .2;
 }
 
 clock1 {}
@@ -50,12 +57,12 @@ board {
 .column {
   display: flex;
   flex-direction: column;
-  filter: grayscale(15%);
+  /*filter: grayscale(15%);*/
 }
 
-div {
+.cell {
   display: flex;
-  /*justify-content: center;*/
+  justify-content: center;
   align-items: center;
   height: 65px;
   width: 65px;
@@ -65,9 +72,9 @@ div {
 
 .black {
   /*background-image: url('images/boardDark.jpg');*/
-  /* background-color: #1A3E51; #F2D5BC; #F5ECE2; */
+  /*background-color: #1A3E51; #F2D5BC; #F5ECE2; */
   background-color: rgba(32, 178, 170, .25);
-  /*background-blend-mode: luminosity;*/
+  background-blend-mode: luminosity;
 }
 
 .white {
@@ -76,7 +83,7 @@ div {
 https://github.com/lemokh/Photos/blob/master/siennaSquare.jpg?raw=true
   */
   background-color: rgba(100, 149, 237, .25);
-  /*background-blend-mode: luminosity;*/
+  background-blend-mode: luminosity;
 }
 
 .white img {
@@ -93,7 +100,7 @@ https://github.com/lemokh/Photos/blob/master/siennaSquare.jpg?raw=true
 
 .mainLit {
   background-color: rgba(75, 0, 130, .2);
-  background-blend-mode: luminosity;
+  /*background-blend-mode: luminosity;*/
 }
 
 .lit {
@@ -102,6 +109,5 @@ https://github.com/lemokh/Photos/blob/master/siennaSquare.jpg?raw=true
     linear-gradient(to right, purple 0%, yellow 90%); */
   /* background-blend-mode: screen, difference, lighten; */
   background-color: rgba(219, 112, 147, .2);
-  background-blend-mode: luminosity;
-
+  /*background-blend-mode: luminosity;*/
 }
