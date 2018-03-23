@@ -4,33 +4,47 @@ body {
   filter: brightness(115%);
 }
 
-board {
+game {
   display: flex;
   flex-direction: row;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  /*   background-color: #865541; */
-  filter: drop-shadow(0px 0px 5000px) invert(2%);
 }
 
 player1 {
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
+  background-color: rgba(205, 92, 92, 0.1);
+  background-blend-mode: luminosity;
 }
 
 player2 {
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
+  background-color: rgba(205, 92, 92, 0.1);
+  background-blend-mode: luminosity;
 }
 
-clock1 {
-  display: flex;
-}
+clock1 {}
 
-clock2 {
+clock2 {}
+
+takenBox1 {}
+
+takenBox2 {}
+
+board {
   display: flex;
+  flex-grow: 1;
+  flex-direction: row;
+  justify-content: center;
+  /*position: absolute;*/
+  /*top: 50%;
+  */
+  /*left: 50%;*/
+  /*transform: translate(-50%, -50%);*/
+  /*   background-color: #865541; */
+  /*filter: drop-shadow(0px 0px 5000px) invert(2%);*/
 }
 
 .column {
@@ -41,7 +55,7 @@ clock2 {
 
 div {
   display: flex;
-  justify-content: center;
+  /*justify-content: center;*/
   align-items: center;
   height: 65px;
   width: 65px;
@@ -50,29 +64,35 @@ div {
 }
 
 .black {
-  background-image: url('images/boardDark.jpg');
+  /*background-image: url('images/boardDark.jpg');*/
   /* background-color: #1A3E51; #F2D5BC; #F5ECE2; */
+  background-color: rgba(32, 178, 170, .25);
+  /*background-blend-mode: luminosity;*/
 }
 
 .white {
-  background-image: url('images/boardLight.jpg');
+  /*background-image: url('images/boardLight.jpg');*/
   /* background-color: #865541; #A07461; #697B6B; #827276; 
 https://github.com/lemokh/Photos/blob/master/siennaSquare.jpg?raw=true
   */
+  background-color: rgba(100, 149, 237, .25);
+  /*background-blend-mode: luminosity;*/
 }
 
 .white img {
   width: 80px;
   height: 80px;
+  opacity: .85;
 }
 
 .black img {
   width: 80px;
   height: 80px;
+  opacity: .85;
 }
 
 .mainLit {
-  background-color: purple;
+  background-color: rgba(75, 0, 130, .2);
   background-blend-mode: luminosity;
 }
 
@@ -81,7 +101,7 @@ https://github.com/lemokh/Photos/blob/master/siennaSquare.jpg?raw=true
     linear-gradient(purple 0%, red 90%), 
     linear-gradient(to right, purple 0%, yellow 90%); */
   /* background-blend-mode: screen, difference, lighten; */
-  background-color: pink;
+  background-color: rgba(219, 112, 147, .2);
   background-blend-mode: luminosity;
 
 }
