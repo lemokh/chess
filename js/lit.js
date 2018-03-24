@@ -1,49 +1,23 @@
 function lit(activeSide, opponentSide) {
-    // unLitDivs = exclude(board, litDivs);
     litDivs = [];
-    function toggleClocks() {}
 
-    function move() { // moves piece and begins next turn
-        // unLit(); // MIGHT NOT NEED THIS HERE!
-        
-        // console.log(event);
-
-        // move piece
-        // temp = this.id.split();
-        // activeSide.x === temp[0];
-        // activeSide.y === temp[1];
-        
-        // if (activeSide === blues) { lit(oranges, blues); }
-        // else { lit(blues, oranges); }
-        
-        // toggleClocks();
-    }
+    // function toggleClocks() {}
 
     function pawnLit(pawn) { // mainLitDiv is the clicked pawn space
-        litDivs = [];
+        
         mainLitDiv = pawn.x.toString() + pawn.y.toString();
         
-        // highlights violet only the clicked space
+        // highlights clicked space violet
         document.getElementById( mainLitDiv ).classList.add('mainLit');
         
 // PIPE THESE TOGETHER?
 
-        // on click of mainDiv, removes all board highlights
-        document.getElementById( mainLitDiv ).addEventListener('click', function unLit() {
-            
-            console.log(litDivs);
-
-            if (litDivs.length > 0) { // un-highlights mainDiv & all lit spaces
-                document.getElementById( mainLitDiv ).classList.remove('mainLit');
-
-                litDivs.forEach(item => {
-                    document.getElementById(item).classList.remove('lit');
-                });
-
-                litDivs = [];
-            }
-            else { pawnLit(pawn); } // re-light mainDiv
-        });
+        // on click of any other activeSide space, removes all board highlights
+        // document.getElementById( mainLitDiv ).addEventListener('click', function unLit() {
+            // if (litDivs.length > 0) {} // un-highlights all spaces
+            // else { pawnLit(pawn); } // re-light mainDiv
+            // INSTEAD ONLY RE-RUN THE INTERNALS NEEDED TO RE-LIGHT MAINDIV 
+        // });
 
         if (activeSide === blues) {
             opponentSide.forEach(item => { // highlights any spaces that can pawn attack
@@ -75,7 +49,7 @@ function lit(activeSide, opponentSide) {
                     }
                 }
             }
-        }
+        } 
         else { // since activeSide === oranges...
             opponentSide.forEach(item => { // highlights any spaces that pawn can attack
                 if (item.y === pawn.y + 1) {
@@ -106,9 +80,36 @@ function lit(activeSide, opponentSide) {
                 }
             }
         }
-        // litDivs.forEach(item => { // if any litDiv is clicked, move piece there 
-        //     document.getElementById(item).addEventListener( 'click', move(event) );
-        // });
+//========================================================================================
+        activeCells = activeSide.map(item => {
+            return item.x.toString() + item.y.toString();
+        });
+        function exclude(arr1, arr2) {
+            return arr1.filter(cell => {
+                return !arr2.some(piece => {
+                    return cell === piece;
+                });
+            });
+        }
+        unLitDivs = exclude(activeCells, litDivs);
+//========================================================================================        
+        litDivs.forEach(item => { // if any litDiv is clicked, move piece there 
+            document.getElementById(item).addEventListener( 'click', function move(e) { // moves piece and begins next turn
+                // unLit(); // MIGHT NOT NEED THIS HERE!
+                
+                console.log(e.target.id);
+        
+                // move piece
+                // temp = this.id.split();
+                // activeSide.x === temp[0];
+                // activeSide.y === temp[1];
+                
+                // if (activeSide === blues) { lit(oranges, blues); }
+                // else { lit(blues, oranges); }
+                
+                // toggleClocks();
+            } );
+        });
     } 
     // activeSide.forEach(item => { // if this pawn moves there
     //   if (item.name === 'pawn') {
@@ -515,11 +516,6 @@ function lit(activeSide, opponentSide) {
 
         // }
     }
-    // litDivs.forEach(item => {
-    //     console.log(item);
-    // });
-
-
 
     // document.getElementsByClassName('lit').addEventListener('click', function move() {    
     // UPDATE x && y of original clicked piece to be the second clicked x & y

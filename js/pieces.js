@@ -1,4 +1,4 @@
-var litDivs, mainLitDiv, unLitDivs, moves, enPassant, activeSideLessKingSpaces, kingSpacesUnderAttack, orangeKingSpacesUnderAttack, orangelessKingSpaces, orangelessKingSpaces, blueKingSpaces, bluelessKingSpaces, orangeKingSpacesUnderAttack, block1, block2, block3, block4, block5, block6, block7, block8, vacantKingSpaces, whiteKing, blackKing, knightMoves, bishopMoves, bishopX, bishopY, rookMoves, kingSpaces, kingOpenSpaces, occupiedKingSpaces, kingAttackers, defenders, pinnedPieces, checkedPaths, nails, whites, blacks;
+var mainLitDiv, litDivs, unLitDivs, moves, enPassant, activeCells, activeSideLessKingSpaces, kingSpacesUnderAttack, orangeKingSpacesUnderAttack, orangelessKingSpaces, orangelessKingSpaces, blueKingSpaces, bluelessKingSpaces, orangeKingSpacesUnderAttack, block1, block2, block3, block4, block5, block6, block7, block8, vacantKingSpaces, whiteKing, blackKing, knightMoves, bishopMoves, bishopX, bishopY, rookMoves, kingSpaces, kingOpenSpaces, occupiedKingSpaces, kingAttackers, defenders, pinnedPieces, checkedPaths, nails, whites, blacks;
 
 const board = [
     '00', '01', '02', '03', '04', '05', '06', '07',
@@ -10,6 +10,7 @@ const board = [
     '60', '61', '62', '63', '64', '65', '66', '67',
     '70', '71', '72', '73', '74', '75', '76', '77'
 ];
+
 
 function openSpaces(arr1, arr2) {
 	return arr1.filter(cell => {
@@ -73,10 +74,11 @@ let pieces = [...oranges, ...blues];
 let emptySpaces = openSpaces(board, pieces);
 
 pieces.forEach(item => {
-    const id = item.x.toString() + item.y.toString();
+    const xy = item.x.toString() + item.y.toString();
     const img = document.createElement("img");
     img.src = item.image;
-    document.getElementById(id).appendChild(img);
+    img.id = xy;
+    document.getElementById(xy).appendChild(img);
 });
 
 
