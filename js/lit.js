@@ -5,15 +5,15 @@ function lit(activeSide, opponentSide) {
 
     function pawnLit(pawn) {
         litDivs = [];
-        mainLitDiv = pawn.x.toString() + pawn.y.toString(); // clicked pawn space
+        mainLitDiv = pawn.x.toString() + pawn.y.toString(); // clicked pawn
         tempId.push( mainLitDiv );
 
-        // highlights clicked space
+        // highlights clicked pawn
         document.getElementById( mainLitDiv ).classList.add('mainLit');
 
         // highlights all possible moves for clicked piece
         if (activeSide === blues) {
-            opponentSide.forEach(item => { // highlights any spaces that can pawn attack
+            opponentSide.forEach(item => { // highlights anywhere pawn can attack
                 if (item.y === pawn.y - 1) {
                     if (item.x === pawn.x + 1) {
                         document.getElementById( mainLitDiv ).classList.add('lit');
@@ -26,14 +26,14 @@ function lit(activeSide, opponentSide) {
                 }
             });
 
-            // if empty space one ahead of pawn, highlight it
+            // if empty space one ahead of pawn, highlights it
             if (emptySpaces.includes(pawn.x.toString() + (pawn.y - 1).toString())) {    
                 document.getElementById(
                     pawn.x.toString() + (pawn.y - 1).toString()
                 ).classList.add('lit');
                 litDivs.push(pawn.x.toString() + (pawn.y - 1).toString());
 
-                if (pawn.y === 6) { // if empty space two ahead of pawn, highlight it
+                if (pawn.y === 6) { // if empty space two ahead of pawn, highlights it
                     if (emptySpaces.includes(pawn.x.toString() + (pawn.y - 2).toString())) {
                         document.getElementById(
                             pawn.x.toString() + (pawn.y - 2).toString()
@@ -83,6 +83,10 @@ function lit(activeSide, opponentSide) {
                 activeSide.x = +tempXY[0];
                 activeSide.y = parseInt(tempXY[1]);
 
+    // UPDATE x && y of original clicked piece to equal the second clicked x & y
+    // board.classList.remove() and board.removeEventListener() ??
+    // if piece eaten, remove that piece from pieces array & push to proper doneBox div
+
                 // if (activeSide === blues) { 
                     // toggleClocks();
                     // lit(oranges, blues); 
@@ -108,24 +112,24 @@ function lit(activeSide, opponentSide) {
     // activeCells = activeSide.map(item => {
     //     return item.x.toString() + item.y.toString();
     // });
-    // function exclude(arr1, arr2) {
+    // function excludes(arr1, arr2) {
     //     return arr1.filter(cell => {
     //         return !arr2.some(piece => {
     //             return cell === piece;
     //         });
     //     });
     // }
-    // unLitDivs = exclude(activeCells, litDivs);
+    // unLitDivs = excludes(activeCells, litDivs);
     
     function knightLit(knight) {
         litDivs = [];
-        mainLitDiv = knight.x.toString() + knight.y.toString(); // clicked pawn space
+        mainLitDiv = knight.x.toString() + knight.y.toString(); // clicked knight space
         tempId.push( mainLitDiv );
 
-        // highlights clicked space
+        // highlights clicked knight
         document.getElementById( mainLitDiv ).classList.add('mainLit');
         
-         // if any own pieces occupy knight space, no highlight
+         // if own pieces occupy knight space, no highlight there
         for (let i = 0; i < activeSide.length; i++) {
             if (activeSide[i].x === knight.x + 1) {
                 if (activeSide[i].y === knight.y + 2) { block1 = true; break; }
@@ -230,10 +234,12 @@ function lit(activeSide, opponentSide) {
     }
 
     function bishopLit(bishop) {
-        document.getElementById(
-            bishop.x.toString() + bishop.y.toString()
-        ).classList.add('mainLit');
-        mainLitDiv = bishop.x.toString() + bishop.y.toString();
+        litDivs = [];
+        mainLitDiv = bishop.x.toString() + bishop.y.toString(); // clicked bishop space
+        tempId.push( mainLitDiv );
+
+        // highlights clicked space
+        document.getElementById( mainLitDiv ).classList.add('mainLit');
 
         function one(bishop) {
             bishopX = bishop.x + 1;
@@ -341,10 +347,12 @@ function lit(activeSide, opponentSide) {
     }
 
     function rookLit(rook) { // MAKE SO CANNOT LIGHT OWN PIECE
-        document.getElementById(
-            rook.x.toString() + rook.y.toString()
-        ).classList.add('mainLit');
-        mainLitDiv = rook.x.toString() + rook.y.toString();
+        litDivs = [];
+        mainLitDiv = rook.x.toString() + rook.y.toString(); // clicked rook
+        tempId.push( mainLitDiv );
+
+        // highlights clicked rook
+        document.getElementById( mainLitDiv ).classList.add('mainLit');
 
         function first(rook) {
             rookX = rook.x - 1;
@@ -433,11 +441,12 @@ function lit(activeSide, opponentSide) {
     }
 
     function kingLit(king) {
-        document.getElementById(
-            king.x.toString() + king.y.toString()
-        ).classList.add('mainLit');
-        
-        mainLitDiv = king.x.toString() + king.y.toString();
+        litDivs = [];
+        mainLitDiv = king.x.toString() + king.y.toString(); // clicked king
+        tempId.push( mainLitDiv );
+
+        // highlights clicked king
+        document.getElementById( mainLitDiv ).classList.add('mainLit');
 
         function exclude(res1, res2) {
             return res1.filter(obj => { // obj --> each item in res1
@@ -521,12 +530,6 @@ function lit(activeSide, opponentSide) {
 
         // }
     }
-
-    // document.getElementsByClassName('lit').addEventListener('click', function move() {    
-    // UPDATE x && y of original clicked piece to be the second clicked x & y
-    // board.classList.remove() and board.removeEventListener()
-    // if piece eaten, remove that piece from pieces array & push to proper DONE box
-    // });
 }
 lit(oranges, blues);
-// lit(blues, oranges);
+lit(blues, oranges);
