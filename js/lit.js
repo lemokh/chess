@@ -1,19 +1,37 @@
 function lit(activeSide, opponentSide) {
     litDivs = [];
+    // unLitDivs = exclude(board, litDivs);
+    
+    function unLit() { // un-highlights mainDiv & all lit spaces
+        document.getElementById( mainLitDiv ).classList.remove('mainLit');
+        litDivs.forEach(item => {
+            document.getElementById(item).classList.remove('lit');
+        });
+    }
+
+    function toggleClocks() {
+
+    }
+
+    function move() { // moves piece and begins next turn
+        unLit();
+        // move piece
+        // 
+        if (activeSide === blues) { lit(oranges, blues); }
+        else { lit(blues, oranges); }
+        toggleClocks();
+    }
 
     function pawnLit(pawn) {
-        document.getElementById( // highlights clicked space
-            pawn.x.toString() + pawn.y.toString()
-        ).classList.add('mainLit');
-
-        mainLitDiv = pawn.x.toString() + pawn.y.toString();        
-
-        document.getElementById(mainLitDiv).addEventListener('click', function unLit() {
-            document.getElementById(mainLitDiv).classList.remove('mainLit');
-            litDivs.forEach(item => { // removes all lit spaces
-                document.getElementById(item).classList.remove('lit');
-            });
-        });
+        mainLitDiv = pawn.x.toString() + pawn.y.toString();
+        
+        // highlights only the clicked space
+        document.getElementById( mainLitDiv ).classList.add('mainLit');
+        
+        // on click of mainDiv, removes all board highlights
+        document.getElementById( mainLitDiv ).addEventListener('click', unLit());
+        
+        document.getElementsByClassName('lit').addEventListener('click', move());
 
         if (activeSide === blues) {
             opponentSide.forEach(item => { // highlights any spaces that can pawn attack
@@ -33,7 +51,7 @@ function lit(activeSide, opponentSide) {
                 }
             });
 
-            if (emptySpaces.includes( pawn.x.toString() + (pawn.y - 1).toString() )) { 
+            if (emptySpaces.includes(pawn.x.toString() + (pawn.y - 1).toString())) {
                 // if empty space
                 document.getElementById(
                     pawn.x.toString() + (pawn.y - 1).toString()
@@ -41,7 +59,7 @@ function lit(activeSide, opponentSide) {
                 litDivs.push(pawn.x.toString() + (pawn.y - 1).toString());
 
                 if (pawn.y === 6) {
-                    if (emptySpaces.includes( pawn.x.toString() + (pawn.y - 2).toString() )) {
+                    if (emptySpaces.includes(pawn.x.toString() + (pawn.y - 2).toString())) {
                         document.getElementById(
                             pawn.x.toString() + (pawn.y - 2).toString()
                         ).classList.add('lit');
@@ -50,10 +68,10 @@ function lit(activeSide, opponentSide) {
                 }
             }
         }
-        else {
+        else { // since activeSide === oranges...
             opponentSide.forEach(item => { // highlights any spaces that pawn can attack
                 if (item.y === pawn.y + 1) {
-                    if (item.x === pawn.x + 1) { 
+                    if (item.x === pawn.x + 1) {
                         document.getElementById(
                             item.x.toString() + item.y.toString()
                         ).classList.add('lit');
@@ -68,14 +86,14 @@ function lit(activeSide, opponentSide) {
                 }
             });
 
-            if (emptySpaces.includes( pawn.x.toString() + (pawn.y + 1).toString() )) {
+            if (emptySpaces.includes(pawn.x.toString() + (pawn.y + 1).toString())) {
                 document.getElementById(
                     pawn.x.toString() + (pawn.y + 1).toString()
                 ).classList.add('lit');
                 litDivs.push(pawn.x.toString() + (pawn.y + 1).toString());
-                
+
                 if (pawn.y === 1) {
-                    if (emptySpaces.includes( pawn.x.toString() + (pawn.y + 2).toString() )) {
+                    if (emptySpaces.includes(pawn.x.toString() + (pawn.y + 2).toString())) {
                         document.getElementById(
                             pawn.x.toString() + (pawn.y + 2).toString()
                         ).classList.add('lit');
@@ -95,11 +113,10 @@ function lit(activeSide, opponentSide) {
     // });
 
     function knightLit(knight) {
-        document.getElementById(
-            knight.x.toString() + knight.y.toString()
-        ).classList.add('mainLit');
         mainLitDiv = knight.x.toString() + knight.y.toString();
-        
+
+        document.getElementById(mainLitDiv).classList.add('mainLit');
+
         for (let i = 0; i < activeSide.length; i++) { // any own pieces occupy knight space?
             if (activeSide[i].x === knight.x + 1) {
                 if (activeSide[i].y === knight.y + 2) { block1 = true; break; }
@@ -107,16 +124,16 @@ function lit(activeSide, opponentSide) {
 
             }
             if (activeSide[i].x === knight.x - 1) {
-                if (activeSide[i].y === knight.y + 2) { block3 = true; break; } 
+                if (activeSide[i].y === knight.y + 2) { block3 = true; break; }
                 if (activeSide[i].y === knight.y - 2) { block4 = true; break; }
             }
             if (activeSide[i].x === knight.x + 2) {
-                if (activeSide[i].y === knight.y + 1) { block5 = true; break; } 
+                if (activeSide[i].y === knight.y + 1) { block5 = true; break; }
                 if (activeSide[i].y === knight.y - 1) { block6 = true; break; }
-                
+
             }
             if (activeSide[i].x === knight.x - 2) {
-                if (activeSide[i].y === knight.y + 1) { block7 = true; break; } 
+                if (activeSide[i].y === knight.y + 1) { block7 = true; break; }
                 if (activeSide[i].y === knight.y - 1) { block8 = true; break; }
             }
         }
@@ -208,12 +225,12 @@ function lit(activeSide, opponentSide) {
             bishop.x.toString() + bishop.y.toString()
         ).classList.add('mainLit');
         mainLitDiv = bishop.x.toString() + bishop.y.toString();
-        
+
         function one(bishop) {
             bishopX = bishop.x + 1;
             bishopY = bishop.y + 1;
-    
-            while (emptySpaces.includes( bishopX.toString() + bishopY.toString() )) { // while bishop's path is an empty space
+
+            while (emptySpaces.includes(bishopX.toString() + bishopY.toString())) { // while bishop's path is an empty space
                 document.getElementById(
                     bishopX.toString() + bishopY.toString()
                 ).classList.add('lit');
@@ -222,7 +239,7 @@ function lit(activeSide, opponentSide) {
                 bishopX += 1;
                 bishopY += 1;
             }
-            for (let i = 0; i < activeSide.length; i++) { 
+            for (let i = 0; i < activeSide.length; i++) {
                 if (opponentSide[i].x === bishopX) {
                     if (opponentSide[i].y === bishopY) {
                         document.getElementById(
@@ -233,16 +250,17 @@ function lit(activeSide, opponentSide) {
                 }
             }
         }
+
         function two(bishop) {
             bishopX = bishop.x + 1;
             bishopY = bishop.y - 1;
-    
-            while (emptySpaces.includes( bishopX.toString() + bishopY.toString() )) {
+
+            while (emptySpaces.includes(bishopX.toString() + bishopY.toString())) {
                 document.getElementById(
                     bishopX.toString() + bishopY.toString()
                 ).classList.add('lit');
                 litDivs.push(bishopX.toString() + bishopY.toString());
-                
+
                 bishopX += 1;
                 bishopY -= 1;
             }
@@ -257,16 +275,17 @@ function lit(activeSide, opponentSide) {
                 }
             }
         }
+
         function three(bishop) {
             bishopX = bishop.x - 1;
             bishopY = bishop.y + 1;
-    
-            while (emptySpaces.includes( bishopX.toString() + bishopY.toString() )) {
+
+            while (emptySpaces.includes(bishopX.toString() + bishopY.toString())) {
                 document.getElementById(
                     bishopX.toString() + bishopY.toString()
                 ).classList.add('lit');
                 litDivs.push(bishopX.toString() + bishopY.toString());
-                
+
                 bishopX -= 1;
                 bishopY += 1;
             }
@@ -281,16 +300,17 @@ function lit(activeSide, opponentSide) {
                 }
             }
         }
+
         function four(bishop) {
             bishopX = bishop.x - 1;
             bishopY = bishop.y - 1;
-    
-            while (emptySpaces.includes( bishopX.toString() + bishopY.toString() )) {
+
+            while (emptySpaces.includes(bishopX.toString() + bishopY.toString())) {
                 document.getElementById(
                     bishopX.toString() + bishopY.toString()
                 ).classList.add('lit');
                 litDivs.push(bishopX.toString() + bishopY.toString());
-                
+
                 bishopX -= 1;
                 bishopY -= 1;
             }
@@ -305,7 +325,10 @@ function lit(activeSide, opponentSide) {
                 }
             }
         }
-        one(bishop); two(bishop); three(bishop); four(bishop);
+        one(bishop);
+        two(bishop);
+        three(bishop);
+        four(bishop);
     }
 
     function rookLit(rook) { // MAKE SO CANNOT LIGHT OWN PIECE
@@ -316,26 +339,27 @@ function lit(activeSide, opponentSide) {
 
         function first(rook) {
             rookX = rook.x - 1;
-    
-            while(emptySpaces.includes( rookX.toString() + rook.y.toString() )) {
+
+            while (emptySpaces.includes(rookX.toString() + rook.y.toString())) {
                 document.getElementById(
                     rookX.toString() + rook.y.toString()
                 ).classList.add('lit');
                 litDivs.push(rookX.toString() + rook.y.toString());
-                
+
                 rookX -= 1;
             }
-            if (opponentSide.includes( rookX.toString() + rook.y.toString() )) { 
+            if (opponentSide.includes(rookX.toString() + rook.y.toString())) {
                 document.getElementById(
                     rookX.toString() + rook.y.toString()
                 ).classList.add('lit');
                 litDivs.push(rookX.toString() + rook.y.toString());
             }
         }
+
         function second(rook) {
             rookX = rook.x + 1;
-    
-            while(emptySpaces.includes( rookX.toString() + rook.y.toString() )) {
+
+            while (emptySpaces.includes(rookX.toString() + rook.y.toString())) {
                 document.getElementById(
                     rookX.toString() + rook.y.toString()
                 ).classList.add('lit');
@@ -343,17 +367,18 @@ function lit(activeSide, opponentSide) {
 
                 rookX += 1;
             }
-            if (opponentSide.includes( rookX.toString() + rook.y.toString() )) {
+            if (opponentSide.includes(rookX.toString() + rook.y.toString())) {
                 document.getElementById(
                     rookX.toString() + rook.y.toString()
                 ).classList.add('lit');
                 litDivs.push(rookX.toString() + rook.y.toString());
             }
         }
+
         function third(rook) {
             rookY = rook.y - 1;
-    
-            while(emptySpaces.includes( rook.x.toString() + rookY.toString() )) {
+
+            while (emptySpaces.includes(rook.x.toString() + rookY.toString())) {
                 document.getElementById(
                     rook.x.toString() + rookY.toString()
                 ).classList.add('lit');
@@ -361,17 +386,18 @@ function lit(activeSide, opponentSide) {
 
                 rookY -= 1;
             }
-            if (opponentSide.includes( rook.x.toString() + rookY.toString() )) {
+            if (opponentSide.includes(rook.x.toString() + rookY.toString())) {
                 document.getElementById(
                     rook.x.toString() + rookY.toString()
                 ).classList.add('lit');
                 litDivs.push(rook.x.toString() + rookY.toString());
             }
         }
+
         function fourth(rook) {
             rookY = rook.y + 1;
-    
-            while(emptySpaces.includes( rook.x.toString() + rookY.toString() )) {
+
+            while (emptySpaces.includes(rook.x.toString() + rookY.toString())) {
                 document.getElementById(
                     rook.x.toString() + rookY.toString()
                 ).classList.add('lit');
@@ -379,17 +405,23 @@ function lit(activeSide, opponentSide) {
 
                 rookY += 1;
             }
-            if (opponentSide.includes( rook.x.toString() + rookY.toString() )) {
+            if (opponentSide.includes(rook.x.toString() + rookY.toString())) {
                 document.getElementById(
                     rook.x.toString() + rookY.toString()
                 ).classList.add('lit');
                 litDivs.push(rook.x.toString() + rookY.toString());
             }
         }
-        first(rook); second(rook); third(rook); fourth(rook);
+        first(rook);
+        second(rook);
+        third(rook);
+        fourth(rook);
     }
 
-    function queenLit(queen) { bishopLit(queen); rookLit(queen); }
+    function queenLit(queen) {
+        bishopLit(queen);
+        rookLit(queen);
+    }
 
     function kingLit(king) {
         document.getElementById(
@@ -399,27 +431,27 @@ function lit(activeSide, opponentSide) {
 
         function exclude(res1, res2) {
             return res1.filter(obj => { // obj --> each item in res1
-              return !res2.some(obj2 => { // obj --> each item in res2
-                return obj.x === obj2.x && obj.y === obj2.y
-              }) // returns true if at least one doesn't match x & y
+                return !res2.some(obj2 => { // obj --> each item in res2
+                    return obj.x === obj2.x && obj.y === obj2.y
+                }) // returns true if at least one doesn't match x & y
             });
         }
 
         kingSpaces = [
-            {x: king.x - 1, y: king.y},
-            {x: king.x - 1, y: king.y + 1},
-            {x: king.x, y: king.y + 1},
-            {x: king.x + 1, y: king.y + 1},
-            {x: king.x + 1, y: king.y},
-            {x: king.x + 1, y: king.y - 1},
-            {x: king.x, y: king.y - 1},
-            {x: king.x - 1, y: king.y - 1}
+            { x: king.x - 1, y: king.y },
+            { x: king.x - 1, y: king.y + 1 },
+            { x: king.x, y: king.y + 1 },
+            { x: king.x + 1, y: king.y + 1 },
+            { x: king.x + 1, y: king.y },
+            { x: king.x + 1, y: king.y - 1 },
+            { x: king.x, y: king.y - 1 },
+            { x: king.x - 1, y: king.y - 1 }
         ].map(space => { // keeps only on-board kingSpaces
             if (space.x >= 0 && space.x <= 7) {
                 if (space.y <= 7 && space.y <= 7) { return space; }
             }
         }).filter(item => { return item !== undefined; });
-        
+
         kingSpacesUnderAttack = [];
         activeSideLessKingSpaces = exclude(kingSpaces, activeSide); // open and own-side-held kingSpaces
 
@@ -433,7 +465,7 @@ function lit(activeSide, opponentSide) {
 
         kingSpaces = exclude(activeSideLessKingSpaces, kingSpacesUnderAttack);
 
-        kingSpaces.forEach(item => { 
+        kingSpaces.forEach(item => {
             document.getElementById(
                 item.x.toString() + item.y.toString()
             ).classList.add('lit');
@@ -446,19 +478,31 @@ function lit(activeSide, opponentSide) {
             activeSide[i].x.toString() + activeSide[i].y.toString()
         ).addEventListener('click', function highlight() {
             switch (activeSide[i].name) {
-                case 'pawn': pawnLit(activeSide[i]); break;
-                case 'knight': knightLit(activeSide[i]); break;
-                case 'bishop': bishopLit(activeSide[i]); break;
-                case 'rook': rookLit(activeSide[i]); break;
-                case 'queen': queenLit(activeSide[i]); break;
-                case 'king': kingLit(activeSide[i]); break;
+                case 'pawn':
+                    pawnLit(activeSide[i]);
+                    break;
+                case 'knight':
+                    knightLit(activeSide[i]);
+                    break;
+                case 'bishop':
+                    bishopLit(activeSide[i]);
+                    break;
+                case 'rook':
+                    rookLit(activeSide[i]);
+                    break;
+                case 'queen':
+                    queenLit(activeSide[i]);
+                    break;
+                case 'king':
+                    kingLit(activeSide[i]);
+                    break;
             }
         });
         // document.getElementById(this.id).classList.contains('lit')) {
-                // function move();
-                // UPDATE x && y of original clicked piece to be the second clicked x & y
-                // board.classList.remove() and board.removeEventListener()
-                // if piece eaten, remove that piece from pieces array & push to proper DONE box
+        // function move();
+        // UPDATE x && y of original clicked piece to be the second clicked x & y
+        // board.classList.remove() and board.removeEventListener()
+        // if piece eaten, remove that piece from pieces array & push to proper DONE box
 
         // }
     }
@@ -469,10 +513,10 @@ function lit(activeSide, opponentSide) {
 
 
     // document.getElementsByClassName('lit').addEventListener('click', function move() {    
-        // UPDATE x && y of original clicked piece to be the second clicked x & y
-        // board.classList.remove() and board.removeEventListener()
-        // if piece eaten, remove that piece from pieces array & push to proper DONE box
+    // UPDATE x && y of original clicked piece to be the second clicked x & y
+    // board.classList.remove() and board.removeEventListener()
+    // if piece eaten, remove that piece from pieces array & push to proper DONE box
     // });
 }
 lit(oranges, blues);
-
+lit(blues, oranges);

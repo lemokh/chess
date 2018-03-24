@@ -1,38 +1,67 @@
 body {
-    background-image: url('images/boardBody.jpg');
-    /* backdrop-filter: contrast(110%); */
-    filter: brightness(115%);
+  background-image: url('images/boardBody.jpg');
+  /*backdrop-filter: contrast(110%);*/
+  filter: brightness(115%);
+  background-color: #F0FFFF;
+  background-blend-mode: luminosity;
 }
+
+game {
+  display: flex;
+  flex-flow: row;
+  padding: 50px;
+}
+
 player1 {
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
+  /*background-color: rgba(219, 112, 147, 0.05);*/
+  background-color: black;
+  /*background-blend-mode: luminosity;*/
+  opacity: .2;
 }
-clock1 {
-  display: flex;
-}
+
 player2 {
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
+  /*background-color: rgba(219, 112, 147, 0.05);*/
+  /*background-blend-mode: screen;*/
+  background-color: black;
+  opacity: .2;
 }
-clock2 {
-  display: flex;
-}
+
+clock1 {}
+
+clock2 {}
+
+takenBox1 {}
+
+takenBox2 {}
+
 board {
   display: flex;
+  flex-grow: 1;
   flex-direction: row;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-/*   background-color: #865541; */
-  filter: drop-shadow(0px 0px 5000px) invert(2%);
+  justify-content: center;
+
+  /*position: absolute;*/
+  /*top: 50%;
+  */
+  /*left: 50%;*/
+  /*transform: translate(-50%, -50%);*/
+  /*   background-color: #865541; */
+  /*filter: drop-shadow(0px 0px 5000px) invert(2%);*/
 }
+
 .column {
   display: flex;
   flex-direction: column;
-  filter: grayscale(15%);
+  /*filter: grayscale(15%);*/
 }
-div {
+
+.cell {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -41,34 +70,46 @@ div {
   margin: 2px;
   padding: 8px;
 }
+
 .black {
-  background-image: url('images/boardDark.jpg');
-  /* background-color: #1A3E51; #F2D5BC; #F5ECE2; */  
+  /*background-image: url('images/boardDark.jpg');*/
+  /*background-color: #1A3E51; #F2D5BC; #F5ECE2; */
+  background-color: rgba(32, 178, 170, .25);
+  background-blend-mode: luminosity;
 }
+
 .white {
-  background-image: url('images/boardLight.jpg');
+  /*background-image: url('images/boardLight.jpg');*/
   /* background-color: #865541; #A07461; #697B6B; #827276; 
 https://github.com/lemokh/Photos/blob/master/siennaSquare.jpg?raw=true
   */
+  background-color: rgba(100, 149, 237, .25);
+  background-blend-mode: luminosity;
 }
+
 .white img {
   width: 80px;
   height: 80px;
+  opacity: .85;
 }
+
 .black img {
   width: 80px;
   height: 80px;
+  opacity: .85;
 }
+
 .mainLit {
-  background-color: #DD84DD;
-  background-blend-mode: luminosity;
+  background-color: rgba(199, 21, 133, .2);
+  /*deep red --> use for check --> 220,20,60*/
+  /*background-blend-mode: luminosity;*/
 }
+
 .lit {
   /* background:
     linear-gradient(purple 0%, red 90%), 
     linear-gradient(to right, purple 0%, yellow 90%); */
   /* background-blend-mode: screen, difference, lighten; */
-  background-color: pink;
-  background-blend-mode: luminosity;
-  
+  background-color: rgba(219, 112, 147, .2);
+  /*background-blend-mode: luminosity;*/
 }
