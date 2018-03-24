@@ -1,4 +1,4 @@
-var mainLitDiv, litDivs, unLitDivs, tempId, tempXY, moves, enPassant, activeCells, activeSideLessKingSpaces, kingSpacesUnderAttack, orangeKingSpacesUnderAttack, orangelessKingSpaces, orangelessKingSpaces, blueKingSpaces, bluelessKingSpaces, orangeKingSpacesUnderAttack, block1, block2, block3, block4, block5, block6, block7, block8, vacantKingSpaces, whiteKing, blackKing, knightMoves, bishopMoves, bishopX, bishopY, rookMoves, kingSpaces, kingOpenSpaces, occupiedKingSpaces, kingAttackers, defenders, pinnedPieces, checkedPaths, nails, whites, blacks;
+var mainLitDiv, litDivs, unLitDivs, img, index, tempId, tempXY, moves, enPassant, activeCells, activeSideLessKingSpaces, kingSpacesUnderAttack, orangeKingSpacesUnderAttack, orangelessKingSpaces, orangelessKingSpaces, blueKingSpaces, bluelessKingSpaces, orangeKingSpacesUnderAttack, block1, block2, block3, block4, block5, block6, block7, block8, vacantKingSpaces, whiteKing, blackKing, knightMoves, bishopMoves, bishopX, bishopY, rookMoves, kingSpaces, kingOpenSpaces, occupiedKingSpaces, kingAttackers, defenders, pinnedPieces, checkedPaths, nails, whites, blacks;
 
 const board = [
     '00', '01', '02', '03', '04', '05', '06', '07',
@@ -23,13 +23,13 @@ function openSpaces(arr1, arr2) {
 
 let oranges = [
 { name: 'pawn', x: 0, y: 1, image: './images/orangePawn.png' },
-{ name: 'pawn', x: 1, y: 1, image: './images/orangePawn.png' },
+{ name: 'pawn', x: 1, y: 3, image: './images/orangePawn.png' },
 { name: 'pawn', x: 2, y: 1, image: './images/orangePawn.png' },
 { name: 'pawn', x: 3, y: 1, image: './images/orangePawn.png' },
 { name: 'pawn', x: 4, y: 1, image: './images/orangePawn.png' },
 { name: 'pawn', x: 5, y: 1, image: './images/orangePawn.png' },
 { name: 'pawn', x: 6, y: 1, image: './images/orangePawn.png' },
-{ name: 'pawn', x: 7, y: 1, image: './images/orangePawn.png' },
+{ name: 'pawn', x: 7, y: 4, image: './images/orangePawn.png' },
 
 { name: 'knight', x: 6, y: 4, image: './images/orangeKnight.png' },
 { name: 'knight', x: 6, y: 0, image: './images/orangeKnight.png' },
@@ -52,8 +52,8 @@ let blues = [
 { name: 'pawn', x: 3, y: 6, image: './images/bluePawn.png' },
 { name: 'pawn', x: 4, y: 6, image: './images/bluePawn.png' },
 { name: 'pawn', x: 5, y: 6, image: './images/bluePawn.png' },
-{ name: 'pawn', x: 6, y: 6, image: './images/bluePawn.png' },
-{ name: 'pawn', x: 7, y: 6, image: './images/bluePawn.png' },
+{ name: 'pawn', x: 6, y: 5, image: './images/bluePawn.png' },
+{ name: 'pawn', x: 7, y: 5, image: './images/bluePawn.png' },
 
 { name: 'knight', x: 1, y: 7, image: './images/blueKnight.png' },
 { name: 'knight', x: 6, y: 7, image: './images/blueKnight.png' },
@@ -74,11 +74,10 @@ let pieces = [...oranges, ...blues];
 let emptySpaces = openSpaces(board, pieces);
 
 pieces.forEach(item => {
-    const xy = item.x.toString() + item.y.toString();
-    const img = document.createElement("img");
+    img = document.createElement("img");
     img.src = item.image;
-    img.id = xy;
-    document.getElementById(xy).appendChild(img);
+    img.id = item.x.toString() + item.y.toString();;
+    document.getElementById(img.id).appendChild(img);
 });
 
 

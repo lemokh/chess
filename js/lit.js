@@ -16,12 +16,16 @@ function lit(activeSide, opponentSide) {
             opponentSide.forEach(item => { // highlights anywhere pawn can attack
                 if (item.y === pawn.y - 1) {
                     if (item.x === pawn.x + 1) {
-                        document.getElementById( mainLitDiv ).classList.add('lit');
-                        litDivs.push( mainLitDiv );
+                        document.getElementById(
+                            item.x.toString() + item.y.toString()
+                        ).classList.add('lit');
+                        litDivs.push( item.x.toString() + item.y.toString() );
                     }
                     if (item.x === pawn.x - 1) {
-                        document.getElementById( mainLitDiv ).classList.add('lit');
-                        litDivs.push(mainLitDiv);
+                        document.getElementById(
+                            item.x.toString() + item.y.toString()
+                        ).classList.add('lit');
+                        litDivs.push( item.x.toString() + item.y.toString() );
                     }
                 }
             });
@@ -47,12 +51,16 @@ function lit(activeSide, opponentSide) {
             opponentSide.forEach(item => { // highlights any spaces that pawn can attack
                 if (item.y === pawn.y + 1) {
                     if (item.x === pawn.x + 1) {
-                        document.getElementById( mainLitDiv ).classList.add('lit');
-                        litDivs.push(mainLitDiv);
+                        document.getElementById(
+                            item.x.toString() + item.y.toString()
+                        ).classList.add('lit');
+                        litDivs.push(item.x.toString() + item.y.toString());
                     }
                     if (item.x === pawn.x - 1) {
-                        document.getElementById( mainLitDiv ).classList.add('lit');
-                        litDivs.push(mainLitDiv);
+                        document.getElementById(
+                            item.x.toString() + item.y.toString()
+                        ).classList.add('lit');
+                        litDivs.push(item.x.toString() + item.y.toString());
                     }
                 }
             });
@@ -76,25 +84,49 @@ function lit(activeSide, opponentSide) {
         // MOVE() ======================================================================================== 
         litDivs.forEach(item => { // if any litDiv is clicked, move piece there 
             document.getElementById(item).addEventListener('click', function move(e) { // moves piece and begins next turn
-                // unLit(); // MIGHT NOT NEED THIS HERE!
-        
-                // move piece
+                // if (tempId.length > 0) { // un-highlights all cells after first click
+                    document.getElementById(tempId[0]).classList.remove('mainLit');
+                    tempId = [];
+                    litDivs.forEach(item => {document.getElementById(item).classList.remove('lit')});
+                // }
+                index = pieces.indexOf(pawn);
+                console.log(pieces[index]);
+                
+                // update piece x & y                
                 tempXY = e.target.id.split("");
-                activeSide.x = +tempXY[0];
-                activeSide.y = parseInt(tempXY[1]);
+                pieces[index].x = +tempXY[0];
+                pieces[index].y = +tempXY[1];
 
+                // remove image from mainDiv
+                document.getElementById(img.id).removeChild(img);
+
+                // if new cell id has image, 
+                // remove that object from pieces & add that image to takenBox1/2 div
+                console.log(document.getElementById(img.id).hasAttribute('image'));
+
+                if (document.getElementById(img.id).hasAttribute('image')) {
+
+                }
+
+                // add image to new cell
+                img.src = pieces[index].image;
+                img.id = pieces[index].x.toString() + pieces[index].y.toString();
+                document.getElementById(img.id).appendChild(img);
+
+                console.log(pieces[index]);
+                
     // UPDATE x && y of original clicked piece to equal the second clicked x & y
     // board.classList.remove() and board.removeEventListener() ??
     // if piece eaten, remove that piece from pieces array & push to proper doneBox div
 
-                // if (activeSide === blues) { 
+                if (activeSide === blues) { 
                     // toggleClocks();
-                    // lit(oranges, blues); 
-                // }
-                // else {
+                    lit(oranges, blues); 
+                }
+                else {
                     // toggleClocks();
-                    // lit(blues, oranges); 
-                // }
+                    lit(blues, oranges); 
+                }
             });
         });
     } 
@@ -496,7 +528,7 @@ function lit(activeSide, opponentSide) {
         document.getElementById(
             activeSide[i].x.toString() + activeSide[i].y.toString()
         ).addEventListener('click', function highlight() {
-            if (tempId.length > 0) { // un-highlights all cells
+            if (tempId.length > 0) { // un-highlights all cells after first click
                 document.getElementById(tempId[0]).classList.remove('mainLit');
                 tempId = [];
                 litDivs.forEach( item => document.getElementById(item).classList.remove('lit') );
@@ -532,4 +564,4 @@ function lit(activeSide, opponentSide) {
     }
 }
 lit(oranges, blues);
-lit(blues, oranges);
+// lit(blues, oranges);
