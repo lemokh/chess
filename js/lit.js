@@ -1,23 +1,15 @@
 function lit(activeSide, opponentSide) {
     litDivs = [];
-
+    tempId = [];
     // function toggleClocks() {}
 
     function pawnLit(pawn) { // mainLitDiv is the clicked pawn space
-        
+        litDivs = [];
         mainLitDiv = pawn.x.toString() + pawn.y.toString();
-        
-        // highlights clicked space violet
-        document.getElementById( mainLitDiv ).classList.add('mainLit');
-        
-// PIPE THESE TOGETHER?
+        tempId.push( mainLitDiv );
 
-        // on click of any other activeSide space, removes all board highlights
-        // document.getElementById( mainLitDiv ).addEventListener('click', function unLit() {
-            // if (litDivs.length > 0) {} // un-highlights all spaces
-            // else { pawnLit(pawn); } // re-light mainDiv
-            // INSTEAD ONLY RE-RUN THE INTERNALS NEEDED TO RE-LIGHT MAINDIV 
-        // });
+        // highlights clicked space
+        document.getElementById( mainLitDiv ).classList.add('mainLit');
 
         if (activeSide === blues) {
             opponentSide.forEach(item => { // highlights any spaces that can pawn attack
@@ -81,23 +73,24 @@ function lit(activeSide, opponentSide) {
             }
         }
 //========================================================================================
-        activeCells = activeSide.map(item => {
-            return item.x.toString() + item.y.toString();
-        });
-        function exclude(arr1, arr2) {
-            return arr1.filter(cell => {
-                return !arr2.some(piece => {
-                    return cell === piece;
-                });
-            });
-        }
-        unLitDivs = exclude(activeCells, litDivs);
+        // activeCells = activeSide.map(item => {
+        //     return item.x.toString() + item.y.toString();
+        // });
+        // function exclude(arr1, arr2) {
+        //     return arr1.filter(cell => {
+        //         return !arr2.some(piece => {
+        //             return cell === piece;
+        //         });
+        //     });
+        // }
+        // unLitDivs = exclude(activeCells, litDivs);
 //========================================================================================        
+        // MOVE()
         litDivs.forEach(item => { // if any litDiv is clicked, move piece there 
             document.getElementById(item).addEventListener( 'click', function move(e) { // moves piece and begins next turn
                 // unLit(); // MIGHT NOT NEED THIS HERE!
                 
-                console.log(e.target.id);
+                console.log(e.target.id); // this works!
         
                 // move piece
                 // temp = this.id.split();
@@ -111,6 +104,7 @@ function lit(activeSide, opponentSide) {
             } );
         });
     } 
+    // ENPASSANT
     // activeSide.forEach(item => { // if this pawn moves there
     //   if (item.name === 'pawn') {
     //     if (item.y === 3) {
@@ -483,10 +477,15 @@ function lit(activeSide, opponentSide) {
         });
     }
 
-    for (let i = 0; i < activeSide.length; i++) { // for each blue id, addEventListener --> click
+    for (let i = 0; i < activeSide.length; i++) {
         document.getElementById(
             activeSide[i].x.toString() + activeSide[i].y.toString()
-        ).addEventListener('click', function highlight() {
+        ).addEventListener('click', function highlight(e) {
+            if (tempId.length > 0) { // un-highlights all cells
+                document.getElementById(tempId[0]).classList.remove('mainLit');
+                tempId = [];
+                litDivs.forEach( item => document.getElementById(item).classList.remove('lit') );
+            }
             switch (activeSide[i].name) {
                 case 'pawn':
                     pawnLit(activeSide[i]);
