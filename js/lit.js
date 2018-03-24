@@ -1,52 +1,60 @@
 function lit(activeSide, opponentSide) {
-    litDivs = [];
     // unLitDivs = exclude(board, litDivs);
-    
-    function unLit() { // un-highlights mainDiv & all lit spaces
-        document.getElementById( mainLitDiv ).classList.remove('mainLit');
-        litDivs.forEach(item => {
-            document.getElementById(item).classList.remove('lit');
-        });
-    }
-
-    function toggleClocks() {
-
-    }
+    litDivs = [];
+    function toggleClocks() {}
 
     function move() { // moves piece and begins next turn
-        unLit();
+        // unLit(); // MIGHT NOT NEED THIS HERE!
+        
+        // console.log(event);
+
         // move piece
-        // 
-        if (activeSide === blues) { lit(oranges, blues); }
-        else { lit(blues, oranges); }
-        toggleClocks();
+        // temp = this.id.split();
+        // activeSide.x === temp[0];
+        // activeSide.y === temp[1];
+        
+        // if (activeSide === blues) { lit(oranges, blues); }
+        // else { lit(blues, oranges); }
+        
+        // toggleClocks();
     }
 
-    function pawnLit(pawn) {
+    function pawnLit(pawn) { // mainLitDiv is the clicked pawn space
+        litDivs = [];
         mainLitDiv = pawn.x.toString() + pawn.y.toString();
         
-        // highlights only the clicked space
+        // highlights violet only the clicked space
         document.getElementById( mainLitDiv ).classList.add('mainLit');
         
+// PIPE THESE TOGETHER?
+
         // on click of mainDiv, removes all board highlights
-        document.getElementById( mainLitDiv ).addEventListener('click', unLit());
-        
-        document.getElementsByClassName('lit').addEventListener('click', move());
+        document.getElementById( mainLitDiv ).addEventListener('click', function unLit() {
+            
+            console.log(litDivs);
+
+            if (litDivs.length > 0) { // un-highlights mainDiv & all lit spaces
+                document.getElementById( mainLitDiv ).classList.remove('mainLit');
+
+                litDivs.forEach(item => {
+                    document.getElementById(item).classList.remove('lit');
+                });
+
+                litDivs = [];
+            }
+            else { pawnLit(pawn); } // re-light mainDiv
+        });
 
         if (activeSide === blues) {
             opponentSide.forEach(item => { // highlights any spaces that can pawn attack
                 if (item.y === pawn.y - 1) {
                     if (item.x === pawn.x + 1) {
-                        document.getElementById(
-                            item.x.toString() + item.y.toString()
-                        ).classList.add('lit');
-                        litDivs.push(item.x.toString() + item.y.toString());
+                        document.getElementById( mainLitDiv ).classList.add('lit');
+                        litDivs.push( mainLitDiv );
                     }
                     if (item.x === pawn.x - 1) {
-                        document.getElementById(
-                            item.x.toString() + item.y.toString()
-                        ).classList.add('lit');
-                        litDivs.push(item.x.toString() + item.y.toString());
+                        document.getElementById( mainLitDiv ).classList.add('lit');
+                        litDivs.push(mainLitDiv);
                     }
                 }
             });
@@ -72,16 +80,12 @@ function lit(activeSide, opponentSide) {
             opponentSide.forEach(item => { // highlights any spaces that pawn can attack
                 if (item.y === pawn.y + 1) {
                     if (item.x === pawn.x + 1) {
-                        document.getElementById(
-                            item.x.toString() + item.y.toString()
-                        ).classList.add('lit');
-                        litDivs.push(item.x.toString() + item.y.toString());
+                        document.getElementById( mainLitDiv ).classList.add('lit');
+                        litDivs.push(mainLitDiv);
                     }
                     if (item.x === pawn.x - 1) {
-                        document.getElementById(
-                            item.x.toString() + item.y.toString()
-                        ).classList.add('lit');
-                        litDivs.push(item.x.toString() + item.y.toString());
+                        document.getElementById( mainLitDiv ).classList.add('lit');
+                        litDivs.push(mainLitDiv);
                     }
                 }
             });
@@ -102,7 +106,11 @@ function lit(activeSide, opponentSide) {
                 }
             }
         }
-    } // activeSide.forEach(item => { // if this pawn moves there
+        // litDivs.forEach(item => { // if any litDiv is clicked, move piece there 
+        //     document.getElementById(item).addEventListener( 'click', move(event) );
+        // });
+    } 
+    // activeSide.forEach(item => { // if this pawn moves there
     //   if (item.name === 'pawn') {
     //     if (item.y === 3) {
     //       if (item.x === pawn.x + 1 || item.x === pawn.x - 1) {
@@ -427,6 +435,7 @@ function lit(activeSide, opponentSide) {
         document.getElementById(
             king.x.toString() + king.y.toString()
         ).classList.add('mainLit');
+        
         mainLitDiv = king.x.toString() + king.y.toString();
 
         function exclude(res1, res2) {
@@ -519,4 +528,4 @@ function lit(activeSide, opponentSide) {
     // });
 }
 lit(oranges, blues);
-lit(blues, oranges);
+// lit(blues, oranges);
