@@ -51,14 +51,14 @@ function lit(activeSide, opponentSide) {
                 }
             });
 
-            if (emptySpaces.includes(pawn.x.toString() + (pawn.y - 1).toString())) {
-                // if empty space
+            // if empty space one ahead of pawn, highlight it
+            if (emptySpaces.includes(pawn.x.toString() + (pawn.y - 1).toString())) {    
                 document.getElementById(
                     pawn.x.toString() + (pawn.y - 1).toString()
                 ).classList.add('lit');
                 litDivs.push(pawn.x.toString() + (pawn.y - 1).toString());
 
-                if (pawn.y === 6) {
+                if (pawn.y === 6) { // if empty space two ahead of pawn, highlight it
                     if (emptySpaces.includes(pawn.x.toString() + (pawn.y - 2).toString())) {
                         document.getElementById(
                             pawn.x.toString() + (pawn.y - 2).toString()
@@ -85,14 +85,14 @@ function lit(activeSide, opponentSide) {
                     }
                 }
             });
-
+            // if empty space one ahead of pawn, highlight it
             if (emptySpaces.includes(pawn.x.toString() + (pawn.y + 1).toString())) {
                 document.getElementById(
                     pawn.x.toString() + (pawn.y + 1).toString()
                 ).classList.add('lit');
                 litDivs.push(pawn.x.toString() + (pawn.y + 1).toString());
 
-                if (pawn.y === 1) {
+                if (pawn.y === 1) { // if empty space two ahead of pawn, highlight it
                     if (emptySpaces.includes(pawn.x.toString() + (pawn.y + 2).toString())) {
                         document.getElementById(
                             pawn.x.toString() + (pawn.y + 2).toString()
