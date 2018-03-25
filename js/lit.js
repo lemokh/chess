@@ -4,6 +4,7 @@ function lit(activeSide, opponentSide) {
     // function toggleClocks() {}
 
     function pawnLit(pawn) {
+        console.log();
         litDivs = [];
         mainLitDiv = pawn.x.toString() + pawn.y.toString(); // clicked pawn
         tempId.push( mainLitDiv );
@@ -86,6 +87,7 @@ function lit(activeSide, opponentSide) {
         // MOVE() ======================================================================================== 
         litDivs.forEach(item => { // if a litDiv is clicked, move piece there 
             document.getElementById(item).addEventListener('click', function move(e) { // moves piece and begins next turn
+                console.log();
                 // un-highlights all cells
                 document.getElementById(tempId[0]).classList.remove('mainLit');
                 tempId = [];
@@ -99,13 +101,14 @@ function lit(activeSide, opponentSide) {
                 // div of clicked lit cell
                 mainLitDiv = e.target.id;  console.log(e.target.id);
                 
+                // UPDATES x && y of original clicked piece to equal the second clicked x & y
                 // updates piece x & y                
                 activeSide[index].x = +e.target.id[0];
                 activeSide[index].y = +e.target.id[1];
 
                 // removes image !!MUST DO THIS!!
                  
-                
+                // if piece eaten, remove that piece from pieces array & push to proper takenBox div
                 // if new cell id already has an image attribute,
                 if (document.getElementById(img.id).hasAttribute('image')) {
                     activeSide.splice(index, 1); // removes piece from activeSide
@@ -124,10 +127,8 @@ function lit(activeSide, opponentSide) {
 
                 console.log(activeSide[index]);
                 
-    // UPDATE x && y of original clicked piece to equal the second clicked x & y
-    // board.classList.remove() and board.removeEventListener() ??
-    // if piece eaten, remove that piece from pieces array & push to proper doneBox div
-
+    
+                // board.removeEventListener() ??
                 if (activeSide === blues) { 
                     // toggleClocks();
                     // disables blues click-listener
