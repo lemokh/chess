@@ -109,6 +109,7 @@ function lit(activeSide, opponentSide) {
                 // if new cell id already has an image attribute,
                 if (document.getElementById(img.id).hasAttribute('image')) {
                     activeSide.splice(index, 1); // removes piece from activeSide
+                    // remove image from clicked lit div?
                     pieces = [...oranges, ...blues]; // updates pieces
 
                     // adds that image to takenBox1/2 div
