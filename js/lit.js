@@ -13,6 +13,7 @@ function lit(activeSide, opponentSide) {
 
         // highlights all possible moves for clicked piece
         if (activeSide === blues) {
+            takenBox = document.getElementsByTagName('takenBox1');
             opponentSide.forEach(item => { // highlights anywhere pawn can attack
                 if (item.y === pawn.y - 1) {
                     if (item.x === pawn.x + 1) {
@@ -48,6 +49,7 @@ function lit(activeSide, opponentSide) {
             }
         } 
         else { // since activeSide === oranges...
+            takenBox = document.getElementsByTagName('takenBox2');
             opponentSide.forEach(item => { // highlights any spaces that pawn can attack
                 if (item.y === pawn.y + 1) {
                     if (item.x === pawn.x + 1) {
@@ -82,38 +84,44 @@ function lit(activeSide, opponentSide) {
             }
         }
         // MOVE() ======================================================================================== 
-        litDivs.forEach(item => { // if any litDiv is clicked, move piece there 
+        litDivs.forEach(item => { // if a litDiv is clicked, move piece there 
             document.getElementById(item).addEventListener('click', function move(e) { // moves piece and begins next turn
-                // if (tempId.length > 0) { // un-highlights all cells after first click
-                    document.getElementById(tempId[0]).classList.remove('mainLit');
-                    tempId = [];
-                    litDivs.forEach(item => {document.getElementById(item).classList.remove('lit')});
-                // }
-                index = pieces.indexOf(pawn);
-                console.log(pieces[index]);
+                // un-highlights all cells
+                document.getElementById(tempId[0]).classList.remove('mainLit');
+                tempId = [];
+                litDivs.forEach(item => {document.getElementById(item).classList.remove('lit')});
                 
-                // update piece x & y                
-                tempXY = e.target.id.split("");
-                pieces[index].x = +tempXY[0];
-                pieces[index].y = +tempXY[1];
+                // gathers index for clicked mainLitDiv pawn
+                index = activeSide.indexOf(pawn);  
+                console.log(activeSide[index]); // {x:_, y:_,...}
+                console.log(mainLitDiv); // 01
+                
+                // div of clicked lit cell
+                mainLitDiv = e.target.id;  console.log(e.target.id);
+                
+                // updates piece x & y                
+                activeSide[index].x = +e.target.id[0];
+                activeSide[index].y = +e.target.id[1];
 
-                // remove image from mainDiv
-                document.getElementById(img.id).removeChild(img);
-
-                // if new cell id has image, 
-                // remove that object from pieces & add that image to takenBox1/2 div
-                console.log(document.getElementById(img.id).hasAttribute('image'));
-
+                // removes image !!MUST DO THIS!!
+                 
+                
+                // if new cell id already has an image attribute,
                 if (document.getElementById(img.id).hasAttribute('image')) {
+                    activeSide.splice(index, 1); // removes piece from activeSide
+                    pieces = [...oranges, ...blues]; // updates pieces
 
+                    // adds that image to takenBox1/2 div
+                    // img.src = activeSide[index].image;
+                    // takenBox.appendChild(img);
                 }
 
-                // add image to new cell
+                // add image to new cell --> WORKS!
                 img.src = pieces[index].image;
                 img.id = pieces[index].x.toString() + pieces[index].y.toString();
                 document.getElementById(img.id).appendChild(img);
 
-                console.log(pieces[index]);
+                console.log(activeSide[index]);
                 
     // UPDATE x && y of original clicked piece to equal the second clicked x & y
     // board.classList.remove() and board.removeEventListener() ??
@@ -121,11 +129,23 @@ function lit(activeSide, opponentSide) {
 
                 if (activeSide === blues) { 
                     // toggleClocks();
-                    lit(oranges, blues); 
+                    // disables blues click-listener
+                    // for (let i = 0; i < activeSide.length; i++) {
+                    //     document.getElementById(
+                    //         activeSide[i].x.toString() + activeSide[i].y.toString()
+                    //     ).removeEventListener('click', highlight);
+                    // }
+                    lit(oranges, blues);
                 }
                 else {
                     // toggleClocks();
-                    lit(blues, oranges); 
+                    // diables oranges click-listener
+                    // for (let i = 0; i < activeSide.length; i++) {
+                    //     document.getElementById(
+                    //         activeSide[i].x.toString() + activeSide[i].y.toString()
+                    //     ).removeEventListener('click', highlight);
+                    // }
+                    lit(blues, oranges);
                 }
             });
         });
@@ -378,7 +398,7 @@ function lit(activeSide, opponentSide) {
         four(bishop);
     }
 
-    function rookLit(rook) { // MAKE SO CANNOT LIGHT OWN PIECE
+    function rookLit(rook) {
         litDivs = [];
         mainLitDiv = rook.x.toString() + rook.y.toString(); // clicked rook
         tempId.push( mainLitDiv );
@@ -531,7 +551,7 @@ function lit(activeSide, opponentSide) {
             if (tempId.length > 0) { // un-highlights all cells after first click
                 document.getElementById(tempId[0]).classList.remove('mainLit');
                 tempId = [];
-                litDivs.forEach( item => document.getElementById(item).classList.remove('lit') );
+                litDivs.forEach( item => {document.getElementById(item).classList.remove('lit');});
             }
             switch (activeSide[i].name) {
                 case 'pawn':

@@ -1,4 +1,4 @@
-var mainLitDiv, litDivs, unLitDivs, img, index, tempId, tempXY, moves, enPassant, activeCells, activeSideLessKingSpaces, kingSpacesUnderAttack, orangeKingSpacesUnderAttack, orangelessKingSpaces, orangelessKingSpaces, blueKingSpaces, bluelessKingSpaces, orangeKingSpacesUnderAttack, block1, block2, block3, block4, block5, block6, block7, block8, vacantKingSpaces, whiteKing, blackKing, knightMoves, bishopMoves, bishopX, bishopY, rookMoves, kingSpaces, kingOpenSpaces, occupiedKingSpaces, kingAttackers, defenders, pinnedPieces, checkedPaths, nails, whites, blacks;
+var pieces, mainLitDiv, litDivs, unLitDivs, img, index, tempId, moves, takenBox, enPassant, activeCells, activeSideLessKingSpaces, kingSpacesUnderAttack, orangeKingSpacesUnderAttack, orangelessKingSpaces, orangelessKingSpaces, blueKingSpaces, bluelessKingSpaces, orangeKingSpacesUnderAttack, block1, block2, block3, block4, block5, block6, block7, block8, vacantKingSpaces, whiteKing, blackKing, knightMoves, bishopMoves, bishopX, bishopY, rookMoves, kingSpaces, kingOpenSpaces, occupiedKingSpaces, kingAttackers, defenders, pinnedPieces, checkedPaths, nails, whites, blacks;
 
 const board = [
     '00', '01', '02', '03', '04', '05', '06', '07',
@@ -31,7 +31,7 @@ let oranges = [
 { name: 'pawn', x: 6, y: 1, image: './images/orangePawn.png' },
 { name: 'pawn', x: 7, y: 4, image: './images/orangePawn.png' },
 
-{ name: 'knight', x: 6, y: 4, image: './images/orangeKnight.png' },
+{ name: 'knight', x: 6, y: 3, image: './images/orangeKnight.png' },
 { name: 'knight', x: 6, y: 0, image: './images/orangeKnight.png' },
 
 { name: 'bishop', x: 3, y: 3, image: './images/orangeBishop.png' },
@@ -69,17 +69,16 @@ let blues = [
 { name: 'king', x: 4, y: 5, image: './images/blueKing.png' }
 ];
   
-let pieces = [...oranges, ...blues];
-
-let emptySpaces = openSpaces(board, pieces);
+pieces = [...oranges, ...blues];
 
 pieces.forEach(item => {
-    img = document.createElement("img");
-    img.src = item.image;
-    img.id = item.x.toString() + item.y.toString();;
-    document.getElementById(img.id).appendChild(img);
+  img = document.createElement("img");
+  img.src = item.image;
+  img.id = item.x.toString() + item.y.toString();;
+  document.getElementById(img.id).appendChild(img);
 });
 
+let emptySpaces = openSpaces(board, pieces);
 
 function checkingSpace(somePiece, checkSpace) { // returns true/false if opposing piece checks space 
     // somePiece is an object in the opposingSide array ---> checkSpace is the target piece
