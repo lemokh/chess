@@ -398,7 +398,7 @@ function lit(activeSide, opponentSide) {
         four(bishop);
     }
 
-    function rookLit(rook) {
+    function rookLit(rook) { // BLUE KNIGHT LIGHTS OWN PAWN - ORANGE KNIGHT DOES NOT
         litDivs = [];
         mainLitDiv = rook.x.toString() + rook.y.toString(); // clicked rook
         tempId.push( mainLitDiv );

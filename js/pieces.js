@@ -27,7 +27,7 @@ let oranges = [
 { name: 'pawn', x: 2, y: 1, image: './images/orangePawn.png' },
 { name: 'pawn', x: 3, y: 1, image: './images/orangePawn.png' },
 { name: 'pawn', x: 4, y: 1, image: './images/orangePawn.png' },
-{ name: 'pawn', x: 5, y: 1, image: './images/orangePawn.png' },
+{ name: 'pawn', x: 5, y: 2, image: './images/orangePawn.png' },
 { name: 'pawn', x: 6, y: 1, image: './images/orangePawn.png' },
 { name: 'pawn', x: 7, y: 4, image: './images/orangePawn.png' },
 
@@ -46,7 +46,7 @@ let oranges = [
 ];
 
 let blues = [
-{ name: 'pawn', x: 0, y: 6, image: './images/bluePawn.png' },
+{ name: 'pawn', x: 0, y: 5, image: './images/bluePawn.png' },
 { name: 'pawn', x: 1, y: 6, image: './images/bluePawn.png' },
 { name: 'pawn', x: 2, y: 6, image: './images/bluePawn.png' },
 { name: 'pawn', x: 3, y: 6, image: './images/bluePawn.png' },
