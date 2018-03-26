@@ -1,4 +1,4 @@
-var pieces, mainLitDiv, litDivs, unLitDivs, img, index, tempId, moves, takenBox, enPassant, activeCells, activeSideLessKingSpaces, kingSpacesUnderAttack, orangeKingSpacesUnderAttack, orangelessKingSpaces, orangelessKingSpaces, blueKingSpaces, bluelessKingSpaces, orangeKingSpacesUnderAttack, block1, block2, block3, block4, block5, block6, block7, block8, vacantKingSpaces, whiteKing, blackKing, knightMoves, bishopMoves, bishopX, bishopY, rookMoves, kingSpaces, kingOpenSpaces, occupiedKingSpaces, kingAttackers, defenders, pinnedPieces, checkedPaths, nails, whites, blacks;
+var pieces, mainLitDiv, litDivs, unLitDivs, img, index, tempId, moves, takenBox, enPassant, activeCells, openAndOpponentHeldKingSpaces, kingSpacesUnderAttack, orangeKingSpacesUnderAttack, orangelessKingSpaces, orangelessKingSpaces, blueKingSpaces, bluelessKingSpaces, orangeKingSpacesUnderAttack, block1, block2, block3, block4, block5, block6, block7, block8, vacantKingSpaces, whiteKing, blackKing, knightMoves, bishopMoves, bishopX, bishopY, rookMoves, kingSpaces, kingOpenSpaces, occupiedKingSpaces, kingAttackers, defenders, pinnedPieces, checkedPaths, nails, whites, blacks;
 
 const boardIds = [
     '00', '01', '02', '03', '04', '05', '06', '07',
@@ -38,7 +38,7 @@ let oranges = [
 { name: 'bishop', x: 5, y: 0, image: './images/orangeBishop.png' },
 
 { name: 'rook', x: 0, y: 0, image: './images/orangeRook.png' },
-{ name: 'rook', x: 7, y: 0, image: './images/orangeRook.png' },
+{ name: 'rook', x: 7, y: 1, image: './images/orangeRook.png' },
 
 { name: 'queen', x: 3, y: 0, image: './images/orangeQueen.png' },
 
@@ -50,8 +50,8 @@ let blues = [
 { name: 'pawn', x: 1, y: 6, image: './images/bluePawn.png' },
 { name: 'pawn', x: 2, y: 5, image: './images/bluePawn.png' },
 { name: 'pawn', x: 3, y: 5, image: './images/bluePawn.png' },
-{ name: 'pawn', x: 4, y: 6, image: './images/bluePawn.png' },
-{ name: 'pawn', x: 5, y: 5, image: './images/bluePawn.png' },
+{ name: 'pawn', x: 4, y: 3, image: './images/bluePawn.png' },
+{ name: 'pawn', x: 5, y: 4, image: './images/bluePawn.png' },
 { name: 'pawn', x: 6, y: 6, image: './images/bluePawn.png' },
 { name: 'pawn', x: 7, y: 5, image: './images/bluePawn.png' },
 
@@ -66,7 +66,7 @@ let blues = [
 
 { name: 'queen', x: 3, y: 7, image: './images/blueQueen.png' },
 
-{ name: 'king', x: 4, y: 5, image: './images/blueKing.png' }
+{ name: 'king', x: 4, y: 6, image: './images/blueKing.png' }
 ];
   
 pieces = [...oranges, ...blues];
@@ -82,8 +82,8 @@ pieces.forEach(item => {
 
 let emptySpaces = openSpaces(boardIds, pieces);
 
-function checkingSpace(somePiece, checkSpace) { // returns true/false if opposing piece checks space 
-    // somePiece is an object in the opposingSide array ---> checkSpace is the target piece
+function checkingSpace(somePiece, checkSpace) { // returns true/false if some-piece checks-space 
+    // ? somePiece is an object in the opposingSide array ---> checkSpace is the target piece
   
     function knightAttacks(knight, checkSpace) { // returns true/false if knight can checkSpace
       knightMoves = []; // contains the two spaces where knight might checkSpace

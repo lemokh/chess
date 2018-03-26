@@ -5,7 +5,7 @@ function lit(activeSide, opponentSide) {
 
     function pawnLit(pawn) {
         console.log();
-        //litDivs = [];
+        litDivs = [];
         mainLitDiv = pawn.x.toString() + pawn.y.toString(); // clicked pawn
         tempId.push( mainLitDiv );
 
@@ -179,7 +179,7 @@ function lit(activeSide, opponentSide) {
     function knightLit(knight) {
         block1 = false; block2 = false; block3 = false; block4 = false;
         block5 = false; block6 = false; block7 = false; block8 = false;
-        //litDivs = [];
+        litDivs = [];
         mainLitDiv = knight.x.toString() + knight.y.toString(); // clicked knight space
         tempId.push( mainLitDiv );
         
@@ -187,7 +187,6 @@ function lit(activeSide, opponentSide) {
         document.getElementById( mainLitDiv ).classList.add('mainLit');
 
          // if own pieces occupy knight space, no highlight there
-        // for (let i = 0; i < activeSide.length; i++) {
         activeSide.forEach(piece => {
             switch(piece.x) {
                 case knight.x + 1:
@@ -288,7 +287,7 @@ function lit(activeSide, opponentSide) {
     }
 
     function bishopLit(bishop) {
-        // litDivs = [];
+        litDivs = [];
         mainLitDiv = bishop.x.toString() + bishop.y.toString(); // clicked bishop space
         tempId.push( mainLitDiv );
 
@@ -494,8 +493,10 @@ function lit(activeSide, opponentSide) {
         rookLit(queen);
     }
 
-    function kingLit(king) {
-        //litDivs = [];
+    function kingLit(king) { // ORANGE KING DOESN'T REACT RIGHT TO OPPOSING PAWNS
+    // SEEMS THAT OPPOSING PAWNS ATTACK ONLY AS ORANGE PAWNS DO
+    // LOOK FOR SOLUTION IN checkingSpace(pawn, king);
+        litDivs = [];
         mainLitDiv = king.x.toString() + king.y.toString(); // clicked king
         tempId.push( mainLitDiv );
 
@@ -508,7 +509,7 @@ function lit(activeSide, opponentSide) {
                     return obj.x === obj2.x && obj.y === obj2.y
                 }) // returns true if at least one doesn't match x & y
             });
-        }
+        } // excludes res2 from res1
 
         kingSpaces = [
             { x: king.x - 1, y: king.y },
@@ -525,54 +526,62 @@ function lit(activeSide, opponentSide) {
             }
         }).filter(item => { return item !== undefined; });
 
-        kingSpacesUnderAttack = [];
-        activeSideLessKingSpaces = exclude(kingSpaces, activeSide); // open and own-side-held kingSpaces
-
-        activeSideLessKingSpaces.forEach(kingSpace => {
-            opponentSide.forEach(opponentPiece => {
-                if (checkingSpace(opponentPiece, kingSpace)) {
-                    kingSpacesUnderAttack.push(kingSpace);
+        openAndOpponentHeldKingSpaces = exclude(kingSpaces, activeSide); // [{x:__, y:__}]
+        // console.log(openAndOpponentHeldKingSpaces);  // WORKS!
+        
+        // can any opponent piece check any openAndHeldKingSpaces?
+        openAndOpponentHeldKingSpaces.forEach(space => {
+            opponentSide.forEach(piece => {
+            // how can an opponentPiece check a kingSpace held by itself?
+                if (space.x !== piece.x || space.y !== piece.y) {
+                    if (checkingSpace(piece, space)) {
+                        kingSpacesUnderAttack.push(space);
+                    }
                 }
-            }); // checkingSpace returns true/false if orangePiece attacks kingSpace
-        }); // array of blue pieces that attack a kingSpace
-
-        kingSpaces = exclude(activeSideLessKingSpaces, kingSpacesUnderAttack);
-
+            }); // checkingSpace returns true/false if piece attacks space
+        }); // array of pieces that attack a kingSpace
+        // console.log(kingSpacesUnderAttack);
+        kingSpacesUnderAttack = [];
+        kingSpaces = exclude(openAndOpponentHeldKingSpaces, kingSpacesUnderAttack);
+        
         kingSpaces.forEach(item => {
             document.getElementById(
                 item.x.toString() + item.y.toString()
             ).classList.add('lit');
             litDivs.push(item.x.toString() + item.y.toString());
         });
-    }
+    } // ends kingLit()
 
-    for (let i = 0; i < activeSide.length; i++) {
+    activeSide.forEach(piece => {
         document.getElementById(
-            activeSide[i].x.toString() + activeSide[i].y.toString()
+            piece.x.toString() + piece.y.toString()
         ).addEventListener('click', function highlight() {
             if (tempId.length > 0) { // un-highlights all cells after first click
                 document.getElementById(tempId[0]).classList.remove('mainLit');
                 tempId = [];
-                litDivs.forEach( item => {document.getElementById(item).classList.remove('lit');});
+                // console.log(litDivs);
+                litDivs.forEach(item => {
+                    document.getElementById(item).classList.remove('lit');
+                });
             }
-            switch (activeSide[i].name) {
+            switch (piece.name) {
                 case 'pawn':
-                    pawnLit(activeSide[i]);
+                    pawnLit(piece);
                     break;
                 case 'knight':
-                    knightLit(activeSide[i]);
+                    knightLit(piece);
                     break;
                 case 'bishop':
-                    bishopLit(activeSide[i]);
+                    bishopLit(piece);
                     break;
                 case 'rook':
-                    rookLit(activeSide[i]);
+                    rookLit(piece);
                     break;
                 case 'queen':
-                    queenLit(activeSide[i]);
+                    queenLit(piece);
                     break;
                 case 'king':
-                    kingLit(activeSide[i]);
+                    kingLit(piece);
                     break;
             }
         });
@@ -583,7 +592,7 @@ function lit(activeSide, opponentSide) {
         // if piece eaten, remove that piece from pieces array & push to proper DONE box
 
         // }
-    }
+    });
 }
 lit(oranges, blues);
 lit(blues, oranges);
