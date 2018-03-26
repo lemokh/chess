@@ -5,7 +5,7 @@ function lit(activeSide, opponentSide) {
 
     function pawnLit(pawn) {
         console.log();
-        litDivs = [];
+        //litDivs = [];
         mainLitDiv = pawn.x.toString() + pawn.y.toString(); // clicked pawn
         tempId.push( mainLitDiv );
 
@@ -179,7 +179,7 @@ function lit(activeSide, opponentSide) {
     function knightLit(knight) {
         block1 = false; block2 = false; block3 = false; block4 = false;
         block5 = false; block6 = false; block7 = false; block8 = false;
-        litDivs = [];
+        //litDivs = [];
         mainLitDiv = knight.x.toString() + knight.y.toString(); // clicked knight space
         tempId.push( mainLitDiv );
         
@@ -288,7 +288,7 @@ function lit(activeSide, opponentSide) {
     }
 
     function bishopLit(bishop) {
-        litDivs = [];
+        // litDivs = [];
         mainLitDiv = bishop.x.toString() + bishop.y.toString(); // clicked bishop space
         tempId.push( mainLitDiv );
 
@@ -400,8 +400,8 @@ function lit(activeSide, opponentSide) {
         four(bishop);
     }
 
-    function rookLit(rook) { // BLUE KNIGHT LIGHTS OWN PAWN - ORANGE KNIGHT DOES NOT
-        litDivs = [];
+    function rookLit(rook) {
+        // litDivs = [];
         mainLitDiv = rook.x.toString() + rook.y.toString(); // clicked rook
         tempId.push( mainLitDiv );
 
@@ -495,7 +495,7 @@ function lit(activeSide, opponentSide) {
     }
 
     function kingLit(king) {
-        litDivs = [];
+        //litDivs = [];
         mainLitDiv = king.x.toString() + king.y.toString(); // clicked king
         tempId.push( mainLitDiv );
 
