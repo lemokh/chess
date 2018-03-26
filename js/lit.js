@@ -95,11 +95,11 @@ function lit(activeSide, opponentSide) {
                 
                 // gathers index for clicked mainLitDiv pawn
                 index = activeSide.indexOf(pawn);  
-                console.log(activeSide[index]); // {x:_, y:_,...}
-                console.log(mainLitDiv); // 01
+                // console.log(activeSide[index]); // {x:_, y:_,...}
+                // console.log(mainLitDiv); // 01
                 
                 // div of clicked lit cell
-                mainLitDiv = e.target.id;  console.log(e.target.id);
+                mainLitDiv = e.target.id;  // console.log(e.target.id);
                 
                 // UPDATES x && y of original clicked piece to equal the second clicked x & y
                 // updates piece x & y                
@@ -494,8 +494,6 @@ function lit(activeSide, opponentSide) {
     }
 
     function kingLit(king) { // ORANGE KING DOESN'T REACT RIGHT TO OPPOSING PAWNS
-    // SEEMS THAT OPPOSING PAWNS ATTACK ONLY AS ORANGE PAWNS DO
-    // LOOK FOR SOLUTION IN checkingSpace(pawn, king);
         litDivs = [];
         mainLitDiv = king.x.toString() + king.y.toString(); // clicked king
         tempId.push( mainLitDiv );
@@ -525,24 +523,20 @@ function lit(activeSide, opponentSide) {
                 if (space.y <= 7 && space.y <= 7) { return space; }
             }
         }).filter(item => { return item !== undefined; });
-
-        openAndOpponentHeldKingSpaces = exclude(kingSpaces, activeSide); // [{x:__, y:__}]
-        // console.log(openAndOpponentHeldKingSpaces);  // WORKS!
         
-        // can any opponent piece check any openAndHeldKingSpaces?
+        kingSpacesUnderAttack = [];
+
+        openAndOpponentHeldKingSpaces = exclude(kingSpaces, activeSide); // [{x:_, y:_}]
+
         openAndOpponentHeldKingSpaces.forEach(space => {
             opponentSide.forEach(piece => {
-            // how can an opponentPiece check a kingSpace held by itself?
-                if (space.x !== piece.x || space.y !== piece.y) {
-                    if (checkingSpace(piece, space)) {
-                        kingSpacesUnderAttack.push(space);
-                    }
+                if (checkingSpace(piece, space, opponentSide)) {
+                    kingSpacesUnderAttack.push(space);
                 }
             }); // checkingSpace returns true/false if piece attacks space
         }); // array of pieces that attack a kingSpace
-        // console.log(kingSpacesUnderAttack);
-        kingSpacesUnderAttack = [];
-        kingSpaces = exclude(openAndOpponentHeldKingSpaces, kingSpacesUnderAttack);
+        
+       kingSpaces = exclude(openAndOpponentHeldKingSpaces, kingSpacesUnderAttack);
         
         kingSpaces.forEach(item => {
             document.getElementById(

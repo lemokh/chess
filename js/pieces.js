@@ -82,7 +82,7 @@ pieces.forEach(item => {
 
 let emptySpaces = openSpaces(boardIds, pieces);
 
-function checkingSpace(somePiece, checkSpace) { // returns true/false if some-piece checks-space 
+function checkingSpace(somePiece, checkSpace, opposingSide) { // returns true/false if some-piece checks-space 
     // ? somePiece is an object in the opposingSide array ---> checkSpace is the target piece
   
     function knightAttacks(knight, checkSpace) { // returns true/false if knight can checkSpace
@@ -241,12 +241,15 @@ function checkingSpace(somePiece, checkSpace) { // returns true/false if some-pi
         case king.x + 1: return (checkSpace.y === king.y + 1) || (checkSpace.y === king.y) || (checkSpace.y === king.y - 1);
       }
     }
+
     switch (somePiece.name) { // conditions for each piece to checkSpace
       case 'pawn': // ADD PAWN JUMP TWO & ENPASSANT
-        // console.log(checkSpace.x);
+      // WORKS FOR ORANGE PAWNS
+      // ADJUST TO WORK FOR BLUE PAWNS
+        // if pawn is to left or right of king space
         if ( [somePiece.x - 1, somePiece.x + 1].includes(checkSpace.x) ) { // sees if pawn can checkSpace
-          if (somePiece.owner === 0) return checkSpace.y === (somePiece.y - 1);
-          return checkSpace.y === (somePiece.y + 1);
+          if (opposingSide === blues) { return checkSpace.y === (somePiece.y - 1); }
+          else { return checkSpace.y === (somePiece.y + 1); }
         } return false;
       case 'knight': return knightAttacks(somePiece, checkSpace); // sees if knight can checkSpace
       case 'bishop': return bishopAttacks(somePiece, checkSpace); // sees if bishop can checkSpace
