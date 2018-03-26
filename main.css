@@ -65,10 +65,10 @@ board {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 65px;
-  width: 65px;
+  height: 80px;
+  width: 80px;
   margin: 2px;
-  padding: 8px;
+  padding: 0px;
 }
 
 .black {

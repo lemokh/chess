@@ -107,6 +107,7 @@ function lit(activeSide, opponentSide) {
                 activeSide[index].y = +e.target.id[1];
 
                 // removes image !!MUST DO THIS!!
+
                  
                 // if piece eaten, remove that piece from pieces array & push to proper takenBox div
                 // if new cell id already has an image attribute,
@@ -176,34 +177,33 @@ function lit(activeSide, opponentSide) {
     // unLitDivs = excludes(activeCells, litDivs);
     
     function knightLit(knight) {
+        block1 = false; block2 = false; block3 = false; block4 = false;
+        block5 = false; block6 = false; block7 = false; block8 = false;
         litDivs = [];
         mainLitDiv = knight.x.toString() + knight.y.toString(); // clicked knight space
         tempId.push( mainLitDiv );
-
+        
         // highlights clicked knight
         document.getElementById( mainLitDiv ).classList.add('mainLit');
-        
+
          // if own pieces occupy knight space, no highlight there
-        for (let i = 0; i < activeSide.length; i++) {
-            if (activeSide[i].x === knight.x + 1) {
-                if (activeSide[i].y === knight.y + 2) { block1 = true; break; }
-                if (activeSide[i].y === knight.y - 2) { block2 = true; break; }
-
+        // for (let i = 0; i < activeSide.length; i++) {
+        activeSide.forEach(piece => {
+            switch(piece.x) {
+                case knight.x + 1:
+                    if (piece.y === knight.y + 2) { block1 = true; break; }
+                    if (piece.y === knight.y - 2) { block2 = true; break; }
+                case knight.x - 1:
+                    if (piece.y === knight.y + 2) { block3 = true; break; }
+                    if (piece.y === knight.y - 2) { block4 = true; break; }
+                case knight.x + 2:
+                    if (piece.y === knight.y + 1) { block5 = true; break; }
+                    if (piece.y === knight.y - 1) { block6 = true; break; }
+                case knight.x - 2:
+                    if (piece.y === knight.y + 1) { block7 = true; break; }
+                    if (piece.y === knight.y - 1) { block8 = true; break; }
             }
-            if (activeSide[i].x === knight.x - 1) {
-                if (activeSide[i].y === knight.y + 2) { block3 = true; break; }
-                if (activeSide[i].y === knight.y - 2) { block4 = true; break; }
-            }
-            if (activeSide[i].x === knight.x + 2) {
-                if (activeSide[i].y === knight.y + 1) { block5 = true; break; }
-                if (activeSide[i].y === knight.y - 1) { block6 = true; break; }
-
-            }
-            if (activeSide[i].x === knight.x - 2) {
-                if (activeSide[i].y === knight.y + 1) { block7 = true; break; }
-                if (activeSide[i].y === knight.y - 1) { block8 = true; break; }
-            }
-        }
+        });
 
         if (!block1) {
             if (knight.x + 1 < 8) { // FILTERS OUT OFF-BOARD KNIGHT MOVES
@@ -586,4 +586,4 @@ function lit(activeSide, opponentSide) {
     }
 }
 lit(oranges, blues);
-// lit(blues, oranges);
+lit(blues, oranges);

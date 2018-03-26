@@ -1,6 +1,6 @@
 var pieces, mainLitDiv, litDivs, unLitDivs, img, index, tempId, moves, takenBox, enPassant, activeCells, activeSideLessKingSpaces, kingSpacesUnderAttack, orangeKingSpacesUnderAttack, orangelessKingSpaces, orangelessKingSpaces, blueKingSpaces, bluelessKingSpaces, orangeKingSpacesUnderAttack, block1, block2, block3, block4, block5, block6, block7, block8, vacantKingSpaces, whiteKing, blackKing, knightMoves, bishopMoves, bishopX, bishopY, rookMoves, kingSpaces, kingOpenSpaces, occupiedKingSpaces, kingAttackers, defenders, pinnedPieces, checkedPaths, nails, whites, blacks;
 
-const board = [
+const boardIds = [
     '00', '01', '02', '03', '04', '05', '06', '07',
     '10', '11', '12', '13', '14', '15', '16', '17',
     '20', '21', '22', '23', '24', '25', '26', '27',
@@ -71,6 +71,8 @@ let blues = [
   
 pieces = [...oranges, ...blues];
 
+// const board = document.getElementsByTagName('board');
+
 pieces.forEach(item => {
   img = document.createElement("img");
   img.src = item.image;
@@ -78,7 +80,7 @@ pieces.forEach(item => {
   document.getElementById(img.id).appendChild(img);
 });
 
-let emptySpaces = openSpaces(board, pieces);
+let emptySpaces = openSpaces(boardIds, pieces);
 
 function checkingSpace(somePiece, checkSpace) { // returns true/false if opposing piece checks space 
     // somePiece is an object in the opposingSide array ---> checkSpace is the target piece
