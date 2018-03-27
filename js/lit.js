@@ -95,7 +95,7 @@ function lit(activeSide, opponentSide) {
                 
                 // gathers index for clicked mainLitDiv pawn
                 index = activeSide.indexOf(pawn);  
-                // console.log(activeSide[index]); // {x:_, y:_,...}
+                // console.log(activeSide[index]); // {x:_, y:_}
                 // console.log(mainLitDiv); // 01
                 
                 // div of clicked lit cell
@@ -588,5 +588,5 @@ function lit(activeSide, opponentSide) {
         // }
     });
 }
-lit(oranges, blues);
+// lit(oranges, blues);
 lit(blues, oranges);
