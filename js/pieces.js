@@ -254,11 +254,9 @@ function checkingSpace(somePiece, checkSpace, opposingSide) { // returns true/fa
       }
     }
 
-    switch (somePiece.name) { // conditions for each piece to checkSpace
+    switch (somePiece.name) { // conditions for some piece to check space
       case 'pawn': // ADD PAWN JUMP TWO & ENPASSANT
-      // WORKS FOR ORANGE PAWNS
-      // ADJUST TO WORK FOR BLUE PAWNS
-        // if pawn is to left or right of king space
+        // if pawn is one cell left or right of check space
         if ( [somePiece.x - 1, somePiece.x + 1].includes(checkSpace.x) ) { // sees if pawn can checkSpace
           if (opposingSide === blues) { return checkSpace.y === (somePiece.y - 1); }
           else { return checkSpace.y === (somePiece.y + 1); }

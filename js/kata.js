@@ -1,5 +1,3 @@
-var whiteKing, blackKing, knightMoves, bishopMoves, bishopX, bishopY, rookMoves, kingSpaces, kingOpenSpaces, occupiedKingSpaces, kingAttackers, defenders, pinnedPieces, checkedPaths, nails, whites, blacks;
-
 function isCheck(pieces, player) { // returns EITHER an array of checking pieces OR false
   
   whites = []; blacks = []; pinnedPieces = []; checkedPaths = [];
