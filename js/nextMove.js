@@ -1,11 +1,11 @@
+// re-appropriate lit.js here
 function nextMove() {
-    renderBoard(); // DONE
+    renderBoard(); // DONE PIECES
     checkMate(); // FIX --> .side = __
-    // add click listener to activeSide --> DONE
-        // on-click: highlight possible moves --> DONE
-    
-    // add click listener to lit spaces --> DONE
-        // on-click: unhighlight possible moves --> DONE?
+    // add click listener to activeSide --> DONE LIT
+        // on-click: highlight possible moves --> DONE LIT
+    // add click listener to lit spaces --> DONE LIT
+        // on-click: unhighlight possible moves --> DONE LIT?
             
             // remove both click listeners --> use .getElementsByClassName()
             
@@ -15,8 +15,11 @@ function nextMove() {
             // }
             
             // set moved piece's {x1, x2} to be {x2, y2} within activeSide array
+            // movedPiece.x = litSpace.x;
+            // movedPiece.y = litSpace.y;
+            // DONE LIT
             
-            // update pieces array
+            // update pieces array --> pieces = [...oranges, ...blues];
             
             // tempSide = activeSide; activeSide = passiveSide; passiveSide = tempSide;
 }
