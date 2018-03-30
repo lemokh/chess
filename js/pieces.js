@@ -15,9 +15,7 @@ const boardIds = [
 function endGameNow() {
   // remove activeSide click listener
   
-  // if (activeSide === blues) {
-    // alert("blue resigns"); 
-  // }
+  // if (activeSide === blues) { alert("blue resigns"); }
   // else {alert("orange resigns");} 
   
   // update user profile
