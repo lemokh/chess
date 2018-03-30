@@ -78,17 +78,18 @@ let blues = [
 
 { name: 'king', x: 4, y: 6, image: './images/blueKing.png' }
 ];
-  
-pieces = [...oranges, ...blues];
-
+ 
 // const board = document.getElementsByTagName('board');
 
-pieces.forEach(item => {
-  img = document.createElement("img");
-  img.src = item.image;
-  img.id = item.x.toString() + item.y.toString();;
-  document.getElementById(img.id).appendChild(img);
-});
+function renderBoard() {
+  pieces = [...oranges, ...blues];
+  pieces.forEach(item => {
+    img = document.createElement("img");
+    img.src = item.image;
+    img.id = item.x.toString() + item.y.toString();;
+    document.getElementById(img.id).appendChild(img);
+  });
+}
 
 let emptySpaces = openSpaces(boardIds, pieces);
 
