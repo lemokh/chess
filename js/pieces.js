@@ -91,6 +91,11 @@ function renderBoard() {
   });
 }
 
+renderBoard();
+
+// var activeSide = blues, passiveSide = oranges;
+// maybe do something like renderBoard(activeSide, passiveSide); ?
+
 let emptySpaces = openSpaces(boardIds, pieces);
 
 function checkingSpace(somePiece, checkSpace, opposingSide) { // returns true/false if some-piece checks-space 
