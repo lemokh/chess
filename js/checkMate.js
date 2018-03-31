@@ -194,7 +194,7 @@ function checkMate() {
       }
     }
     
-    function inCheck(opposingSide, king) { // discerns if check
+    function inCheck(opposingSide, king) { // discerns if check occurs
       
       kingAttackers = []; // contains pieces checking king
       
@@ -202,7 +202,7 @@ function checkMate() {
         if (checkingKing(item, king)) { kingAttackers.push(item); }
       }); //console.log(kingAttackers);
       
-      if (kingAttackers.length > 0) { return ; }
+      if (kingAttackers.length > 0) { return isMate(); }
       else { return false; }
     }
   
