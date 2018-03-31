@@ -1,4 +1,4 @@
-function lit(activeSide, opponentSide) {
+function lit(activeSide, passiveSide) {
     litDivs = [];
     tempId = [];
     // function toggleClocks() {}
@@ -15,7 +15,7 @@ function lit(activeSide, opponentSide) {
         // highlights all possible moves for clicked piece
         if (activeSide === blues) {
             takenBox = document.getElementsByTagName('takenBox1');
-            opponentSide.forEach(item => { // highlights anywhere pawn can attack
+            passiveSide.forEach(item => { // highlights anywhere pawn can attack
                 if (item.y === pawn.y - 1) {
                     if (item.x === pawn.x + 1) {
                         document.getElementById(
@@ -51,7 +51,7 @@ function lit(activeSide, opponentSide) {
         } 
         else { // since activeSide === oranges...
             takenBox = document.getElementsByTagName('takenBox2');
-            opponentSide.forEach(item => { // highlights any spaces that pawn can attack
+            passiveSide.forEach(item => { // highlights any spaces that pawn can attack
                 if (item.y === pawn.y + 1) {
                     if (item.x === pawn.x + 1) {
                         document.getElementById(
@@ -308,8 +308,8 @@ function lit(activeSide, opponentSide) {
                 bishopY += 1;
             }
             for (let i = 0; i < activeSide.length; i++) {
-                if (opponentSide[i].x === bishopX) {
-                    if (opponentSide[i].y === bishopY) {
+                if (passiveSide[i].x === bishopX) {
+                    if (passiveSide[i].y === bishopY) {
                         document.getElementById(
                             bishopX.toString() + bishopY.toString()
                         ).classList.add('lit');
@@ -333,8 +333,8 @@ function lit(activeSide, opponentSide) {
                 bishopY -= 1;
             }
             for (let i = 0; i < activeSide.length; i++) {
-                if (opponentSide[i].x === bishopX) {
-                    if (opponentSide[i].y === bishopY) {
+                if (passiveSide[i].x === bishopX) {
+                    if (passiveSide[i].y === bishopY) {
                         document.getElementById(
                             bishopX.toString() + bishopY.toString()
                         ).classList.add('lit');
@@ -358,8 +358,8 @@ function lit(activeSide, opponentSide) {
                 bishopY += 1;
             }
             for (let i = 0; i < activeSide.length; i++) {
-                if (opponentSide[i].x === bishopX) {
-                    if (opponentSide[i].y === bishopY) {
+                if (passiveSide[i].x === bishopX) {
+                    if (passiveSide[i].y === bishopY) {
                         document.getElementById(
                             bishopX.toString() + bishopY.toString()
                         ).classList.add('lit');
@@ -383,8 +383,8 @@ function lit(activeSide, opponentSide) {
                 bishopY -= 1;
             }
             for (let i = 0; i < activeSide.length; i++) {
-                if (opponentSide[i].x === bishopX) {
-                    if (opponentSide[i].y === bishopY) {
+                if (passiveSide[i].x === bishopX) {
+                    if (passiveSide[i].y === bishopY) {
                         document.getElementById(
                             bishopX.toString() + bishopY.toString()
                         ).classList.add('lit');
@@ -418,7 +418,7 @@ function lit(activeSide, opponentSide) {
 
                 rookX -= 1;
             }
-            if (opponentSide.includes(rookX.toString() + rook.y.toString())) {
+            if (passiveSide.includes(rookX.toString() + rook.y.toString())) {
                 document.getElementById(
                     rookX.toString() + rook.y.toString()
                 ).classList.add('lit');
@@ -437,7 +437,7 @@ function lit(activeSide, opponentSide) {
 
                 rookX += 1;
             }
-            if (opponentSide.includes(rookX.toString() + rook.y.toString())) {
+            if (passiveSide.includes(rookX.toString() + rook.y.toString())) {
                 document.getElementById(
                     rookX.toString() + rook.y.toString()
                 ).classList.add('lit');
@@ -456,7 +456,7 @@ function lit(activeSide, opponentSide) {
 
                 rookY -= 1;
             }
-            if (opponentSide.includes(rook.x.toString() + rookY.toString())) {
+            if (passiveSide.includes(rook.x.toString() + rookY.toString())) {
                 document.getElementById(
                     rook.x.toString() + rookY.toString()
                 ).classList.add('lit');
@@ -475,7 +475,7 @@ function lit(activeSide, opponentSide) {
 
                 rookY += 1;
             }
-            if (opponentSide.includes(rook.x.toString() + rookY.toString())) {
+            if (passiveSide.includes(rook.x.toString() + rookY.toString())) {
                 document.getElementById(
                     rook.x.toString() + rookY.toString()
                 ).classList.add('lit');
@@ -529,8 +529,8 @@ function lit(activeSide, opponentSide) {
         openAndOpponentHeldKingSpaces = exclude(kingSpaces, activeSide); // [{x:_, y:_}]
 
         openAndOpponentHeldKingSpaces.forEach(space => {
-            opponentSide.forEach(piece => {
-                if (checkingSpace(piece, space, opponentSide)) {
+            passiveSide.forEach(piece => {
+                if (checkingSpace(piece, space, passiveSide)) {
                     kingSpacesUnderAttack.push(space);
                 }
             }); // checkingSpace returns true/false if piece attacks space

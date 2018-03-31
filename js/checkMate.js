@@ -194,11 +194,11 @@ function checkMate() {
       }
     }
     
-    function inCheck(opposingSide, king) { // discerns if check occurs
+    function inCheck(passiveSide, king) { // discerns if check occurs
       
       kingAttackers = []; // contains pieces checking king
       
-      opposingSide.forEach(item => {
+      passiveSide.forEach(item => {
         if (checkingKing(item, king)) { kingAttackers.push(item); }
       }); //console.log(kingAttackers);
       
@@ -217,7 +217,7 @@ function checkMate() {
       }
     });
     
-    inCheck(opponentSide, activeSideKing); 
+    inCheck(passiveSide, activeSideKing); 
   }
 }
 
@@ -414,11 +414,11 @@ function isCheck(pieces, player) { // returns EITHER an array of checking pieces
     }
   }
   
-  function inCheck(opposingSide, king) { // discerns if check
+  function inCheck(passiveSide, king) { // discerns if check
     
     kingAttackers = []; // contains pieces checking king
     
-    opposingSide.forEach(item => {
+    passiveSide.forEach(item => {
       if (checkingKing(item, king)) { kingAttackers.push(item); }
     }); //console.log(kingAttackers);
     
@@ -452,7 +452,7 @@ function isMate(pieces, player) {
   //===============================================================================================
 /*
   function checkingSpace(somePiece, checkSpace) { // returns true/false if opposing piece checks space 
-    // somePiece is an object in the opposingSide array ---> checkSpace is the target piece
+    // somePiece is an object in the passiveSide array ---> checkSpace is the target piece
   
     function knightAttacks(knight, checkSpace) { // returns true/false if knight can checkSpace
       knightMoves = []; // contains the two spaces where knight might checkSpace
@@ -628,7 +628,7 @@ function isMate(pieces, player) {
   } // returns true/false if somePiece checks space
 */
   //===============================================================================================
-  function checkMate(opposingSide, opposingKing, king, kingSide) { // returns true/false if check mate
+  function checkMate(passiveSide, opposingKing, king, kingSide) { // returns true/false if check mate
     
     occupiedKingSpaces = []; // contains {x,y} of all pieces surrounding king
     
@@ -672,7 +672,7 @@ function isMate(pieces, player) {
     
     kingOpenSpaces = vacantKingSpaces.map(space => { // for each vacant king space
     // if every opposing piece fails to check that vacant king space, then return that vacant space   
-      if (opposingSide.every(piece => {
+      if (passiveSide.every(piece => {
         return !checkingSpace(piece, space); 
       }) ) { return space; }
     }).filter(item => { return item !== undefined; }); // contains kingSpaces free from attack
@@ -767,12 +767,12 @@ function isMate(pieces, player) {
         return blockCheck();
       }
       
-      // do any opposingSide pieces cover kingAttacker?
-      if (opposingSide.length > 1) { // if only one, opposingSide[0] is kingAttackers[0]
-        for (let i = 0; i < opposingSide.length; i++) {
-          if (checkingSpace(opposingSide[i], kingAttackers[0])) {
+      // do any passiveSide pieces cover kingAttacker?
+      if (passiveSide.length > 1) { // if only one, passiveSide[0] is kingAttackers[0]
+        for (let i = 0; i < passiveSide.length; i++) {
+          if (checkingSpace(passiveSide[i], kingAttackers[0])) {
             return blockCheck();
-          } // opposingSide covers attacker
+          } // passiveSide covers attacker
         }
       }
       

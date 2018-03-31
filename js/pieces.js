@@ -98,8 +98,8 @@ renderBoard();
 
 let emptySpaces = openSpaces(boardIds, pieces);
 
-function checkingSpace(somePiece, checkSpace, opposingSide) { // returns true/false if some-piece checks-space 
-    // ? somePiece is an object in the opposingSide array ---> checkSpace is the target piece
+function checkingSpace(somePiece, checkSpace, passiveSide) { // returns true/false if some-piece checks-space 
+    // ? somePiece is an object in the passiveSide array ---> checkSpace is the target piece
   
     function knightAttacks(knight, checkSpace) { // returns true/false if knight can checkSpace
       knightMoves = []; // contains the two spaces where knight might checkSpace
@@ -262,7 +262,7 @@ function checkingSpace(somePiece, checkSpace, opposingSide) { // returns true/fa
       case 'pawn': // ADD PAWN JUMP TWO & ENPASSANT
         // if pawn is one cell left or right of check space
         if ( [somePiece.x - 1, somePiece.x + 1].includes(checkSpace.x) ) { // sees if pawn can checkSpace
-          if (opposingSide === blues) { return checkSpace.y === (somePiece.y - 1); }
+          if (passiveSide === blues) { return checkSpace.y === (somePiece.y - 1); }
           else { return checkSpace.y === (somePiece.y + 1); }
         } return false;
       case 'knight': return knightAttacks(somePiece, checkSpace); // sees if knight can checkSpace
