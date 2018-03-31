@@ -1,7 +1,7 @@
 // re-appropriate lit.js
 function nextMove() {
     renderBoard(); // DONE PIECES
-    checkMate(); // FIX --> .side = __
+    checkMate();
     // add click listener to activeSide --> DONE LIT
         // on-click: highlight possible moves --> DONE LIT
     // add click listener to lit spaces --> DONE LIT
