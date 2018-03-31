@@ -12,14 +12,14 @@ const boardIds = [
 ];
 
 []
-function endGameNow() {
+// function endGameNow() {
   // remove activeSide click listener
   
   // if (activeSide === blues) { alert("blue resigns"); }
   // else {alert("orange resigns");} 
   
   // update user profile
-}
+// }
 
 
 function openSpaces(arr1, arr2) {

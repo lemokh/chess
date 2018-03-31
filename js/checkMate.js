@@ -800,3 +800,9 @@ function isMate(pieces, player) {
   if (player === 'blue') { return checkMate(blacks, blackKing, whiteKing, whites); }
   else { return checkMate(whites, whiteKing, blackKing, blacks); }
 } // returns true/false if check mate
+
+
+
+// if (isCheck(passiveSide, activeSideKing) {
+//   if (isMate(passiveSide, activeSideKing) { endGame = true; }
+// }

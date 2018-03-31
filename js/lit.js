@@ -559,24 +559,12 @@ function lit(activeSide, opponentSide) {
                 });
             }
             switch (piece.name) {
-                case 'pawn':
-                    pawnLit(piece);
-                    break;
-                case 'knight':
-                    knightLit(piece);
-                    break;
-                case 'bishop':
-                    bishopLit(piece);
-                    break;
-                case 'rook':
-                    rookLit(piece);
-                    break;
-                case 'queen':
-                    queenLit(piece);
-                    break;
-                case 'king':
-                    kingLit(piece);
-                    break;
+                case 'pawn':    pawnLit(piece);     break;
+                case 'knight':  knightLit(piece);   break;
+                case 'bishop':  bishopLit(piece);   break;
+                case 'rook':    rookLit(piece);     break;
+                case 'queen':   queenLit(piece);    break;
+                case 'king':    kingLit(piece);     break;
             }
         });
         // document.getElementById(this.id).classList.contains('lit')) {
