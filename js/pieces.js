@@ -11,7 +11,7 @@ const boardIds = [
     '70', '71', '72', '73', '74', '75', '76', '77'
 ];
 
-
+[]
 function endGameNow() {
   // remove activeSide click listener
   
@@ -32,51 +32,51 @@ function openSpaces(arr1, arr2) {
 
 
 let oranges = [
-{ name: 'pawn', x: 0, y: 1, image: './images/orangePawn.png' },
-{ name: 'pawn', x: 1, y: 3, image: './images/orangePawn.png' },
-{ name: 'pawn', x: 2, y: 3, image: './images/orangePawn.png' },
-{ name: 'pawn', x: 3, y: 1, image: './images/orangePawn.png' },
-{ name: 'pawn', x: 4, y: 1, image: './images/orangePawn.png' },
-{ name: 'pawn', x: 5, y: 2, image: './images/orangePawn.png' },
-{ name: 'pawn', x: 6, y: 5, image: './images/orangePawn.png' },
-{ name: 'pawn', x: 7, y: 4, image: './images/orangePawn.png' },
+{ side: 'orange', name: 'pawn', x: 0, y: 1, image: './images/orangePawn.png' },
+{ side: 'orange', name: 'pawn', x: 1, y: 3, image: './images/orangePawn.png' },
+{ side: 'orange', name: 'pawn', x: 2, y: 3, image: './images/orangePawn.png' },
+{ side: 'orange', name: 'pawn', x: 3, y: 1, image: './images/orangePawn.png' },
+{ side: 'orange', name: 'pawn', x: 4, y: 1, image: './images/orangePawn.png' },
+{ side: 'orange', name: 'pawn', x: 5, y: 2, image: './images/orangePawn.png' },
+{ side: 'orange', name: 'pawn', x: 6, y: 5, image: './images/orangePawn.png' },
+{ side: 'orange', name: 'pawn', x: 7, y: 4, image: './images/orangePawn.png' },
 
-{ name: 'knight', x: 6, y: 3, image: './images/orangeKnight.png' },
-{ name: 'knight', x: 6, y: 0, image: './images/orangeKnight.png' },
+{ side: 'orange', name: 'knight', x: 6, y: 3, image: './images/orangeKnight.png' },
+{ side: 'orange', name: 'knight', x: 6, y: 0, image: './images/orangeKnight.png' },
 
-{ name: 'bishop', x: 3, y: 3, image: './images/orangeBishop.png' },
-{ name: 'bishop', x: 5, y: 0, image: './images/orangeBishop.png' },
+{ side: 'orange', name: 'bishop', x: 3, y: 3, image: './images/orangeBishop.png' },
+{ side: 'orange', name: 'bishop', x: 5, y: 0, image: './images/orangeBishop.png' },
 
-{ name: 'rook', x: 0, y: 0, image: './images/orangeRook.png' },
-{ name: 'rook', x: 7, y: 1, image: './images/orangeRook.png' },
+{ side: 'orange', name: 'rook', x: 0, y: 0, image: './images/orangeRook.png' },
+{ side: 'orange', name: 'rook', x: 7, y: 1, image: './images/orangeRook.png' },
 
-{ name: 'queen', x: 3, y: 0, image: './images/orangeQueen.png' },
+{ side: 'orange', name: 'queen', x: 3, y: 0, image: './images/orangeQueen.png' },
 
-{ name: 'king', x: 5, y: 3, image: './images/orangeKing.png' },
+{ side: 'orange', name: 'king', x: 5, y: 3, image: './images/orangeKing.png' },
 ];
 
 let blues = [
-{ name: 'pawn', x: 0, y: 5, image: './images/bluePawn.png' },
-{ name: 'pawn', x: 1, y: 6, image: './images/bluePawn.png' },
-{ name: 'pawn', x: 2, y: 5, image: './images/bluePawn.png' },
-{ name: 'pawn', x: 3, y: 5, image: './images/bluePawn.png' },
-{ name: 'pawn', x: 4, y: 3, image: './images/bluePawn.png' },
-{ name: 'pawn', x: 5, y: 4, image: './images/bluePawn.png' },
-{ name: 'pawn', x: 6, y: 6, image: './images/bluePawn.png' },
-{ name: 'pawn', x: 7, y: 5, image: './images/bluePawn.png' },
+{ side: 'blue', name: 'pawn', x: 0, y: 5, image: './images/bluePawn.png' },
+{ side: 'blue', name: 'pawn', x: 1, y: 6, image: './images/bluePawn.png' },
+{ side: 'blue', name: 'pawn', x: 2, y: 5, image: './images/bluePawn.png' },
+{ side: 'blue', name: 'pawn', x: 3, y: 5, image: './images/bluePawn.png' },
+{ side: 'blue', name: 'pawn', x: 4, y: 3, image: './images/bluePawn.png' },
+{ side: 'blue', name: 'pawn', x: 5, y: 4, image: './images/bluePawn.png' },
+{ side: 'blue', name: 'pawn', x: 6, y: 6, image: './images/bluePawn.png' },
+{ side: 'blue', name: 'pawn', x: 7, y: 5, image: './images/bluePawn.png' },
 
-{ name: 'knight', x: 1, y: 7, image: './images/blueKnight.png' },
-{ name: 'knight', x: 6, y: 7, image: './images/blueKnight.png' },
+{ side: 'blue', name: 'knight', x: 1, y: 7, image: './images/blueKnight.png' },
+{ side: 'blue', name: 'knight', x: 6, y: 7, image: './images/blueKnight.png' },
 
-{ name: 'bishop', x: 2, y: 4, image: './images/blueBishop.png' },
-{ name: 'bishop', x: 5, y: 7, image: './images/blueBishop.png' },
+{ side: 'blue', name: 'bishop', x: 2, y: 4, image: './images/blueBishop.png' },
+{ side: 'blue', name: 'bishop', x: 5, y: 7, image: './images/blueBishop.png' },
 
-{ name: 'rook', x: 0, y: 7, image: './images/blueRook.png' },
-{ name: 'rook', x: 7, y: 7, image: './images/blueRook.png' },
+{ side: 'blue', name: 'rook', x: 0, y: 7, image: './images/blueRook.png' },
+{ side: 'blue', name: 'rook', x: 7, y: 7, image: './images/blueRook.png' },
 
-{ name: 'queen', x: 3, y: 7, image: './images/blueQueen.png' },
+{ side: 'blue', name: 'queen', x: 3, y: 7, image: './images/blueQueen.png' },
 
-{ name: 'king', x: 4, y: 6, image: './images/blueKing.png' }
+{ side: 'blue', name: 'king', x: 4, y: 6, image: './images/blueKing.png' }
 ];
  
 // const board = document.getElementsByTagName('board');
@@ -195,7 +195,7 @@ function checkingSpace(somePiece, checkSpace, opposingSide) { // returns true/fa
         }
       } 
       if (nails.length === 1) { 
-        if (nails[0].owner !== bishop.owner) {
+        if (nails[0].side !== bishop.side) {
           pinnedPieces.push(nails[0]) 
         }
       }
@@ -239,12 +239,12 @@ function checkingSpace(somePiece, checkSpace, opposingSide) { // returns true/fa
         }
       } 
       if (nails.length === 1) { 
-        if (nails[0].owner !== rook.owner) {
+        if (nails[0].side !== rook.side) {
           pinnedPieces.push(nails[0]) 
         }
       }
       return nails.length === 0; // returns true if no pieces block, else returns false
-    } // end of rookAttacks 
+    } // end of rookAttacks
     
     function queenAttacks(queen, checkSpace) { // returns true/false if queen can checkSpace
       return (bishopAttacks(queen, checkSpace) || rookAttacks(queen, checkSpace));

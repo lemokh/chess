@@ -1,4 +1,4 @@
-// re-appropriate lit.js here
+// re-appropriate lit.js
 function nextMove() {
     renderBoard(); // DONE PIECES
     checkMate(); // FIX --> .side = __
@@ -7,12 +7,13 @@ function nextMove() {
     // add click listener to lit spaces --> DONE LIT
         // on-click: unhighlight possible moves --> DONE LIT?
             
-            // remove both click listeners --> use .getElementsByClassName()
+            // **remove both click listeners --> use .getElementsByClassName()
             
-            // if ( {x2, y2} contains passiveSide --> image div) {
+            // **if ( {x2, y2} contains passiveSide --> image div) {
                 // remove that piece from passiveSide array
                 // add that piece to its takenBox div
             // }
+            // DO IN LIT
             
             // set moved piece's {x1, x2} to be {x2, y2} within activeSide array
             // movedPiece.x = litSpace.x;
@@ -20,6 +21,8 @@ function nextMove() {
             // DONE LIT
             
             // update pieces array --> pieces = [...oranges, ...blues];
-            
+            // DONE HERE
+
             // tempSide = activeSide; activeSide = passiveSide; passiveSide = tempSide;
+            // DONE HERE
 }
