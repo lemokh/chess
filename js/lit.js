@@ -12,9 +12,9 @@ function lit(activeSide, passiveSide) {
         // highlights clicked pawn
         document.getElementById( mainLitDiv ).classList.add('mainLit');
 
-        // highlights all possible moves for clicked piece
+        // highlights all possible moves for clicked piece --> WORKS!
         if (activeSide === blues) {
-            takenBox = document.getElementsByTagName('takenBox1');
+            takenBox = document.getElementsById('takenBox1');
             passiveSide.forEach(item => { // highlights anywhere pawn can attack
                 if (item.y === pawn.y - 1) {
                     if (item.x === pawn.x + 1) {
@@ -32,7 +32,7 @@ function lit(activeSide, passiveSide) {
                 }
             });
 
-            // if empty space one ahead of pawn, highlights it
+            // if empty space one ahead of pawn, highlights it --> WORKS!
             if (emptySpaces.includes(pawn.x.toString() + (pawn.y - 1).toString())) {    
                 document.getElementById(
                     pawn.x.toString() + (pawn.y - 1).toString()
@@ -49,8 +49,8 @@ function lit(activeSide, passiveSide) {
                 }
             }
         } 
-        else { // since activeSide === oranges...
-            takenBox = document.getElementsByTagName('takenBox2');
+        else { // since activeSide === oranges... does same --> WORKS!
+            takenBox = document.getElementsById('takenBox2');
             passiveSide.forEach(item => { // highlights any spaces that pawn can attack
                 if (item.y === pawn.y + 1) {
                     if (item.x === pawn.x + 1) {
@@ -83,18 +83,43 @@ function lit(activeSide, passiveSide) {
                     }
                 }
             }
-        }
-        // MOVE() ======================================================================================== 
-        litDivs.forEach(item => { // if a litDiv is clicked, move piece there 
-            document.getElementById(item).addEventListener('click', function move(e) { // moves piece and begins next turn
-                console.log();
+        } // WORKS!
+// MOVE() ======================================================================================== 
+        litDivs.forEach(item => { // if a litDiv is clicked, move piece there
+            document.getElementById(item).addEventListener(
+                'click',
+                function move(e) { // moves piece and begins next turn
+                // console.log();
+
                 // un-highlights all cells
                 document.getElementById(tempId[0]).classList.remove('mainLit');
                 tempId = [];
-                litDivs.forEach(item => {document.getElementById(item).classList.remove('lit')});
-                
-                // gathers index for clicked mainLitDiv pawn
-                index = activeSide.indexOf(pawn);  
+                litDivs.forEach(item => {
+                    document.getElementById(item).classList.remove('lit')
+                });
+
+                // toggles activeSide .noClick
+                function toggleNoClick() {
+                    if (document.getElementById(activeSide[0].x.toString + activeSide[0].y.toString).classList.includes('noClick')) {
+                        activeSide.forEach(item => {
+                            document.getElementById(
+                                item.x.toString() + item.y.toString()
+                            ).classList.remove('noClick');
+                            // removeEventListener('click', highlight);
+                        });
+                    }
+                    else {
+                        activeSide.forEach(item => {
+                            document.getElementById(
+                                item.x.toString() + item.y.toString()
+                            ).classList.add('noClick');
+                            // removeEventListener('click', highlight);
+                        });
+                    }
+                }
+
+                // gets activeSide index for clicked mainLitDiv pawn 
+                index = activeSide.indexOf(pawn);
                 // console.log(activeSide[index]); // {x:_, y:_}
                 // console.log(mainLitDiv); // 01
                 
@@ -105,9 +130,6 @@ function lit(activeSide, passiveSide) {
                 // updates piece x & y                
                 activeSide[index].x = +e.target.id[0];
                 activeSide[index].y = +e.target.id[1];
-
-                // removes image !!MUST DO THIS!!
-
                  
                 // if piece eaten, remove that piece from pieces array & push to proper takenBox div
                 // if new cell id already has an image attribute,
@@ -142,6 +164,7 @@ function lit(activeSide, passiveSide) {
                 }
                 else {
                     // toggleClocks();
+
                     // diables oranges click-listener
                     // for (let i = 0; i < activeSide.length; i++) {
                     //     document.getElementById(
@@ -493,7 +516,7 @@ function lit(activeSide, passiveSide) {
         rookLit(queen);
     }
 
-    function kingLit(king) { // ORANGE KING DOESN'T REACT RIGHT TO OPPOSING PAWNS
+    function kingLit(king) {
         litDivs = [];
         mainLitDiv = king.x.toString() + king.y.toString(); // clicked king
         tempId.push( mainLitDiv );
@@ -546,29 +569,29 @@ function lit(activeSide, passiveSide) {
         });
     } // ends kingLit()
 
-    activeSide.forEach(piece => {
+    activeSide.forEach(piece => { // adds click-listeners to activeSide
         document.getElementById(
             piece.x.toString() + piece.y.toString()
-        ).addEventListener('click', function highlight() {
-            if (tempId.length > 0) { // un-highlights all cells after first click
-                document.getElementById(tempId[0]).classList.remove('mainLit');
-                tempId = [];
-                // console.log(litDivs);
-                litDivs.forEach(item => {
-                    document.getElementById(item).classList.remove('lit');
-                });
+        ).addEventListener(
+            'click', 
+            function highlight() { // on-click of activeSide piece
+                if (tempId.length > 0) { // un-highlights all cells
+                    document.getElementById(tempId[0]).classList.remove('mainLit');
+                    tempId = [];
+                    litDivs.forEach(item => {
+                        document.getElementById(item).classList.remove('lit');
+                    });
+                }  // console.log(litDivs);
+                switch (piece.name) { // highlights possible piece moves
+                    case 'pawn':    pawnLit(piece);     break;
+                    case 'knight':  knightLit(piece);   break;
+                    case 'bishop':  bishopLit(piece);   break;
+                    case 'rook':    rookLit(piece);     break;
+                    case 'queen':   queenLit(piece);    break;
+                    case 'king':    kingLit(piece);     break;
+                }
             }
-            switch (piece.name) {
-                case 'pawn':    pawnLit(piece);     break;
-                case 'knight':  knightLit(piece);   break;
-                case 'bishop':  bishopLit(piece);   break;
-                case 'rook':    rookLit(piece);     break;
-                case 'queen':   queenLit(piece);    break;
-                case 'king':    kingLit(piece);     break;
-            }
-        });
-        // document.getElementById(this.id).classList.contains('lit')) {
-        // function move();
+        );
         // UPDATE x && y of original clicked piece to be the second clicked x & y
         // board.classList.remove() and board.removeEventListener()
         // if piece eaten, remove that piece from pieces array & push to proper DONE box

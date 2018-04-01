@@ -6,9 +6,9 @@ function nextMove() {
     // add click listener to activeSide --> DONE LIT
         // on-click: highlight possible moves --> DONE LIT
     // add click listener to lit spaces --> DONE LIT
-        // on-click: unhighlight possible moves --> DONE LIT?
+        // on-click: unhighlight possible moves --> DONE LIT
             
-            // **remove both click listeners --> use .getElementsByClassName()
+            // **remove both click listeners --> DONE LIT
             
             // **if ( {x2, y2} contains passiveSide --> image div) {
                 // remove that piece from passiveSide array

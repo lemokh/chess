@@ -32,13 +32,25 @@ player2 {
   opacity: .2;
 }
 
-clock1 {}
+clock1 {
+  display: flex;
+  flex-direction: row;
+}
 
-clock2 {}
+clock2 {
+  display: flex;
+  flex-direction: row;
+}
 
-takenBox1 {}
+#takenBox1 {
+  display: flex;
+  flex-direction: row;
+}
 
-takenBox2 {}
+#takenBox2 {
+  display: flex;
+  flex-direction: row;
+}
 
 board {
   display: flex;
@@ -112,4 +124,8 @@ https://github.com/lemokh/Photos/blob/master/siennaSquare.jpg?raw=true
   /* background-blend-mode: screen, difference, lighten; */
   background-color: rgba(219, 112, 147, .2);
   /*background-blend-mode: luminosity;*/
+}
+
+.noClick {
+  pointer-events: none;
 }
