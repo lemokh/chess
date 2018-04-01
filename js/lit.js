@@ -7,10 +7,10 @@ function lit(activeSide, passiveSide) {
         console.log();
         litDivs = [];
         mainLitDiv = pawn.x.toString() + pawn.y.toString(); // clicked pawn
-        tempId.push( mainLitDiv );
+        tempId.push(mainLitDiv);
 
         // highlights clicked pawn
-        document.getElementById( mainLitDiv ).classList.add('mainLit');
+        document.getElementById(mainLitDiv).classList.add('mainLit');
 
         // highlights all possible moves for clicked piece --> WORKS!
         if (activeSide === blues) {
@@ -21,19 +21,19 @@ function lit(activeSide, passiveSide) {
                         document.getElementById(
                             item.x.toString() + item.y.toString()
                         ).classList.add('lit');
-                        litDivs.push( item.x.toString() + item.y.toString() );
+                        litDivs.push(item.x.toString() + item.y.toString());
                     }
                     if (item.x === pawn.x - 1) {
                         document.getElementById(
                             item.x.toString() + item.y.toString()
                         ).classList.add('lit');
-                        litDivs.push( item.x.toString() + item.y.toString() );
+                        litDivs.push(item.x.toString() + item.y.toString());
                     }
                 }
             });
 
             // if empty space one ahead of pawn, highlights it --> WORKS!
-            if (emptySpaces.includes(pawn.x.toString() + (pawn.y - 1).toString())) {    
+            if (emptySpaces.includes(pawn.x.toString() + (pawn.y - 1).toString())) {
                 document.getElementById(
                     pawn.x.toString() + (pawn.y - 1).toString()
                 ).classList.add('lit');
@@ -48,7 +48,7 @@ function lit(activeSide, passiveSide) {
                     }
                 }
             }
-        } 
+        }
         else { // since activeSide === oranges... does the same
             takenBox = document.getElementsByTagName('takenBox2');
             passiveSide.forEach(item => { // highlights any spaces that pawn can attack
@@ -84,78 +84,81 @@ function lit(activeSide, passiveSide) {
                 }
             }
         } // WORKS!
-// MOVE() ======================================================================================== 
+        // MOVE() ======================================================================================== 
+        // litDivs is an array of ids
         litDivs.forEach(item => { // if a litDiv is clicked, move that piece there
-            document.getElementById(item).addEventListener(
+            document.getElementById(item).addEventListener( // item is an id
                 'click',
                 function move(e) { // moves piece and begins next turn
+                    document.getElementById(tempId[0]).classList.remove('mainLit');
+                    tempId = [];
 
-                // un-highlights all cells
-                document.getElementById(tempId[0]).classList.remove('mainLit');
-                tempId = [];
-                litDivs.forEach(item => {
-                    document.getElementById(item).classList.remove('lit')
-                });
-
-                function toggleNoClick() {
-                    document.getElementsByClassName('noClick').classList.remove('noClick');
-                    
-                    activeSide.forEach(item => {
-                        document.getElementById(
-                            item.x.toString() + item.y.toString()
-                        ).classList.add('noClick');
+                    litDivs.forEach(item => { // un-highlights all cells
+                        document.getElementById(item).classList.remove('lit')
                     });
-                } // toggles .noClick class
 
-                // gets activeSide index1 for clicked mainLitDiv pawn 
-                index1 = activeSide.indexOf(pawn);
-                
-                // gets passiveSide index2 for later removing piece from passiveSide 
-                for (let i = 0; i < passiveSide.length; i++) {
-                    if (passiveSide[i].x.toString() + passiveSide[i].y.toString() === e.target.id) {
-                        index2 = i; break;
+                    function toggleNoClick() {
+                        document.getElementsByClassName(
+                            'noClick'
+                        ).classList.remove('noClick');
+
+                        activeSide.forEach(item => {
+                            document.getElementById(
+                                item.x.toString() + item.y.toString()
+                            ).classList.add('noClick');
+                        });
                     }
-                }
 
-                // console.log(activeSide[index]); // {x:_, y:_}
-                // console.log(mainLitDiv); // 01
-                
-                // if piece is eaten, remove it from pieces array & push to proper takenBox div
-                if (document.getElementById(e.target.id).firstChild) { // WORKS!
-                    document.getElementById(e.target.id).replaceChild(
-                        document.getElementById(mainLitDiv).firstChild, // new child
-                        document.getElementById(e.target.id).firstChild // old child
-                    )
-                    // updates the first clicked piece x & y
-                    // to be the second clicked space's x & y             
-                    activeSide[index1].x = +e.target.id[0];
-                    activeSide[index1].y = +e.target.id[1];
+                    // gets activeSide index1 for clicked mainLitDiv pawn 
+                    index1 = activeSide.indexOf(pawn);
 
-                    passiveSide.splice(index2, 1); // removes piece from passiveSide
-                    pieces = [...oranges, ...blues]; // updates pieces
-                    
-                    // adds that image to takenBox1/2 div
-                    
-                }
+                    // gets passiveSide index2 for later removing piece from passiveSide 
+                    for (let i = 0; i < passiveSide.length; i++) {
+                        if (passiveSide[i].x.toString() + passiveSide[i].y.toString() === e.target.id) {
+                            index2 = i;
+                            break;
+                        }
+                    }
 
-                // add image to new cell --> WORKS!
-                // img.src = pieces[index].image;
-                // img.id = pieces[index].x.toString() + pieces[index].y.toString();
-                // document.getElementById(img.id).appendChild(img);
-    
-                if (activeSide === blues) { 
-                    // toggleClocks();
-                    toggleNoClick();
-                    lit(oranges, blues);
-                }
-                else {
-                    // toggleClocks();
-                    // toggleNoClick();
-                    lit(blues, oranges);
-                }
-            });
+                    // console.log(activeSide[index]); // {x:_, y:_}
+                    // console.log(mainLitDiv); // 01
+
+                    // if piece is eaten, remove it from pieces array & push to proper takenBox div
+                    if (document.getElementById(e.target.id).firstChild) { // WORKS!
+                        document.getElementById(e.target.id).replaceChild(
+                            document.getElementById(mainLitDiv).firstChild, // new child
+                            document.getElementById(e.target.id).firstChild // old child
+                        )
+                        // updates the first clicked piece x & y
+                        // to be the second clicked space's x & y             
+                        activeSide[index1].x = +e.target.id[0];
+                        activeSide[index1].y = +e.target.id[1];
+
+                        passiveSide.splice(index2, 1); // removes piece from passiveSide
+                        pieces = [...oranges, ...blues]; // updates pieces
+
+                        // adds that image to takenBox1/2 div
+                        // WRITE THIS
+                    }
+                    // UNNECESSARY!
+                    // add image to new cell --> WORKS!
+                    // img.src = pieces[index].image;
+                    // img.id = pieces[index].x.toString() + pieces[index].y.toString();
+                    // document.getElementById(img.id).appendChild(img);
+
+                    if (activeSide === blues) {
+                        // toggleClocks();
+                        toggleNoClick();
+                        lit(oranges, blues);
+                    }
+                    else {
+                        // toggleClocks();
+                        // toggleNoClick();
+                        lit(blues, oranges);
+                    }
+                });
         });
-    } 
+    }
     // ENPASSANT
     // activeSide.forEach(item => { // if this pawn moves there
     //   if (item.name === 'pawn') {
@@ -178,20 +181,26 @@ function lit(activeSide, passiveSide) {
     //     });
     // }
     // unLitDivs = excludes(activeCells, litDivs);
-    
+
     function knightLit(knight) {
-        block1 = false; block2 = false; block3 = false; block4 = false;
-        block5 = false; block6 = false; block7 = false; block8 = false;
+        block1 = false;
+        block2 = false;
+        block3 = false;
+        block4 = false;
+        block5 = false;
+        block6 = false;
+        block7 = false;
+        block8 = false;
         litDivs = [];
         mainLitDiv = knight.x.toString() + knight.y.toString(); // clicked knight space
-        tempId.push( mainLitDiv );
-        
-        // highlights clicked knight
-        document.getElementById( mainLitDiv ).classList.add('mainLit');
+        tempId.push(mainLitDiv);
 
-         // if own pieces occupy knight space, no highlight there
+        // highlights clicked knight
+        document.getElementById(mainLitDiv).classList.add('mainLit');
+
+        // if own pieces occupy knight space, no highlight there
         activeSide.forEach(piece => {
-            switch(piece.x) {
+            switch (piece.x) {
                 case knight.x + 1:
                     if (piece.y === knight.y + 2) { block1 = true; break; }
                     if (piece.y === knight.y - 2) { block2 = true; break; }
@@ -292,10 +301,10 @@ function lit(activeSide, passiveSide) {
     function bishopLit(bishop) {
         litDivs = [];
         mainLitDiv = bishop.x.toString() + bishop.y.toString(); // clicked bishop space
-        tempId.push( mainLitDiv );
+        tempId.push(mainLitDiv);
 
         // highlights clicked space
-        document.getElementById( mainLitDiv ).classList.add('mainLit');
+        document.getElementById(mainLitDiv).classList.add('mainLit');
 
         function one(bishop) {
             bishopX = bishop.x + 1;
@@ -405,10 +414,10 @@ function lit(activeSide, passiveSide) {
     function rookLit(rook) {
         // litDivs = [];
         mainLitDiv = rook.x.toString() + rook.y.toString(); // clicked rook
-        tempId.push( mainLitDiv );
+        tempId.push(mainLitDiv);
 
         // highlights clicked rook
-        document.getElementById( mainLitDiv ).classList.add('mainLit');
+        document.getElementById(mainLitDiv).classList.add('mainLit');
 
         function first(rook) {
             rookX = rook.x - 1;
@@ -499,10 +508,10 @@ function lit(activeSide, passiveSide) {
     function kingLit(king) {
         litDivs = [];
         mainLitDiv = king.x.toString() + king.y.toString(); // clicked king
-        tempId.push( mainLitDiv );
+        tempId.push(mainLitDiv);
 
         // highlights clicked king
-        document.getElementById( mainLitDiv ).classList.add('mainLit');
+        document.getElementById(mainLitDiv).classList.add('mainLit');
 
         function exclude(res1, res2) {
             return res1.filter(obj => { // obj --> each item in res1
@@ -526,7 +535,7 @@ function lit(activeSide, passiveSide) {
                 if (space.y <= 7 && space.y <= 7) { return space; }
             }
         }).filter(item => { return item !== undefined; });
-        
+
         kingSpacesUnderAttack = [];
 
         openAndOpponentHeldKingSpaces = exclude(kingSpaces, activeSide); // [{x:_, y:_}]
@@ -538,9 +547,9 @@ function lit(activeSide, passiveSide) {
                 }
             }); // checkingSpace returns true/false if piece attacks space
         }); // array of pieces that attack a kingSpace
-        
-       kingSpaces = exclude(openAndOpponentHeldKingSpaces, kingSpacesUnderAttack);
-        
+
+        kingSpaces = exclude(openAndOpponentHeldKingSpaces, kingSpacesUnderAttack);
+
         kingSpaces.forEach(item => {
             document.getElementById(
                 item.x.toString() + item.y.toString()
@@ -553,7 +562,7 @@ function lit(activeSide, passiveSide) {
         document.getElementById(
             piece.x.toString() + piece.y.toString()
         ).addEventListener(
-            'click', 
+            'click',
             function highlight() { // on-click of activeSide piece
                 if (tempId.length > 0) { // un-highlights all cells
                     document.getElementById(tempId[0]).classList.remove('mainLit');
@@ -561,14 +570,26 @@ function lit(activeSide, passiveSide) {
                     litDivs.forEach(item => {
                         document.getElementById(item).classList.remove('lit');
                     });
-                }  // console.log(litDivs);
+                } // console.log(litDivs);
                 switch (piece.name) { // highlights possible piece moves
-                    case 'pawn':    pawnLit(piece);     break;
-                    case 'knight':  knightLit(piece);   break;
-                    case 'bishop':  bishopLit(piece);   break;
-                    case 'rook':    rookLit(piece);     break;
-                    case 'queen':   queenLit(piece);    break;
-                    case 'king':    kingLit(piece);     break;
+                    case 'pawn':
+                        pawnLit(piece);
+                        break;
+                    case 'knight':
+                        knightLit(piece);
+                        break;
+                    case 'bishop':
+                        bishopLit(piece);
+                        break;
+                    case 'rook':
+                        rookLit(piece);
+                        break;
+                    case 'queen':
+                        queenLit(piece);
+                        break;
+                    case 'king':
+                        kingLit(piece);
+                        break;
                 }
             }
         );
