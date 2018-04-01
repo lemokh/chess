@@ -79,9 +79,10 @@ let blues = [
 { side: 'blue', name: 'king', x: 4, y: 6, image: './images/blueKing.png' }
 ];
  
-// const board = document.getElementsByTagName('board');
+// const board = document.getElementById('board');
 
 pieces = [...oranges, ...blues];
+
 pieces.forEach(item => {
   img = document.createElement("img");
   img.src = item.image;
