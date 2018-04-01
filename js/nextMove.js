@@ -1,6 +1,6 @@
 // re-appropriate lit.js
 function nextMove() {
-    renderBoard(); // DONE PIECES
+    // reRenderBoard(); // DONE PIECES
     if (checkMate()) { return endSequence(); }; // write this!
 //===============================================================================
     // add click listener to activeSide --> DONE LIT

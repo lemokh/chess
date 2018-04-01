@@ -1,4 +1,4 @@
-var gameEnds, tempSide, pieces, mainLitDiv, litDivs, unLitDivs, img, index, tempId, moves, takenBox, enPassant, activeCells, openAndOpponentHeldKingSpaces, kingSpacesUnderAttack, orangeKingSpacesUnderAttack, orangelessKingSpaces, orangelessKingSpaces, blueKingSpaces, bluelessKingSpaces, orangeKingSpacesUnderAttack, block1, block2, block3, block4, block5, block6, block7, block8, vacantKingSpaces, whiteKing, blackKing, knightMoves, bishopMoves, bishopX, bishopY, rookMoves, kingSpaces, kingOpenSpaces, occupiedKingSpaces, kingAttackers, defenders, pinnedPieces, checkedPaths, nails, whites, blacks;
+var player = 'blue', gameEnds, tempSide, pieces, movedPiece, mainLitDiv, litDivs, unLitDivs, img, index1, index2, tempId, moves, takenBox, enPassant, activeCells, openAndOpponentHeldKingSpaces, kingSpacesUnderAttack, orangeKingSpacesUnderAttack, orangelessKingSpaces, orangelessKingSpaces, blueKingSpaces, bluelessKingSpaces, orangeKingSpacesUnderAttack, block1, block2, block3, block4, block5, block6, block7, block8, vacantKingSpaces, whiteKing, blackKing, knightMoves, bishopMoves, bishopX, bishopY, rookMoves, kingSpaces, kingOpenSpaces, occupiedKingSpaces, kingAttackers, defenders, pinnedPieces, checkedPaths, nails, whites, blacks;
 
 const boardIds = [
     '00', '01', '02', '03', '04', '05', '06', '07',
@@ -81,20 +81,15 @@ let blues = [
  
 // const board = document.getElementsByTagName('board');
 
-function renderBoard() {
-  pieces = [...oranges, ...blues];
-  pieces.forEach(item => {
-    img = document.createElement("img");
-    img.src = item.image;
-    img.id = item.x.toString() + item.y.toString();;
-    document.getElementById(img.id).appendChild(img);
-  });
-}
-
-renderBoard();
+pieces = [...oranges, ...blues];
+pieces.forEach(item => {
+  img = document.createElement("img");
+  img.src = item.image;
+  img.id = item.x.toString() + item.y.toString();
+  document.getElementById(img.id).appendChild(img);
+});
 
 // var activeSide = blues, passiveSide = oranges;
-// maybe do something like renderBoard(activeSide, passiveSide); ?
 
 let emptySpaces = openSpaces(boardIds, pieces);
 
