@@ -97,17 +97,17 @@ function lit(activeSide, passiveSide) {
                         document.getElementById(item).classList.remove('lit')
                     });
 
-                    function toggleNoClick() {
-                        document.getElementsByClassName(
-                            'noClick'
-                        ).classList.remove('noClick');
+                    // function toggleNoClick() {
+                    //     document.getElementsByClassName(
+                    //         'noClick'
+                    //     ).classList.remove('noClick');
 
-                        activeSide.forEach(item => {
-                            document.getElementById(
-                                item.x.toString() + item.y.toString()
-                            ).classList.add('noClick');
-                        });
-                    }
+                    //     activeSide.forEach(item => {
+                    //         document.getElementById(
+                    //             item.x.toString() + item.y.toString()
+                    //         ).classList.add('noClick');
+                    //     });
+                    // }
 
                     // gets activeSide index1 for clicked mainLitDiv pawn 
                     index1 = activeSide.indexOf(pawn);
@@ -123,16 +123,20 @@ function lit(activeSide, passiveSide) {
                     // console.log(activeSide[index]); // {x:_, y:_}
                     // console.log(mainLitDiv); // 01
 
-                    // if piece is eaten, remove it from pieces array & push to proper takenBox div
+                    // if piece is eaten, replace new child image with old child image
+                    // remove old child from pieces array
+                    // push old child image to proper takenBox div
                     if (document.getElementById(e.target.id).firstChild) { // WORKS!
                         document.getElementById(e.target.id).replaceChild(
                             document.getElementById(mainLitDiv).firstChild, // new child
                             document.getElementById(e.target.id).firstChild // old child
                         )
-                        // updates the first clicked piece x & y
-                        // to be the second clicked space's x & y             
+                        // updates 1st clicked x & y to be 2nd clicked x & y             
                         activeSide[index1].x = +e.target.id[0];
                         activeSide[index1].y = +e.target.id[1];
+
+                        // updates 1st clicked id to be 2nd clicked id
+                        document.getElementById(e.target.id).firstChild.id = e.target.id;
 
                         passiveSide.splice(index2, 1); // removes piece from passiveSide
                         pieces = [...oranges, ...blues]; // updates pieces
@@ -140,22 +144,20 @@ function lit(activeSide, passiveSide) {
                         // adds that image to takenBox1/2 div
                         // WRITE THIS
                     }
-                    // UNNECESSARY!
-                    // add image to new cell --> WORKS!
-                    // img.src = pieces[index].image;
-                    // img.id = pieces[index].x.toString() + pieces[index].y.toString();
-                    // document.getElementById(img.id).appendChild(img);
+                    // else {} // simply move image & update x,y 
 
-                    if (activeSide === blues) {
-                        // toggleClocks();
-                        toggleNoClick();
-                        lit(oranges, blues);
-                    }
-                    else {
-                        // toggleClocks();
-                        // toggleNoClick();
-                        lit(blues, oranges);
-                    }
+
+
+                    // if (activeSide === blues) {
+                    //     // toggleClocks();
+                    //     // toggleNoClick();
+                    //     lit(oranges, blues);
+                    // }
+                    // else {
+                    //     // toggleClocks();
+                    //     // toggleNoClick();
+                    //     lit(blues, oranges);
+                    // }
                 });
         });
     }
