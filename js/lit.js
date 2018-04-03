@@ -87,7 +87,7 @@ function lit(activeSide, passiveSide) {
         } // WORKS!
         // MOVE() ======================================================================================== 
         // litDivs is an array of ids
-        // console.log(pawn);
+        // console.log(litDivs);
         litDivs.forEach(item => { // if a litDiv is clicked, move that piece there
             document.getElementById(item).addEventListener( // item is an id
                 'click',
@@ -95,6 +95,7 @@ function lit(activeSide, passiveSide) {
                     document.getElementById(tempId[0]).classList.remove('mainLit');
                     tempId = [];
 
+                    console.log(pawn.src);
                     // console.log(document.getElementById(mainLitDiv));
 
                     litDivs.forEach(item => { // un-highlights all cells
@@ -102,11 +103,20 @@ function lit(activeSide, passiveSide) {
                     });
 
                     // gets activeSide index1 for clicked mainLitDiv pawn 
-                    index1 = activeSide.indexOf(pawn);
+
+                    index1 = activeSide.indexOf({
+                        side: pawn.dataset.side;
+                        name: pawn.name,
+                        x: pawn.dataset.x,
+                        y: pawn.dataset.y,
+                        image: pawn.src,
+                    }); // pawn === e.target
+
+                    console.log(index1);
 
                     // gets passiveSide index2 for later removing piece from passiveSide 
                     for (let i = 0; i < passiveSide.length; i++) {
-                        if (passiveSide[i].x.toString() + passiveSide[i].y.toString() === e.target.id) {
+                        if (passiveSide[i].x.toString() + passiveSide[i].y.toString() === pawn.id) {
                             index2 = i;
                             break;
                         }
@@ -130,7 +140,9 @@ function lit(activeSide, passiveSide) {
                         document.getElementById(e.target.id).appendChild(
                             document.getElementById(mainLitDiv).firstChild
                         );
-                    }
+                    } // moves pawn forward
+
+                    // console.log(activeSide[index1]);
                     // updates 1st clicked x&y to be 2nd clicked x&y             
                     activeSide[index1].x = +e.target.id[0];
                     activeSide[index1].y = +e.target.id[1];
