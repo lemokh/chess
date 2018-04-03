@@ -609,9 +609,11 @@ function lit(activeSide, passiveSide) {
         // UPDATE x && y of original clicked piece to be the second clicked x & y
         // board.classList.remove() and board.removeEventListener()
         // if piece eaten, remove that piece from pieces array & push to proper DONE box
-
-        // }
     });
 }
 // lit(oranges, blues);
 lit(blues, oranges);
+
+
+
+// TRY REMOVING MOVE() BEFORE REMOVING HIGHLIGHT() CLICK LISTENERS
