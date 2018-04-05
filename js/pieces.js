@@ -46,7 +46,7 @@ var oranges = Array.from(orangeNodes), blues = Array.from(blueNodes);
 
 var pieces = [...oranges, ...blues]; // WORKS
 
-let emptySpaces = openSpaces(boardIds, pieces);
+var emptySpaces = openSpaces(boardIds, pieces);
 
 // var activeSide = blues, passiveSide = oranges;
 

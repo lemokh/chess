@@ -1,7 +1,7 @@
 function lit(activeSide, passiveSide) {
     litDivs = []; // holds lit ids on which to apply click-listeners
     tempId = []; // for un-highlighting all cells on clicking new piece
-    
+    emptySpaces = openSpaces(boardIds, pieces);
     // function toggleClocks() {}
 
     function pawnLit() {
@@ -164,9 +164,10 @@ function lit(activeSide, passiveSide) {
 
         // updates activeSide & pieces array
         activeSide.push(e.target);
-        console.log(pieces);
         pieces = [...oranges, ...blues];
-        console.log(pieces);
+
+        // UPDATE EMPTY SPACES!!
+    
         // removes click-listeners from activeSide and litDivs
         activeSide.forEach(piece => {
             document.getElementById(piece.id).removeEventListener('click', pieceLit);
