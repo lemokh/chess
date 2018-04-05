@@ -1,12 +1,11 @@
 function lit(activeSide, passiveSide) {
-    litDivs = []; // holds lit ids for applying click-listeners to
-    tempId = []; // for un-highlighting cells on clicking new piece
+    litDivs = []; // holds lit ids on which to apply click-listeners
+    tempId = []; // for un-highlighting all cells on clicking new piece
     
     // function toggleClocks() {}
 
     function pawnLit(pawn) {
-        // UPDATE ORANGE PAWN MOVE!!
-        // BLUE PAWN EATS ORANGE PAWN ONE AHEAD OF IT
+        // PAWN EATS PAWN ONE DIRECTLY AHEAD OF IT AFTER FIRST MOVE
         litDivs = [];
         tempId.push(pawn.id);
 
@@ -563,7 +562,7 @@ function lit(activeSide, passiveSide) {
     function pieceLit(e) { // on-click of activeSide piece
         // console.log(e.target);
 
-        if (tempId.length > 0) { // un-highlights all cells
+        if (tempId.length) { // un-highlights all cells
             document.getElementById(tempId[0]).classList.remove('mainLit');
             tempId = [];
             litDivs.forEach(item => {
