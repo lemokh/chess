@@ -4,7 +4,7 @@ function lit(activeSide, passiveSide) {
     
     // function toggleClocks() {}
 
-    function pawnLit(pawn) {
+    function pawnLit() {
         // FIX: PAWN EATS PAWN DIRECTLY AHEAD OF IT AFTER FIRST MOVE
         litDivs = [];
         tempId.push(pawn.id);
@@ -101,10 +101,8 @@ function lit(activeSide, passiveSide) {
             document.getElementById(item).classList.remove('lit')
         });
 
-        // MOVES pawn info to e.target cell --> DONE
-
-        // if piece eaten...
-        if (e.target.name !== '') {
+        // MOVES pawn info to e.target cell
+        if (e.target.name !== '') { // if piece eaten...
             console.log('piece eaten');
             
             // pushes eaten piece image to its takenBox div
@@ -120,28 +118,25 @@ function lit(activeSide, passiveSide) {
                 );
                 takenBlueBox.src = e.target.src;
                 blueTakenBoxIdCounter -= 1;
-            } 
+            }  // WORKS!
 
-            if (blues.includes(pawn)) {
+            if (blues.includes(pawn)) { // if pawn is blue... 
                 e.target.classList.remove('orange');
                 e.target.classList.add('blue');
                 pawn.classList.remove('blue');
-            }
-            else {
+            } else { // since pawn is orange...
                 e.target.classList.remove('blue');
                 e.target.classList.add('orange');
                 pawn.classList.remove('orange');
             }
 
-            // gets index for clicked pawn & e.target
-            index1 = activeSide.indexOf(pawn); // mainLitDiv?
+            // gets index for clicked space
             index2 = passiveSide.indexOf(e.target);
 
-            // removes vacated space from activeSide array         
-            activeSide.splice(index1, 1);
             // removes eaten piece from passiveSide array
             passiveSide.splice(index2, 1);
-        } // WORKS!
+            console.log(pawn);
+        }
         else { // since no piece eaten...
             if (blues.includes(pawn)) { // updates classList
                 e.target.classList.add('blue');
@@ -149,6 +144,7 @@ function lit(activeSide, passiveSide) {
             } else {
                 e.target.classList.add('orange');
                 pawn.classList.remove('orange');
+                console.log(pawn);
             }
         } // WORKS!
 
@@ -160,10 +156,17 @@ function lit(activeSide, passiveSide) {
         e.target.src = pawn.src;
         pawn.src = './images/transparent.png';
         
+        // gets index for clicked pawn
+        index1 = activeSide.indexOf(pawn);
+
+        // removes vacated space from activeSide array         
+        activeSide.splice(index1, 1);
+
         // updates activeSide & pieces array
         activeSide.push(e.target);
+        console.log(pieces);
         pieces = [...oranges, ...blues];
-
+        console.log(pieces);
         // removes click-listeners from activeSide and litDivs
         activeSide.forEach(piece => {
             document.getElementById(piece.id).removeEventListener('click', pieceLit);
@@ -583,7 +586,7 @@ function lit(activeSide, passiveSide) {
         switch (e.target.name) { 
             case 'pawn':
                 pawn = e.target;
-                pawnLit(e.target);
+                pawnLit();
                 break;
             case 'knight':
                 knightLit(e.target);
