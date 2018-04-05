@@ -1,5 +1,13 @@
-var player = 'blue',
-  pieceLit, gameEnds, tempSide, pieces, movedPiece, mainLitDiv, litDivs, unLitDivs, img, index1, index2, tempId, moves, takenBox, enPassant, activeCells, openAndOpponentHeldKingSpaces, kingSpacesUnderAttack, orangeKingSpacesUnderAttack, orangelessKingSpaces, orangelessKingSpaces, blueKingSpaces, bluelessKingSpaces, orangeKingSpacesUnderAttack, block1, block2, block3, block4, block5, block6, block7, block8, vacantKingSpaces, whiteKing, blackKing, knightMoves, bishopMoves, bishopX, bishopY, rookMoves, kingSpaces, kingOpenSpaces, occupiedKingSpaces, kingAttackers, defenders, pinnedPieces, checkedPaths, nails, whites, blacks;
+var player = 'blue', orangeTakenBoxIdCounter = -16, blueTakenBoxIdCounter = -1,
+takenOrangeBox, takenBlueBox, pieceLit, gameEnds, tempSide, movedPiece, mainLitDiv, litDivs, unLitDivs, img, index1, index2, tempId, moves, takenBox, enPassant, activeCells, openAndOpponentHeldKingSpaces, kingSpacesUnderAttack, orangeKingSpacesUnderAttack, orangelessKingSpaces, orangelessKingSpaces, blueKingSpaces, bluelessKingSpaces, orangeKingSpacesUnderAttack, block1, block2, block3, block4, block5, block6, block7, block8, vacantKingSpaces, whiteKing, blackKing, knightMoves, bishopMoves, bishopX, bishopY, rookMoves, kingSpaces, kingOpenSpaces, occupiedKingSpaces, kingAttackers, defenders, pinnedPieces, checkedPaths, nails, whites, blacks;
+/*
+<img 
+      id='00'
+      name='rook'
+      src='./images/orangeRook.png'
+      class='white cell orange'
+></img>
+*/
 
 const boardIds = [
   '00', '01', '02', '03', '04', '05', '06', '07',
@@ -12,7 +20,6 @@ const boardIds = [
   '70', '71', '72', '73', '74', '75', '76', '77'
 ];
 
-[]
 // function endGameNow() {
 // remove activeSide click listener
 
@@ -22,83 +29,29 @@ const boardIds = [
 // update user profile
 // }
 
-
 function openSpaces(arr1, arr2) {
   return arr1.filter(cell => {
     return !arr2.some(piece => {
-      return cell === piece.x.toString() + piece.y.toString();
+      return cell === piece.id;
     });
   });
 }
 
+var board = document.getElementById('board');
 
-let oranges = [
-  { side: 'orange', name: 'pawn', x: 0, y: 1, image: './images/orangePawn.png' },
-  { side: 'orange', name: 'pawn', x: 1, y: 3, image: './images/orangePawn.png' },
-  { side: 'orange', name: 'pawn', x: 2, y: 3, image: './images/orangePawn.png' },
-  { side: 'orange', name: 'pawn', x: 3, y: 1, image: './images/orangePawn.png' },
-  { side: 'orange', name: 'pawn', x: 4, y: 1, image: './images/orangePawn.png' },
-  { side: 'orange', name: 'pawn', x: 5, y: 2, image: './images/orangePawn.png' },
-  { side: 'orange', name: 'pawn', x: 6, y: 5, image: './images/orangePawn.png' },
-  { side: 'orange', name: 'pawn', x: 7, y: 4, image: './images/orangePawn.png' },
+let orangeNodes = board.getElementsByClassName('orange');
+let blueNodes = board.getElementsByClassName('blue');
 
-  { side: 'orange', name: 'knight', x: 6, y: 3, image: './images/orangeKnight.png' },
-  { side: 'orange', name: 'knight', x: 6, y: 0, image: './images/orangeKnight.png' },
+var oranges = Array.from(orangeNodes), blues = Array.from(blueNodes);
 
-  { side: 'orange', name: 'bishop', x: 3, y: 3, image: './images/orangeBishop.png' },
-  { side: 'orange', name: 'bishop', x: 5, y: 0, image: './images/orangeBishop.png' },
+var pieces = [...oranges, ...blues]; // WORKS
 
-  { side: 'orange', name: 'rook', x: 0, y: 0, image: './images/orangeRook.png' },
-  { side: 'orange', name: 'rook', x: 7, y: 1, image: './images/orangeRook.png' },
-
-  { side: 'orange', name: 'queen', x: 3, y: 0, image: './images/orangeQueen.png' },
-
-  { side: 'orange', name: 'king', x: 5, y: 3, image: './images/orangeKing.png' },
-];
-
-let blues = [
-  { side: 'blue', name: 'pawn', x: 0, y: 5, image: './images/bluePawn.png' },
-  { side: 'blue', name: 'pawn', x: 1, y: 6, image: './images/bluePawn.png' },
-  { side: 'blue', name: 'pawn', x: 2, y: 5, image: './images/bluePawn.png' },
-  { side: 'blue', name: 'pawn', x: 3, y: 5, image: './images/bluePawn.png' },
-  { side: 'blue', name: 'pawn', x: 4, y: 3, image: './images/bluePawn.png' },
-  { side: 'blue', name: 'pawn', x: 5, y: 4, image: './images/bluePawn.png' },
-  { side: 'blue', name: 'pawn', x: 6, y: 6, image: './images/bluePawn.png' },
-  { side: 'blue', name: 'pawn', x: 7, y: 5, image: './images/bluePawn.png' },
-
-  { side: 'blue', name: 'knight', x: 1, y: 7, image: './images/blueKnight.png' },
-  { side: 'blue', name: 'knight', x: 6, y: 7, image: './images/blueKnight.png' },
-
-  { side: 'blue', name: 'bishop', x: 2, y: 4, image: './images/blueBishop.png' },
-  { side: 'blue', name: 'bishop', x: 5, y: 7, image: './images/blueBishop.png' },
-
-  { side: 'blue', name: 'rook', x: 0, y: 7, image: './images/blueRook.png' },
-  { side: 'blue', name: 'rook', x: 7, y: 7, image: './images/blueRook.png' },
-
-  { side: 'blue', name: 'queen', x: 3, y: 7, image: './images/blueQueen.png' },
-
-  { side: 'blue', name: 'king', x: 4, y: 6, image: './images/blueKing.png' }
-];
-
-// const board = document.getElementById('board');
-
-pieces = [...oranges, ...blues];
-
-pieces.forEach(item => {
-  img = document.createElement("img");
-  img.src = item.image;
-  img.id = item.x.toString() + item.y.toString();
-  img.dataset.x = item.x;
-  img.dataset.y = item.y;
-  img.name = item.name;
-  img.dataset.side = item.side;
-  document.getElementById(img.id).appendChild(img);
-  // document.getElementById(img.id).addEventListener('click', pieceLit, false);
-});
+let emptySpaces = openSpaces(boardIds, pieces);
 
 // var activeSide = blues, passiveSide = oranges;
 
-let emptySpaces = openSpaces(boardIds, pieces);
+
+
 
 function checkingSpace(somePiece, checkSpace, passiveSide) { // returns true/false if some-piece checks-space 
   // somePiece is an object in the passiveSide array ---> checkSpace is the target piece
