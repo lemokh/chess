@@ -378,36 +378,36 @@ function lit(activeSide, passiveSide) {
             }
         }
         if (!block6) {
-            if (knight.x + 2 < 8) {
-                if (knight.y - 1 >= 0) {
+            if ((+knight.id[0] + 2) < 8) {
+                if ((+knight.id[1] - 1) >= 0) {
                     document.getElementById(
-                        (knight.x + 2).toString() + (knight.y - 1).toString()
+                        (+knight.id[0] + 2).toString() + (+knight.id[1] - 1).toString()
                     ).classList.add('lit');
-                    litDivs.push((knight.x + 2).toString() + (knight.y - 1).toString());
+                    litDivs.push((+knight.id[0] + 2).toString() + (+knight.id[1] - 1).toString());
                 }
             }
         }
         if (!block7) {
-            if (knight.x - 2 >= 0) {
-                if (knight.y + 1 < 8) {
+            if ((+knight.id[0] - 2) >= 0) {
+                if ((+knight.id[1] + 1) < 8) {
                     document.getElementById(
-                        (knight.x - 2).toString() + (knight.y + 1).toString()
+                        (+knight.id[0] - 2).toString() + (+knight.id[1] + 1).toString()
                     ).classList.add('lit');
-                    litDivs.push((knight.x - 2).toString() + (knight.y + 1).toString());
+                    litDivs.push((+knight.id[0] - 2).toString() + (+knight.id[1] + 1).toString());
                 }
             }
         }
         if (!block8) {
-            if (knight.x - 2 >= 0) {
-                if (knight.y - 1 >= 0) {
+            if ((+knight.id[0] - 2) >= 0) {
+                if ((+knight.id[1] - 1) >= 0) {
                     document.getElementById(
-                        (knight.x - 2).toString() + (knight.y - 1).toString()
+                        (+knight.id[0] - 2).toString() + (+knight.id[1] - 1).toString()
                     ).classList.add('lit');
-                    litDivs.push((knight.x - 2).toString() + (knight.y - 1).toString());
+                    litDivs.push((+knight.id[0] - 2).toString() + (+knight.id[1] - 1).toString());
                 }
             }
         }
-    }
+    } // DONE --> NEEDS moveKnight(e)
 
     function bishopLit(bishop) {
         litDivs = [];
