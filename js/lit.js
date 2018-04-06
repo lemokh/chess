@@ -5,6 +5,11 @@ function lit(activeSide, passiveSide) {
     
     // function toggleClocks() {}
 
+
+    // WHEN PAWN JUMPS TWO & IS EN PASSANT ATTACKED:
+    // THAT PAWN'S STARTING CELL NEEDS TO BE RESET
+    // ITS ORIGINAL CLICK-LISTENER NEEDS TO BE REMOVED
+
     function pawnLit() {
         litDivs = [];
         tempId.push(pawn.id);
@@ -24,7 +29,7 @@ function lit(activeSide, passiveSide) {
             }
         }
 
-        // highlights all possible moves for clicked pawn --> WORKS!
+        // highlights all possible moves for clicked pawn
         if (activeSide === blues) {
             // highlights where pawn can attack
             passiveSide.forEach(item => {
@@ -146,6 +151,8 @@ function lit(activeSide, passiveSide) {
     function movePawn(e) {
         // un-highlights pawn
         if (tempId.length) {
+            document.getElementById(tempId[0]).removeEventListener(
+                'click', pieceLit);
             document.getElementById(tempId[0]).classList.remove('mainLit');
             tempId = [];
         }
