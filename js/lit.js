@@ -1,11 +1,11 @@
 function lit(activeSide, passiveSide) {
     litDivs = []; // holds lit ids on which to apply click-listeners
     tempId = []; // for un-highlighting all cells on clicking new piece
-    emptySpaces = openSpaces(boardIds, pieces);
+    emptySpaces = openSpaces(boardIds, pieces); // updates emptySpaces
+    
     // function toggleClocks() {}
 
     function pawnLit() {
-        // FIX: PAWN EATS PAWN DIRECTLY AHEAD OF IT AFTER FIRST MOVE
         litDivs = [];
         tempId.push(pawn.id);
 
@@ -81,7 +81,7 @@ function lit(activeSide, passiveSide) {
                     }
                 }
             }
-        } // WORKS!
+        }
         // movePawn(e) ========================================================================================
         // moves pawn to litDiv once clicked
         litDivs.forEach(item => { // item is an id
@@ -94,8 +94,10 @@ function lit(activeSide, passiveSide) {
 
     function movePawn(e) {
         // un-highlights pawn
-        document.getElementById(tempId[0]).classList.remove('mainLit');
-        tempId = [];
+        if (tempId.length) {
+            document.getElementById(tempId[0]).classList.remove('mainLit');
+            tempId = [];
+        }
         // un-highlights all litDivs
         litDivs.forEach(item => {
             document.getElementById(item).classList.remove('lit')
@@ -104,7 +106,6 @@ function lit(activeSide, passiveSide) {
         // MOVES pawn info to e.target cell
         if (e.target.name !== '') { // if piece eaten...
             console.log('piece eaten');
-            
             // pushes eaten piece image to its takenBox div
             if (e.target.classList.contains('blue')) {
                 takenOrangeBox = document.getElementById(
@@ -118,8 +119,8 @@ function lit(activeSide, passiveSide) {
                 );
                 takenBlueBox.src = e.target.src;
                 blueTakenBoxIdCounter -= 1;
-            }  // WORKS!
-
+            }
+            // updates class sides
             if (blues.includes(pawn)) { // if pawn is blue... 
                 e.target.classList.remove('orange');
                 e.target.classList.add('blue');
@@ -129,22 +130,17 @@ function lit(activeSide, passiveSide) {
                 e.target.classList.add('orange');
                 pawn.classList.remove('orange');
             }
-
             // gets index for clicked space
             index2 = passiveSide.indexOf(e.target);
-
             // removes eaten piece from passiveSide array
             passiveSide.splice(index2, 1);
-            console.log(pawn);
-        }
-        else { // since no piece eaten...
-            if (blues.includes(pawn)) { // updates classList
+        } else { // since no is piece eaten...
+            if (blues.includes(pawn)) { // if pawn is blue
                 e.target.classList.add('blue');
                 pawn.classList.remove('blue'); 
-            } else {
+            } else { // updates classList
                 e.target.classList.add('orange');
                 pawn.classList.remove('orange');
-                console.log(pawn);
             }
         } // WORKS!
 
@@ -158,29 +154,24 @@ function lit(activeSide, passiveSide) {
         
         // gets index for clicked pawn
         index1 = activeSide.indexOf(pawn);
-
         // removes vacated space from activeSide array         
         activeSide.splice(index1, 1);
 
         // updates activeSide & pieces array
         activeSide.push(e.target);
         pieces = [...oranges, ...blues];
-
-        // UPDATE EMPTY SPACES!!
     
-        // removes click-listeners from activeSide and litDivs
+        // removes click-listeners from all activeSide pieces
         activeSide.forEach(piece => {
             document.getElementById(piece.id).removeEventListener('click', pieceLit);
         });
-
-        litDivs.forEach(item => { // item is an id
+        // removes click-listeners from all litDivs
+        litDivs.forEach(item => {
             document.getElementById(item).removeEventListener(
                 'click', movePawn
             );
         });
-
-        // document.getElementById(e.target.id).addEventListener('click', pieceLit);
-        
+        // toggles side & starts the next move 
         if (activeSide === blues) {
             // toggleClocks();
             lit(oranges, blues);
