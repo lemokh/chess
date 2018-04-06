@@ -16,14 +16,14 @@ function lit(activeSide, passiveSide) {
         if (activeSide === blues) {
             // highlights where pawn can attack
             passiveSide.forEach(item => {
-                // if piece is in row one ahead of pawn
+                // if passiveSide piece is in row one ahead of pawn
                 if (item.id[1] == (+pawn.id[1] - 1)) {
-                    // if piece is one column right of pawn
+                    // if passiveSide piece is one column right of pawn
                     if (item.id[0] == (+pawn.id[0] + 1)) {
                         document.getElementById(item.id).classList.add('lit');
                         litDivs.push(item.id);
                     } 
-                    // if piece is one column left of pawn
+                    // if passiveSide piece is one column left of pawn
                     if (item.id[0] == (+pawn.id[0] - 1)) {
                         document.getElementById(item.id).classList.add('lit');
                         litDivs.push(item.id);
@@ -42,10 +42,28 @@ function lit(activeSide, passiveSide) {
                 // highlights empty space two ahead of pawn
                 if (pawn.id[1] === '6') { 
                     if (emptySpaces.includes(pawn.id[0] + (+pawn.id[1] - 2))) {
+                        
                         document.getElementById(
-                            pawn.id[0] + (pawn.id[1] - 2)
+                            pawn.id[0] + (+pawn.id[1] - 2)
                         ).classList.add('lit');
+                        
                         litDivs.push(pawn.id[0] + (+pawn.id[1] - 2));
+                        
+                        // ENPASSANT
+                        passiveSide.forEach(item => {
+                            if (item.name === 'pawn') {
+                                if (item.id[1] === '4') {
+                                    if (item.id[0] == (+pawn.id[0] + 1)) {
+                                        enPassant = pawn;
+                                        enPassanter = item;
+                                    }
+                                    if (item.id[0] == (+pawn.id[0] - 1)) {
+                                        enPassant = pawn;
+                                        enPassanter = item;
+                                    }
+                                }
+                            }
+                        });
                     }
                 }
             }
@@ -93,6 +111,10 @@ function lit(activeSide, passiveSide) {
     }
 
     function movePawn(e) {
+
+        // if pawn moves two spaces, --> you know where this goes
+        // & if an opposing pawn 
+
         // un-highlights pawn
         if (tempId.length) {
             document.getElementById(tempId[0]).classList.remove('mainLit');
@@ -102,9 +124,9 @@ function lit(activeSide, passiveSide) {
         litDivs.forEach(item => {
             document.getElementById(item).classList.remove('lit')
         });
-
-        // MOVES pawn info to e.target cell
-        if (e.target.name !== '') { // if piece eaten...
+        // MOVES pawn info to e.target's cell ----------------------------
+        // if piece is eaten...
+        if (e.target.name !== '') {
             console.log('piece eaten');
             // pushes eaten piece image to its takenBox div
             if (e.target.classList.contains('blue')) {
@@ -181,6 +203,7 @@ function lit(activeSide, passiveSide) {
             lit(blues, oranges);
         }
     }
+    //========================================================================================
 
     function knightLit(knight) {
         block1 = false;
