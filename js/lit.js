@@ -409,9 +409,8 @@ function lit(activeSide, passiveSide) {
         }
     } // DONE --> NEEDS moveKnight(e)
 
-    function bishopLit(bishop) {
+    function bishopLit() {
         litDivs = [];
-        pawn.id = bishop.x.toString() + bishop.y.toString(); // clicked bishop space
         tempId.push(pawn.id);
 
         // highlights clicked space
@@ -696,16 +695,20 @@ function lit(activeSide, passiveSide) {
                 knightLit();
                 break;
             case 'bishop':
-                bishopLit(e.target);
+                bishop = e.target;
+                bishopLit();
                 break;
             case 'rook':
-                rookLit(e.target);
+                rook = e.target;
+                rookLit();
                 break;
             case 'queen':
-                queenLit(e.target);
+                queen = e.target;
+                queenLit();
                 break;
             case 'king':
-                kingLit(e.target);
+                king = e.target;
+                kingLit();
                 break;
         }
     }
