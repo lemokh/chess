@@ -160,16 +160,15 @@ function lit(activeSide, passiveSide) {
             console.log('piece eaten');
             // if enPassantCell clicked
             if (e.target.id === enPassantCell) {
-                
                 // removes image
                 if (activeSide === blues) {
                     document.getElementById(
                         e.target.id[0] + (+e.target.id[1] + 1)
-                    ).src = '';
+                    ).src = './images/transparent.png';
                 } else { // since orange piece
                     document.getElementById(
                         e.target.id[0] + (+e.target.id[1] - 1)
-                    ).src = '';
+                    ).src = './images/transparent.png';
                 }
             }
             // pushes eaten piece image to its takenBox div
