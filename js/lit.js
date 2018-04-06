@@ -295,6 +295,7 @@ function lit(activeSide, passiveSide) {
     //========================================================================================
 
     function knightLit() {
+        // good! highlights attackable pieces & its emptySpaces
         block1 = false;
         block2 = false;
         block3 = false;
@@ -410,15 +411,16 @@ function lit(activeSide, passiveSide) {
     } // DONE --> NEEDS moveKnight(e)
 
     function bishopLit() {
+        // FIX: bishop doesn't highlight pieces it can attack!
         litDivs = [];
-        tempId.push(pawn.id);
+        tempId.push(bishop.id);
 
         // highlights clicked space
-        document.getElementById(pawn.id).classList.add('mainLit');
+        document.getElementById(bishop.id).classList.add('mainLit');
 
-        function one(bishop) {
-            bishopX = bishop.x + 1;
-            bishopY = bishop.y + 1;
+        function one() {
+            bishopX = +bishop.id[0] + 1;
+            bishopY = +bishop.id[1] + 1;
 
             while (emptySpaces.includes(bishopX.toString() + bishopY.toString())) { // while bishop's path is an empty space
                 document.getElementById(
@@ -428,22 +430,22 @@ function lit(activeSide, passiveSide) {
 
                 bishopX += 1;
                 bishopY += 1;
-            }
+            } // good!
             for (let i = 0; i < activeSide.length; i++) {
-                if (passiveSide[i].x === bishopX) {
-                    if (passiveSide[i].y === bishopY) {
+                if (passiveSide[i].id[0] == bishopX) {
+                    if (passiveSide[i].id[1] == bishopY) {
                         document.getElementById(
                             bishopX.toString() + bishopY.toString()
                         ).classList.add('lit');
                         litDivs.push(bishopX.toString() + bishopY.toString());
                     }
                 }
-            }
+            } // capsulate these in a function with bishopX&Y in switch!
         }
 
-        function two(bishop) {
-            bishopX = bishop.x + 1;
-            bishopY = bishop.y - 1;
+        function two() {
+            bishopX = +bishop.id[0] + 1;
+            bishopY = +bishop.id[1] - 1;
 
             while (emptySpaces.includes(bishopX.toString() + bishopY.toString())) {
                 document.getElementById(
@@ -455,8 +457,8 @@ function lit(activeSide, passiveSide) {
                 bishopY -= 1;
             }
             for (let i = 0; i < activeSide.length; i++) {
-                if (passiveSide[i].x === bishopX) {
-                    if (passiveSide[i].y === bishopY) {
+                if (passiveSide[i].id[0] == bishopX) {
+                    if (passiveSide[i].id[1] == bishopY) {
                         document.getElementById(
                             bishopX.toString() + bishopY.toString()
                         ).classList.add('lit');
@@ -466,9 +468,9 @@ function lit(activeSide, passiveSide) {
             }
         }
 
-        function three(bishop) {
-            bishopX = bishop.x - 1;
-            bishopY = bishop.y + 1;
+        function three() {
+            bishopX = +bishop.id[0] - 1;
+            bishopY = +bishop.id[1] + 1;
 
             while (emptySpaces.includes(bishopX.toString() + bishopY.toString())) {
                 document.getElementById(
@@ -480,8 +482,8 @@ function lit(activeSide, passiveSide) {
                 bishopY += 1;
             }
             for (let i = 0; i < activeSide.length; i++) {
-                if (passiveSide[i].x === bishopX) {
-                    if (passiveSide[i].y === bishopY) {
+                if (passiveSide[i].id[0] == bishopX) {
+                    if (passiveSide[i].id[1] == bishopY) {
                         document.getElementById(
                             bishopX.toString() + bishopY.toString()
                         ).classList.add('lit');
@@ -491,9 +493,9 @@ function lit(activeSide, passiveSide) {
             }
         }
 
-        function four(bishop) {
-            bishopX = bishop.x - 1;
-            bishopY = bishop.y - 1;
+        function four() {
+            bishopX = +bishop.id[0] - 1;
+            bishopY = +bishop.id[1] - 1;
 
             while (emptySpaces.includes(bishopX.toString() + bishopY.toString())) {
                 document.getElementById(
@@ -505,8 +507,8 @@ function lit(activeSide, passiveSide) {
                 bishopY -= 1;
             }
             for (let i = 0; i < activeSide.length; i++) {
-                if (passiveSide[i].x === bishopX) {
-                    if (passiveSide[i].y === bishopY) {
+                if (passiveSide[i].id[0] == bishopX) {
+                    if (passiveSide[i].id[1] == bishopY) {
                         document.getElementById(
                             bishopX.toString() + bishopY.toString()
                         ).classList.add('lit');
@@ -514,11 +516,11 @@ function lit(activeSide, passiveSide) {
                     }
                 }
             }
-        }
-        one(bishop);
-        two(bishop);
-        three(bishop);
-        four(bishop);
+        } // good!
+        one();
+        two();
+        three();
+        four();
     }
 
     function rookLit(rook) {
@@ -680,7 +682,8 @@ function lit(activeSide, passiveSide) {
         
         litDivs.forEach(item => { // item is an id
             document.getElementById(item).removeEventListener(
-                'click', movePawn
+                'click',
+                movePawn // add all the other ones moveKnight, ect.
             );
         });
 
