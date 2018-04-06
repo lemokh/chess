@@ -8,7 +8,7 @@ function lit(activeSide, passiveSide) {
     function pawnLit() {
         litDivs = [];
         tempId.push(pawn.id);
-
+    
         // highlights clicked pawn
         document.getElementById(pawn.id).classList.add('mainLit');
 
@@ -68,9 +68,9 @@ function lit(activeSide, passiveSide) {
                                 if (item.id[1] === '4') { // if in row 4
                                     // if passiveSide pawn is one column right of clicked pawn
                                     if (item.id[0] == (+pawn.id[0] + 1)) {
-                                        // store enPassantCell for next move to attack
+                                        // stores enPassantCell for next move to attack
                                         enPassantCell = pawn.id[0] + (+pawn.id[1] - 1);
-                                        // collect pawns that can attack enPassantCell on next move
+                                        // collecs pawns that can attack enPassantCell on next move
                                         enPassantables.push(item);
                                     } // same for one column left of clicked pawn
                                     if (item.id[0] == (+pawn.id[0] - 1)) {
@@ -153,6 +153,14 @@ function lit(activeSide, passiveSide) {
         litDivs.forEach(item => {
             document.getElementById(item).classList.remove('lit')
         });
+        // highlights enPassant cell, if an option
+        // if (enPassantables.length) {
+        //     if (enPassantables.includes(pawn)) {
+        //         document.getElementById(enPassantCell).name = 'enPassantable';
+        //         document.getElementById(enPassantCell).classList.add('lit');
+        //         litDivs.push(enPassantCell);
+        //     }
+        // }
         // -----------------------------------------------------------------
         // MOVES pawn info to e.target's cell 
         // if piece is eaten...
@@ -160,45 +168,73 @@ function lit(activeSide, passiveSide) {
             console.log('piece eaten');
             // if enPassantCell clicked
             if (e.target.id === enPassantCell) {
-                // removes image
+
+                console.log('e.target === enPassantCell');
+                // resets clicked enPassant cell info
+                
+                enPassantables = [];
+                enPassantCell = null;
+        
+                // puts enPassantCell in its takenBox
                 if (activeSide === blues) {
-                    document.getElementById(
+                    enPassantedPawn = document.getElementById(
                         e.target.id[0] + (+e.target.id[1] + 1)
-                    ).src = './images/transparent.png';
-                } else { // since orange piece
+                    );
+                    
                     document.getElementById(
-                        e.target.id[0] + (+e.target.id[1] - 1)
-                    ).src = './images/transparent.png';
+                        blueTakenBoxIdCounter.toString()
+                    ).src = enPassantedPawn.src;
+                    
+                    blueTakenBoxIdCounter -= 1;
+                    
+                    enPassantedPawn.classList.remove('blue');
                 }
+                else { // since orange turn
+                    enPassantedPawn = document.getElementById(
+                        e.target.id[0] + (+e.target.id[1] - 1)
+                    );
+                    document.getElementById(
+                        orangeTakenBoxIdCounter.toString()
+                    ).src = enPassantedPawn.src;
+
+                    orangeTakenBoxIdCounter -= 1;
+                    
+                    enPassantedPawn.classList.remove('blue');
+                }
+                enPassantedPawn.src = './images/transparent.png';
+                enPassantedPawn.name = '';
+                passiveSide.splice(passiveSide.indexOf(enPassantedPawn), 1);
+                pieces = [...oranges, ...blues];
+                enPassantedPawn = null;
             }
-            // pushes eaten piece image to its takenBox div
-            if (e.target.classList.contains('blue')) {
-                takenOrangeBox = document.getElementById(
-                    orangeTakenBoxIdCounter.toString()
-                );
-                takenOrangeBox.src = e.target.src;
-                orangeTakenBoxIdCounter -= 1;
-            } else {
-                takenBlueBox = document.getElementById(
-                    blueTakenBoxIdCounter.toString()
-                );
-                takenBlueBox.src = e.target.src;
-                blueTakenBoxIdCounter -= 1;
+            else {
+                // pushes eaten piece's image to its takenBox div
+                if (e.target.classList.contains('blue')) {
+                    document.getElementById(
+                        orangeTakenBoxIdCounter.toString()
+                    ).src = e.target.src;
+                    orangeTakenBoxIdCounter -= 1;
+                } else {
+                    document.getElementById(
+                        blueTakenBoxIdCounter.toString()
+                    ).src = e.target.src;
+                    blueTakenBoxIdCounter -= 1;
+                }
+                // updates class sides
+                if (blues.includes(pawn)) { // if pawn is blue... 
+                    e.target.classList.remove('orange');
+                    e.target.classList.add('blue');
+                    pawn.classList.remove('blue');
+                } else { // since pawn is orange...
+                    e.target.classList.remove('blue');
+                    e.target.classList.add('orange');
+                    pawn.classList.remove('orange');
+                }
+                // gets index for clicked space
+                index2 = passiveSide.indexOf(e.target);
+                // removes eaten piece from passiveSide array
+                passiveSide.splice(index2, 1);
             }
-            // updates class sides
-            if (blues.includes(pawn)) { // if pawn is blue... 
-                e.target.classList.remove('orange');
-                e.target.classList.add('blue');
-                pawn.classList.remove('blue');
-            } else { // since pawn is orange...
-                e.target.classList.remove('blue');
-                e.target.classList.add('orange');
-                pawn.classList.remove('orange');
-            }
-            // gets index for clicked space
-            index2 = passiveSide.indexOf(e.target);
-            // removes eaten piece from passiveSide array
-            passiveSide.splice(index2, 1);
         } else { // since no is piece eaten...
             if (blues.includes(pawn)) { // if pawn is blue
                 e.target.classList.add('blue');
