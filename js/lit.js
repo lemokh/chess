@@ -139,7 +139,7 @@ function lit(activeSide, passiveSide) {
             );
         });
     }
-
+    
     function movePawn(e) {
         // un-highlights pawn
         if (tempId.length) {
@@ -294,7 +294,7 @@ function lit(activeSide, passiveSide) {
     }
     //========================================================================================
 
-    function knightLit(knight) {
+    function knightLit() {
         block1 = false;
         block2 = false;
         block3 = false;
@@ -304,77 +304,76 @@ function lit(activeSide, passiveSide) {
         block7 = false;
         block8 = false;
         litDivs = [];
-        pawn.id = knight.x.toString() + knight.y.toString(); // clicked knight space
-        tempId.push(pawn.id);
+        tempId.push(knight.id);
 
         // highlights clicked knight
-        document.getElementById(pawn.id).classList.add('mainLit');
+        document.getElementById(knight.id).classList.add('mainLit');
 
         // if own pieces occupy knight space, no highlight there
         activeSide.forEach(piece => {
-            switch (piece.x) {
-                case knight.x + 1:
-                    if (piece.y === knight.y + 2) { block1 = true; break; }
-                    if (piece.y === knight.y - 2) { block2 = true; break; }
-                case knight.x - 1:
-                    if (piece.y === knight.y + 2) { block3 = true; break; }
-                    if (piece.y === knight.y - 2) { block4 = true; break; }
-                case knight.x + 2:
-                    if (piece.y === knight.y + 1) { block5 = true; break; }
-                    if (piece.y === knight.y - 1) { block6 = true; break; }
-                case knight.x - 2:
-                    if (piece.y === knight.y + 1) { block7 = true; break; }
-                    if (piece.y === knight.y - 1) { block8 = true; break; }
+            switch (+piece.id[0]) {
+                case (+knight.id[0] + 1):
+                    if (piece.id[1] == (+knight.id[1] + 2)) { block1 = true; break; }
+                    if (piece.id[1] == (+knight.id[1] - 2)) { block2 = true; break; }
+                case (+knight.id[0] - 1):
+                    if (piece.id[1] == (+knight.id[1] + 2)) { block3 = true; break; }
+                    if (piece.id[1] == (+knight.id[1] - 2)) { block4 = true; break; }
+                case (+knight.id[0] + 2):
+                    if (piece.id[1] == (+knight.id[1] + 1)) { block5 = true; break; }
+                    if (piece.id[1] == (+knight.id[1] - 1)) { block6 = true; break; }
+                case (+knight.id[0] - 2):
+                if (piece.id[1] == (+knight.id[1] + 1)) { block7 = true; break; }
+                if (piece.id[1] == (+knight.id[1] - 1)) { block8 = true; break; }
             }
         });
 
         if (!block1) {
-            if (knight.x + 1 < 8) { // FILTERS OUT OFF-BOARD KNIGHT MOVES
-                if (knight.y + 2 < 8) {
+            if ((+knight.id[0] + 1) < 8) { // FILTERS OUT OFF-BOARD KNIGHT MOVES
+                if ((+knight.id[1] + 2) < 8) {
                     document.getElementById(
-                        (knight.x + 1).toString() + (knight.y + 2).toString()
+                        (+knight.id[0] + 1).toString() + (+knight.id[1] + 2).toString()
                     ).classList.add('lit');
-                    litDivs.push((knight.x + 1).toString() + (knight.y + 2).toString());
+                    litDivs.push((+knight.id[0] + 1).toString() + (+knight.id[1] + 2).toString());
                 }
             }
         }
         if (!block2) {
-            if (knight.x + 1 < 8) {
-                if (knight.y - 2 >= 0) {
+            if ((+knight.id[0] + 1) < 8) {
+                if ((+knight.id[1] - 2) >= 0) {
                     document.getElementById(
-                        (knight.x + 1).toString() + (knight.y - 2).toString()
+                        (+knight.id[0] + 1).toString() + (+knight.id[1] - 2).toString()
                     ).classList.add('lit');
-                    litDivs.push((knight.x + 1).toString() + (knight.y - 2).toString());
+                    litDivs.push((+knight.id[0] + 1).toString() + (+knight.id[1] - 2).toString());
                 }
             }
         }
         if (!block3) {
-            if (knight.x - 1 >= 0) {
-                if (knight.y + 2 < 8) {
+            if ((+knight.id[0] - 1) >= 0) {
+                if ((+knight.id[1] + 2) < 8) {
                     document.getElementById(
-                        (knight.x - 1).toString() + (knight.y + 2).toString()
+                        (+knight.id[0] - 1).toString() + (+knight.id[1] + 2).toString()
                     ).classList.add('lit');
-                    litDivs.push((knight.x - 1).toString() + (knight.y + 2).toString());
+                    litDivs.push((+knight.id[0] - 1).toString() + (+knight.id[1] + 2).toString());
                 }
             }
         }
         if (!block4) {
-            if (knight.x - 1 >= 0) {
-                if (knight.y - 2 >= 0) {
+            if ((+knight.id[0] - 1) >= 0) {
+                if ((+knight.id[1] - 2) >= 0) {
                     document.getElementById(
-                        (knight.x - 1).toString() + (knight.y - 2).toString()
+                        (+knight.id[0] - 1).toString() + (+knight.id[1] - 2).toString()
                     ).classList.add('lit');
-                    litDivs.push((knight.x - 1).toString() + (knight.y - 2).toString());
+                    litDivs.push((+knight.id[0] - 1).toString() + (+knight.id[1] - 2).toString());
                 }
             }
         }
         if (!block5) {
-            if (knight.x + 2 < 8) {
-                if (knight.y + 1 < 8) {
+            if ((+knight.id[0] + 2) < 8) {
+                if ((+knight.id[1] + 1) < 8) {
                     document.getElementById(
-                        (knight.x + 2).toString() + (knight.y + 1).toString()
+                        (+knight.id[0] + 2).toString() + (+knight.id[1] + 1).toString()
                     ).classList.add('lit');
-                    litDivs.push((knight.x + 2).toString() + (knight.y + 1).toString());
+                    litDivs.push((+knight.id[0] + 2).toString() + (+knight.id[1] + 1).toString());
                 }
             }
         }
@@ -693,7 +692,8 @@ function lit(activeSide, passiveSide) {
                 pawnLit();
                 break;
             case 'knight':
-                knightLit(e.target);
+                knight = e.target;
+                knightLit();
                 break;
             case 'bishop':
                 bishopLit(e.target);
@@ -717,3 +717,19 @@ function lit(activeSide, passiveSide) {
     });
 }
 lit(blues, oranges);
+
+
+ // activeCells = activeSide.map(item => {
+    //     return item.x.toString() + item.y.toString();
+    // });
+    // function excludes(arr1, arr2) {
+    //     return arr1.filter(cell => {
+    //         return !arr2.some(piece => {
+    //             return cell === piece;
+    //         });
+    //     });
+    // }
+    // unLitDivs = excludes(activeCells, litDivs);
+
+// for each piece lit div,  --> 'click', move()
+// board.classList.remove('lit', 'mainLit')
