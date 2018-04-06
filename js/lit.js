@@ -189,7 +189,7 @@ function lit(activeSide, passiveSide) {
                     blueTakenBoxIdCounter -= 1;
                     
                     enPassantedPawn.classList.remove('orange');
-                    console.log(enPassantedPawn);
+                    e.target.classList.add('blue');
                     pawn.classList.remove('blue');
                 }
                 else { // since orange turn
@@ -205,7 +205,7 @@ function lit(activeSide, passiveSide) {
                     orangeTakenBoxIdCounter -= 1;
                     
                     enPassantedPawn.classList.remove('blue');
-                    console.log(enPassantedPawn);
+                    e.target.classList.add('orange');
                     pawn.classList.remove('orange');
                 }
                 enPassantedPawn.src = './images/transparent.png';
@@ -214,7 +214,7 @@ function lit(activeSide, passiveSide) {
                 pieces = [...oranges, ...blues];
                 enPassantedPawn = undefined;
             }
-            else {
+            else { // THIS NEEDS STRAIGHTENING UP!!
                 // pushes eaten piece's image to its takenBox div
                 if (e.target.classList.contains('blue')) {
                     document.getElementById(
@@ -242,15 +242,15 @@ function lit(activeSide, passiveSide) {
                 // removes eaten piece from passiveSide array
                 passiveSide.splice(index2, 1);
             }
-        } else { // since no is piece eaten...
+        } else { // since no is piece eaten --> e.target.name === ''
             if (blues.includes(pawn)) { // if pawn is blue
                 e.target.classList.add('blue');
                 pawn.classList.remove('blue');
-                
+                // e.target.classList.remove('orange');
             } else { // updates classList for pawn & e.target
                 e.target.classList.add('orange');
                 pawn.classList.remove('orange');
-                
+                // e.target.classList.remove('blue');
             }
         }
 
