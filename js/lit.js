@@ -199,7 +199,7 @@ function lit(activeSide, passiveSide) {
 
                     orangeTakenBoxIdCounter -= 1;
                     
-                    enPassantedPawn.classList.remove('blue');
+                    enPassantedPawn.classList.remove('orange');
                 }
                 enPassantedPawn.src = './images/transparent.png';
                 enPassantedPawn.name = '';
