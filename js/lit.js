@@ -411,18 +411,19 @@ function lit(activeSide, passiveSide) {
     } // DONE --> NEEDS moveKnight(e)
 
     function bishopLit() {
-        // FIX: bishop doesn't highlight pieces it can attack!
+        // FIX: bishop doesn't highlight attackable pieces
         litDivs = [];
         tempId.push(bishop.id);
 
-        // highlights clicked space
+        // highlights clicked bishop
         document.getElementById(bishop.id).classList.add('mainLit');
 
         function one() {
-            bishopX = +bishop.id[0] + 1;
-            bishopY = +bishop.id[1] + 1;
+            bishopX = (+bishop.id[0] + 1);
+            bishopY = (+bishop.id[1] + 1);
 
-            while (emptySpaces.includes(bishopX.toString() + bishopY.toString())) { // while bishop's path is an empty space
+            // while bishop's path is an empty space
+            while (emptySpaces.includes(bishopX.toString() + bishopY.toString())) {
                 document.getElementById(
                     bishopX.toString() + bishopY.toString()
                 ).classList.add('lit');
@@ -430,7 +431,9 @@ function lit(activeSide, passiveSide) {
 
                 bishopX += 1;
                 bishopY += 1;
-            } // good!
+            }
+            // for each activeSide piece
+            // if 
             for (let i = 0; i < activeSide.length; i++) {
                 if (passiveSide[i].id[0] == bishopX) {
                     if (passiveSide[i].id[1] == bishopY) {
@@ -444,8 +447,8 @@ function lit(activeSide, passiveSide) {
         }
 
         function two() {
-            bishopX = +bishop.id[0] + 1;
-            bishopY = +bishop.id[1] - 1;
+            bishopX = (+bishop.id[0] + 1);
+            bishopY = (+bishop.id[1] - 1);
 
             while (emptySpaces.includes(bishopX.toString() + bishopY.toString())) {
                 document.getElementById(
@@ -469,8 +472,8 @@ function lit(activeSide, passiveSide) {
         }
 
         function three() {
-            bishopX = +bishop.id[0] - 1;
-            bishopY = +bishop.id[1] + 1;
+            bishopX = (+bishop.id[0] - 1);
+            bishopY = (+bishop.id[1] + 1);
 
             while (emptySpaces.includes(bishopX.toString() + bishopY.toString())) {
                 document.getElementById(
@@ -494,8 +497,8 @@ function lit(activeSide, passiveSide) {
         }
 
         function four() {
-            bishopX = +bishop.id[0] - 1;
-            bishopY = +bishop.id[1] - 1;
+            bishopX = (+bishop.id[0] - 1);
+            bishopY = (+bishop.id[1] - 1);
 
             while (emptySpaces.includes(bishopX.toString() + bishopY.toString())) {
                 document.getElementById(
@@ -521,17 +524,16 @@ function lit(activeSide, passiveSide) {
         two();
         three();
         four();
-    }
+    } // DONE --> NEEDS bishopMove(e) & highlight attackable pieces
 
     function rookLit(rook) {
-        // litDivs = [];
-        pawn.id = rook.x.toString() + rook.y.toString(); // clicked rook
-        tempId.push(pawn.id);
+        litDivs = [];
+        tempId.push(rook.id);
 
         // highlights clicked rook
-        document.getElementById(pawn.id).classList.add('mainLit');
+        document.getElementById(rook.id).classList.add('mainLit');
 
-        function first(rook) {
+        function first() {
             rookX = rook.x - 1;
 
             while (emptySpaces.includes(rookX.toString() + rook.y.toString())) {
@@ -550,7 +552,7 @@ function lit(activeSide, passiveSide) {
             }
         }
 
-        function second(rook) {
+        function second() {
             rookX = rook.x + 1;
 
             while (emptySpaces.includes(rookX.toString() + rook.y.toString())) {
@@ -569,7 +571,7 @@ function lit(activeSide, passiveSide) {
             }
         }
 
-        function third(rook) {
+        function third() {
             rookY = rook.y - 1;
 
             while (emptySpaces.includes(rook.x.toString() + rookY.toString())) {
@@ -588,7 +590,7 @@ function lit(activeSide, passiveSide) {
             }
         }
 
-        function fourth(rook) {
+        function fourth() {
             rookY = rook.y + 1;
 
             while (emptySpaces.includes(rook.x.toString() + rookY.toString())) {
@@ -606,10 +608,10 @@ function lit(activeSide, passiveSide) {
                 litDivs.push(rook.x.toString() + rookY.toString());
             }
         }
-        first(rook);
-        second(rook);
-        third(rook);
-        fourth(rook);
+        first();
+        second();
+        third();
+        fourth();
     }
 
     function queenLit(queen) {
