@@ -15,8 +15,9 @@ function lit(activeSide, passiveSide) {
         // highlights enPassant cell, if an option
         if (enPassantables.length) {
             if (enPassantables.includes(pawn)) {
+                document.getElementById(enPassantCell).name = 'enPassantable';
                 document.getElementById(enPassantCell).classList.add('lit');
-                    litDivs.push(enPassantCell);
+                litDivs.push(enPassantCell);
             }
         }
 
@@ -47,26 +48,30 @@ function lit(activeSide, passiveSide) {
                 ).classList.add('lit');
                 // 
                 litDivs.push(pawn.id[0] + (+pawn.id[1] - 1));
-                // highlights empty space two ahead of pawn
-                if (pawn.id[1] === '6') { 
+                // highlights empty space two ahead of blue pawn
+                if (pawn.id[1] === '6') { // if pawn in row 6
+                    // if the cell two ahead of pawn is empty 
                     if (emptySpaces.includes(pawn.id[0] + (+pawn.id[1] - 2))) {
-                        
+                        // highlights that cell
                         document.getElementById(
                             pawn.id[0] + (+pawn.id[1] - 2)
                         ).classList.add('lit');
-                        
+                        // adds that cell to litDivs array
                         litDivs.push(pawn.id[0] + (+pawn.id[1] - 2));
                         
                         // ENPASSANT for blue pawn
-                        passiveSide.forEach(item => {
-                            if (item.name === 'pawn') {
-                                if (item.id[1] === '4') {
+                        passiveSide.forEach(item => { // for each passiveSide piece
+                            if (item.name === 'pawn') { // if a pawn
+                                if (item.id[1] === '4') { // if in row 4
+                                    // if passiveSide pawn is one column right of clicked pawn
                                     if (item.id[0] == (+pawn.id[0] + 1)) {
+                                        // store enPassantCell for next move to attack
                                         enPassantCell = pawn.id[0] + (+pawn.id[1] - 1);
+                                        // collect pawns that can attack enPassantCell on next move
                                         enPassantables.push(item);
-                                    }
+                                    } // same for one column left of clicked pawn
                                     if (item.id[0] == (+pawn.id[0] - 1)) {
-                                        enPassantCell = pawn.id[0] + (+pawn.id[1] + 1);
+                                        enPassantCell = pawn.id[0] + (+pawn.id[1] - 1);
                                         enPassantables.push(item);
                                     }
                                 }
@@ -110,11 +115,11 @@ function lit(activeSide, passiveSide) {
                         // ENPASSANT for orange pawn
                         passiveSide.forEach(item => {
                             if (item.name === 'pawn') {
-                                if (item.id[1] === '3') {
+                                if (item.id[1] === '3') { // one column right
                                     if (item.id[0] == (+pawn.id[0] + 1)) {
-                                        enPassantCell = pawn.id[0] + (+pawn.id[1] - 1);
+                                        enPassantCell = pawn.id[0] + (+pawn.id[1] + 1);
                                         enPassantables.push(item);
-                                    }
+                                    } // one column left
                                     if (item.id[0] == (+pawn.id[0] - 1)) {
                                         enPassantCell = pawn.id[0] + (+pawn.id[1] + 1);
                                         enPassantables.push(item);
@@ -126,21 +131,16 @@ function lit(activeSide, passiveSide) {
                 }
             }
         }
-        // movePawn(e) ========================================================================================
-        // moves pawn to litDiv once clicked
+        // ========================================================================================
+        // moves pawn to clicked litDiv
         litDivs.forEach(item => { // item is an id
             document.getElementById(item).addEventListener(
-                'click',
-                movePawn
+                'click', movePawn
             );
         });
     }
 
     function movePawn(e) {
-
-        // if pawn moves two spaces, --> you know where this goes
-        // & if an opposing pawn 
-
         // un-highlights pawn
         if (tempId.length) {
             document.getElementById(tempId[0]).classList.remove('mainLit');
@@ -154,6 +154,12 @@ function lit(activeSide, passiveSide) {
         // if piece is eaten...
         if (e.target.name !== '') {
             console.log('piece eaten');
+            // if enPassantCell clicked
+            if (e.target.id === enPassantCell) {
+                /*
+                remove image from pawn.id
+                */
+            }
             // pushes eaten piece image to its takenBox div
             if (e.target.classList.contains('blue')) {
                 takenOrangeBox = document.getElementById(
@@ -186,15 +192,11 @@ function lit(activeSide, passiveSide) {
             if (blues.includes(pawn)) { // if pawn is blue
                 e.target.classList.add('blue');
                 pawn.classList.remove('blue');
-                if (e.target.id[1] === '4') {
-                    if (enPassantCell !== undefined) { enPassant = true; }
-                }
+                
             } else { // updates classList for pawn & e.target
                 e.target.classList.add('orange');
                 pawn.classList.remove('orange');
-                if (e.target.id[1] === '3') {
-                    if (enPassantCell !== undefined) { enPassant = true; }
-                }
+                
             }
         }
 
@@ -656,7 +658,9 @@ function lit(activeSide, passiveSide) {
     }
     // adds click-listeners to all activeSide pieces
     activeSide.forEach(piece => { // on-click run pieceLit()
-        document.getElementById(piece.id).addEventListener('click', pieceLit);
+        document.getElementById(piece.id).addEventListener(
+            'click', pieceLit
+        );
     });
 }
 lit(blues, oranges);
