@@ -12,6 +12,9 @@ function lit(activeSide, passiveSide) {
         // highlights clicked pawn
         document.getElementById(pawn.id).classList.add('mainLit');
 
+        // CLEAN UP enPassantables & enPassantCell ONCE COMPLETE
+        // REMOVE IMAGE FROM PAWN
+
         // highlights enPassant cell, if an option
         if (enPassantables.length) {
             if (enPassantables.includes(pawn)) {
@@ -150,15 +153,24 @@ function lit(activeSide, passiveSide) {
         litDivs.forEach(item => {
             document.getElementById(item).classList.remove('lit')
         });
-        // MOVES pawn info to e.target's cell ----------------------------
+        // -----------------------------------------------------------------
+        // MOVES pawn info to e.target's cell 
         // if piece is eaten...
         if (e.target.name !== '') {
             console.log('piece eaten');
             // if enPassantCell clicked
             if (e.target.id === enPassantCell) {
-                /*
-                remove image from pawn.id
-                */
+                
+                // removes image
+                if (activeSide === blues) {
+                    document.getElementById(
+                        e.target.id[0] + (+e.target.id[1] + 1)
+                    ).src = '';
+                } else { // since orange piece
+                    document.getElementById(
+                        e.target.id[0] + (+e.target.id[1] - 1)
+                    ).src = '';
+                }
             }
             // pushes eaten piece image to its takenBox div
             if (e.target.classList.contains('blue')) {
