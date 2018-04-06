@@ -5,20 +5,12 @@ function lit(activeSide, passiveSide) {
     
     // function toggleClocks() {}
 
-
-    // WHEN PAWN JUMPS TWO & IS EN PASSANT ATTACKED:
-    // THAT PAWN'S STARTING CELL NEEDS TO BE RESET
-    // ITS ORIGINAL CLICK-LISTENER NEEDS TO BE REMOVED
-
     function pawnLit() {
         litDivs = [];
         tempId.push(pawn.id);
     
         // highlights clicked pawn
         document.getElementById(pawn.id).classList.add('mainLit');
-
-        // CLEAN UP enPassantables & enPassantCell ONCE COMPLETE
-        // REMOVE IMAGE FROM PAWN
 
         // highlights enPassant cell, if an option
         if (enPassantables.length) {
