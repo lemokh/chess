@@ -12,11 +12,24 @@ function lit(activeSide, passiveSide) {
         // highlights clicked pawn
         document.getElementById(pawn.id).classList.add('mainLit');
 
+        // highlights enPassant cell, if an option
+        if (enPassantables.length) {
+            if (enPassantables.includes(pawn)) {
+                document.getElementById(enPassantCell).classList.add('lit');
+                    litDivs.push(enPassantCell);
+            }
+            // enPassantables.forEach(item => {
+            //     if (pawn === item) {
+                    
+            //     }
+            // });
+        }
+
         // highlights all possible moves for clicked pawn --> WORKS!
         if (activeSide === blues) {
             // highlights where pawn can attack
             passiveSide.forEach(item => {
-                // if passiveSide piece is in row one ahead of pawn
+                // if passiveSide piece is one row ahead of pawn
                 if (item.id[1] == (+pawn.id[1] - 1)) {
                     // if passiveSide piece is one column right of pawn
                     if (item.id[0] == (+pawn.id[0] + 1)) {
@@ -31,7 +44,7 @@ function lit(activeSide, passiveSide) {
                 }
             });
 
-            // highlights empty space one ahead of pawn --> WORKS!
+            // highlights empty space one ahead of pawn
             // emptySpaces --> ['02', '03', ...]
             if (emptySpaces.includes(pawn.id[0] + (+pawn.id[1] - 1))) {
                 document.getElementById(
@@ -54,12 +67,12 @@ function lit(activeSide, passiveSide) {
                             if (item.name === 'pawn') {
                                 if (item.id[1] === '4') {
                                     if (item.id[0] == (+pawn.id[0] + 1)) {
-                                        enPassant = pawn;
-                                        enPassanter = item;
+                                        enPassantCell = pawn.id[0] + (+pawn.id[1] - 1);
+                                        enPassantables.push(item);
                                     }
                                     if (item.id[0] == (+pawn.id[0] - 1)) {
-                                        enPassant = pawn;
-                                        enPassanter = item;
+                                        enPassantCell = pawn.id[0] + (+pawn.id[1] + 1);
+                                        enPassantables.push(item);
                                     }
                                 }
                             }
@@ -159,12 +172,18 @@ function lit(activeSide, passiveSide) {
         } else { // since no is piece eaten...
             if (blues.includes(pawn)) { // if pawn is blue
                 e.target.classList.add('blue');
-                pawn.classList.remove('blue'); 
-            } else { // updates classList
+                pawn.classList.remove('blue');
+                if (e.target.id[1] === '4') {
+                    if (enPassantCell !== undefined) { enPassant = true; }
+                }
+            } else { // updates classList for pawn & e.target
                 e.target.classList.add('orange');
                 pawn.classList.remove('orange');
+                if (e.target.id[1] === '3') {
+                    if (enPassantCell !== undefined) { enPassant = true; }
+                }
             }
-        } // WORKS!
+        }
 
         // updates pawn's new & old space name
         e.target.name = 'pawn';
@@ -185,7 +204,9 @@ function lit(activeSide, passiveSide) {
     
         // removes click-listeners from all activeSide pieces
         activeSide.forEach(piece => {
-            document.getElementById(piece.id).removeEventListener('click', pieceLit);
+            document.getElementById(piece.id).removeEventListener(
+                'click', pieceLit
+            );
         });
         // removes click-listeners from all litDivs
         litDivs.forEach(item => {
