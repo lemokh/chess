@@ -18,11 +18,6 @@ function lit(activeSide, passiveSide) {
                 document.getElementById(enPassantCell).classList.add('lit');
                     litDivs.push(enPassantCell);
             }
-            // enPassantables.forEach(item => {
-            //     if (pawn === item) {
-                    
-            //     }
-            // });
         }
 
         // highlights all possible moves for clicked pawn --> WORKS!
@@ -62,7 +57,7 @@ function lit(activeSide, passiveSide) {
                         
                         litDivs.push(pawn.id[0] + (+pawn.id[1] - 2));
                         
-                        // ENPASSANT
+                        // ENPASSANT for blue pawn
                         passiveSide.forEach(item => {
                             if (item.name === 'pawn') {
                                 if (item.id[1] === '4') {
@@ -105,10 +100,28 @@ function lit(activeSide, passiveSide) {
                 // highlights empty space two ahead of pawn
                 if (pawn.id[1] === '1') { 
                     if (emptySpaces.includes(pawn.id[0] + (+pawn.id[1] + 2))) {
+                        
                         document.getElementById(
                             pawn.id[0] + (+pawn.id[1] + 2)
                         ).classList.add('lit');
+
                         litDivs.push(pawn.id[0] + (+pawn.id[1] + 2));
+
+                        // ENPASSANT for orange pawn
+                        passiveSide.forEach(item => {
+                            if (item.name === 'pawn') {
+                                if (item.id[1] === '3') {
+                                    if (item.id[0] == (+pawn.id[0] + 1)) {
+                                        enPassantCell = pawn.id[0] + (+pawn.id[1] - 1);
+                                        enPassantables.push(item);
+                                    }
+                                    if (item.id[0] == (+pawn.id[0] - 1)) {
+                                        enPassantCell = pawn.id[0] + (+pawn.id[1] + 1);
+                                        enPassantables.push(item);
+                                    }
+                                }
+                            }
+                        });
                     }
                 }
             }
