@@ -166,17 +166,18 @@ function lit(activeSide, passiveSide) {
         // if piece is eaten...
         if (e.target.name !== '') {
             console.log('piece eaten');
-            // if enPassantCell clicked
+            // if enPassantCell clicked --> en passant attack
             if (e.target.id === enPassantCell) {
 
                 console.log('e.target === enPassantCell');
                 // resets clicked enPassant cell info
                 
                 enPassantables = [];
-                enPassantCell = null;
+                enPassantCell = '';
         
                 // puts enPassantCell in its takenBox
                 if (activeSide === blues) {
+                    
                     enPassantedPawn = document.getElementById(
                         e.target.id[0] + (+e.target.id[1] + 1)
                     );
@@ -187,25 +188,31 @@ function lit(activeSide, passiveSide) {
                     
                     blueTakenBoxIdCounter -= 1;
                     
-                    enPassantedPawn.classList.remove('blue');
+                    enPassantedPawn.classList.remove('orange');
+                    console.log(enPassantedPawn);
+                    pawn.classList.remove('blue');
                 }
                 else { // since orange turn
+
                     enPassantedPawn = document.getElementById(
                         e.target.id[0] + (+e.target.id[1] - 1)
                     );
+                   
                     document.getElementById(
                         orangeTakenBoxIdCounter.toString()
                     ).src = enPassantedPawn.src;
 
                     orangeTakenBoxIdCounter -= 1;
                     
-                    enPassantedPawn.classList.remove('orange');
+                    enPassantedPawn.classList.remove('blue');
+                    console.log(enPassantedPawn);
+                    pawn.classList.remove('orange');
                 }
                 enPassantedPawn.src = './images/transparent.png';
                 enPassantedPawn.name = '';
                 passiveSide.splice(passiveSide.indexOf(enPassantedPawn), 1);
                 pieces = [...oranges, ...blues];
-                enPassantedPawn = null;
+                enPassantedPawn = undefined;
             }
             else {
                 // pushes eaten piece's image to its takenBox div
