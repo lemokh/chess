@@ -679,6 +679,8 @@ function lit(activeSide, passiveSide) {
             litDivs.push(item);
         });
         // console.log(kingSpaces);
+        // FIX: won't add '36' id to litDivs --> blue king's top-left cell
+        // works for orange king though
     } // ends kingLit()
     // NEEDS moveKing(e) & to adjust checkingSpace()
 
