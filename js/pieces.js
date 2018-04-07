@@ -33,7 +33,7 @@ const boardIds = [
 // update user profile
 // }
 
-function openSpaces(arr1, arr2) {
+function openSpaces(arr1, arr2) { // maybe this needs fixing
   return arr1.filter(cell => {
     return !arr2.some(piece => {
       return cell === piece.id;

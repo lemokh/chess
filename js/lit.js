@@ -525,7 +525,7 @@ function lit(activeSide, passiveSide) {
         two();
         three();
         four();
-    } // DONE --> NEEDS bishopMove(e) & highlight attackable pieces
+    } // DONE --> NEEDS moveBishop(e) & highlight attackable pieces
 
     function rookLit() {
         litDivs = [];
@@ -613,12 +613,12 @@ function lit(activeSide, passiveSide) {
         second();
         third();
         fourth();
-    }
+    }  // DONE --> NEEDS moveRook(e)
 
     function queenLit() { // NEEDS UN-HIGHIGHTING
         bishopLit();
         rookLit();
-    }
+    }  // DONE --> NEEDS moveKnight(e)
 
     function kingLit() {
         litDivs = [];
@@ -627,34 +627,43 @@ function lit(activeSide, passiveSide) {
         // highlights clicked king
         document.getElementById(king.id).classList.add('mainLit');
 
-        // NOTHING ELSE WORKS!!
+        // NOTHING BELOW THIS WORKS!!
 
-        function exclude(res1, res2) {
+        function exclude(res1, res2) { // kingSpaces, activeSide
             return res1.filter(obj => { // obj --> each item in res1
                 return !res2.some(obj2 => { // obj --> each item in res2
-                    return obj.x === obj2.x && obj.y === obj2.y
+                    return obj[0] == obj2.id[0] && obj[1] == obj2.id[1]
                 }) // returns true if at least one doesn't match x & y
             });
         } // excludes res2 from res1
 
         kingSpaces = [
-            { x: king.dataset.x - 1, y: king.dataset.y },
-            { x: king.dataset.x - 1, y: king.dataset.y + 1 },
-            { x: king.dataset.x, y: king.dataset.y + 1 },
-            { x: king.dataset.x + 1, y: king.dataset.y + 1 },
-            { x: king.dataset.x + 1, y: king.dataset.y },
-            { x: king.dataset.x + 1, y: king.dataset.y - 1 },
-            { x: king.dataset.x, y: king.dataset.y - 1 },
+            (+king.id[0] - 1) + king.id[1],
+            // { x: king.dataset.x - 1, y: king.dataset.y },
+            (+king.id[0] - 1).toString() + (+king.id[1] + 1),
+            // { x: king.dataset.x - 1, y: king.dataset.y + 1 },
+            king.id[0] + (+king.id[1] + 1),
+            // { x: king.dataset.x, y: king.dataset.y + 1 },
+            (+king.id[0] + 1).toString() + (+king.id[1] + 1),
+            // { x: king.dataset.x + 1, y: king.dataset.y + 1 },
+            (+king.id[0] + 1) + king.id[1],
+            // { x: king.dataset.x + 1, y: king.dataset.y },
+            (+king.id[0] + 1).toString() + (+king.id[1] - 1),
+            // { x: king.dataset.x + 1, y: king.dataset.y - 1 },
+            king.id[0] + (+king.id[1] - 1),
+            // { x: king.dataset.x, y: king.dataset.y - 1 },
         ].map(space => { // keeps only on-board kingSpaces
-            if (space.x >= 0 && space.x <= 7) {
-                if (space.y <= 7 && space.y <= 7) { return space; }
+            if (space[0] >= 0 && space[0] <= 7) {
+                if (space[1] >= 0 && space[1] <= 7) { return space; }
             }
         }).filter(item => { return item !== undefined; });
+
+        console.log(kingSpaces);
 
         kingSpacesUnderAttack = [];
 
         openAndOpponentHeldKingSpaces = exclude(kingSpaces, activeSide); // [{x:_, y:_}]
-
+// kingLit won't work until you adjust checkingSpace()
         openAndOpponentHeldKingSpaces.forEach(space => {
             passiveSide.forEach(piece => {
                 if (checkingSpace(piece, space, passiveSide)) {
@@ -671,7 +680,9 @@ function lit(activeSide, passiveSide) {
             ).classList.add('lit');
             litDivs.push(item.x.toString() + item.y.toString());
         });
+        // console.log(kingSpaces);
     } // ends kingLit()
+    // NEEDS moveKing(e) & to adjust checkingSpace()
 
     function pieceLit(e) { // on-click of an activeSide piece
 
@@ -681,12 +692,12 @@ function lit(activeSide, passiveSide) {
             litDivs.forEach(item => {
                 document.getElementById(item).classList.remove('lit');
             });
-        } // WORKS!
+        }
         
         litDivs.forEach(item => { // item is an id
             document.getElementById(item).removeEventListener(
                 'click',
-                movePawn // add all the other ones moveKnight, ect.
+                movePawn // add all the others --> moveKnight, ect.
             );
         });
 
@@ -708,7 +719,7 @@ function lit(activeSide, passiveSide) {
                 rook = e.target;
                 rookLit();
                 break;
-            case 'queen':
+            case 'queen': // SORT THIS OUT in queenMove(e);
                 bishop = e.target;
                 rook = e.target;
                 queenLit();
