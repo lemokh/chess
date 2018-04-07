@@ -412,6 +412,7 @@ function lit(activeSide, passiveSide) {
 
     function bishopLit() {
         // FIX: bishop doesn't highlight attackable pieces
+        // need to pass in queen somehow --> parameter
         litDivs = [];
         tempId.push(bishop.id);
 
@@ -526,7 +527,7 @@ function lit(activeSide, passiveSide) {
         four();
     } // DONE --> NEEDS bishopMove(e) & highlight attackable pieces
 
-    function rookLit(rook) {
+    function rookLit() {
         litDivs = [];
         tempId.push(rook.id);
 
@@ -614,18 +615,19 @@ function lit(activeSide, passiveSide) {
         fourth();
     }
 
-    function queenLit() {
+    function queenLit() { // NEEDS UN-HIGHIGHTING
         bishopLit();
         rookLit();
     }
 
-    function kingLit(king) {
+    function kingLit() {
         litDivs = [];
-        pawn.id = king.x.toString() + king.y.toString(); // clicked king
-        tempId.push(pawn.id);
+        tempId.push(king.id);
 
         // highlights clicked king
-        document.getElementById(pawn.id).classList.add('mainLit');
+        document.getElementById(king.id).classList.add('mainLit');
+
+        // NOTHING ELSE WORKS!!
 
         function exclude(res1, res2) {
             return res1.filter(obj => { // obj --> each item in res1
@@ -636,14 +638,13 @@ function lit(activeSide, passiveSide) {
         } // excludes res2 from res1
 
         kingSpaces = [
-            { x: king.x - 1, y: king.y },
-            { x: king.x - 1, y: king.y + 1 },
-            { x: king.x, y: king.y + 1 },
-            { x: king.x + 1, y: king.y + 1 },
-            { x: king.x + 1, y: king.y },
-            { x: king.x + 1, y: king.y - 1 },
-            { x: king.x, y: king.y - 1 },
-            { x: king.x - 1, y: king.y - 1 }
+            { x: king.dataset.x - 1, y: king.dataset.y },
+            { x: king.dataset.x - 1, y: king.dataset.y + 1 },
+            { x: king.dataset.x, y: king.dataset.y + 1 },
+            { x: king.dataset.x + 1, y: king.dataset.y + 1 },
+            { x: king.dataset.x + 1, y: king.dataset.y },
+            { x: king.dataset.x + 1, y: king.dataset.y - 1 },
+            { x: king.dataset.x, y: king.dataset.y - 1 },
         ].map(space => { // keeps only on-board kingSpaces
             if (space.x >= 0 && space.x <= 7) {
                 if (space.y <= 7 && space.y <= 7) { return space; }
@@ -708,7 +709,8 @@ function lit(activeSide, passiveSide) {
                 rookLit();
                 break;
             case 'queen':
-                queen = e.target;
+                bishop = e.target;
+                rook = e.target;
                 queenLit();
                 break;
             case 'king':
