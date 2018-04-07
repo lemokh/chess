@@ -637,7 +637,7 @@ function lit(activeSide, passiveSide) {
             });
         } // excludes res2 from res1
 
-        kingSpaces = [
+        kingSpaces = [ // missing '36' for blue king
             (+king.id[0] - 1) + king.id[1],
             // { x: king.dataset.x - 1, y: king.dataset.y },
             (+king.id[0] - 1).toString() + (+king.id[1] + 1),
@@ -652,11 +652,12 @@ function lit(activeSide, passiveSide) {
             // { x: king.dataset.x + 1, y: king.dataset.y - 1 },
             king.id[0] + (+king.id[1] - 1),
             // { x: king.dataset.x, y: king.dataset.y - 1 },
-        ].map(space => { // keeps only on-board kingSpaces
-            if (space[0] >= 0 && space[0] <= 7) {
-                if (space[1] >= 0 && space[1] <= 7) { return space; }
-            }
-        }).filter(item => { return item !== undefined; });
+            (+king.id[0] - 1).toString() + (+king.id[1] - 1)
+         ]; // .map(space => { // keeps only on-board kingSpaces
+        //     if (space[0] >= 0 && space[0] <= 7) {
+        //         if (space[1] >= 0 && space[1] <= 7) { return space; }
+        //     }
+        // }).filter(item => { return item !== undefined; });
 
         console.log(kingSpaces);
 
