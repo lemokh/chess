@@ -675,10 +675,8 @@ function lit(activeSide, passiveSide) {
         kingSpaces = exclude(openAndOpponentHeldKingSpaces, kingSpacesUnderAttack);
 
         kingSpaces.forEach(item => {
-            document.getElementById(
-                item.x.toString() + item.y.toString()
-            ).classList.add('lit');
-            litDivs.push(item.x.toString() + item.y.toString());
+            document.getElementById(item).classList.add('lit');
+            litDivs.push(item);
         });
         // console.log(kingSpaces);
     } // ends kingLit()
