@@ -304,6 +304,7 @@ function lit(activeSide, passiveSide) {
         block6 = false;
         block7 = false;
         block8 = false;
+        
         litDivs = [];
         tempId.push(knight.id);
 
@@ -408,7 +409,16 @@ function lit(activeSide, passiveSide) {
                 }
             }
         }
-    } // DONE --> NEEDS moveKnight(e)
+        // moves knight to clicked litDiv
+        litDivs.forEach(item => { // item is an id
+            document.getElementById(item).addEventListener(
+                'click', moveKnight
+            );
+        });
+    } // DONE
+    function moveKnight(e) {
+
+    }
 
     function bishopLit() {
         // FIX: bishop doesn't highlight attackable pieces
@@ -525,7 +535,18 @@ function lit(activeSide, passiveSide) {
         two();
         three();
         four();
-    } // DONE --> NEEDS moveBishop(e) & highlight attackable pieces
+
+        // moves bishop to clicked litDiv
+        litDivs.forEach(item => { // item is an id
+            document.getElementById(item).addEventListener(
+                'click', moveBishop
+            );
+        });
+    } // NEEDS to highlight attackable pieces
+
+    function moveBishop(e) {
+
+    }
 
     function rookLit() {
         litDivs = [];
@@ -613,12 +634,22 @@ function lit(activeSide, passiveSide) {
         second();
         third();
         fourth();
-    }  // DONE --> NEEDS moveRook(e)
 
-    function queenLit() { // NEEDS UN-HIGHIGHTING
+         // moves rook to clicked litDiv
+         litDivs.forEach(item => { // item is an id
+            document.getElementById(item).addEventListener(
+                'click', moveRook
+            );
+        });
+    }  // DONE
+    function moveRook(e) {
+
+    }
+
+    function queenLit() {
         bishopLit();
         rookLit();
-    }  // DONE --> NEEDS moveKnight(e)
+    } // NEEDS TO UN-HIGHLIGHT
 
     function kingLit() {
         litDivs = [];
@@ -653,18 +684,19 @@ function lit(activeSide, passiveSide) {
             king.id[0] + (+king.id[1] - 1),
             // { x: king.dataset.x, y: king.dataset.y - 1 },
             (+king.id[0] - 1).toString() + (+king.id[1] - 1)
-         ]; // .map(space => { // keeps only on-board kingSpaces
-        //     if (space[0] >= 0 && space[0] <= 7) {
-        //         if (space[1] >= 0 && space[1] <= 7) { return space; }
-        //     }
-        // }).filter(item => { return item !== undefined; });
+         ].map(space => { // keeps only on-board kingSpaces
+            if (+space[0] >= 0 && +space[0] <= 7) {
+                if (+space[1] >= 0 && +space[1] <= 7) { return space; }
+            }
+        }).filter(item => { return item !== undefined; });
 
         console.log(kingSpaces);
 
         kingSpacesUnderAttack = [];
 
-        openAndOpponentHeldKingSpaces = exclude(kingSpaces, activeSide); // [{x:_, y:_}]
-// kingLit won't work until you adjust checkingSpace()
+        openAndOpponentHeldKingSpaces = exclude(kingSpaces, activeSide);
+        
+        // !!!!!!!  MUST ADJUST checkingSpace(_, _, _)  !!!!!!!!!!!!
         openAndOpponentHeldKingSpaces.forEach(space => {
             passiveSide.forEach(piece => {
                 if (checkingSpace(piece, space, passiveSide)) {
@@ -680,10 +712,14 @@ function lit(activeSide, passiveSide) {
             litDivs.push(item);
         });
         // console.log(kingSpaces);
-        // FIX: won't add '36' id to litDivs --> blue king's top-left cell
+        // FIX: blue king --> kingSpacesUnderAttack
         // works for orange king though
     } // ends kingLit()
-    // NEEDS moveKing(e) & to adjust checkingSpace()
+    // NEEDS TO ADJUST checkingSpace()
+
+    function moveKing(e) {
+
+    }
 
     function pieceLit(e) { // on-click of an activeSide piece
 
@@ -698,7 +734,7 @@ function lit(activeSide, passiveSide) {
         litDivs.forEach(item => { // item is an id
             document.getElementById(item).removeEventListener(
                 'click',
-                movePawn // add all the others --> moveKnight, ect.
+                movePawn, moveKnight, moveBishop, moveRook, moveKing
             );
         });
 
@@ -741,17 +777,19 @@ function lit(activeSide, passiveSide) {
 lit(blues, oranges);
 
 
- // activeCells = activeSide.map(item => {
-    //     return item.x.toString() + item.y.toString();
-    // });
-    // function excludes(arr1, arr2) {
-    //     return arr1.filter(cell => {
-    //         return !arr2.some(piece => {
-    //             return cell === piece;
-    //         });
-    //     });
-    // }
-    // unLitDivs = excludes(activeCells, litDivs);
+// activeCells = activeSide.map(item => {
+//     return item.x.toString() + item.y.toString();
+// });
 
-// for each piece lit div,  --> 'click', move()
-// board.classList.remove('lit', 'mainLit')
+// function excludes(arr1, arr2) {
+//     return arr1.filter(cell => {
+//         return !arr2.some(piece => {
+//             return cell === piece.id;
+//         });
+//     });
+// }
+
+// unLitDivs = excludes(activeCells, litDivs);
+
+
+// board.classList.remove('lit', 'mainLit') --> should work
