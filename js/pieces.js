@@ -148,12 +148,12 @@ function checkingSpace(somePiece, checkSpace, passiveSide) { // returns true/fal
     }
     if (nails.length === 1) {
       // if (nails[0].side !== bishop.side) {
-      if (nails[0].classList.includes('blue')) {
-        if (someBishop.classList.includes('blue')) {
+      if (nails[0].classList.contains('blue')) {
+        if (someBishop.classList.contains('blue')) {
           pinnedPieces.push(nails[0]);
         }
-      } else if (nails[0].classList.includes('orange')) {
-        if (someBishop.classList.includes('orange')) {
+      } else if (nails[0].classList.contains('orange')) {
+        if (someBishop.classList.contains('orange')) {
           pinnedPieces.push(nails[0]);
         }
       }
@@ -205,13 +205,13 @@ function checkingSpace(somePiece, checkSpace, passiveSide) { // returns true/fal
       }
     }
     if (nails.length === 1) {
-      // if (nails[0].side !== bishop.side) {
-      if (nails[0].classList.includes('blue')) {
-        if (someRook.classList.includes('blue')) {
+      // if (nails[0].side !== someRook.side) {
+      if (nails[0].classList.contains('blue')) {
+        if (someRook.classList.contains('blue')) {
           pinnedPieces.push(nails[0]);
         }
-      } else if (nails[0].classList.includes('orange')) {
-        if (someRook.classList.includes('orange')) {
+      } else if (nails[0].classList.contains('orange')) {
+        if (someRook.classList.contains('orange')) {
           pinnedPieces.push(nails[0]);
         }
       }
