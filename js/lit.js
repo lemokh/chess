@@ -4,7 +4,7 @@ function lit(activeSide, passiveSide) {
     emptySpaces = openSpaces(boardIds, pieces); // updates emptySpaces
     
     // function toggleClocks() {}
-
+    //========================================================================================
     function pawnLit() {
         litDivs = [];
         tempId.push(pawn.id);
@@ -138,8 +138,7 @@ function lit(activeSide, passiveSide) {
                 'click', movePawn
             );
         });
-    }
-    
+    } // DONE
     function movePawn(e) {
         // un-highlights pawn
         if (tempId.length) {
@@ -152,7 +151,7 @@ function lit(activeSide, passiveSide) {
         litDivs.forEach(item => {
             document.getElementById(item).classList.remove('lit')
         });
-        // highlights enPassant cell, if an option
+        // highlights enPassant cell, if an option --> NOT USEFUL?
         // if (enPassantables.length) {
         //     if (enPassantables.includes(pawn)) {
         //         document.getElementById(enPassantCell).name = 'enPassantable';
@@ -291,9 +290,8 @@ function lit(activeSide, passiveSide) {
             // toggleClocks();
             lit(blues, oranges);
         }
-    }
+    } // DONE
     //========================================================================================
-
     function knightLit() {
         // good! highlights attackable pieces & its emptySpaces
         block1 = false;
@@ -417,9 +415,100 @@ function lit(activeSide, passiveSide) {
         });
     } // DONE
     function moveKnight(e) {
+        if (tempId.length) {
+            document.getElementById(tempId[0]).removeEventListener(
+                'click', pieceLit);
+            document.getElementById(tempId[0]).classList.remove('mainLit');
+            tempId = [];
+        }
+        // un-highlights all litDivs
+        litDivs.forEach(item => {
+            document.getElementById(item).classList.remove('lit')
+        });
+        // -----------------------------------------------------------------
+        // MOVES knight info to e.target's cell 
+        // if piece is eaten...
+        if (e.target.name !== '') {
+            console.log('piece eaten');
+            // pushes eaten piece's image to its takenBox div
+            if (e.target.classList.contains('blue')) {
+                document.getElementById(
+                    orangeTakenBoxIdCounter.toString()
+                ).src = e.target.src;
+                orangeTakenBoxIdCounter -= 1;
+            } else {
+                document.getElementById(
+                    blueTakenBoxIdCounter.toString()
+                ).src = e.target.src;
+                blueTakenBoxIdCounter -= 1;
+            }
+            // updates class sides
+            if (blues.includes(knight)) { // if knight is blue... 
+                e.target.classList.remove('orange');
+                e.target.classList.add('blue');
+                knight.classList.remove('blue');
+            } else { // since knight is orange...
+                e.target.classList.remove('blue');
+                e.target.classList.add('orange');
+                knight.classList.remove('orange');
+            }
+            // gets index for clicked space
+            index2 = passiveSide.indexOf(e.target);
+            // removes eaten piece from passiveSide array
+            passiveSide.splice(index2, 1);
+            
+        } else { // since no is piece eaten --> e.target.name === ''
+            if (blues.includes(knight)) { // if knight is blue
+                e.target.classList.add('blue');
+                knight.classList.remove('blue');
+                e.target.classList.remove('orange');
+            } else { // updates classList for knight & e.target
+                e.target.classList.add('orange');
+                knight.classList.remove('orange');
+                e.target.classList.remove('blue');
+            }
+        }
 
-    }
+        // updates knight's new & old space name
+        e.target.name = 'knight';
+        knight.name = '';
 
+        // updates knight's new & old space image
+        e.target.src = knight.src;
+        knight.src = './images/transparent.png';
+        
+        // gets index for clicked knight
+        index1 = activeSide.indexOf(knight);
+        // removes vacated space from activeSide array         
+        activeSide.splice(index1, 1);
+
+        // updates activeSide & pieces array
+        activeSide.push(e.target);
+        pieces = [...oranges, ...blues];
+    
+        // removes click-listeners from all activeSide pieces
+        activeSide.forEach(piece => {
+            document.getElementById(piece.id).removeEventListener(
+                'click', pieceLit
+            );
+        });
+        // removes click-listeners from all litDivs
+        litDivs.forEach(item => {
+            document.getElementById(item).removeEventListener(
+                'click', moveKnight
+            );
+        });
+        // toggles side & starts the next move 
+        if (activeSide === blues) {
+            // toggleClocks();
+            lit(oranges, blues);
+        }
+        else {
+            // toggleClocks();
+            lit(blues, oranges);
+        }
+    } // DONE
+    //========================================================================================
     function bishopLit() {
         // FIX: bishop doesn't highlight attackable pieces
         // need to pass in queen somehow --> parameter
@@ -542,12 +631,11 @@ function lit(activeSide, passiveSide) {
                 'click', moveBishop
             );
         });
-    } // NEEDS to highlight attackable pieces
-
+    } // NEEDS to highlight attackable pieces    
     function moveBishop(e) {
 
     }
-
+    //========================================================================================
     function rookLit() {
         litDivs = [];
         tempId.push(rook.id);
@@ -645,12 +733,12 @@ function lit(activeSide, passiveSide) {
     function moveRook(e) {
 
     }
-
+    //========================================================================================
     function queenLit() {
         bishopLit();
         rookLit();
     } // NEEDS TO UN-HIGHLIGHT
-
+    //========================================================================================
     function kingLit() {
         litDivs = [];
         tempId.push(king.id);
@@ -695,7 +783,8 @@ function lit(activeSide, passiveSide) {
         kingSpacesUnderAttack = [];
 
         openAndOpponentHeldKingSpaces = exclude(kingSpaces, activeSide);
-        
+        // console.log(openAndOpponentHeldKingSpaces);
+
         // !!!!!!!  MUST ADJUST checkingSpace(_, _, _)  !!!!!!!!!!!!
         openAndOpponentHeldKingSpaces.forEach(space => {
             passiveSide.forEach(piece => {
@@ -714,13 +803,14 @@ function lit(activeSide, passiveSide) {
         // console.log(kingSpaces);
         // FIX: blue king --> kingSpacesUnderAttack
         // works for orange king though
-    } // ends kingLit()
-    // NEEDS TO ADJUST checkingSpace()
-
+    } // NEEDS TO ADJUST checkingSpace()
+    //========================================================================================
     function moveKing(e) {
 
     }
-
+    //========================================================================================
+    //========================================================================================
+    //========================================================================================
     function pieceLit(e) { // on-click of an activeSide piece
 
         if (tempId.length) { // un-highlights all cells
@@ -767,13 +857,16 @@ function lit(activeSide, passiveSide) {
                 break;
         }
     }
+    //========================================================================================
+    //========================================================================================
+    //========================================================================================
     // adds click-listeners to all activeSide pieces
     activeSide.forEach(piece => { // on-click run pieceLit()
         document.getElementById(piece.id).addEventListener(
             'click', pieceLit
         );
     });
-}
+} //========================================================================================
 lit(blues, oranges);
 
 
