@@ -966,11 +966,11 @@ function lit(activeSide, passiveSide) {
         console.log(kingSpaces);
 
         kingSpacesUnderAttack = [];
-
+        
+        // array of kingSpaces devoid of kingSide pieces
         openAndOpponentHeldKingSpaces = exclude(kingSpaces, activeSide);
         // console.log(openAndOpponentHeldKingSpaces);
 
-        // !!!!!!!  MUST ADJUST checkingSpace(_, _, _)  !!!!!!!!!!!!
         openAndOpponentHeldKingSpaces.forEach(space => {
             passiveSide.forEach(piece => {
                 if (checkingSpace(piece, space, passiveSide)) {
