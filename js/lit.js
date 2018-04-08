@@ -963,7 +963,7 @@ function lit(activeSide, passiveSide) {
             }
         }).filter(item => { return item !== undefined; });
 
-        console.log(kingSpaces);
+        // console.log(kingSpaces);
 
         kingSpacesUnderAttack = [];
         

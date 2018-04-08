@@ -47,13 +47,14 @@ var emptySpaces = openSpaces(boardIds, pieces);
 //========================================================================================
 //========================================================================================
 
-function checkingSpace(somePiece, checkSpace, passiveSide) { // returns true/false if some-piece checks-space 
+function checkingSpace(somePiece, checkSpace/*, passiveSide*/) { // returns true/false if some-piece checks-space 
   // somePiece is an <img> in the passiveSide array 
   // checkSpace is a kingSpace <img> lacking any kingSide pieces
   //--------------------------------------------------------------------------------------------
   function knightAttacks(knight, checkSpace) { // returns true/false if knight can checkSpace
     knightMoves = []; // contains the two spaces where knight might checkSpace
-
+    // console.log(knight);
+    
     if (+knight.id[0] < +checkSpace.id[0]) { // if knight is left of checkSpace
       if (+knight.id[1] < +checkSpace.id[1]) { // and if knight is above checkSpace
         knightMoves.push({ x: +knight.id[0] + 1, y: +knight.id[1] + 2 });
@@ -166,6 +167,7 @@ function checkingSpace(somePiece, checkSpace, passiveSide) { // returns true/fal
     rookMoves = [];
     nails = []; // holds all spaces that rook attacks enroute to checkSpace
     // pushes all spaces between Ys of rook & checkSpace
+    // rook.id --> '00'          checkSpace --> '46'
     if (+rook.id[0] === +checkSpace.id[0]) { // rook & checkSpace share column x
       if (+rook.id[1] < +checkSpace.id[1]) { // & rook below checkSpace
         for (let i = +rook.id[1] + 1; i < +checkSpace.id[1]; i++) { // rook.y++
@@ -239,7 +241,7 @@ function checkingSpace(somePiece, checkSpace, passiveSide) { // returns true/fal
     case 'pawn': // ADD PAWN JUMP TWO & ENPASSANT
       // if pawn is one cell left or right of check space
       if ([+somePiece.id[0] - 1, +somePiece.x + 1].includes(+checkSpace.id[0])) { // sees if pawn can checkSpace
-        if (passiveSide === blues) { return +checkSpace.id[1] === (+somePiece.id[1] - 1); }
+        if (somePiece.classList.includes('blue')) { return +checkSpace.id[1] === (+somePiece.id[1] - 1); }
         else { return +checkSpace.id[1] === (+somePiece.id[1] + 1); }
       } return false;
     //--------------------------------------------------------------------------------------------
