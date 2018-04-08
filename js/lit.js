@@ -511,7 +511,7 @@ function lit(activeSide, passiveSide) {
     //========================================================================================
     function bishopLit() {
         // FIX: bishop doesn't highlight attackable pieces
-        // need to pass in queen somehow --> parameter
+        // need to pass in queen somehow --> parameter??
         litDivs = [];
         tempId.push(bishop.id);
 
@@ -522,7 +522,7 @@ function lit(activeSide, passiveSide) {
             bishopX = (+bishop.id[0] + 1);
             bishopY = (+bishop.id[1] + 1);
 
-            // while bishop's path is an empty space
+            // while bishop's path is an empty space, highlight each space
             while (emptySpaces.includes(bishopX.toString() + bishopY.toString())) {
                 document.getElementById(
                     bishopX.toString() + bishopY.toString()
@@ -532,14 +532,17 @@ function lit(activeSide, passiveSide) {
                 bishopX += 1;
                 bishopY += 1;
             }
-            // WHAT DOES THIS MEAN?
+            // WHAT DOES THIS MEAN?  WHAT NEEDS TO HAPPEN HERE?
             // for each activeSide index,
-            // if the passiveSide's x of that index equals bishopX,
+            // if the passiveSide's x of that index equals bishopX, ?
             // light up that passiveSide piece & add to litDivs
+
+            // activeSide --> kingSide [{x:_, y:_},...]
+            // passiveSide --> opposingSide --> [{x:_, y:_},...]
             for (let i = 0; i < activeSide.length; i++) {
                 if (passiveSide[i].id[0] == bishopX) {
                     if (passiveSide[i].id[1] == bishopY) {
-                        document.getElementById(
+                        document.getElementByIdgetElementById(
                             bishopX.toString() + bishopY.toString()
                         ).classList.add('lit');
                         litDivs.push(bishopX.toString() + bishopY.toString());
@@ -920,9 +923,9 @@ function lit(activeSide, passiveSide) {
     } // NEEDS TO LIGHT ATTACKABLE PIECES & enable consequtive king moves 
     //========================================================================================
     function queenLit() { // CODE EXPLODES ONCE QUEEN EATEN
-        bishopLit();
+        bishopLit(); // NEEDS TO UN-HIGHLIGHT!!
         rookLit();
-    } // NEEDS TO UN-HIGHLIGHT
+    }
     //========================================================================================
     function kingLit() {
         litDivs = [];
@@ -941,7 +944,7 @@ function lit(activeSide, passiveSide) {
             });
         } // excludes res2 from res1
 
-        kingSpaces = [ // missing '36' for blue king
+        kingSpaces = [
             (+king.id[0] - 1) + king.id[1],
             // { x: king.dataset.x - 1, y: king.dataset.y },
             (+king.id[0] - 1).toString() + (+king.id[1] + 1),
@@ -985,12 +988,18 @@ function lit(activeSide, passiveSide) {
             document.getElementById(item).classList.add('lit');
             litDivs.push(item);
         });
-        // console.log(kingSpaces);
+        
+        // moves king to clicked litDiv
+        litDivs.forEach(item => { // item is an id
+            document.getElementById(item).addEventListener(
+                'click', moveKing
+            );
+        });
         // FIX: blue king --> kingSpacesUnderAttack
-        // works for orange king though
-    } // NEEDS TO ADJUST checkingSpace()
+    } // NOT WORKS
     //========================================================================================
     function moveKing(e) {
+        console.log('inside moveKing(e)')
         if (tempId.length) {
             document.getElementById(tempId[0]).removeEventListener(
                 'click', pieceLit);
@@ -1002,7 +1011,7 @@ function lit(activeSide, passiveSide) {
             document.getElementById(item).classList.remove('lit')
         });
         // -----------------------------------------------------------------
-        // MOVES bishop info to e.target's cell 
+        // MOVES king's info to e.target's cell 
         // if piece is eaten...
         if (e.target.name !== '') {
             console.log('piece eaten');
@@ -1019,7 +1028,7 @@ function lit(activeSide, passiveSide) {
                 blueTakenBoxIdCounter -= 1;
             }
             // updates class sides
-            if (blues.includes(bishop)) { // if bishop is blue... 
+            if (blues.includes(king)) { // if bishop is blue... 
                 e.target.classList.remove('orange');
                 e.target.classList.add('blue');
                 bishop.classList.remove('blue');
@@ -1034,27 +1043,27 @@ function lit(activeSide, passiveSide) {
             passiveSide.splice(index2, 1);
             
         } else { // since no is piece eaten --> e.target.name === ''
-            if (blues.includes(bishop)) { // if bishop is blue
+            if (blues.includes(king)) { // if king is blue
                 e.target.classList.add('blue');
-                bishop.classList.remove('blue');
+                king.classList.remove('blue');
                 // e.target.classList.remove('orange');
-            } else { // updates classList for bishop & e.target
+            } else { // updates classList for king & e.target
                 e.target.classList.add('orange');
-                bishop.classList.remove('orange');
+                king.classList.remove('orange');
                 // e.target.classList.remove('blue');
             }
         }
 
-        // updates bishop's new & old space name
-        e.target.name = 'bishop';
-        bishop.name = '';
+        // updates king's new & old space name
+        e.target.name = 'king';
+        king.name = '';
 
-        // updates bishop's new & old space image
-        e.target.src = bishop.src;
-        bishop.src = './images/transparent.png';
+        // updates king's new & old space image
+        e.target.src = king.src;
+        king.src = './images/transparent.png';
         
-        // gets index for clicked bishop
-        index1 = activeSide.indexOf(bishop);
+        // gets index for clicked king
+        index1 = activeSide.indexOf(king);
         // removes vacated space from activeSide array         
         activeSide.splice(index1, 1);
 
@@ -1071,7 +1080,7 @@ function lit(activeSide, passiveSide) {
         // removes click-listeners from all litDivs
         litDivs.forEach(item => {
             document.getElementById(item).removeEventListener(
-                'click', moveBishop
+                'click', moveKing
             );
         });
         // toggles side & starts the next move 

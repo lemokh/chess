@@ -51,28 +51,27 @@ function checkingSpace(somePiece, checkSpace, passiveSide) { // returns true/fal
   // somePiece is an <img> in the passiveSide array 
   // checkSpace is a kingSpace <img> lacking any kingSide pieces
   //--------------------------------------------------------------------------------------------
-  function knightAttacks(knight, checkSpace) { // returns true/false if knight can checkSpace
+  function knightAttacks(someKnight, checkSpace) { // returns true/false if knight can checkSpace
     knightMoves = []; // contains the two spaces where knight might checkSpace
-    console.log(knight);
     
-    if (+knight.id[0] < +checkSpace[0]) { // if knight is left of checkSpace
-      if (+knight.id[1] < +checkSpace[1]) { // and if knight is above checkSpace
-        knightMoves.push({ x: +knight.id[0] + 1, y: +knight.id[1] + 2 });
-        knightMoves.push({ x: +knight.id[0] + 2, y: +knight.id[1] + 1 });
+    if (+someKnight.id[0] < +checkSpace[0]) { // if someKnight is left of checkSpace
+      if (+someKnight.id[1] < +checkSpace[1]) { // and if someKnight is above checkSpace
+        knightMoves.push({ x: +someKnight.id[0] + 1, y: +someKnight.id[1] + 2 });
+        knightMoves.push({ x: +someKnight.id[0] + 2, y: +someKnight.id[1] + 1 });
       }
-      else { // knight is left of and below checkSpace
-        knightMoves.push({ x: +knight.id[0] + 1, y: +knight.id[1] - 2 });
-        knightMoves.push({ x: +knight.id[0] + 2, y: +knight.id[1] - 1 });
+      else { // someKnight is left of and below checkSpace
+        knightMoves.push({ x: +someKnight.id[0] + 1, y: +someKnight.id[1] - 2 });
+        knightMoves.push({ x: +someKnight.id[0] + 2, y: +someKnight.id[1] - 1 });
       }
     }
-    else { // knight is right of checkSpace
-      if (+knight.id[1] < +checkSpace[1]) { // and knight is above checkSpace
-        knightMoves.push({ x: +knight.id[0] - 1, y: +knight.id[1] + 2 });
-        knightMoves.push({ x: +knight.id[0] - 2, y: +knight.id[1] + 1 });
+    else { // someKnight is right of checkSpace
+      if (+someKnight.id[1] < +checkSpace[1]) { // and someKnight is above checkSpace
+        knightMoves.push({ x: +someKnight.id[0] - 1, y: +someKnight.id[1] + 2 });
+        knightMoves.push({ x: +someKnight.id[0] - 2, y: +someKnight.id[1] + 1 });
       }
-      else { // knight is right of and below checkSpace
-        knightMoves.push({ x: +knight.id[0] - 1, y: +knight.id[1] - 2 });
-        knightMoves.push({ x: +knight.id[0] - 2, y: +knight.id[1] - 1 });
+      else { // someKnight is right of and below checkSpace
+        knightMoves.push({ x: +someKnight.id[0] - 1, y: +someKnight.id[1] - 2 });
+        knightMoves.push({ x: +someKnight.id[0] - 2, y: +someKnight.id[1] - 1 });
       } // push an instead id?
     }
     for (let i = 0; i < knightMoves.length; i++) {
@@ -82,21 +81,20 @@ function checkingSpace(somePiece, checkSpace, passiveSide) { // returns true/fal
     }
   } // end of knightAttacks --> returns true/false if knight can checkSpace
   //--------------------------------------------------------------------------------------------
-  function bishopAttacks(bishop, checkSpace) { // returns true/false if bishop can checkSpace
-    bishopMoves = []; // contains all spaces bishop attacks enroute to checkSpace
+  function bishopAttacks(someBishop, checkSpace) { // returns true/false if someBishop can checkSpace
+    bishopMoves = []; // contains all spaces someBishop attacks enroute to checkSpace
     nails = []; // collects possible pinnedPieces
-    bishopX = bishop.id[0];
-    bishopY = bishop.id[1];
+    bishopX = someBishop.id[0];
+    bishopY = someBishop.id[1];
 
-    console.log(bishop);
-    if (+bishop.id[0] === +checkSpace[0]) { return false; }
-    if (+bishop.id[1] === +checkSpace[1]) { return false; }
+    if (+someBishop.id[0] === +checkSpace[0]) { return false; }
+    if (+someBishop.id[1] === +checkSpace[1]) { return false; }
 
-    if (+bishop.id[0] < +checkSpace[0]) { // if bishop is left of king (LEFT BOARD SIDE)
+    if (+someBishop.id[0] < +checkSpace[0]) { // if someBishop is left of king (LEFT BOARD SIDE)
 
-      if (+bishop.id[1] < +checkSpace[1]) { // and if bishop is above king (FIRST QUADRANT)
-        if (+checkSpace[0] - (+bishop.id[0]) === (+checkSpace[1]) - (+bishop.id[1])) { // if bishop aligns with king
-          while (bishopX < +checkSpace[0] - 1) { // collects all attacking spaces between them
+      if (+someBishop.id[1] < +checkSpace[1]) { // and if someBishop is above king (FIRST QUADRANT)
+        if (+checkSpace[0] - (+someBishop.id[0]) === (+checkSpace[1]) - (+someBishop.id[1])) { // if someBishop aligns with king
+          while (someBishopX < +checkSpace[0] - 1) { // collects all attacking spaces between them
             bishopX += 1;
             bishopY += 1;
             bishopMoves.push({ x: bishopX, y: bishopY });
@@ -105,7 +103,7 @@ function checkingSpace(somePiece, checkSpace, passiveSide) { // returns true/fal
         else { return false; } // bishop cannot checkSpace
       }
       else { // bishop is left of and below checkSpace (THIRD QUADRANT)
-        if (+checkSpace[0] - (+bishop.id[0]) === (+bishop.id[1]) - (+checkSpace[1])) { // if bishop aligns with checkSpace
+        if (+checkSpace[0] - (+someBishop.id[0]) === (+someBishop.id[1]) - (+checkSpace[1])) { // if someBishop aligns with checkSpace
           while (bishopX < (+checkSpace.id[0]) - 1) { // collects all attacking spaces between them
             bishopX += 1;
             bishopY -= 1;
@@ -116,8 +114,8 @@ function checkingSpace(somePiece, checkSpace, passiveSide) { // returns true/fal
       }
     }
     else { // bishop is right of checkSpace (RIGHT BOARD SIDE)
-      if (+bishop.id[1] < +checkSpace[1]) { // and bishop is above checkSpace (SECOND QUADRANT)
-        if (+bishop.id[0] - (+checkSpace[0]) === (+checkSpace[1]) - (+bishop.id[1])) { // if bishop aligns with checkSpace
+      if (+someBishop.id[1] < +checkSpace[1]) { // and someBishop is above checkSpace (SECOND QUADRANT)
+        if (+someBishop.id[0] - (+checkSpace[0]) === (+checkSpace[1]) - (+someBishop.id[1])) { // if bishop aligns with checkSpace
           while (bishopX > +checkSpace.id[0] + 1) { // collects all attacking spaces between them
             bishopX -= 1;
             bishopY += 1;
@@ -127,7 +125,7 @@ function checkingSpace(somePiece, checkSpace, passiveSide) { // returns true/fal
         else { return false; } // bishop cannot checkSpace  
       }
       else { // bishop is right of and below checkSpace (FOURTH QUADRANT)
-        if (+bishop.id[0] - (+checkSpace[0]) === (+bishop.id[1]) - (+checkSpace[1])) { // if bishop aligns with checkSpace
+        if (+someBishop.id[0] - (+checkSpace[0]) === (+someBishop.id[1]) - (+checkSpace[1])) { // if someBishop aligns with checkSpace
           while (bishopX > +checkSpace[0] + 1) { // collects all attacking spaces between them
             bishopX -= 1;
             bishopY -= 1;
@@ -151,11 +149,11 @@ function checkingSpace(somePiece, checkSpace, passiveSide) { // returns true/fal
     if (nails.length === 1) {
       // if (nails[0].side !== bishop.side) {
       if (nails[0].classList.includes('blue')) {
-        if (bishop.classList.includes('blue')) {
+        if (someBishop.classList.includes('blue')) {
           pinnedPieces.push(nails[0]);
         }
       } else if (nails[0].classList.includes('orange')) {
-        if (bishop.classList.includes('orange')) {
+        if (someBishop.classList.includes('orange')) {
           pinnedPieces.push(nails[0]);
         }
       }
@@ -163,34 +161,33 @@ function checkingSpace(somePiece, checkSpace, passiveSide) { // returns true/fal
     return nails.length === 0; // returns true if no pieces block, else returns false
   } // end of bishopAttacks
   //--------------------------------------------------------------------------------------------
-  function rookAttacks(rook, checkSpace) { // returns true/false if rook can checkSpace
+  function rookAttacks(someRook, checkSpace) { // returns true/false if someRook can checkSpace
     rookMoves = [];
     nails = []; // holds all spaces that rook attacks enroute to checkSpace
-    // pushes all spaces between Ys of rook & checkSpace
-    // rook.id --> '00'          checkSpace --> '46'
-    console.log(rook);
+    // pushes all spaces between Ys of someRook & checkSpace
+    // someRook.id --> '00'          checkSpace --> '46'
 
-    if (+rook.id[0] === +checkSpace[0]) { // rook & checkSpace share column x
-      if (+rook.id[1] < +checkSpace[1]) { // & rook below checkSpace
-        for (let i = +rook.id[1] + 1; i < +checkSpace[1]; i++) { // rook.y++
+    if (+someRook.id[0] === +checkSpace[0]) { // someRook & checkSpace share column x
+      if (+someRook.id[1] < +checkSpace[1]) { // & someRook below checkSpace
+        for (let i = +someRook.id[1] + 1; i < +checkSpace[1]; i++) { // someRook.y++
           rookMoves.push({ x: +checkSpace[0], y: i });
         }
       }
-      else { // & rook above checkSpace 
-        for (let i = +rook.id[1] - 1; i > +checkSpace[1]; i--) { // rook.y--
+      else { // & someRook above checkSpace 
+        for (let i = +someRook.id[1] - 1; i > +checkSpace[1]; i--) { // rook.y--
           rookMoves.push({ x: +checkSpace[0], y: i });
         }
       }
     }
     // pushes all spaces between Xs of rook & checkSpace
-    else if (+rook.id[1] === +checkSpace[1]) { // rook & checkSpace share row y
-      if (+rook.id[0] < +checkSpace[0]) { // & rook left of checkSpace
-        for (let i = +rook.id[0] + 1; i < +checkSpace[0]; i++) { // rook.x++
+    else if (+someRook.id[1] === +checkSpace[1]) { // someRook & checkSpace share row y
+      if (+someRook.id[0] < +checkSpace[0]) { // & someRook left of checkSpace
+        for (let i = +someRook.id[0] + 1; i < +checkSpace[0]; i++) { // someRook.x++
           rookMoves.push({ x: i, y: +checkSpace[1] });
         }
       }
       else { // & rook right of checkSpace
-        for (let i = +rook.id[0] - 1; i > +checkSpace[0]; i--) { // rook.x--
+        for (let i = +someRook.id[0] - 1; i > +checkSpace[0]; i--) { // rook.x--
           rookMoves.push({ x: i, y: +checkSpace[1] });
         }
       }
@@ -201,7 +198,8 @@ function checkingSpace(somePiece, checkSpace, passiveSide) { // returns true/fal
       for (let k = 0; k < rookMoves.length; k++) { // & each space rook moves enroute to checkSpace
         if (+pieces[i].id[0] === rookMoves[k].x) {
           if (+pieces[i].id[1] === rookMoves[k].y) {
-            nails.push(pieces[i]); // --> expecting {x: _, y: _}
+            nails.push(pieces[i]);
+            // --> expecting {x: _, y: _} --> instead <img>
           }
         }
       }
@@ -209,11 +207,11 @@ function checkingSpace(somePiece, checkSpace, passiveSide) { // returns true/fal
     if (nails.length === 1) {
       // if (nails[0].side !== bishop.side) {
       if (nails[0].classList.includes('blue')) {
-        if (rook.classList.includes('blue')) {
+        if (someRook.classList.includes('blue')) {
           pinnedPieces.push(nails[0]);
         }
       } else if (nails[0].classList.includes('orange')) {
-        if (rook.classList.includes('orange')) {
+        if (someRook.classList.includes('orange')) {
           pinnedPieces.push(nails[0]);
         }
       }
@@ -221,18 +219,18 @@ function checkingSpace(somePiece, checkSpace, passiveSide) { // returns true/fal
     return nails.length === 0; // returns true if no pieces block, else returns false
   } // end of rookAttacks
   //--------------------------------------------------------------------------------------------
-  function queenAttacks(queen, checkSpace) { // returns true/false if queen can checkSpace
-    return (bishopAttacks(queen, checkSpace) || rookAttacks(queen, checkSpace));
+  function queenAttacks(someQueen, checkSpace) { // returns true/false if queen can checkSpace
+    return (bishopAttacks(someQueen, checkSpace) || rookAttacks(someQueen, checkSpace));
   }
   //--------------------------------------------------------------------------------------------
-  function kingAttacks(king, checkSpace) { // returns true if king can attack checkSpace
+  function kingAttacks(someKing, checkSpace) { // returns true if someKing can attack checkSpace
     switch (+checkSpace[0]) {
-      case +king.id[0] - 1:
-        return (+checkSpace[1] === +king.id[1] + 1) || (+checkSpace[1] === +king.id[1]) || (+checkSpace[1] === +king.id[1] - 1);
-      case +king.id[0]:
-        return (+checkSpace[1] === +king.id[1] + 1) || (+checkSpace[1] === +king.id[1] - 1);
-      case +king.id[0] + 1:
-        return (+checkSpace[1] === +king.id[1] + 1) || (+checkSpace[1] === +king.id[1]) || (+checkSpace[1] === +king.id[1] - 1);
+      case +someKing.id[0] - 1:
+        return (+checkSpace[1] === +someKing.id[1] + 1) || (+checkSpace[1] === +someKing.id[1]) || (+checkSpace[1] === +someKing.id[1] - 1);
+      case +someKing.id[0]:
+        return (+checkSpace[1] === +someKing.id[1] + 1) || (+checkSpace[1] === +someKing.id[1] - 1);
+      case +someKing.id[0] + 1:
+        return (+checkSpace[1] === +someKing.id[1] + 1) || (+checkSpace[1] === +someKing.id[1]) || (+checkSpace[1] === +someKing.id[1] - 1);
     }
   }
   //--------------------------------------------------------------------------------------------
@@ -240,9 +238,10 @@ function checkingSpace(somePiece, checkSpace, passiveSide) { // returns true/fal
   //--------------------------------------------------------------------------------------------
   switch (somePiece.name) { // sees if some piece can check space
     //--------------------------------------------------------------------------------------------
-    case 'pawn': // ADD PAWN JUMP TWO & ENPASSANT
-      // if pawn is one cell left or right of check space
-      if ([+somePiece.id[0] - 1, +somePiece.x + 1].includes(+checkSpace[0])) { // sees if pawn can checkSpace
+    case 'pawn': // ADD PAWN JUMP TWO & ENPASSANT?
+      // if pawn is one cell left or right of check space,
+      // sees if pawn can checkSpace
+      if ([+somePiece.id[0] - 1, +somePiece.x + 1].includes(+checkSpace[0])) {
         if (passiveSide === blues) { return +checkSpace[1] === (+somePiece.id[1] - 1); }
         else { return +checkSpace[1] === (+somePiece.id[1] + 1); }
       } return false;
