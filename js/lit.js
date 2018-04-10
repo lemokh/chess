@@ -151,14 +151,6 @@ function lit(activeSide, passiveSide) {
         litDivs.forEach(item => {
             document.getElementById(item).classList.remove('lit')
         });
-        // highlights enPassant cell, if an option --> NOT USEFUL?
-        // if (enPassantables.length) {
-        //     if (enPassantables.includes(pawn)) {
-        //         document.getElementById(enPassantCell).name = 'enPassantable';
-        //         document.getElementById(enPassantCell).classList.add('lit');
-        //         litDivs.push(enPassantCell);
-        //     }
-        // }
         // -----------------------------------------------------------------
         // MOVES pawn info to e.target's cell 
         // if piece is eaten...
