@@ -293,9 +293,7 @@ blueLit();
 // board.classList.remove('lit', 'mainLit')
 
 
-// ALSO .removeEventHandler() & .removeClass('lit) when user clicks any lacking 'lit' class 
-
-// var litSpaces = []; // ?
+// ALSO .removeEventListener('click', __ ) & .removeClass('lit) when user clicks any cell lacking 'lit' class 
 
 // document.getElementsByClassName('lit').addEventListener('click', function move() {
     // UPDATE x & y of original clicked piece to be the second clicked x & y

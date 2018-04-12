@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-2equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="main.css">
     <title>Chess</title>
   </head>
@@ -12,146 +12,143 @@
   <body>
     <game>
       <player1>
-        <clock1>
-          <div>BLUE</div>
-          <div></div>
-          <div>RESIGN</div>
-        </clock1>
-        <div id='takenBox1'>
-          <div id='-1'></div>
-          <div id='-2'></div>
-          <div id='-3'></div>
-          <div id='-4'></div>
-          <div id='-5'></div>
-          <div id='-6'></div>
-          <div id='-7'></div>
-          <div id='-8'></div>
-          <div id='-9'></div>
-          <div id='-10'></div>
-          <div id='-11'></div>
-          <div id='-12'></div>
-          <div id='-13'></div>
-          <div id='-14'></div>
-          <div id='-15'></div>
+        <!-- <button class='btn'>RESIGN</button> -->
+        <!-- <clock1></clock1> -->
+        <div id='blueTakenBox'>
+          <div class='takenBox'>
+            <img id='-1' src='./images/transparent.png'></img>
+            <img id='-2' src='./images/transparent.png'></img>
+            <img id='-3' src='./images/transparent.png'></img>
+            <img id='-4' src='./images/transparent.png'></img>
+            <img id='-5' src='./images/transparent.png'></img>
+            <img id='-6' src='./images/transparent.png'></img>
+            <img id='-7' src='./images/transparent.png'></img>
+            <img id='-8' src='./images/transparent.png'></img>
+          </div>
+          <div class='takenBox'>
+            <img id='-9' src='./images/transparent.png'></img>
+            <img id='-10' src='./images/transparent.png'></img>
+            <img id='-11' src='./images/transparent.png'></img>
+            <img id='-12' src='./images/transparent.png'></img>
+            <img id='-13' src='./images/transparent.png'></img>
+            <img id='-14' src='./images/transparent.png'></img>
+            <img id='-15' src='./images/transparent.png'></img>
+          </div>
         </div>
       </player1>
       <board id='board'>
-        <column0 class="column">
-          <div id='00' class='white cell'></div>
-          <div id='01' class='black cell'></div>
-          <div id='02' class='white cell'></div>
-          <div id='03' class='black cell'></div>
-          <div id='04' class='white cell'></div>
-          <div id='05' class='black cell'></div>
-          <div id='06' class='white cell'></div>
-          <div id='07' class='black cell'></div>
-        </column0>
-        <column1 class="column">
-          <div id='10' class='black cell'></div>
-          <div id='11' class='white cell'></div>
-          <div id='12' class='black cell'></div>
-          <div id='13' class='white cell'></div>
-          <div id='14' class='black cell'></div>
-          <div id='15' class='white cell'></div>
-          <div id='16' class='black cell'></div>
-          <div id='17' class='white cell'></div>
-        </column1>
-        <column2 class="column">
-          <div id='20' class='white cell'></div>
-          <div id='21' class='black cell'></div>
-          <div id='22' class='white cell'></div>
-          <div id='23' class='black cell'></div>
-          <div id='24' class='white cell'></div>
-          <div id='25' class='black cell'></div>
-          <div id='26' class='white cell'></div>
-          <div id='27' class='black cell'></div>
-        </column2>
-        <column3 class="column">
-          <div id='30' class='black cell'></div>
-          <div id='31' class='white cell'></div>
-          <div id='32' class='black cell'></div>
-          <div id='33' class='white cell'></div>
-          <div id='34' class='black cell'></div>
-          <div id='35' class='white cell'></div>
-          <div id='36' class='black cell'></div>
-          <div id='37' class='white cell'></div>
-        </column3>
-        <column4 class="column">
-          <div id='40' class='white cell'></div>
-          <div id='41' class='black cell'></div>
-          <div id='42' class='white cell'></div>
-          <div id='43' class='black cell'></div>
-          <div id='44' class='white cell'></div>
-          <div id='45' class='black cell'></div>
-          <div id='46' class='white cell'></div>
-          <div id='47' class='black cell'></div>
-        </column4>
-        <column5 class="column">
-          <div id='50' class='black cell'></div>
-          <div id='51' class='white cell'></div>
-          <div id='52' class='black cell'></div>
-          <div id='53' class='white cell'></div>
-          <div id='54' class='black cell'></div>
-          <div id='55' class='white cell'></div>
-          <div id='56' class='black cell'></div>
-          <div id='57' class='white cell'></div>
-        </column5>
-        <column6 class="column">
-          <div id='60' class='white cell'></div>
-          <div id='61' class='black cell'></div>
-          <div id='62' class='white cell'></div>
-          <div id='63' class='black cell'></div>
-          <div id='64' class='white cell'></div>
-          <div id='65' class='black cell'></div>
-          <div id='66' class='white cell'></div>
-          <div id='67' class='black cell'></div>
-        </column6>
-        <column7 class="column">
-          <div id='70' class='black cell'></div>
-          <div id='71' class='white cell'></div>
-          <div id='72' class='black cell'></div>
-          <div id='73' class='white cell'></div>
-          <div id='74' class='black cell'></div>
-          <div id='75' class='white cell'></div>
-          <div id='76' class='black cell'></div>
-          <div id='77' class='white cell'></div>
-        </column7>
+        <row0 class="row">  
+<!-- no need for dataset.x & dataset.y  -->
+          <img id='00' name='rook' dataset.x=0 dataset.y=0 src='./images/orangeRook.png' class='white cell orange'></img>
+          <img id='10' name='knight' dataset.x=1 dataset.y=0 src='./images/orangeKnight.png' class='black cell orange'></img>
+          <img id='20' name='bishop' dataset.x=2 dataset.y=0 src='./images/orangeBishop.png' class='white cell orange'></img>
+          <img id='30' name='queen' dataset.x=3 dataset.y=0 src='./images/orangeQueen.png' class='black cell orange'></img>
+          <img id='40' name='king' dataset.x=4 dataset.y=0 src='./images/orangeKing.png' class='white cell orange'></img>
+          <img id='50' name='bishop' dataset.x=5 dataset.y=0 src='./images/orangeBishop.png' class='black cell orange'></img>
+          <img id='60' name='knight' dataset.x=6 dataset.y=0 src='./images/orangeKnight.png' class='white cell orange'></img>
+          <img id='70' name='rookpawn' datase.x=7 dataset.y=0 src='./images/orangeRook.png' class='black cell orange'></img>
+        </row0>
+        <row1 class="row">
+          <img id='01' name='pawn' dataset.x=0 dataset.y=1 side='orange' src='./images/orangePawn.png' class='black cell orange'></img>
+          <img id='11' name='pawn' dataset.x=1 dataset.y=1 side='orange' src='./images/orangePawn.png' class='white cell orange'></img>
+          <img id='21' name='pawn' dataset.x=2 dataset.y=1 side='orange' src='./images/orangePawn.png' class='black cell orange'></img>
+          <img id='31' name='pawn' dataset.x=3 dataset.y=1 side='orange' src='./images/orangePawn.png' class='white cell orange'></img>
+          <img id='41' name='pawn' dataset.x=4 dataset.y=1 side='orange' src='./images/orangePawn.png' class='black cell orange'></img>
+          <img id='51' name='pawn' dataset.x=5 dataset.y=1 side='orange' src='./images/orangePawn.png' class='white cell orange'></img>
+          <img id='61' name='pawn' dataset.x=6 dataset.y=1 side='orange' src='./images/orangePawn.png' class='black cell orange'></img>
+          <img id='71' name='pawn' dataset.x=7 dataset.y=1 side='orange' src='./images/orangePawn.png' class='white cell orange'></img>
+        </row1>
+        <row2 class="row">
+          <img id='02' name='' dataset.x=0 dataset.y=2 side='' src='./images/transparent.png' class='white cell'></img>
+          <img id='12' name='' dataset.x=1 dataset.y=2 side='' src='./images/transparent.png' class='black cell'></img>
+          <img id='22' name='' dataset.x=2 dataset.y=2 side='' src='./images/transparent.png' class='white cell'></img>
+          <img id='32' name='' dataset.x=3 dataset.y=2 side='' src='./images/transparent.png' class='black cell'></img>
+          <img id='42' name='' dataset.x=4 dataset.y=2 side='' src='./images/transparent.png' class='white cell'></img>
+          <img id='52' name='' dataset.x=5 dataset.y=2 side='' src='./images/transparent.png' class='black cell'></img>
+          <img id='62' name='' dataset.x=6 dataset.y=2 side='' src='./images/transparent.png' class='white cell'></img>
+          <img id='72' name='' dataset.x=7 dataset.y=2 side='' src='./images/transparent.png' class='black cell'></img>
+        </row2>
+        <row3 class="row">
+          <img id='03' name='' dataset.x=0 dataset.y=3 side='' src='./images/transparent.png' class='black cell'></img>
+          <img id='13' name='' dataset.x=1 dataset.y=3 side='' src='./images/transparent.png' class='white cell'></img>
+          <img id='23' name='' dataset.x=2 dataset.y=3 side='' src='./images/transparent.png' class='black cell'></img>
+          <img id='33' name='' dataset.x=3 dataset.y=3 side='' src='./images/transparent.png' class='white cell'></img>
+          <img id='43' name='' dataset.x=4 dataset.y=3 side='' src='./images/transparent.png' class='black cell'></img>
+          <img id='53' name='' dataset.x=5 dataset.y=3 side='' src='./images/transparent.png' class='white cell'></img>
+          <img id='63' name='' dataset.x=6 dataset.y=3 side='' src='./images/transparent.png' class='black cell'></img>
+          <img id='73' name='' dataset.x=7 dataset.y=3 side='' src='./images/transparent.png' class='white cell'></img>
+        </row3>
+        <row4 class="row">
+          <img id='04' name='' dataset.x=0 dataset.y=4 side='' src='./images/transparent.png' class='white cell'></img>
+          <img id='14' name='' dataset.x=1 dataset.y=4 side='' src='./images/transparent.png' class='black cell'></img>
+          <img id='24' name='' dataset.x=2 dataset.y=4 side='' src='./images/transparent.png' class='white cell'></img>
+          <img id='34' name='' dataset.x=3 dataset.y=4 side='' src='./images/transparent.png' class='black cell'></img>
+          <img id='44' name='' dataset.x=4 dataset.y=4 side='' src='./images/transparent.png' class='white cell'></img>
+          <img id='54' name='' dataset.x=5 dataset.y=4 side='' src='./images/transparent.png' class='black cell'></img>
+          <img id='64' name='pawn' dataset.x=6 dataset.y=4 side='' src='./images/orangePawn.png' class='white cell orange'></img>
+          <img id='74' name='' dataset.x=7 dataset.y=4 side='' src='./images/transparent.png' class='black cell'></img>
+        </row4>
+        <row5 class="row">
+          <img id='05' name='' dataset.x=0 dataset.y=5 side='' src='./images/transparent.png' class='black cell'></img>
+          <img id='15' name='' dataset.x=1 dataset.y=5 side='' src='./images/transparent.png' class='white cell'></img>
+          <img id='25' name='' dataset.x=2 dataset.y=5 side='' src='./images/transparent.png' class='black cell'></img>
+          <img id='35' name='' dataset.x=3 dataset.y=5 side='' src='./images/transparent.png' class='white cell'></img>
+          <img id='45' name='' dataset.x=4 dataset.y=5 side='' src='./images/transparent.png' class='black cell'></img>
+          <img id='55' name='' dataset.x=5 dataset.y=5 side='' src='./images/transparent.png' class='white cell'></img>
+          <img id='65' name='' dataset.x=6 dataset.y=5 side='' src='./images/transparent.png' class='black cell'></img>
+          <img id='75' name='' dataset.x=7 dataset.y=5 side='' src='./images/transparent.png' class='white cell'></img>
+        </row5>
+        <row6 class="row">
+          <img id='06' name='pawn' dataset.x=0 dataset.y=6 src='./images/bluePawn.png' class='white cell blue'></img>
+          <img id='16' name='pawn' dataset.x=1 dataset.y=6 src='./images/bluePawn.png' class='black cell blue'></img>
+          <img id='26' name='pawn' dataset.x=2 dataset.y=6 src='./images/bluePawn.png' class='white cell blue'></img>
+          <img id='36' name='pawn' dataset.x=3 dataset.y=6 src='./images/bluePawn.png' class='black cell blue'></img>
+          <img id='46' name='pawn' dataset.x=4 dataset.y=6 src='./images/bluePawn.png' class='white cell blue'></img>
+          <img id='56' name='pawn' dataset.x=5 dataset.y=6 src='./images/bluePawn.png' class='black cell blue'></img>
+          <img id='66' name='pawn' dataset.x=6 dataset.y=6 src='./images/bluePawn.png' class='white cell blue'></img>
+          <img id='76' name='pawn' dataset.x=7 dataset.y=6 src='./images/bluePawn.png' class='black cell blue'></img>
+        </row6>
+        <row7 class="row">
+          <img id='07' name='rook' dataset.x=0 dataset.y=7 src='./images/blueRook.png' class='black cell blue'></img>
+          <img id='17' name='knight' dataset.x=1 dataset.y=7 src='./images/blueKnight.png' class='white cell blue'></img>
+          <img id='27' name='bishop' dataset.x=2 dataset.y=7 src='./images/blueBishop.png' class='black cell blue'></img>
+          <img id='37' name='queen' dataset.x=3 dataset.y=7 src='./images/blueQueen.png' class='white cell blue'></img>
+          <img id='47' name='king' dataset.x=4 dataset.y=7 src='./images/blueKing.png' class='black cell blue'></img>
+          <img id='57' name='bishop' dataset.x=5 dataset.y=7 src='./images/blueBishop.png' class='white cell blue'></img>
+          <img id='67' name='knight' dataset.x=6 dataset.y=7 src='./images/blueKnight.png' class='black cell blue'></img>
+          <img id='77' name='rook' dataset.x=7 dataset.y=7 src='./images/blueRook.png' class='white cell blue'></img>
+        </row7>
       </board>
       <player2>
-        <clock2>
-          <div>ORANGE</div>
-          <div></div>
-          <div>RESIGN</div>
-        </clock2>
-        <div id='takenBox2'>
-          <div id='-16'></div>
-          <div id='-17'></div>
-          <div id='-18'></div>
-          <div id='-19'></div>
-          <div id='-20'></div>
-          <div id='-21'></div>
-          <div id='-22'></div>
-          <div id='-23'></div>
-          <div id='-24'></div>
-          <div id='-25'></div>
-          <div id='-26'></div>
-          <div id='-27'></div>
-          <div id='-28'></div>
-          <div id='-29'></div>
-          <div id='-30'></div>
+        <!-- <button class='btn'>RESIGN</button> -->
+        <!-- <clock2></clock2> -->
+        <div id='orangeTakenBox'>
+          
+          <div class='takenBox'>
+            <img id='-24' src='./images/transparent.png'></img>
+            <img id='-25' src='./images/transparent.png'></img>
+            <img id='-26' src='./images/transparent.png'></img>
+            <img id='-27' src='./images/transparent.png'></img>
+            <img id='-28' src='./images/transparent.png'></img>
+            <img id='-29' src='./images/transparent.png'></img>
+            <img id='-30' src='./images/transparent.png'></img>
+          </div>
+          <div class='takenBox'>
+            <img id='-16' src='./images/transparent.png'></img>
+            <img id='-17' src='./images/transparent.png'></img>
+            <img id='-18' src='./images/transparent.png'></img>
+            <img id='-19' src='./images/transparent.png'></img>
+            <img id='-20' src='./images/transparent.png'></img>
+            <img id='-21' src='./images/transparent.png'></img>
+            <img id='-22' src='./images/transparent.png'></img>
+            <img id='-23' src='./images/transparent.png'></img>
+          </div>
         </div>
       </player2>
     </game>
   </body>
 
   <script src="js/pieces.js"></script>
-  <script src="js/storageLit.js"></script>
-  <!--<script src="js/lit.js"></script>-->
-
-  <!-- <script src="js/orangeLit.js"></script>
-  <script src="js/blueLit.js"></script> -->
-
-  <!-- <script src="https://unpkg.com/vue"></script> -->
-  <!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script> -->
+  <script src="js/lit.js"></script>
 
 </html>
