@@ -1,10 +1,11 @@
 function lit(activeSide, passiveSide) {
     litDivs = [];
     tempId = [];
+
     // function toggleClocks() {}
 
     function pawnLit(pawn) {
-        console.log();
+        // console.log();
         litDivs = [];
         mainLitDiv = pawn.x.toString() + pawn.y.toString(); // clicked pawn
         tempId.push(mainLitDiv);
@@ -136,6 +137,7 @@ function lit(activeSide, passiveSide) {
                             document.getElementById(e.target.id).firstChild // old child
                         );
                         passiveSide.splice(index2, 1); // removes eaten piece from passiveSide
+
                         // push old child (eaten piece) image to its takenBox div
                         // WRITE THIS
                     }
@@ -157,43 +159,11 @@ function lit(activeSide, passiveSide) {
                     // removes click listener from 1st clicked div and add to 2nd clicked div
                     document.getElementById(mainLitDiv).removeEventListener('click', highlight);
 
-                    // document.getElementById(e.target.id).addEventListener('click', highlight(pawn), false);
+                    // document.getElementById(e.target.id).addEventListener('click', highlight);
 
-                    // if (activeSide === blues) {
-                    //     // toggleClocks();
-                    //     // toggleNoClick();
-                    //     lit(oranges, blues);
-                    // }
-                    // else {
-                    //     // toggleClocks();
-                    //     // toggleNoClick();
-                    //     lit(blues, oranges);
-                    // }
                 });
         });
     }
-    // ENPASSANT
-    // activeSide.forEach(item => { // if this pawn moves there
-    //   if (item.name === 'pawn') {
-    //     if (item.y === 3) {
-    //       if (item.x === pawn.x + 1 || item.x === pawn.x - 1) {
-    //         enPassant = pawn; // eatable on next move by either blue pawn
-    //       }
-    //     }
-    //   }
-    // });
-    //========================================================================================
-    // activeCells = activeSide.map(item => {
-    //     return item.x.toString() + item.y.toString();
-    // });
-    // function excludes(arr1, arr2) {
-    //     return arr1.filter(cell => {
-    //         return !arr2.some(piece => {
-    //             return cell === piece;
-    //         });
-    //     });
-    // }
-    // unLitDivs = excludes(activeCells, litDivs);
 
     function knightLit(knight) {
         block1 = false;
