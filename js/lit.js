@@ -2,13 +2,13 @@ function lit(activeSide, passiveSide) {
     litDivs = []; // holds lit ids on which to apply click-listeners
     tempId = []; // for un-highlighting all cells on clicking new piece
     emptySpaces = openSpaces(boardIds, pieces); // updates emptySpaces
-    
+
     // function toggleClocks() {}
     //========================================================================================
     function pawnLit() {
         litDivs = [];
         tempId.push(pawn.id);
-    
+
         // highlights clicked pawn
         document.getElementById(pawn.id).classList.add('mainLit');
 
@@ -31,7 +31,7 @@ function lit(activeSide, passiveSide) {
                     if (item.id[0] == (+pawn.id[0] + 1)) {
                         document.getElementById(item.id).classList.add('lit');
                         litDivs.push(item.id);
-                    } 
+                    }
                     // if passiveSide piece is one column left of pawn
                     if (item.id[0] == (+pawn.id[0] - 1)) {
                         document.getElementById(item.id).classList.add('lit');
@@ -58,7 +58,7 @@ function lit(activeSide, passiveSide) {
                         ).classList.add('lit');
                         // adds that cell to litDivs array
                         litDivs.push(pawn.id[0] + (+pawn.id[1] - 2));
-                        
+
                         // ENPASSANT for blue pawn
                         passiveSide.forEach(item => { // for each passiveSide piece
                             if (item.name === 'pawn') { // if a pawn
@@ -83,7 +83,7 @@ function lit(activeSide, passiveSide) {
         }
         else { // since activeSide === oranges...
             // highlights any spaces that orange pawn can attack
-            passiveSide.forEach(item => { 
+            passiveSide.forEach(item => {
                 if (item.id[1] == (+pawn.id[1] + 1)) {
                     if (item.id[0] == (+pawn.id[0] + 1)) {
                         document.getElementById(item.id).classList.add('lit');
@@ -101,11 +101,11 @@ function lit(activeSide, passiveSide) {
                     pawn.id[0] + (+pawn.id[1] + 1)
                 ).classList.add('lit');
                 litDivs.push(pawn.id[0] + (+pawn.id[1] + 1));
-                
+
                 // highlights empty space two ahead of pawn
-                if (pawn.id[1] === '1') { 
+                if (pawn.id[1] === '1') {
                     if (emptySpaces.includes(pawn.id[0] + (+pawn.id[1] + 2))) {
-                        
+
                         document.getElementById(
                             pawn.id[0] + (+pawn.id[1] + 2)
                         ).classList.add('lit');
@@ -161,23 +161,23 @@ function lit(activeSide, passiveSide) {
 
                 console.log('e.target === enPassantCell');
                 // resets clicked enPassant cell info
-                
+
                 enPassantables = [];
                 enPassantCell = '';
-        
+
                 // puts enPassantCell in its takenBox
                 if (activeSide === blues) {
-                    
+
                     enPassantedPawn = document.getElementById(
                         e.target.id[0] + (+e.target.id[1] + 1)
                     );
-                    
+
                     document.getElementById(
                         blueTakenBoxIdCounter.toString()
                     ).src = enPassantedPawn.src;
-                    
+
                     blueTakenBoxIdCounter -= 1;
-                    
+
                     enPassantedPawn.classList.remove('orange');
                     e.target.classList.add('blue');
                     pawn.classList.remove('blue');
@@ -187,13 +187,13 @@ function lit(activeSide, passiveSide) {
                     enPassantedPawn = document.getElementById(
                         e.target.id[0] + (+e.target.id[1] - 1)
                     );
-                   
+
                     document.getElementById(
                         orangeTakenBoxIdCounter.toString()
                     ).src = enPassantedPawn.src;
 
                     orangeTakenBoxIdCounter -= 1;
-                    
+
                     enPassantedPawn.classList.remove('blue');
                     e.target.classList.add('orange');
                     pawn.classList.remove('orange');
@@ -211,7 +211,8 @@ function lit(activeSide, passiveSide) {
                         orangeTakenBoxIdCounter.toString()
                     ).src = e.target.src;
                     orangeTakenBoxIdCounter -= 1;
-                } else {
+                }
+                else {
                     document.getElementById(
                         blueTakenBoxIdCounter.toString()
                     ).src = e.target.src;
@@ -222,7 +223,8 @@ function lit(activeSide, passiveSide) {
                     e.target.classList.remove('orange');
                     e.target.classList.add('blue');
                     pawn.classList.remove('blue');
-                } else { // since pawn is orange...
+                }
+                else { // since pawn is orange...
                     e.target.classList.remove('blue');
                     e.target.classList.add('orange');
                     pawn.classList.remove('orange');
@@ -232,12 +234,14 @@ function lit(activeSide, passiveSide) {
                 // removes eaten piece from passiveSide array
                 passiveSide.splice(index2, 1);
             }
-        } else { // since no is piece eaten --> e.target.name === ''
+        }
+        else { // since no is piece eaten --> e.target.name === ''
             if (blues.includes(pawn)) { // if pawn is blue
                 e.target.classList.add('blue');
                 pawn.classList.remove('blue');
                 // e.target.classList.remove('orange');
-            } else { // updates classList for pawn & e.target
+            }
+            else { // updates classList for pawn & e.target
                 e.target.classList.add('orange');
                 pawn.classList.remove('orange');
                 // e.target.classList.remove('blue');
@@ -251,7 +255,7 @@ function lit(activeSide, passiveSide) {
         // updates pawn's new & old space image
         e.target.src = pawn.src;
         pawn.src = './images/transparent.png';
-        
+
         // gets index for clicked pawn
         index1 = activeSide.indexOf(pawn);
         // removes vacated space from activeSide array         
@@ -260,7 +264,7 @@ function lit(activeSide, passiveSide) {
         // updates activeSide & pieces array
         activeSide.push(e.target);
         pieces = [...oranges, ...blues];
-    
+
         // removes click-listeners from all activeSide pieces
         activeSide.forEach(piece => {
             document.getElementById(piece.id).removeEventListener(
@@ -294,7 +298,7 @@ function lit(activeSide, passiveSide) {
         block6 = false;
         block7 = false;
         block8 = false;
-        
+
         litDivs = [];
         tempId.push(knight.id);
 
@@ -314,8 +318,8 @@ function lit(activeSide, passiveSide) {
                     if (piece.id[1] == (+knight.id[1] + 1)) { block5 = true; break; }
                     if (piece.id[1] == (+knight.id[1] - 1)) { block6 = true; break; }
                 case (+knight.id[0] - 2):
-                if (piece.id[1] == (+knight.id[1] + 1)) { block7 = true; break; }
-                if (piece.id[1] == (+knight.id[1] - 1)) { block8 = true; break; }
+                    if (piece.id[1] == (+knight.id[1] + 1)) { block7 = true; break; }
+                    if (piece.id[1] == (+knight.id[1] - 1)) { block8 = true; break; }
             }
         });
 
@@ -428,7 +432,8 @@ function lit(activeSide, passiveSide) {
                     orangeTakenBoxIdCounter.toString()
                 ).src = e.target.src;
                 orangeTakenBoxIdCounter -= 1;
-            } else {
+            }
+            else {
                 document.getElementById(
                     blueTakenBoxIdCounter.toString()
                 ).src = e.target.src;
@@ -439,7 +444,8 @@ function lit(activeSide, passiveSide) {
                 e.target.classList.remove('orange');
                 e.target.classList.add('blue');
                 knight.classList.remove('blue');
-            } else { // since knight is orange...
+            }
+            else { // since knight is orange...
                 e.target.classList.remove('blue');
                 e.target.classList.add('orange');
                 knight.classList.remove('orange');
@@ -448,13 +454,15 @@ function lit(activeSide, passiveSide) {
             index2 = passiveSide.indexOf(e.target);
             // removes eaten piece from passiveSide array
             passiveSide.splice(index2, 1);
-            
-        } else { // since no is piece eaten --> e.target.name === ''
+
+        }
+        else { // since no is piece eaten --> e.target.name === ''
             if (blues.includes(knight)) { // if knight is blue
                 e.target.classList.add('blue');
                 knight.classList.remove('blue');
                 // e.target.classList.remove('orange');
-            } else { // updates classList for knight & e.target
+            }
+            else { // updates classList for knight & e.target
                 e.target.classList.add('orange');
                 knight.classList.remove('orange');
                 // e.target.classList.remove('blue');
@@ -468,7 +476,7 @@ function lit(activeSide, passiveSide) {
         // updates knight's new & old space image
         e.target.src = knight.src;
         knight.src = './images/transparent.png';
-        
+
         // gets index for clicked knight
         index1 = activeSide.indexOf(knight);
         // removes vacated space from activeSide array         
@@ -477,7 +485,7 @@ function lit(activeSide, passiveSide) {
         // updates activeSide & pieces array
         activeSide.push(e.target);
         pieces = [...oranges, ...blues];
-    
+
         // removes click-listeners from all activeSide pieces
         activeSide.forEach(piece => {
             document.getElementById(piece.id).removeEventListener(
@@ -651,7 +659,8 @@ function lit(activeSide, passiveSide) {
                     orangeTakenBoxIdCounter.toString()
                 ).src = e.target.src;
                 orangeTakenBoxIdCounter -= 1;
-            } else {
+            }
+            else {
                 document.getElementById(
                     blueTakenBoxIdCounter.toString()
                 ).src = e.target.src;
@@ -662,7 +671,8 @@ function lit(activeSide, passiveSide) {
                 e.target.classList.remove('orange');
                 e.target.classList.add('blue');
                 bishop.classList.remove('blue');
-            } else { // since bishop is orange...
+            }
+            else { // since bishop is orange...
                 e.target.classList.remove('blue');
                 e.target.classList.add('orange');
                 bishop.classList.remove('orange');
@@ -671,13 +681,15 @@ function lit(activeSide, passiveSide) {
             index2 = passiveSide.indexOf(e.target);
             // removes eaten piece from passiveSide array
             passiveSide.splice(index2, 1);
-            
-        } else { // since no is piece eaten --> e.target.name === ''
+
+        }
+        else { // since no is piece eaten --> e.target.name === ''
             if (blues.includes(bishop)) { // if bishop is blue
                 e.target.classList.add('blue');
                 bishop.classList.remove('blue');
                 // e.target.classList.remove('orange');
-            } else { // updates classList for bishop & e.target
+            }
+            else { // updates classList for bishop & e.target
                 e.target.classList.add('orange');
                 bishop.classList.remove('orange');
                 // e.target.classList.remove('blue');
@@ -691,7 +703,7 @@ function lit(activeSide, passiveSide) {
         // updates bishop's new & old space image
         e.target.src = bishop.src;
         bishop.src = './images/transparent.png';
-        
+
         // gets index for clicked bishop
         index1 = activeSide.indexOf(bishop);
         // removes vacated space from activeSide array         
@@ -700,7 +712,7 @@ function lit(activeSide, passiveSide) {
         // updates activeSide & pieces array
         activeSide.push(e.target);
         pieces = [...oranges, ...blues];
-    
+
         // removes click-listeners from all activeSide pieces
         activeSide.forEach(piece => {
             document.getElementById(piece.id).removeEventListener(
@@ -811,13 +823,13 @@ function lit(activeSide, passiveSide) {
         third();
         fourth();
 
-         // moves rook to clicked litDiv
-         litDivs.forEach(item => { // item is an id
+        // moves rook to clicked litDiv
+        litDivs.forEach(item => { // item is an id
             document.getElementById(item).addEventListener(
                 'click', moveRook
             );
         });
-    }  // DONE
+    } // DONE
     function moveRook(e) {
         if (tempId.length) {
             document.getElementById(tempId[0]).removeEventListener(
@@ -840,7 +852,8 @@ function lit(activeSide, passiveSide) {
                     orangeTakenBoxIdCounter.toString()
                 ).src = e.target.src;
                 orangeTakenBoxIdCounter -= 1;
-            } else {
+            }
+            else {
                 document.getElementById(
                     blueTakenBoxIdCounter.toString()
                 ).src = e.target.src;
@@ -851,7 +864,8 @@ function lit(activeSide, passiveSide) {
                 e.target.classList.remove('orange');
                 e.target.classList.add('blue');
                 rook.classList.remove('blue');
-            } else { // since rook is orange...
+            }
+            else { // since rook is orange...
                 e.target.classList.remove('blue');
                 e.target.classList.add('orange');
                 rook.classList.remove('orange');
@@ -860,13 +874,15 @@ function lit(activeSide, passiveSide) {
             index2 = passiveSide.indexOf(e.target);
             // removes eaten piece from passiveSide array
             passiveSide.splice(index2, 1);
-            
-        } else { // since no is piece eaten --> e.target.name === ''
+
+        }
+        else { // since no is piece eaten --> e.target.name === ''
             if (blues.includes(rook)) { // if rook is blue
                 e.target.classList.add('blue');
                 rook.classList.remove('blue');
                 // e.target.classList.remove('orange');
-            } else { // updates classList for rook & e.target
+            }
+            else { // updates classList for rook & e.target
                 e.target.classList.add('orange');
                 rook.classList.remove('orange');
                 // e.target.classList.remove('blue');
@@ -880,7 +896,7 @@ function lit(activeSide, passiveSide) {
         // updates rook's new & old space image
         e.target.src = rook.src;
         rook.src = './images/transparent.png';
-        
+
         // gets index for clicked rook
         index1 = activeSide.indexOf(rook);
         // removes vacated space from activeSide array         
@@ -889,7 +905,7 @@ function lit(activeSide, passiveSide) {
         // updates activeSide & pieces array
         activeSide.push(e.target);
         pieces = [...oranges, ...blues];
-    
+
         // removes click-listeners from all activeSide pieces
         activeSide.forEach(piece => {
             document.getElementById(piece.id).removeEventListener(
@@ -1113,13 +1129,14 @@ function lit(activeSide, passiveSide) {
         thirdQueen();
         fourthQueen();
 
-         // moves rook to clicked litDiv
-         litDivs.forEach(item => { // item is an id
+        // moves rook to clicked litDiv
+        litDivs.forEach(item => { // item is an id
             document.getElementById(item).addEventListener(
                 'click', moveQueen
             );
         });
     }
+
     function moveQueen(e) {
         if (tempId.length) {
             document.getElementById(tempId[0]).removeEventListener(
@@ -1142,7 +1159,8 @@ function lit(activeSide, passiveSide) {
                     orangeTakenBoxIdCounter.toString()
                 ).src = e.target.src;
                 orangeTakenBoxIdCounter -= 1;
-            } else {
+            }
+            else {
                 document.getElementById(
                     blueTakenBoxIdCounter.toString()
                 ).src = e.target.src;
@@ -1153,7 +1171,8 @@ function lit(activeSide, passiveSide) {
                 e.target.classList.remove('orange');
                 e.target.classList.add('blue');
                 queen.classList.remove('blue');
-            } else { // since queen is orange...
+            }
+            else { // since queen is orange...
                 e.target.classList.remove('blue');
                 e.target.classList.add('orange');
                 queen.classList.remove('orange');
@@ -1162,13 +1181,15 @@ function lit(activeSide, passiveSide) {
             index2 = passiveSide.indexOf(e.target);
             // removes eaten piece from passiveSide array
             passiveSide.splice(index2, 1);
-            
-        } else { // since no is piece eaten --> e.target.name === ''
+
+        }
+        else { // since no is piece eaten --> e.target.name === ''
             if (blues.includes(queen)) { // if queen is blue
                 e.target.classList.add('blue');
                 queen.classList.remove('blue');
                 // e.target.classList.remove('orange');
-            } else { // updates classList for queen & e.target
+            }
+            else { // updates classList for queen & e.target
                 e.target.classList.add('orange');
                 queen.classList.remove('orange');
                 // e.target.classList.remove('blue');
@@ -1182,7 +1203,7 @@ function lit(activeSide, passiveSide) {
         // updates queen's new & old space image
         e.target.src = queen.src;
         queen.src = './images/transparent.png';
-        
+
         // gets index for clicked queen
         index1 = activeSide.indexOf(queen);
         // removes vacated space from activeSide array         
@@ -1191,7 +1212,7 @@ function lit(activeSide, passiveSide) {
         // updates activeSide & pieces array
         activeSide.push(e.target);
         pieces = [...oranges, ...blues];
-    
+
         // removes click-listeners from all activeSide pieces
         activeSide.forEach(piece => {
             document.getElementById(piece.id).removeEventListener(
@@ -1247,7 +1268,7 @@ function lit(activeSide, passiveSide) {
             king.id[0] + (+king.id[1] - 1),
             // { x: king.dataset.x, y: king.dataset.y - 1 },
             (+king.id[0] - 1).toString() + (+king.id[1] - 1)
-         ].map(space => { // keeps only on-board kingSpaces
+        ].map(space => { // keeps only on-board kingSpaces
             if (+space[0] >= 0 && +space[0] <= 7) {
                 if (+space[1] >= 0 && +space[1] <= 7) { return space; }
             }
@@ -1256,7 +1277,7 @@ function lit(activeSide, passiveSide) {
         // console.log(kingSpaces);
 
         kingSpacesUnderAttack = [];
-        
+
         // array of kingSpaces devoid of kingSide pieces
         openAndOpponentHeldKingSpaces = exclude(kingSpaces, activeSide);
         // console.log(openAndOpponentHeldKingSpaces);
@@ -1275,7 +1296,7 @@ function lit(activeSide, passiveSide) {
             document.getElementById(item).classList.add('lit');
             litDivs.push(item);
         });
-        
+
         // moves king to clicked litDiv
         litDivs.forEach(item => { // item is an id
             document.getElementById(item).addEventListener(
@@ -1308,7 +1329,8 @@ function lit(activeSide, passiveSide) {
                     orangeTakenBoxIdCounter.toString()
                 ).src = e.target.src;
                 orangeTakenBoxIdCounter -= 1;
-            } else {
+            }
+            else {
                 document.getElementById(
                     blueTakenBoxIdCounter.toString()
                 ).src = e.target.src;
@@ -1319,7 +1341,8 @@ function lit(activeSide, passiveSide) {
                 e.target.classList.remove('orange');
                 e.target.classList.add('blue');
                 bishop.classList.remove('blue');
-            } else { // since bishop is orange...
+            }
+            else { // since bishop is orange...
                 e.target.classList.remove('blue');
                 e.target.classList.add('orange');
                 bishop.classList.remove('orange');
@@ -1328,13 +1351,15 @@ function lit(activeSide, passiveSide) {
             index2 = passiveSide.indexOf(e.target);
             // removes eaten piece from passiveSide array
             passiveSide.splice(index2, 1);
-            
-        } else { // since no is piece eaten --> e.target.name === ''
+
+        }
+        else { // since no is piece eaten --> e.target.name === ''
             if (blues.includes(king)) { // if king is blue
                 e.target.classList.add('blue');
                 king.classList.remove('blue');
                 // e.target.classList.remove('orange');
-            } else { // updates classList for king & e.target
+            }
+            else { // updates classList for king & e.target
                 e.target.classList.add('orange');
                 king.classList.remove('orange');
                 // e.target.classList.remove('blue');
@@ -1348,7 +1373,7 @@ function lit(activeSide, passiveSide) {
         // updates king's new & old space image
         e.target.src = king.src;
         king.src = './images/transparent.png';
-        
+
         // gets index for clicked king
         index1 = activeSide.indexOf(king);
         // removes vacated space from activeSide array         
@@ -1357,7 +1382,7 @@ function lit(activeSide, passiveSide) {
         // updates activeSide & pieces array
         activeSide.push(e.target);
         pieces = [...oranges, ...blues];
-    
+
         // removes click-listeners from all activeSide pieces
         activeSide.forEach(piece => {
             document.getElementById(piece.id).removeEventListener(
@@ -1392,7 +1417,7 @@ function lit(activeSide, passiveSide) {
                 document.getElementById(item).classList.remove('lit');
             });
         }
-        
+
         litDivs.forEach(item => { // item is an id
             document.getElementById(item).removeEventListener(
                 'click',
@@ -1401,7 +1426,7 @@ function lit(activeSide, passiveSide) {
         });
 
         // highlights clicked piece's possible moves
-        switch (e.target.name) { 
+        switch (e.target.name) {
             case 'pawn':
                 pawn = e.target;
                 pawnLit();
