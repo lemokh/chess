@@ -15,15 +15,14 @@ function clock() {
     else if (abrv1 < 1000) { time = temp[0]; }
   } // converts time
 
-  function down() {
+  function down() { // runs convert()
     if (+abrv1 > 100) { abrv1 -= 100; }
     convert();
     document.getElementById('time').html(time);
     stopped = false;
-
   } // decreases timer by one second
 
-  function up() {
+  function up() { // runs convert()
     if (+time < 60) { abrv1 = (+abrv1 + 100); }
     convert();
     document.getElementById('time1').html(time);
@@ -31,7 +30,7 @@ function clock() {
 
   } // inceases timer by one second
 
-  function page() {
+  function page() { // runs convert()
     convert();
     document.getElementById('time1').html(time);
   }; // displays timers

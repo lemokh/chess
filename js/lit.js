@@ -4,6 +4,104 @@ function lit(activeSide, passiveSide) {
     emptySpaces = openSpaces(boardIds, pieces); // updates emptySpaces
 
     // function toggleClocks() {}
+    function movePiece(e) {
+        if (tempId.length) {
+            document.getElementById(tempId[0]).removeEventListener(
+                'click', pieceLit);
+            document.getElementById(tempId[0]).classList.remove('mainLit');
+            tempId = [];
+        }
+        // un-highlights all litDivs
+        litDivs.forEach(item => {
+            document.getElementById(item).classList.remove('lit')
+        });
+        // -----------------------------------------------------------------
+        // MOVES bishop info to e.target's cell 
+        // if piece is eaten...
+        if (e.target.name !== '') {
+            console.log('piece eaten');
+            // pushes eaten piece's image to its takenBox div
+            if (e.target.classList.contains('blue')) {
+                document.getElementById(
+                    orangeTakenBoxIdCounter.toString()
+                ).src = e.target.src;
+                orangeTakenBoxIdCounter -= 1;
+            }
+            else {
+                document.getElementById(
+                    blueTakenBoxIdCounter.toString()
+                ).src = e.target.src;
+                blueTakenBoxIdCounter -= 1;
+            }
+            // updates class sides
+            if (blues.includes(bishop)) { // if bishop is blue... 
+                e.target.classList.remove('orange');
+                e.target.classList.add('blue');
+                bishop.classList.remove('blue');
+            }
+            else { // since bishop is orange...
+                e.target.classList.remove('blue');
+                e.target.classList.add('orange');
+                bishop.classList.remove('orange');
+            }
+            // gets index for clicked space
+            index2 = passiveSide.indexOf(e.target);
+            // removes eaten piece from passiveSide array
+            passiveSide.splice(index2, 1);
+
+        }
+        else { // since no is piece eaten --> e.target.name === ''
+            if (blues.includes(bishop)) { // if bishop is blue
+                e.target.classList.add('blue');
+                bishop.classList.remove('blue');
+                // e.target.classList.remove('orange');
+            }
+            else { // updates classList for bishop & e.target
+                e.target.classList.add('orange');
+                bishop.classList.remove('orange');
+                // e.target.classList.remove('blue');
+            }
+        }
+
+        // updates bishop's new & old space name
+        e.target.name = 'bishop';
+        bishop.name = '';
+
+        // updates bishop's new & old space image
+        e.target.src = bishop.src;
+        bishop.src = './images/transparent.png';
+
+        // gets index for clicked bishop
+        index1 = activeSide.indexOf(bishop);
+        // removes vacated space from activeSide array         
+        activeSide.splice(index1, 1);
+
+        // updates activeSide & pieces array
+        activeSide.push(e.target);
+        pieces = [...oranges, ...blues];
+
+        // removes click-listeners from all activeSide pieces
+        activeSide.forEach(piece => {
+            document.getElementById(piece.id).removeEventListener(
+                'click', pieceLit
+            );
+        });
+        // removes click-listeners from all litDivs
+        litDivs.forEach(item => {
+            document.getElementById(item).removeEventListener(
+                'click', moveBishop
+            );
+        });
+        // toggles side & starts the next move 
+        if (activeSide === blues) {
+            // toggleClocks();
+            lit(oranges, blues);
+        }
+        else {
+            // toggleClocks();
+            lit(blues, oranges);
+        }
+    }
     //========================================================================================
     function pawnLit() {
         litDivs = [];
@@ -286,7 +384,7 @@ function lit(activeSide, passiveSide) {
             // toggleClocks();
             lit(blues, oranges);
         }
-    } // DONE
+    }
     //========================================================================================
     function knightLit() {
         // good! highlights attackable pieces & its emptySpaces
@@ -410,104 +508,6 @@ function lit(activeSide, passiveSide) {
             );
         });
     } // DONE
-    function moveKnight(e) {
-        if (tempId.length) {
-            document.getElementById(tempId[0]).removeEventListener(
-                'click', pieceLit);
-            document.getElementById(tempId[0]).classList.remove('mainLit');
-            tempId = [];
-        }
-        // un-highlights all litDivs
-        litDivs.forEach(item => {
-            document.getElementById(item).classList.remove('lit')
-        });
-        // -----------------------------------------------------------------
-        // MOVES knight info to e.target's cell 
-        // if piece is eaten...
-        if (e.target.name !== '') {
-            console.log('piece eaten');
-            // pushes eaten piece's image to its takenBox div
-            if (e.target.classList.contains('blue')) {
-                document.getElementById(
-                    orangeTakenBoxIdCounter.toString()
-                ).src = e.target.src;
-                orangeTakenBoxIdCounter -= 1;
-            }
-            else {
-                document.getElementById(
-                    blueTakenBoxIdCounter.toString()
-                ).src = e.target.src;
-                blueTakenBoxIdCounter -= 1;
-            }
-            // updates class sides
-            if (blues.includes(knight)) { // if knight is blue... 
-                e.target.classList.remove('orange');
-                e.target.classList.add('blue');
-                knight.classList.remove('blue');
-            }
-            else { // since knight is orange...
-                e.target.classList.remove('blue');
-                e.target.classList.add('orange');
-                knight.classList.remove('orange');
-            }
-            // gets index for clicked space
-            index2 = passiveSide.indexOf(e.target);
-            // removes eaten piece from passiveSide array
-            passiveSide.splice(index2, 1);
-
-        }
-        else { // since no is piece eaten --> e.target.name === ''
-            if (blues.includes(knight)) { // if knight is blue
-                e.target.classList.add('blue');
-                knight.classList.remove('blue');
-                // e.target.classList.remove('orange');
-            }
-            else { // updates classList for knight & e.target
-                e.target.classList.add('orange');
-                knight.classList.remove('orange');
-                // e.target.classList.remove('blue');
-            }
-        }
-
-        // updates knight's new & old space name
-        e.target.name = 'knight';
-        knight.name = '';
-
-        // updates knight's new & old space image
-        e.target.src = knight.src;
-        knight.src = './images/transparent.png';
-
-        // gets index for clicked knight
-        index1 = activeSide.indexOf(knight);
-        // removes vacated space from activeSide array         
-        activeSide.splice(index1, 1);
-
-        // updates activeSide & pieces array
-        activeSide.push(e.target);
-        pieces = [...oranges, ...blues];
-
-        // removes click-listeners from all activeSide pieces
-        activeSide.forEach(piece => {
-            document.getElementById(piece.id).removeEventListener(
-                'click', pieceLit
-            );
-        });
-        // removes click-listeners from all litDivs
-        litDivs.forEach(item => {
-            document.getElementById(item).removeEventListener(
-                'click', moveKnight
-            );
-        });
-        // toggles side & starts the next move 
-        if (activeSide === blues) {
-            // toggleClocks();
-            lit(oranges, blues);
-        }
-        else {
-            // toggleClocks();
-            lit(blues, oranges);
-        }
-    } // DONE
     //========================================================================================
     function bishopLit() {
         // FIX: bishop doesn't highlight attackable pieces
@@ -629,112 +629,16 @@ function lit(activeSide, passiveSide) {
         three();
         four();
 
-        // moves bishop to clicked litDiv
-        litDivs.forEach(item => { // item is an id
-            document.getElementById(item).addEventListener(
-                'click', moveBishop
-            );
-        });
+        if (bishop.name === 'queen') { rook = bishop; }
+
+        else { // moves bishop to clicked litDiv
+            litDivs.forEach(item => { // item is an id
+                document.getElementById(item).addEventListener(
+                    'click', movePiece
+                );
+            });
+        }
     } // NEEDS to highlight attackable pieces --> REWORK THIS!
-
-    function moveBishop(e) {
-        if (tempId.length) {
-            document.getElementById(tempId[0]).removeEventListener(
-                'click', pieceLit);
-            document.getElementById(tempId[0]).classList.remove('mainLit');
-            tempId = [];
-        }
-        // un-highlights all litDivs
-        litDivs.forEach(item => {
-            document.getElementById(item).classList.remove('lit')
-        });
-        // -----------------------------------------------------------------
-        // MOVES bishop info to e.target's cell 
-        // if piece is eaten...
-        if (e.target.name !== '') {
-            console.log('piece eaten');
-            // pushes eaten piece's image to its takenBox div
-            if (e.target.classList.contains('blue')) {
-                document.getElementById(
-                    orangeTakenBoxIdCounter.toString()
-                ).src = e.target.src;
-                orangeTakenBoxIdCounter -= 1;
-            }
-            else {
-                document.getElementById(
-                    blueTakenBoxIdCounter.toString()
-                ).src = e.target.src;
-                blueTakenBoxIdCounter -= 1;
-            }
-            // updates class sides
-            if (blues.includes(bishop)) { // if bishop is blue... 
-                e.target.classList.remove('orange');
-                e.target.classList.add('blue');
-                bishop.classList.remove('blue');
-            }
-            else { // since bishop is orange...
-                e.target.classList.remove('blue');
-                e.target.classList.add('orange');
-                bishop.classList.remove('orange');
-            }
-            // gets index for clicked space
-            index2 = passiveSide.indexOf(e.target);
-            // removes eaten piece from passiveSide array
-            passiveSide.splice(index2, 1);
-
-        }
-        else { // since no is piece eaten --> e.target.name === ''
-            if (blues.includes(bishop)) { // if bishop is blue
-                e.target.classList.add('blue');
-                bishop.classList.remove('blue');
-                // e.target.classList.remove('orange');
-            }
-            else { // updates classList for bishop & e.target
-                e.target.classList.add('orange');
-                bishop.classList.remove('orange');
-                // e.target.classList.remove('blue');
-            }
-        }
-
-        // updates bishop's new & old space name
-        e.target.name = 'bishop';
-        bishop.name = '';
-
-        // updates bishop's new & old space image
-        e.target.src = bishop.src;
-        bishop.src = './images/transparent.png';
-
-        // gets index for clicked bishop
-        index1 = activeSide.indexOf(bishop);
-        // removes vacated space from activeSide array         
-        activeSide.splice(index1, 1);
-
-        // updates activeSide & pieces array
-        activeSide.push(e.target);
-        pieces = [...oranges, ...blues];
-
-        // removes click-listeners from all activeSide pieces
-        activeSide.forEach(piece => {
-            document.getElementById(piece.id).removeEventListener(
-                'click', pieceLit
-            );
-        });
-        // removes click-listeners from all litDivs
-        litDivs.forEach(item => {
-            document.getElementById(item).removeEventListener(
-                'click', moveBishop
-            );
-        });
-        // toggles side & starts the next move 
-        if (activeSide === blues) {
-            // toggleClocks();
-            lit(oranges, blues);
-        }
-        else {
-            // toggleClocks();
-            lit(blues, oranges);
-        }
-    } // DONE
     //========================================================================================
     function rookLit() {
         litDivs = [];
@@ -829,413 +733,8 @@ function lit(activeSide, passiveSide) {
                 'click', moveRook
             );
         });
-    } // DONE
-    function moveRook(e) {
-        if (tempId.length) {
-            document.getElementById(tempId[0]).removeEventListener(
-                'click', pieceLit);
-            document.getElementById(tempId[0]).classList.remove('mainLit');
-            tempId = [];
-        }
-        // un-highlights all litDivs
-        litDivs.forEach(item => {
-            document.getElementById(item).classList.remove('lit')
-        });
-        // -----------------------------------------------------------------
-        // MOVES king info to e.target's cell 
-        // if piece is eaten...
-        if (e.target.name !== '') {
-            console.log('piece eaten');
-            // pushes eaten piece's image to its takenBox div
-            if (e.target.classList.contains('blue')) {
-                document.getElementById(
-                    orangeTakenBoxIdCounter.toString()
-                ).src = e.target.src;
-                orangeTakenBoxIdCounter -= 1;
-            }
-            else {
-                document.getElementById(
-                    blueTakenBoxIdCounter.toString()
-                ).src = e.target.src;
-                blueTakenBoxIdCounter -= 1;
-            }
-            // updates class sides
-            if (blues.includes(rook)) { // if rook is blue... 
-                e.target.classList.remove('orange');
-                e.target.classList.add('blue');
-                rook.classList.remove('blue');
-            }
-            else { // since rook is orange...
-                e.target.classList.remove('blue');
-                e.target.classList.add('orange');
-                rook.classList.remove('orange');
-            }
-            // gets index for clicked space
-            index2 = passiveSide.indexOf(e.target);
-            // removes eaten piece from passiveSide array
-            passiveSide.splice(index2, 1);
-
-        }
-        else { // since no is piece eaten --> e.target.name === ''
-            if (blues.includes(rook)) { // if rook is blue
-                e.target.classList.add('blue');
-                rook.classList.remove('blue');
-                // e.target.classList.remove('orange');
-            }
-            else { // updates classList for rook & e.target
-                e.target.classList.add('orange');
-                rook.classList.remove('orange');
-                // e.target.classList.remove('blue');
-            }
-        }
-
-        // updates rook's new & old space name
-        e.target.name = 'rook';
-        rook.name = '';
-
-        // updates rook's new & old space image
-        e.target.src = rook.src;
-        rook.src = './images/transparent.png';
-
-        // gets index for clicked rook
-        index1 = activeSide.indexOf(rook);
-        // removes vacated space from activeSide array         
-        activeSide.splice(index1, 1);
-
-        // updates activeSide & pieces array
-        activeSide.push(e.target);
-        pieces = [...oranges, ...blues];
-
-        // removes click-listeners from all activeSide pieces
-        activeSide.forEach(piece => {
-            document.getElementById(piece.id).removeEventListener(
-                'click', pieceLit
-            );
-        });
-        // removes click-listeners from all litDivs
-        litDivs.forEach(item => {
-            document.getElementById(item).removeEventListener(
-                'click', moveRook
-            );
-        });
-
-        // toggles side & starts the next move 
-        if (activeSide === blues) {
-            // toggleClocks();
-            lit(oranges, blues);
-        }
-        else {
-            // toggleClocks();
-            lit(blues, oranges);
-        }
     } // NEEDS TO LIGHT ATTACKABLE PIECES
     //========================================================================================
-    function queenLit() {
-        litDivs = [];
-        tempId.push(queen.id);
-
-        // highlights clicked bishop
-        document.getElementById(queen.id).classList.add('mainLit');
-
-        function oneQueen() {
-            bishopX = (+queen.id[0] + 1);
-            bishopY = (+queen.id[1] + 1);
-
-            // while bishop's path is an empty space, highlight each space
-            while (emptySpaces.includes(bishopX.toString() + bishopY.toString())) {
-                document.getElementById(
-                    bishopX.toString() + bishopY.toString()
-                ).classList.add('lit');
-                litDivs.push(bishopX.toString() + bishopY.toString());
-
-                bishopX += 1;
-                bishopY += 1;
-            }
-            // WHAT DOES THIS MEAN?  WHAT NEEDS TO HAPPEN HERE?
-            // for each activeSide index,
-            // if the passiveSide's x of that index equals bishopX, ?
-            // light up that passiveSide piece & add to litDivs
-            console.log(passiveSide);
-            // activeSide --> kingSide [{x:_, y:_},...]
-            // passiveSide --> opposingSide --> [{x:_, y:_},...]
-            for (let i = 0; i < activeSide.length; i++) {
-                if (passiveSide[i].id[0] == bishopX) {
-                    if (passiveSide[i].id[1] == bishopY) {
-                        document.getElementByIdgetElementById(
-                            bishopX.toString() + bishopY.toString()
-                        ).classList.add('lit');
-                        litDivs.push(bishopX.toString() + bishopY.toString());
-                    }
-                }
-            } // capsulate these in a function with bishopX&Y in switch!
-        }
-
-        function twoQueen() {
-            bishopX = (+queen.id[0] + 1);
-            bishopY = (+queen.id[1] - 1);
-
-            while (emptySpaces.includes(bishopX.toString() + bishopY.toString())) {
-                document.getElementById(
-                    bishopX.toString() + bishopY.toString()
-                ).classList.add('lit');
-                litDivs.push(bishopX.toString() + bishopY.toString());
-
-                bishopX += 1;
-                bishopY -= 1;
-            }
-            for (let i = 0; i < activeSide.length; i++) {
-                if (passiveSide[i].id[0] == bishopX) {
-                    if (passiveSide[i].id[1] == bishopY) {
-                        document.getElementById(
-                            bishopX.toString() + bishopY.toString()
-                        ).classList.add('lit');
-                        litDivs.push(bishopX.toString() + bishopY.toString());
-                    }
-                }
-            }
-        }
-
-        function threeQueen() {
-            bishopX = (+queen.id[0] - 1);
-            bishopY = (+queen.id[1] + 1);
-
-            while (emptySpaces.includes(bishopX.toString() + bishopY.toString())) {
-                document.getElementById(
-                    bishopX.toString() + bishopY.toString()
-                ).classList.add('lit');
-                litDivs.push(bishopX.toString() + bishopY.toString());
-
-                bishopX -= 1;
-                bishopY += 1;
-            }
-            for (let i = 0; i < activeSide.length; i++) {
-                if (passiveSide[i].id[0] == bishopX) {
-                    if (passiveSide[i].id[1] == bishopY) {
-                        document.getElementById(
-                            bishopX.toString() + bishopY.toString()
-                        ).classList.add('lit');
-                        litDivs.push(bishopX.toString() + bishopY.toString());
-                    }
-                }
-            }
-        }
-
-        function fourQueen() {
-            bishopX = (+queen.id[0] - 1);
-            bishopY = (+queen.id[1] - 1);
-
-            while (emptySpaces.includes(bishopX.toString() + bishopY.toString())) {
-                document.getElementById(
-                    bishopX.toString() + bishopY.toString()
-                ).classList.add('lit');
-                litDivs.push(bishopX.toString() + bishopY.toString());
-
-                bishopX -= 1;
-                bishopY -= 1;
-            }
-            for (let i = 0; i < activeSide.length; i++) {
-                if (passiveSide[i].id[0] == bishopX) {
-                    if (passiveSide[i].id[1] == bishopY) {
-                        document.getElementById(
-                            bishopX.toString() + bishopY.toString()
-                        ).classList.add('lit');
-                        litDivs.push(bishopX.toString() + bishopY.toString());
-                    }
-                }
-            }
-        }
-        oneQueen();
-        twoQueen();
-        threeQueen();
-        fourQueen();
-        ////////////////////////////////////////////////////////////////////////////////////////
-        function firstQueen() {
-            rookX = (+queen.id[0] - 1);
-
-            while (emptySpaces.includes(rookX.toString() + queen.id[1].toString())) {
-                document.getElementById(
-                    rookX.toString() + queen.id[1].toString()
-                ).classList.add('lit');
-                litDivs.push(rookX.toString() + rook.id[1].toString());
-
-                rookX -= 1;
-            }
-            if (passiveSide.includes(rookX.toString() + queen.id[1].toString())) {
-                document.getElementById(
-                    rookX.toString() + queen.id[1].toString()
-                ).classList.add('lit');
-                litDivs.push(rookX.toString() + queen.id[1].toString());
-            }
-        }
-
-        function secondQueen() {
-            rookX = (+queen.id[0] + 1);
-
-            while (emptySpaces.includes(rookX.toString() + queen.id[1].toString())) {
-                document.getElementById(
-                    rookX.toString() + queen.id[1].toString()
-                ).classList.add('lit');
-                litDivs.push(rookX.toString() + queen.id[1].toString());
-
-                rookX += 1;
-            }
-            if (passiveSide.includes(rookX.toString() + queen.id[1].toString())) {
-                document.getElementById(
-                    rookX.toString() + queen.id[1].toString()
-                ).classList.add('lit');
-                litDivs.push(rookX.toString() + queen.id[1].toString());
-            }
-        }
-
-        function thirdQueen() {
-            rookY = (+queen.id[1] - 1);
-
-            while (emptySpaces.includes(queen.id[0].toString() + rookY.toString())) {
-                document.getElementById(
-                    queen.id[0].toString() + rookY.toString()
-                ).classList.add('lit');
-                litDivs.push(queen.id[0].toString() + rookY.toString());
-
-                rookY -= 1;
-            }
-            if (passiveSide.includes(queen.id[0].toString() + rookY.toString())) {
-                document.getElementById(
-                    queen.id[0].toString() + rookY.toString()
-                ).classList.add('lit');
-                litDivs.push(queen.id[0].toString() + rookY.toString());
-            }
-        }
-
-        function fourthQueen() {
-            rookY = (+queen.id[1] + 1);
-
-            while (emptySpaces.includes(queen.id[0].toString() + rookY.toString())) {
-                document.getElementById(
-                    queen.id[0].toString() + rookY.toString()
-                ).classList.add('lit');
-                litDivs.push(queen.id[0].toString() + rookY.toString());
-
-                rookY += 1;
-            }
-            if (passiveSide.includes(queen.id[0].toString() + rookY.toString())) {
-                document.getElementById(
-                    queen.id[0].toString() + rookY.toString()
-                ).classList.add('lit');
-                litDivs.push(queen.id[0].toString() + rookY.toString());
-            }
-        }
-        firstQueen();
-        secondQueen();
-        thirdQueen();
-        fourthQueen();
-
-        // moves rook to clicked litDiv
-        litDivs.forEach(item => { // item is an id
-            document.getElementById(item).addEventListener(
-                'click', moveQueen
-            );
-        });
-    }
-
-    function moveQueen(e) {
-        if (tempId.length) {
-            document.getElementById(tempId[0]).removeEventListener(
-                'click', pieceLit);
-            document.getElementById(tempId[0]).classList.remove('mainLit');
-            tempId = [];
-        }
-        // un-highlights all litDivs
-        litDivs.forEach(item => {
-            document.getElementById(item).classList.remove('lit')
-        });
-        // -----------------------------------------------------------------
-        // MOVES queen info to e.target's cell 
-        // if piece is eaten...
-        if (e.target.name !== '') {
-            console.log('piece eaten');
-            // pushes eaten piece's image to its takenBox div
-            if (e.target.classList.contains('blue')) {
-                document.getElementById(
-                    orangeTakenBoxIdCounter.toString()
-                ).src = e.target.src;
-                orangeTakenBoxIdCounter -= 1;
-            }
-            else {
-                document.getElementById(
-                    blueTakenBoxIdCounter.toString()
-                ).src = e.target.src;
-                blueTakenBoxIdCounter -= 1;
-            }
-            // updates class sides
-            if (blues.includes(queen)) { // if king is blue... 
-                e.target.classList.remove('orange');
-                e.target.classList.add('blue');
-                queen.classList.remove('blue');
-            }
-            else { // since queen is orange...
-                e.target.classList.remove('blue');
-                e.target.classList.add('orange');
-                queen.classList.remove('orange');
-            }
-            // gets index for clicked space
-            index2 = passiveSide.indexOf(e.target);
-            // removes eaten piece from passiveSide array
-            passiveSide.splice(index2, 1);
-
-        }
-        else { // since no is piece eaten --> e.target.name === ''
-            if (blues.includes(queen)) { // if queen is blue
-                e.target.classList.add('blue');
-                queen.classList.remove('blue');
-                // e.target.classList.remove('orange');
-            }
-            else { // updates classList for queen & e.target
-                e.target.classList.add('orange');
-                queen.classList.remove('orange');
-                // e.target.classList.remove('blue');
-            }
-        }
-
-        // updates queen's new & old space name
-        e.target.name = 'queen';
-        queen.name = '';
-
-        // updates queen's new & old space image
-        e.target.src = queen.src;
-        queen.src = './images/transparent.png';
-
-        // gets index for clicked queen
-        index1 = activeSide.indexOf(queen);
-        // removes vacated space from activeSide array         
-        activeSide.splice(index1, 1);
-
-        // updates activeSide & pieces array
-        activeSide.push(e.target);
-        pieces = [...oranges, ...blues];
-
-        // removes click-listeners from all activeSide pieces
-        activeSide.forEach(piece => {
-            document.getElementById(piece.id).removeEventListener(
-                'click', pieceLit
-            );
-        });
-        // removes click-listeners from all litDivs
-        litDivs.forEach(item => {
-            document.getElementById(item).removeEventListener(
-                'click', moveQueen
-            );
-        });
-
-        // toggles side & starts the next move 
-        if (activeSide === blues) {
-            // toggleClocks();
-            lit(oranges, blues);
-        }
-        else {
-            // toggleClocks();
-            lit(blues, oranges);
-        }
-    }
     //========================================================================================
     function kingLit() {
         litDivs = [];
@@ -1404,7 +903,7 @@ function lit(activeSide, passiveSide) {
             // toggleClocks();
             lit(blues, oranges);
         }
-    }
+    } // maybe delete this too
     //========================================================================================
     //========================================================================================
     //========================================================================================
