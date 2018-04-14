@@ -6,54 +6,47 @@ function lit(activeSide, passiveSide) {
     // function toggleClocks() {}
 
     function enPassant () {
-        // if enPassantCell clicked --> en passant attack
-        if (e.target.id === enPassantCell) {
+        console.log('enPassant()');
+        // resets clicked enPassant cell info
+        enPassantables = [];
+        enPassantCell = '';
 
-            console.log('e.target === enPassantCell');
-            // resets clicked enPassant cell info
+        // puts enPassantCell in its takenBox
+        if (activeSide === blues) {
+            enPassantedPawn = document.getElementById(
+                e.target.id[0] + (+e.target.id[1] + 1)
+            );
 
-            enPassantables = [];
-            enPassantCell = '';
+            document.getElementById(
+                blueTakenBoxIdCounter.toString()
+            ).src = enPassantedPawn.src;
 
-            // puts enPassantCell in its takenBox
-            if (activeSide === blues) {
+            blueTakenBoxIdCounter -= 1;
 
-                enPassantedPawn = document.getElementById(
-                    e.target.id[0] + (+e.target.id[1] + 1)
-                );
-
-                document.getElementById(
-                    blueTakenBoxIdCounter.toString()
-                ).src = enPassantedPawn.src;
-
-                blueTakenBoxIdCounter -= 1;
-
-                enPassantedPawn.classList.remove('orange');
-                e.target.classList.add('blue');
-                pawn.classList.remove('blue');
-            }
-            else { // since orange turn
-
-                enPassantedPawn = document.getElementById(
-                    e.target.id[0] + (+e.target.id[1] - 1)
-                );
-
-                document.getElementById(
-                    orangeTakenBoxIdCounter.toString()
-                ).src = enPassantedPawn.src;
-
-                orangeTakenBoxIdCounter -= 1;
-
-                enPassantedPawn.classList.remove('blue');
-                e.target.classList.add('orange');
-                pawn.classList.remove('orange');
-            }
-            enPassantedPawn.src = './images/transparent.png';
-            enPassantedPawn.name = '';
-            passiveSide.splice(passiveSide.indexOf(enPassantedPawn), 1);
-            pieces = [...oranges, ...blues];
-            enPassantedPawn = undefined;
+            enPassantedPawn.classList.remove('orange');
+            e.target.classList.add('blue');
+            pawn.classList.remove('blue');
         }
+        else { // since orange turn
+            enPassantedPawn = document.getElementById(
+                e.target.id[0] + (+e.target.id[1] - 1)
+            );
+
+            document.getElementById(
+                orangeTakenBoxIdCounter.toString()
+            ).src = enPassantedPawn.src;
+
+            orangeTakenBoxIdCounter -= 1;
+
+            enPassantedPawn.classList.remove('blue');
+            e.target.classList.add('orange');
+            pawn.classList.remove('orange');
+        }
+        enPassantedPawn.src = './images/transparent.png';
+        enPassantedPawn.name = '';
+        passiveSide.splice(passiveSide.indexOf(enPassantedPawn), 1);
+        pieces = [...oranges, ...blues];
+        enPassantedPawn = undefined;
     }
     //========================================================================================
     function movePiece(e) {
@@ -72,7 +65,8 @@ function lit(activeSide, passiveSide) {
         // if piece is eaten...
         if (e.target.name !== '') {
             console.log('piece eaten');
-            if (pieceToMove.name === 'pawn') { enPassant(); }
+             // if enPassantCell clicked --> en passant attack
+            if (e.target.id === enPassantCell) { enPassant(); }
             // pushes eaten piece's image to its takenBox div
             else if (e.target.classList.contains('blue')) {
                 document.getElementById(
@@ -103,7 +97,7 @@ function lit(activeSide, passiveSide) {
             passiveSide.splice(index2, 1);
 
         }
-        else { // since no is piece eaten --> e.target.name === ''
+        else { // since no piece is eaten --> e.target.name === ''
             if (blues.includes(pieceToMove)) { // if pieceToMove is blue
                 e.target.classList.add('blue');
                 pieceToMove.classList.remove('blue');
