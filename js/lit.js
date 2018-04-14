@@ -5,7 +5,8 @@ function lit(activeSide, passiveSide) {
     //========================================================================================
     // function toggleClocks() {}
     //========================================================================================
-    function enPassant () {
+    function enPassant (pawnMovesHere) {
+        // pawnMovesHere === e.target
         console.log('enPassant()');
         // resets clicked enPassant cell info
         enPassantables = [];
@@ -14,7 +15,7 @@ function lit(activeSide, passiveSide) {
         // puts enPassantCell in its takenBox
         if (activeSide === blues) {
             enPassantedPawn = document.getElementById(
-                e.target.id[0] + (+e.target.id[1] + 1)
+                pawnMovesHere.id[0] + (+pawnMovesHere.id[1] + 1)
             );
 
             document.getElementById(
@@ -24,12 +25,12 @@ function lit(activeSide, passiveSide) {
             blueTakenBoxIdCounter -= 1;
 
             enPassantedPawn.classList.remove('orange');
-            e.target.classList.add('blue');
+            pawnMovesHere.classList.add('blue');
             pawn.classList.remove('blue');
         }
         else { // since orange turn
             enPassantedPawn = document.getElementById(
-                e.target.id[0] + (+e.target.id[1] - 1)
+                pawnMovesHere.id[0] + (+pawnMovesHere.id[1] - 1)
             );
 
             document.getElementById(
@@ -39,7 +40,7 @@ function lit(activeSide, passiveSide) {
             orangeTakenBoxIdCounter -= 1;
 
             enPassantedPawn.classList.remove('blue');
-            e.target.classList.add('orange');
+            pawnMovesHere.classList.add('orange');
             pawn.classList.remove('orange');
         }
         enPassantedPawn.src = './images/transparent.png';
@@ -66,7 +67,7 @@ function lit(activeSide, passiveSide) {
         if (e.target.name !== '') {
             console.log('piece eaten');
              // if enPassantCell clicked --> en passant attack
-            if (e.target.id === enPassantCell) { enPassant(); }
+            if (e.target.id === enPassantCell) { enPassant(e.target); }
             // pushes eaten piece's image to its takenBox div
             else if (e.target.classList.contains('blue')) {
                 document.getElementById(
@@ -435,8 +436,6 @@ function lit(activeSide, passiveSide) {
             // if the passiveSide's x of that index equals bishopX, ?
             // light up that passiveSide piece & add to litDivs
 
-            // activeSide --> kingSide [{x:_, y:_},...]
-            // passiveSide --> opposingSide --> [{x:_, y:_},...]
             for (let i = 0; i < activeSide.length; i++) {
                 if (passiveSide[i].id[0] == bishopX) {
                     if (passiveSide[i].id[1] == bishopY) {
