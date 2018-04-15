@@ -428,20 +428,21 @@ function lit(activeSide, passiveSide) {
             // highlights clicked pieceToMove
             document.getElementById(pieceToMove.id).classList.add('mainLit');
         }
-        // each function pushes correct divs to litDivs
-        function first() {
-            rookX = (pieceToMove.id[0] - 1);
+        // pushes correct divs to litDivs
+        function first(rookX) {
+            rookLight = rookX.toString() + pieceToMove.id[1];
 
-            while (emptySpaces.includes(
-                rookX.toString() + pieceToMove.id[1])
-            ) {    
+            while (emptySpaces.includes( rookLight )) {    
+                
                 document.getElementById(
-                    rookX.toString() + pieceToMove.id[1]
+                    rookLight
                 ).classList.add('lit');
                 
-                litDivs.push(rookX.toString() + pieceToMove.id[1]);
-
-                rookX -= 1;
+                litDivs.push( rookLight );
+                
+                if (rookX > pieceToMove) { rookX += 1; }
+                else { rookX -= 1; }
+                
             }
             if (passiveSide.includes(rookX.toString() + pieceToMove.id[1])) {
                 
@@ -453,37 +454,19 @@ function lit(activeSide, passiveSide) {
             }
         }
 
-        function second() {
-            rookX = (+pieceToMove.id[0] + 1);
+        function second(rookY) {
+            rookLight = pieceToMove.id[0].toString() + rookY;
 
-            while (emptySpaces.includes(
-                rookX.toString() + pieceToMove.id[1])
-            ) {
+            while (emptySpaces.includes(rookLight)) {
+                
                 document.getElementById(
-                    rookX.toString() + rook.id[1]
+                    rookLight
                 ).classList.add('lit');
-                litDivs.push(rookX.toString() + rook.id[1]);
+                
+                litDivs.push( rookLight );
 
-                rookX += 1;
-            }
-            if (passiveSide.includes(rookX.toString() + rook.id[1])) {    
-                document.getElementById(
-                    rookX.toString() + pieceToMove.id[1]
-                ).classList.add('lit');
-                litDivs.push(rookX.toString() + pieceToMove.id[1]);
-            }
-        }
-
-        function third() {
-            rookY = (pieceToMove.id[1] - 1);
-
-            while (emptySpaces.includes(pieceToMove.id[0].toString() + rookY)) {
-                document.getElementById(
-                    pieceToMove.id[0].toString() + rookY
-                ).classList.add('lit');
-                litDivs.push(pieceToMove.id[0].toString() + rookY);
-
-                rookY -= 1;
+                if (rookY > pieceToMove) { rookY += 1; }
+                else { rookY -= 1; }
             }
             if (passiveSide.includes(pieceToMove.id[0].toString() + rookY)) {
                 document.getElementById(
@@ -493,32 +476,14 @@ function lit(activeSide, passiveSide) {
             }
         }
 
-        function fourth() {
-            rookY = (+pieceToMove.id[1] + 1);
-
-            while (emptySpaces.includes(pieceToMove.id[0].toString() + rookY)) {
-                document.getElementById(
-                    pieceToMove.id[0].toString() + rookY
-                ).classList.add('lit');
-                litDivs.push(pieceToMove.id[0].toString() + rookY);
-
-                rookY += 1;
-            }
-            if (passiveSide.includes(pieceToMove.id[0].toString() + rookY)) {
-                document.getElementById(
-                    pieceToMove.id[0].toString() + rookY
-                ).classList.add('lit');
-                litDivs.push(pieceToMove.id[0].toString() + rookY);
-            }
-        }
         
-        first();
-        second();
-        third();
-        fourth();
+        first(pieceToMove.id[0] - 1);
+        first(+pieceToMove.id[0] + 1);
+        second(pieceToMove.id[1] - 1);
+        second(+pieceToMove.id[1] + 1);
 
-        // moves rook to clicked litDiv
-        litDivs.forEach(item => { // item is an id
+        // adds click-listener to litDivs
+        litDivs.forEach(item => {
             document.getElementById(item).addEventListener(
                 'click', movePiece
             );
