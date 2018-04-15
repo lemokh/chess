@@ -51,7 +51,7 @@ function lit(activeSide, passiveSide) {
     }
     //========================================================================================
     function movePiece(e) {
-        if (tempId.length) {
+        if (tempId.length > 0) {
             document.getElementById(tempId[0]).removeEventListener(
                 'click', pieceLit);
             document.getElementById(tempId[0]).classList.remove('mainLit');
@@ -62,6 +62,9 @@ function lit(activeSide, passiveSide) {
             document.getElementById(item).classList.remove('lit')
         });
         // -----------------------------------------------------------------
+        
+        // if (!nails.includes(pieceToMove.id)) {}
+        
         // updates pieceToMove's info to e.target's cell 
         // if piece is eaten...
         if (e.target.name !== '') {
@@ -287,7 +290,6 @@ function lit(activeSide, passiveSide) {
     } // DONE
     //========================================================================================
     function knightLit() {
-        // good! highlights attackable pieces & its emptySpaces
         block1 = false;
         block2 = false;
         block3 = false;
@@ -404,7 +406,7 @@ function lit(activeSide, passiveSide) {
         // moves knight to clicked litDiv
         litDivs.forEach(item => { // item is an id
             document.getElementById(item).addEventListener(
-                'click', moveKnight
+                'click', movePiece
             );
         });
     } // DONE
@@ -420,58 +422,60 @@ function lit(activeSide, passiveSide) {
         function one() {
             bishopX = (+bishop.id[0] + 1);
             bishopY = (+bishop.id[1] + 1);
+            bishopPathId = bishopX.toString() + bishopY;
 
             // while bishop's path is an empty space, highlight each space
-            while (emptySpaces.includes(bishopX.toString() + bishopY.toString())) {
+            while (emptySpaces.includes(bishopPathId)) {
+                
                 document.getElementById(
-                    bishopX.toString() + bishopY.toString()
+                    bishopPathId
                 ).classList.add('lit');
-                litDivs.push(bishopX.toString() + bishopY.toString());
+                
+                litDivs.push(bishopPathId);
 
                 bishopX += 1;
                 bishopY += 1;
+                bishopPathId = bishopX.toString() + bishopY;
             }
-            // WHAT DOES THIS MEAN?  WHAT NEEDS TO HAPPEN HERE?
-            // for each activeSide index,
-            // if the passiveSide's x of that index equals bishopX, ?
-            // light up that passiveSide piece & add to litDivs
 
-            for (let i = 0; i < activeSide.length; i++) {
-                if (passiveSide[i].id[0] == bishopX) {
-                    if (passiveSide[i].id[1] == bishopY) {
-                        document.getElementByIdgetElementById(
-                            bishopX.toString() + bishopY.toString()
-                        ).classList.add('lit');
-                        litDivs.push(bishopX.toString() + bishopY.toString());
-                    }
+            for (let i = 0; i < passiveSide.length; i++) {
+                if (passiveSide[i].id === bishopPathId) {
+                    document.getElementByIdgetElementById(
+                        bishopId
+                    ).classList.add('lit');
+                    litDivs.push(bishopId);
                 }
-            } // capsulate these in a function with bishopX&Y in switch!
-        }
+            }
+        } // capsulate these in a function with bishopX&Y in switch!
 
         function two() {
             bishopX = (+bishop.id[0] + 1);
             bishopY = (+bishop.id[1] - 1);
+            bishopPathId = bishopX.toString() + bishopY;
 
-            while (emptySpaces.includes(bishopX.toString() + bishopY.toString())) {
+            // while bishop's path is an empty space, highlight each space
+            while (emptySpaces.includes(bishopPathId)) {
+                
                 document.getElementById(
-                    bishopX.toString() + bishopY.toString()
+                    bishopPathId
                 ).classList.add('lit');
-                litDivs.push(bishopX.toString() + bishopY.toString());
+                
+                litDivs.push(bishopPathId);
 
                 bishopX += 1;
                 bishopY -= 1;
+                bishopPathId = bishopX.toString() + bishopY;
             }
-            for (let i = 0; i < activeSide.length; i++) {
-                if (passiveSide[i].id[0] == bishopX) {
-                    if (passiveSide[i].id[1] == bishopY) {
-                        document.getElementById(
-                            bishopX.toString() + bishopY.toString()
-                        ).classList.add('lit');
-                        litDivs.push(bishopX.toString() + bishopY.toString());
-                    }
+
+            for (let i = 0; i < passiveSide.length; i++) {
+                if (passiveSide[i].id === bishopPathId) {
+                    document.getElementByIdgetElementById(
+                        bishopId
+                    ).classList.add('lit');
+                    litDivs.push(bishopId);
                 }
             }
-        }
+        } // capsulate these in a function with bishopX&Y in switch!
 
         function three() {
             bishopX = (+bishop.id[0] - 1);
@@ -521,16 +525,20 @@ function lit(activeSide, passiveSide) {
                     }
                 }
             }
-        } // good!
+        }
+        
         one();
         two();
         three();
         four();
 
-        if (bishop.name === 'queen') { rook = bishop; }
+        if (bishop.name === 'queen') { 
+            rook = bishop;
+            rookLit();
+        }
 
         else { // moves bishop to clicked litDiv
-            litDivs.forEach(item => { // item is an id
+            litDivs.forEach(item => {
                 document.getElementById(item).addEventListener(
                     'click', movePiece
                 );
@@ -541,25 +549,31 @@ function lit(activeSide, passiveSide) {
     function rookLit() {
         litDivs = [];
         tempId.push(rook.id);
-
-        // highlights clicked rook
-        document.getElementById(rook.id).classList.add('mainLit');
-
+        
+        if (rook.name === 'rook') {
+            // highlights clicked rook
+            document.getElementById(rook.id).classList.add('mainLit');
+        }
+        // each function pushes correct divs to litDivs
         function first() {
             rookX = (+rook.id[0] - 1);
 
             while (emptySpaces.includes(rookX.toString() + rook.id[1].toString())) {
+                
                 document.getElementById(
                     rookX.toString() + rook.id[1].toString()
                 ).classList.add('lit');
+                
                 litDivs.push(rookX.toString() + rook.id[1].toString());
 
                 rookX -= 1;
             }
             if (passiveSide.includes(rookX.toString() + rook.id[1].toString())) {
+                
                 document.getElementById(
                     rookX.toString() + rook.id[1].toString()
                 ).classList.add('lit');
+                
                 litDivs.push(rookX.toString() + rook.id[1].toString());
             }
         }
@@ -620,6 +634,7 @@ function lit(activeSide, passiveSide) {
                 litDivs.push(rook.id[0].toString() + rookY.toString());
             }
         }
+        
         first();
         second();
         third();
@@ -628,7 +643,7 @@ function lit(activeSide, passiveSide) {
         // moves rook to clicked litDiv
         litDivs.forEach(item => { // item is an id
             document.getElementById(item).addEventListener(
-                'click', moveRook
+                'click', movePiece
             );
         });
     } // NEEDS TO LIGHT ATTACKABLE PIECES
@@ -704,18 +719,18 @@ function lit(activeSide, passiveSide) {
     //========================================================================================
     //========================================================================================
     //========================================================================================
-    //========================================================================================
     function pieceLit(e) { // on-click of an activeSide piece
-
-        if (tempId.length) { // un-highlights all cells
+        // un-highlights all cells
+        if (tempId.length) {
             document.getElementById(tempId[0]).classList.remove('mainLit');
             tempId = [];
             litDivs.forEach(item => {
                 document.getElementById(item).classList.remove('lit');
             });
         }
-
-        litDivs.forEach(item => { // item is an id
+        
+        // removes click-listener from litDivs
+        litDivs.forEach(item => {
             document.getElementById(item).removeEventListener(
                 'click', movePiece
             );
@@ -745,8 +760,10 @@ function lit(activeSide, passiveSide) {
                 break;
             case 'queen':
                 pieceToMove = e.target;
-                queen = pieceToMove;
-                queenLit();
+                bishop = pieceToMove;
+                bishopLit();
+                rook = bishop;
+                rookLit();
                 break;
             case 'king':
                 pieceToMove = e.target;
@@ -758,15 +775,14 @@ function lit(activeSide, passiveSide) {
     //========================================================================================
     //========================================================================================
     //========================================================================================
-    // adds click-listeners to all activeSide pieces
-    activeSide.forEach(piece => { // on-click run pieceLit()
+    // adds click-listeners to all activeSide pieces to run pieceLit()
+    activeSide.forEach(piece => {
         document.getElementById(piece.id).addEventListener(
             'click', pieceLit
         );
     });
 } //========================================================================================
 lit(blues, oranges);
-
 
 // activeCells = activeSide.map(item => {
 //     return item.x.toString() + item.y.toString();
@@ -782,5 +798,6 @@ lit(blues, oranges);
 
 // unLitDivs = excludes(activeCells, litDivs);
 
-
 // board.classList.remove('lit', 'mainLit') --> should work
+
+
