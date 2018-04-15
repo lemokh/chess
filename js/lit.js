@@ -50,21 +50,7 @@ function lit(activeSide, passiveSide) {
         enPassantedPawn = undefined;
     }
     //========================================================================================
-    function movePiece(e) {
-        if (tempId.length > 0) {
-            document.getElementById(tempId[0]).removeEventListener(
-                'click', pieceLit);
-            document.getElementById(tempId[0]).classList.remove('mainLit');
-            tempId = [];
-        }
-        // un-highlights all litDivs
-        litDivs.forEach(item => {
-            document.getElementById(item).classList.remove('lit')
-        });
-        // -----------------------------------------------------------------
-        
-        // if (!nails.includes(pieceToMove.id)) {}
-        
+    function movePiece(e) {       
         // updates pieceToMove's info to e.target's cell 
         // if piece is eaten...
         if (e.target.name !== '') {
@@ -155,12 +141,6 @@ function lit(activeSide, passiveSide) {
     }
     //========================================================================================
     function pawnLit() {
-        litDivs = [];
-        tempId.push(pawn.id);
-
-        // highlights clicked pawn
-        document.getElementById(pawn.id).classList.add('mainLit');
-
         // highlights enPassant cell, if an option
         if (enPassantables.length) {
             if (enPassantables.includes(pawn)) {
@@ -281,12 +261,7 @@ function lit(activeSide, passiveSide) {
             }
         }
         // ========================================================================================
-        // moves pawn to clicked litDiv
-        litDivs.forEach(item => { // item is an id
-            document.getElementById(item).addEventListener(
-                'click', movePiece
-            );
-        });
+        // -----------------------------------------------------------------
     } // DONE
     //========================================================================================
     function knightLit() {
@@ -299,27 +274,21 @@ function lit(activeSide, passiveSide) {
         block7 = false;
         block8 = false;
 
-        litDivs = [];
-        tempId.push(knight.id);
-
-        // highlights clicked knight
-        document.getElementById(knight.id).classList.add('mainLit');
-
         // if own pieces occupy knight space, no highlight there
-        activeSide.forEach(piece => {
-            switch (+piece.id[0]) {
-                case (+knight.id[0] + 1):
-                    if (piece.id[1] == (+knight.id[1] + 2)) { block1 = true; break; }
-                    if (piece.id[1] == (+knight.id[1] - 2)) { block2 = true; break; }
-                case (+knight.id[0] - 1):
-                    if (piece.id[1] == (+knight.id[1] + 2)) { block3 = true; break; }
-                    if (piece.id[1] == (+knight.id[1] - 2)) { block4 = true; break; }
-                case (+knight.id[0] + 2):
-                    if (piece.id[1] == (+knight.id[1] + 1)) { block5 = true; break; }
-                    if (piece.id[1] == (+knight.id[1] - 1)) { block6 = true; break; }
-                case (+knight.id[0] - 2):
-                    if (piece.id[1] == (+knight.id[1] + 1)) { block7 = true; break; }
-                    if (piece.id[1] == (+knight.id[1] - 1)) { block8 = true; break; }
+        activeSide.forEach(activePiece => {
+            switch (+activePiece.id[0]) {
+                case (+pieceToMove.id[0] + 1):
+                    if (activePiece.id[1] == (+pieceToMove.id[1] + 2)) { block1 = true; break; }
+                    if (activePiece.id[1] == (pieceToMove.id[1] - 2)) { block2 = true; break; }
+                case (pieceToMove.id[0] - 1):
+                    if (activePiece.id[1] == (+pieceToMove.id[1] + 2)) { block3 = true; break; }
+                    if (activePiece.id[1] == (pieceToMove.id[1] - 2)) { block4 = true; break; }
+                case (+pieceToMove.id[0] + 2):
+                    if (activePiece.id[1] == (+pieceToMove.id[1] + 1)) { block5 = true; break; }
+                    if (activePiece.id[1] == (pieceToMove.id[1] - 1)) { block6 = true; break; }
+                case (pieceToMove.id[0] - 2):
+                    if (activePiece.id[1] == (+pieceToMove.id[1] + 1)) { block7 = true; break; }
+                    if (activePiece.id[1] == (pieceToMove.id[1] - 1)) { block8 = true; break; }
             }
         });
 
@@ -403,146 +372,40 @@ function lit(activeSide, passiveSide) {
                 }
             }
         }
-        // moves knight to clicked litDiv
-        litDivs.forEach(item => { // item is an id
-            document.getElementById(item).addEventListener(
-                'click', movePiece
-            );
-        });
     } // DONE
     //========================================================================================
-    function bishopLit() {
-        // FIX: bishop doesn't highlight attackable pieces
-        litDivs = [];
-        tempId.push(bishop.id);
+    function bishopLit(bishopX, bishopY) {
+    // FIX: bishop doesn't highlight attackable pieces
+        bishopPathId = bishopX.toString() + bishopY;
 
-        // highlights clicked bishop
-        document.getElementById(bishop.id).classList.add('mainLit');
+        // while bishop path empty, highlight space
+        while (emptySpaces.includes(bishopPathId)) {
+            
+            document.getElementById(
+                bishopPathId
+            ).classList.add('lit');
+            
+            litDivs.push( bishopPathId );
 
-        function one() {
-            bishopX = (+bishop.id[0] + 1);
-            bishopY = (+bishop.id[1] + 1);
-            bishopPathId = bishopX.toString() + bishopY;
-
-            // while bishop's path is an empty space, highlight each space
-            while (emptySpaces.includes(bishopPathId)) {
-                
-                document.getElementById(
-                    bishopPathId
-                ).classList.add('lit');
-                
-                litDivs.push(bishopPathId);
-
+            if (bishopX > +pieceToMove.id[0]) {
                 bishopX += 1;
+            } else { bishopX -= 1; }
+            
+            if (bishopY > +pieceToMove.id[1]) {
                 bishopY += 1;
-                bishopPathId = bishopX.toString() + bishopY;
-            }
-
-            for (let i = 0; i < passiveSide.length; i++) {
-                if (passiveSide[i].id === bishopPathId) {
-                    document.getElementByIdgetElementById(
-                        bishopId
-                    ).classList.add('lit');
-                    litDivs.push(bishopId);
-                }
-            }
-        } // capsulate these in a function with bishopX&Y in switch!
-
-        function two() {
-            bishopX = (+bishop.id[0] + 1);
-            bishopY = (+bishop.id[1] - 1);
+            } else { bishopY -= 1; }
+            
             bishopPathId = bishopX.toString() + bishopY;
+        }
 
-            // while bishop's path is an empty space, highlight each space
-            while (emptySpaces.includes(bishopPathId)) {
-                
-                document.getElementById(
-                    bishopPathId
+        for (let i = 0; i < passiveSide.length; i++) {
+            if (passiveSide[i].id === bishopPathId) {
+                document.getElementByIdgetElementById(
+                    bishopId
                 ).classList.add('lit');
                 
-                litDivs.push(bishopPathId);
-
-                bishopX += 1;
-                bishopY -= 1;
-                bishopPathId = bishopX.toString() + bishopY;
+                litDivs.push( bishopId );
             }
-
-            for (let i = 0; i < passiveSide.length; i++) {
-                if (passiveSide[i].id === bishopPathId) {
-                    document.getElementByIdgetElementById(
-                        bishopId
-                    ).classList.add('lit');
-                    litDivs.push(bishopId);
-                }
-            }
-        } // capsulate these in a function with bishopX&Y in switch!
-
-        function three() {
-            bishopX = (+bishop.id[0] - 1);
-            bishopY = (+bishop.id[1] + 1);
-
-            while (emptySpaces.includes(bishopX.toString() + bishopY.toString())) {
-                document.getElementById(
-                    bishopX.toString() + bishopY.toString()
-                ).classList.add('lit');
-                litDivs.push(bishopX.toString() + bishopY.toString());
-
-                bishopX -= 1;
-                bishopY += 1;
-            }
-            for (let i = 0; i < activeSide.length; i++) {
-                if (passiveSide[i].id[0] == bishopX) {
-                    if (passiveSide[i].id[1] == bishopY) {
-                        document.getElementById(
-                            bishopX.toString() + bishopY.toString()
-                        ).classList.add('lit');
-                        litDivs.push(bishopX.toString() + bishopY.toString());
-                    }
-                }
-            }
-        }
-
-        function four() {
-            bishopX = (+bishop.id[0] - 1);
-            bishopY = (+bishop.id[1] - 1);
-
-            while (emptySpaces.includes(bishopX.toString() + bishopY.toString())) {
-                document.getElementById(
-                    bishopX.toString() + bishopY.toString()
-                ).classList.add('lit');
-                litDivs.push(bishopX.toString() + bishopY.toString());
-
-                bishopX -= 1;
-                bishopY -= 1;
-            }
-            for (let i = 0; i < activeSide.length; i++) {
-                if (passiveSide[i].id[0] == bishopX) {
-                    if (passiveSide[i].id[1] == bishopY) {
-                        document.getElementById(
-                            bishopX.toString() + bishopY.toString()
-                        ).classList.add('lit');
-                        litDivs.push(bishopX.toString() + bishopY.toString());
-                    }
-                }
-            }
-        }
-        
-        one();
-        two();
-        three();
-        four();
-
-        if (bishop.name === 'queen') { 
-            rook = bishop;
-            rookLit();
-        }
-
-        else { // moves bishop to clicked litDiv
-            litDivs.forEach(item => {
-                document.getElementById(item).addEventListener(
-                    'click', movePiece
-                );
-            });
         }
     } // NEEDS to highlight attackable pieces --> REWORK THIS!
     //========================================================================================
@@ -736,6 +599,20 @@ function lit(activeSide, passiveSide) {
             );
         });
 
+        // -----------------------------------------------------------------
+        if (tempId.length > 0) {
+            document.getElementById(tempId[0]).removeEventListener(
+                'click', pieceLit);
+            document.getElementById(tempId[0]).classList.remove('mainLit');
+            tempId = [];
+        }
+        // un-highlights all litDivs
+        litDivs.forEach(item => {
+            document.getElementById(item).classList.remove('lit')
+        });
+        // if (!nails.includes(pieceToMove.id)) {}
+        // -----------------------------------------------------------------
+
         // highlights clicked piece's possible moves
         switch (e.target.name) {
             case 'pawn':
@@ -745,13 +622,27 @@ function lit(activeSide, passiveSide) {
                 break;
             case 'knight':
                 pieceToMove = e.target;
-                knight = pieceToMove;
                 knightLit();
                 break;
             case 'bishop':
                 pieceToMove = e.target;
-                bishop = pieceToMove;
-                bishopLit();
+                
+                bishopLit(
+                    (+pieceToMove.id[0] + 1),
+                    (+pieceToMove.id[1] + 1)
+                );
+                bishopLit(
+                    (+pieceToMove.id[0] + 1),
+                    (+pieceToMove.id[1] - 1)
+                );
+                bishopLit(
+                    (+pieceToMove.id[0] - 1),
+                    (+pieceToMove.id[1] + 1)
+                );
+                bishopLit(
+                    (+pieceToMove.id[0] - 1),
+                    (+pieceToMove.id[1] - 1)
+                );
                 break;
             case 'rook':
                 pieceToMove = e.target;
@@ -771,6 +662,13 @@ function lit(activeSide, passiveSide) {
                 kingLit();
                 break;
         }
+        // -----------------------------------------------------------------
+        // adds click-listener to all litDivs
+        litDivs.forEach(item => { // item is an id
+            document.getElementById(item).addEventListener(
+                'click', movePiece
+            );
+        });
     }
     //========================================================================================
     //========================================================================================
