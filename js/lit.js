@@ -109,7 +109,7 @@ function lit(activeSide, passiveSide) {
         pieceToMove.src = './images/transparent.png';
 
         // gets index for clicked bishop
-        index1 = activeSide.indexOf(bishop);
+        index1 = activeSide.indexOf(pieceToMove);
         // removes vacated space from activeSide array         
         activeSide.splice(index1, 1);
 
@@ -384,7 +384,6 @@ function lit(activeSide, passiveSide) {
         }
     } // DONE
     //========================================================================================
-    
     function bishopLit(bishopX, bishopY) {
     // FIX: bishop doesn't highlight attackable pieces
         bishopPathId = bishopX.toString() + bishopY;
@@ -420,25 +419,26 @@ function lit(activeSide, passiveSide) {
         }
     } // NEEDS to highlight attackable pieces --> REWORK THIS!
     //========================================================================================
-    function rookLit(rook) {
-        litDivs = [];
-        tempId.push(rook.id);
-        
-        if (rook.name === 'rook') {
-            // highlights clicked rook
-            document.getElementById(rook.id).classList.add('mainLit');
+    function rookLit(rookX, rookY) {
+
+        if (pieceToMove.name === 'rook') {
+            litDivs = [];
+            tempId.push(pieceToMove.id);
+            // highlights clicked pieceToMove
+            document.getElementById(pieceToMove.id).classList.add('mainLit');
         }
         // each function pushes correct divs to litDivs
         function first() {
-            rookX = (+rook.id[0] - 1);
+            rookX = (pieceToMove.id[0] - 1);
 
-            while (emptySpaces.includes(rookX.toString() + rook.id[1].toString())) {
-                
+            while (emptySpaces.includes(
+                rookX.toString() + rook.id[1])
+            ) {    
                 document.getElementById(
-                    rookX.toString() + rook.id[1].toString()
+                    rookX.toString() + pieceToMove.id[1]
                 ).classList.add('lit');
                 
-                litDivs.push(rookX.toString() + rook.id[1].toString());
+                litDivs.push(rookX.toString() + pieceToMove.id[1]);
 
                 rookX -= 1;
             }
