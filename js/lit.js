@@ -386,7 +386,7 @@ function lit(activeSide, passiveSide) {
     //========================================================================================
     function bishopLit(bishopX, bishopY) {
     // FIX: bishop doesn't highlight attackable pieces
-        bishopPathId = bishopX.toString() + bishopY;
+        let bishopPathId = bishopX.toString() + bishopY;
 
         // while bishop path empty, highlight space
         while (emptySpaces.includes(bishopPathId)) {
@@ -410,7 +410,7 @@ function lit(activeSide, passiveSide) {
         // highlights attackable pieces in bishop's path
         for (let i = 0; i < passiveSide.length; i++) {
             if (passiveSide[i].id === bishopPathId) {
-                document.getElementByIdgetElementById(
+                document.getElementById(
                     bishopId
                 ).classList.add('lit');
                 
@@ -489,12 +489,12 @@ function lit(activeSide, passiveSide) {
         });
     } // NEEDS TO LIGHT ATTACKABLE PIECES
     //========================================================================================
-    function kingLit(king) {
+    function kingLit() {
         litDivs = [];
-        tempId.push(king.id);
+        tempId.push(pieceToMove.id);
 
         // highlights clicked king
-        document.getElementById(king.id).classList.add('mainLit');
+        document.getElementById(pieceToMove.id).classList.add('mainLit');
 
         function exclude(res1, res2) { // kingSpaces, activeSide
             return res1.filter(obj => { // obj --> each item in res1
@@ -505,21 +505,15 @@ function lit(activeSide, passiveSide) {
         } // excludes res2 from res1
 
         kingSpaces = [
-            (+king.id[0] - 1) + king.id[1],
-            // { x: king.dataset.x - 1, y: king.dataset.y },
-            (+king.id[0] - 1).toString() + (+king.id[1] + 1),
-            // { x: king.dataset.x - 1, y: king.dataset.y + 1 },
-            king.id[0] + (+king.id[1] + 1),
-            // { x: king.dataset.x, y: king.dataset.y + 1 },
-            (+king.id[0] + 1).toString() + (+king.id[1] + 1),
-            // { x: king.dataset.x + 1, y: king.dataset.y + 1 },
-            (+king.id[0] + 1) + king.id[1],
-            // { x: king.dataset.x + 1, y: king.dataset.y },
-            (+king.id[0] + 1).toString() + (+king.id[1] - 1),
-            // { x: king.dataset.x + 1, y: king.dataset.y - 1 },
-            king.id[0] + (+king.id[1] - 1),
-            // { x: king.dataset.x, y: king.dataset.y - 1 },
-            (+king.id[0] - 1).toString() + (+king.id[1] - 1)
+            (pieceToMove.id[0] - 1) + pieceToMove.id[1],
+            // { x: pieceToMove.dataset.x - 1, y: pieceToMove.dataset.y },
+            (pieceToMove.id[0] - 1).toString() + (+pieceToMove.id[1] + 1),
+            pieceToMove.id[0] + (+pieceToMove.id[1] + 1),
+            (+pieceToMove.id[0] + 1).toString() + (+pieceToMove.id[1] + 1),
+            (+pieceToMove.id[0] + 1) + pieceToMove.id[1],
+            (+pieceToMove.id[0] + 1).toString() + (pieceToMove.id[1] - 1),
+            pieceToMove.id[0] + (pieceToMove.id[1] - 1),
+            (pieceToMove.id[0] - 1).toString() + (pieceToMove.id[1] - 1)
         ].map(space => { // keeps only on-board kingSpaces
             if (+space[0] >= 0 && +space[0] <= 7) {
                 if (+space[1] >= 0 && +space[1] <= 7) { return space; }
@@ -561,34 +555,21 @@ function lit(activeSide, passiveSide) {
     //========================================================================================
     //========================================================================================
     function pieceLit(e) { // on-click of an activeSide piece
-        // un-highlights all cells
-        if (tempId.length) {
+        // un-highlights all cells on click another piece
+        if (tempId.length > 0) {
             document.getElementById(tempId[0]).classList.remove('mainLit');
             tempId = [];
-            litDivs.forEach(item => {
-                document.getElementById(item).classList.remove('lit');
+            document.getElementById(e.target.id).classList.remove('mainLit');
+            litDivs.forEach(litDiv => {
+                document.getElementById(litDiv).classList.remove('lit');
             });
         }
-        
         // removes click-listener from litDivs
         litDivs.forEach(item => {
             document.getElementById(item).removeEventListener(
                 'click', movePiece
             );
         });
-
-        // -----------------------------------------------------------------
-        if (tempId.length > 0) {
-            document.getElementById(tempId[0]).removeEventListener(
-                'click', pieceLit);
-            document.getElementById(tempId[0]).classList.remove('mainLit');
-            tempId = [];
-        }
-        // un-highlights all litDivs
-        litDivs.forEach(item => {
-            document.getElementById(item).classList.remove('lit')
-        });
-        // if (!nails.includes(pieceToMove.id)) {}
         // -----------------------------------------------------------------
         pieceToMove = e.target;
         // highlights clicked piece's possible moves
@@ -629,9 +610,23 @@ function lit(activeSide, passiveSide) {
                 break;
         }
         // -----------------------------------------------------------------
+        
+        if (tempId.length > 0) {
+            document.getElementById(tempId[0]).removeEventListener(
+                'click', pieceLit);
+            document.getElementById(tempId[0]).classList.remove('mainLit');
+            tempId = [];
+        }
+        
+        // un-highlights all litDivs
+        litDivs.forEach(litDiv => {
+            document.getElementById(litDiv).classList.remove('lit')
+        });
+        // if (!nails.includes(pieceToMove.id)) {}
+        // -----------------------------------------------------------------
         // adds click-listener to all litDivs
-        litDivs.forEach(item => { // item is an id
-            document.getElementById(item).addEventListener(
+        litDivs.forEach(litDiv => { // litDiv is an id
+            document.getElementById(litDiv).addEventListener(
                 'click', movePiece
             );
         });
