@@ -143,7 +143,7 @@ function lit(activeSide, passiveSide) {
     function pawnLit() {
         // highlights enPassant cell, if an option
         if (enPassantables.length) {
-            if (enPassantables.includes(pawn)) {
+            if (enPassantables.includes(pieceToMove)) {
                 document.getElementById(enPassantCell).name = 'enPassantable';
                 document.getElementById(enPassantCell).classList.add('lit');
                 litDivs.push(enPassantCell);
@@ -153,55 +153,55 @@ function lit(activeSide, passiveSide) {
         // highlights all possible moves for clicked pawn
         if (activeSide === blues) {
             // highlights where pawn can attack
-            passiveSide.forEach(item => {
-                // if passiveSide piece is one row ahead of pawn
-                if (item.id[1] == (+pawn.id[1] - 1)) {
-                    // if passiveSide piece is one column right of pawn
-                    if (item.id[0] == (+pawn.id[0] + 1)) {
-                        document.getElementById(item.id).classList.add('lit');
-                        litDivs.push(item.id);
+            passiveSide.forEach(passivePiece => {
+                // if passivePiece is one row ahead of pawn
+                if (passivePiece.id[1] == (pieceToMove.id[1] - 1)) {
+                    // if passivePiece is one column right of pawn
+                    if (passivePiece.id[0] == (+pieceToMove.id[0] + 1)) {
+                        document.getElementById(passivePiece.id).classList.add('lit');
+                        litDivs.push(passivePiece.id);
                     }
                     // if passiveSide piece is one column left of pawn
-                    if (item.id[0] == (+pawn.id[0] - 1)) {
-                        document.getElementById(item.id).classList.add('lit');
-                        litDivs.push(item.id);
+                    if (passivePiece.id[0] == (pieceToMove.id[0] - 1)) {
+                        document.getElementById(passivePiece.id).classList.add('lit');
+                        litDivs.push(passivePiece.id);
                     }
                 }
             });
 
             // highlights empty space one ahead of pawn
             // emptySpaces --> ['02', '03', ...]
-            if (emptySpaces.includes(pawn.id[0] + (+pawn.id[1] - 1))) {
+            if (emptySpaces.includes(pieceToMove.id[0] + (pieceToMove.id[1] - 1))) {
                 document.getElementById(
-                    pawn.id[0] + (+pawn.id[1] - 1)
+                    pieceToMove.id[0] + (pieceToMove.id[1] - 1)
                 ).classList.add('lit');
                 // 
-                litDivs.push(pawn.id[0] + (+pawn.id[1] - 1));
+                litDivs.push(pieceToMove.id[0] + (pieceToMove.id[1] - 1));
                 // highlights empty space two ahead of blue pawn
-                if (pawn.id[1] === '6') { // if pawn in row 6
+                if (pieceToMove.id[1] === '6') { // if pawn in row 6
                     // if the cell two ahead of pawn is empty 
-                    if (emptySpaces.includes(pawn.id[0] + (+pawn.id[1] - 2))) {
+                    if (emptySpaces.includes(pieceToMove.id[0] + (pieceToMove.id[1] - 2))) {
                         // highlights that cell
                         document.getElementById(
-                            pawn.id[0] + (+pawn.id[1] - 2)
+                            pieceToMove.id[0] + (pieceToMove.id[1] - 2)
                         ).classList.add('lit');
                         // adds that cell to litDivs array
-                        litDivs.push(pawn.id[0] + (+pawn.id[1] - 2));
+                        litDivs.push(pieceToMove.id[0] + (pieceToMove.id[1] - 2));
 
                         // ENPASSANT for blue pawn
-                        passiveSide.forEach(item => { // for each passiveSide piece
-                            if (item.name === 'pawn') { // if a pawn
-                                if (item.id[1] === '4') { // if in row 4
+                        passiveSide.forEach(passivePiece => { // for each passiveSide piece
+                            if (passivePiece.name === 'pawn') { // if a pawn
+                                if (passivePiece.id[1] === '4') { // if in row 4
                                     // if passiveSide pawn is one column right of clicked pawn
-                                    if (item.id[0] == (+pawn.id[0] + 1)) {
+                                    if (passivePiece.id[0] == (+pieceToMove.id[0] + 1)) {
                                         // stores enPassantCell for next move to attack
-                                        enPassantCell = pawn.id[0] + (+pawn.id[1] - 1);
+                                        enPassantCell = pieceToMove.id[0] + (pieceToMove.id[1] - 1);
                                         // collecs pawns that can attack enPassantCell on next move
-                                        enPassantables.push(item);
+                                        enPassantables.push(passivePiece);
                                     } // same for one column left of clicked pawn
-                                    if (item.id[0] == (+pawn.id[0] - 1)) {
-                                        enPassantCell = pawn.id[0] + (+pawn.id[1] - 1);
-                                        enPassantables.push(item);
+                                    if (passivePiece.id[0] == (pieceToMove.id[0] - 1)) {
+                                        enPassantCell = pieceToMove.id[0] + (pieceToMove.id[1] - 1);
+                                        enPassantables.push(passivePiece);
                                     }
                                 }
                             }
@@ -212,46 +212,46 @@ function lit(activeSide, passiveSide) {
         }
         else { // since activeSide === oranges...
             // highlights any spaces that orange pawn can attack
-            passiveSide.forEach(item => {
-                if (item.id[1] == (+pawn.id[1] + 1)) {
-                    if (item.id[0] == (+pawn.id[0] + 1)) {
-                        document.getElementById(item.id).classList.add('lit');
-                        litDivs.push(item.id);
+            passiveSide.forEach(passivePiece => {
+                if (passivePiece.id[1] == (+pieceToMove.id[1] + 1)) {
+                    if (passivePiece.id[0] == (+pieceToMove.id[0] + 1)) {
+                        document.getElementById(passivePiece.id).classList.add('lit');
+                        litDivs.push(passivePiece.id);
                     }
-                    if (item.id[0] == (+pawn.id[0] - 1)) {
-                        document.getElementById(item.id).classList.add('lit');
-                        litDivs.push(item.id);
+                    if (passivePiece.id[0] == (pieceToMove.id[0] - 1)) {
+                        document.getElementById(passivePiece.id).classList.add('lit');
+                        litDivs.push(passivePiece.id);
                     }
                 }
             });
             // highlights empty space one ahead of pawn
-            if (emptySpaces.includes(pawn.id[0] + (+pawn.id[1] + 1))) {
+            if (emptySpaces.includes(pieceToMove.id[0] + (+pieceToMove.id[1] + 1))) {
                 document.getElementById(
-                    pawn.id[0] + (+pawn.id[1] + 1)
+                    pieceToMove.id[0] + (+pieceToMove.id[1] + 1)
                 ).classList.add('lit');
-                litDivs.push(pawn.id[0] + (+pawn.id[1] + 1));
+                litDivs.push(pieceToMove.id[0] + (+pieceToMove.id[1] + 1));
 
                 // highlights empty space two ahead of pawn
                 if (pawn.id[1] === '1') {
-                    if (emptySpaces.includes(pawn.id[0] + (+pawn.id[1] + 2))) {
+                    if (emptySpaces.includes(pieceToMove.id[0] + (+pieceToMove.id[1] + 2))) {
 
                         document.getElementById(
-                            pawn.id[0] + (+pawn.id[1] + 2)
+                            pieceToMove.id[0] + (+pieceToMove.id[1] + 2)
                         ).classList.add('lit');
 
-                        litDivs.push(pawn.id[0] + (+pawn.id[1] + 2));
+                        litDivs.push(pieceToMove.id[0] + (+pieceToMove.id[1] + 2));
 
                         // ENPASSANT for orange pawn
-                        passiveSide.forEach(item => {
-                            if (item.name === 'pawn') {
-                                if (item.id[1] === '3') { // one column right
-                                    if (item.id[0] == (+pawn.id[0] + 1)) {
-                                        enPassantCell = pawn.id[0] + (+pawn.id[1] + 1);
-                                        enPassantables.push(item);
+                        passiveSide.forEach(passivePiece => {
+                            if (passivePiece.name === 'pawn') {
+                                if (passivePiece.id[1] === '3') { // one column right
+                                    if (passivePiece.id[0] == (+pieceToMove.id[0] + 1)) {
+                                        enPassantCell = pieceToMove.id[0] + (+pieceToMove.id[1] + 1);
+                                        enPassantables.push(passivePiece);
                                     } // one column left
-                                    if (item.id[0] == (+pawn.id[0] - 1)) {
-                                        enPassantCell = pawn.id[0] + (+pawn.id[1] + 1);
-                                        enPassantables.push(item);
+                                    if (passivePiece.id[0] == (pieceToMove.id[0] - 1)) {
+                                        enPassantCell = pieceToMove.id[0] + (+pieceToMove.id[1] + 1);
+                                        enPassantables.push(passivePiece);
                                     }
                                 }
                             }
@@ -274,6 +274,7 @@ function lit(activeSide, passiveSide) {
         block7 = false;
         block8 = false;
 
+        let knightLight;
         // if own pieces occupy knight space, no highlight there
         activeSide.forEach(activePiece => {
             switch (+activePiece.id[0]) {
@@ -292,88 +293,98 @@ function lit(activeSide, passiveSide) {
             }
         });
 
+        // more concise switch() {} here?
         if (!block1) {
-            if ((+knight.id[0] + 1) < 8) { // FILTERS OUT OFF-BOARD KNIGHT MOVES
-                if ((+knight.id[1] + 2) < 8) {
-                    document.getElementById(
-                        (+knight.id[0] + 1).toString() + (+knight.id[1] + 2).toString()
-                    ).classList.add('lit');
-                    litDivs.push((+knight.id[0] + 1).toString() + (+knight.id[1] + 2).toString());
+            if ((+pieceToMove.id[0] + 1) < 8) { // FILTERS OUT OFF-BOARD KNIGHT MOVES
+                if ((+pieceToMove.id[1] + 2) < 8) {
+                    knightLight = document.getElementById(
+                        (+pieceToMove.id[0] + 1).toString() + (+pieceToMove.id[1] + 2)
+                    );
+                    knightLight.classList.add('lit');
+                    litDivs.push( knightLight );
                 }
             }
         }
         if (!block2) {
-            if ((+knight.id[0] + 1) < 8) {
-                if ((+knight.id[1] - 2) >= 0) {
-                    document.getElementById(
-                        (+knight.id[0] + 1).toString() + (+knight.id[1] - 2).toString()
-                    ).classList.add('lit');
-                    litDivs.push((+knight.id[0] + 1).toString() + (+knight.id[1] - 2).toString());
+            if ((+pieceToMove.id[0] + 1) < 8) {
+                if ((pieceToMove.id[1] - 2) >= 0) {
+                    knightLight = document.getElementById(
+                        (+pieceToMove.id[0] + 1).toString() + (pieceToMove.id[1] - 2)
+                    );
+                    knightLight.classList.add('lit');
+                    litDivs.push( knightLight );
                 }
             }
         }
         if (!block3) {
-            if ((+knight.id[0] - 1) >= 0) {
-                if ((+knight.id[1] + 2) < 8) {
-                    document.getElementById(
-                        (+knight.id[0] - 1).toString() + (+knight.id[1] + 2).toString()
-                    ).classList.add('lit');
-                    litDivs.push((+knight.id[0] - 1).toString() + (+knight.id[1] + 2).toString());
+            if ((+pieceToMove.id[0] - 1) >= 0) {
+                if ((+pieceToMove.id[1] + 2) < 8) {
+                    knightLight = document.getElementById(
+                        (pieceToMove.id[0] - 1).toString() + (+pieceToMove.id[1] + 2)
+                    );
+                    knightLight.classList.add('lit');
+                    litDivs.push( knightLight );
                 }
             }
         }
         if (!block4) {
-            if ((+knight.id[0] - 1) >= 0) {
-                if ((+knight.id[1] - 2) >= 0) {
-                    document.getElementById(
-                        (+knight.id[0] - 1).toString() + (+knight.id[1] - 2).toString()
-                    ).classList.add('lit');
-                    litDivs.push((+knight.id[0] - 1).toString() + (+knight.id[1] - 2).toString());
+            if ((+pieceToMove.id[0] - 1) >= 0) {
+                if ((+pieceToMove.id[1] - 2) >= 0) {
+                    knightLight = document.getElementById(
+                        (pieceToMove.id[0] - 1).toString() + (pieceToMove.id[1] - 2)
+                    );
+                    knightLight.classList.add('lit');
+                    litDivs.push( knightLight );
                 }
             }
         }
         if (!block5) {
-            if ((+knight.id[0] + 2) < 8) {
-                if ((+knight.id[1] + 1) < 8) {
-                    document.getElementById(
-                        (+knight.id[0] + 2).toString() + (+knight.id[1] + 1).toString()
-                    ).classList.add('lit');
-                    litDivs.push((+knight.id[0] + 2).toString() + (+knight.id[1] + 1).toString());
+            if ((+pieceToMove.id[0] + 2) < 8) {
+                if ((+pieceToMove.id[1] + 1) < 8) {
+                    knightLight = document.getElementById(
+                        (+pieceToMove.id[0] + 2).toString() + (+pieceToMove.id[1] + 1)
+                    );
+                    knightLight.classList.add('lit');
+                    litDivs.push( knightLight );
                 }
             }
         }
         if (!block6) {
-            if ((+knight.id[0] + 2) < 8) {
-                if ((+knight.id[1] - 1) >= 0) {
-                    document.getElementById(
-                        (+knight.id[0] + 2).toString() + (+knight.id[1] - 1).toString()
-                    ).classList.add('lit');
-                    litDivs.push((+knight.id[0] + 2).toString() + (+knight.id[1] - 1).toString());
+            if ((+pieceToMove.id[0] + 2) < 8) {
+                if ((+pieceToMove.id[1] - 1) >= 0) {
+                    knightLight = document.getElementById(
+                        (+pieceToMove.id[0] + 2).toString() + (pieceToMove.id[1] - 1)
+                    );
+                    knightLight.classList.add('lit');
+                    litDivs.push( knightLight );
                 }
             }
         }
         if (!block7) {
-            if ((+knight.id[0] - 2) >= 0) {
-                if ((+knight.id[1] + 1) < 8) {
-                    document.getElementById(
-                        (+knight.id[0] - 2).toString() + (+knight.id[1] + 1).toString()
-                    ).classList.add('lit');
-                    litDivs.push((+knight.id[0] - 2).toString() + (+knight.id[1] + 1).toString());
+            if ((+pieceToMove.id[0] - 2) >= 0) {
+                if ((+pieceToMove.id[1] + 1) < 8) {
+                    knightLight = document.getElementById(
+                        (pieceToMove.id[0] - 2).toString() + (+pieceToMove.id[1] + 1)
+                    );
+                    knightLight.classList.add('lit');
+                    litDivs.push( knightLight );
                 }
             }
         }
         if (!block8) {
-            if ((+knight.id[0] - 2) >= 0) {
-                if ((+knight.id[1] - 1) >= 0) {
-                    document.getElementById(
-                        (+knight.id[0] - 2).toString() + (+knight.id[1] - 1).toString()
-                    ).classList.add('lit');
-                    litDivs.push((+knight.id[0] - 2).toString() + (+knight.id[1] - 1).toString());
+            if ((+pieceToMove.id[0] - 2) >= 0) {
+                if ((+pieceToMove.id[1] - 1) >= 0) {
+                    knightLight = document.getElementById(
+                        (pieceToMove.id[0] - 2).toString() + (pieceToMove.id[1] - 1)
+                    );
+                    knightLight.classList.add('lit');
+                    litDivs.push( knightLight );
                 }
             }
         }
     } // DONE
     //========================================================================================
+    
     function bishopLit(bishopX, bishopY) {
     // FIX: bishop doesn't highlight attackable pieces
         bishopPathId = bishopX.toString() + bishopY;
@@ -409,7 +420,7 @@ function lit(activeSide, passiveSide) {
         }
     } // NEEDS to highlight attackable pieces --> REWORK THIS!
     //========================================================================================
-    function rookLit() {
+    function rookLit(rook) {
         litDivs = [];
         tempId.push(rook.id);
         
@@ -511,7 +522,7 @@ function lit(activeSide, passiveSide) {
         });
     } // NEEDS TO LIGHT ATTACKABLE PIECES
     //========================================================================================
-    function kingLit() {
+    function kingLit(king) {
         litDivs = [];
         tempId.push(king.id);
 
@@ -612,21 +623,16 @@ function lit(activeSide, passiveSide) {
         });
         // if (!nails.includes(pieceToMove.id)) {}
         // -----------------------------------------------------------------
-
+        pieceToMove = e.target;
         // highlights clicked piece's possible moves
-        switch (e.target.name) {
+        switch (pieceToMove.name) {
             case 'pawn':
-                pieceToMove = e.target;
-                pawn = pieceToMove;
-                pawnLit();
+                pawnLit(pieceToMove);
                 break;
             case 'knight':
-                pieceToMove = e.target;
                 knightLit();
                 break;
             case 'bishop':
-                pieceToMove = e.target;
-                
                 bishopLit(
                     (+pieceToMove.id[0] + 1),
                     (+pieceToMove.id[1] + 1)
@@ -645,20 +651,13 @@ function lit(activeSide, passiveSide) {
                 );
                 break;
             case 'rook':
-                pieceToMove = e.target;
-                rook = pieceToMove;
                 rookLit();
                 break;
             case 'queen':
-                pieceToMove = e.target;
-                bishop = pieceToMove;
                 bishopLit();
-                rook = bishop;
                 rookLit();
                 break;
             case 'king':
-                pieceToMove = e.target;
-                king = pieceToMove;
                 kingLit();
                 break;
         }
