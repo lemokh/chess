@@ -419,8 +419,9 @@ function lit(activeSide, passiveSide) {
         }
     } // NEEDS to highlight attackable pieces --> REWORK THIS!
     //========================================================================================
-    function rookLit(rookX, rookY) {
-
+    function rookLit() {
+        let rookLight;
+        // covers queen case 
         if (pieceToMove.name === 'rook') {
             litDivs = [];
             tempId.push(pieceToMove.id);
@@ -432,7 +433,7 @@ function lit(activeSide, passiveSide) {
             rookX = (pieceToMove.id[0] - 1);
 
             while (emptySpaces.includes(
-                rookX.toString() + rook.id[1])
+                rookX.toString() + pieceToMove.id[1])
             ) {    
                 document.getElementById(
                     rookX.toString() + pieceToMove.id[1]
@@ -442,10 +443,10 @@ function lit(activeSide, passiveSide) {
 
                 rookX -= 1;
             }
-            if (passiveSide.includes(rookX.toString() + rook.id[1].toString())) {
+            if (passiveSide.includes(rookX.toString() + pieceToMove.id[1])) {
                 
                 document.getElementById(
-                    rookX.toString() + rook.id[1].toString()
+                    rookX.toString() + pieceToMove.id[1]
                 ).classList.add('lit');
                 
                 litDivs.push(rookX.toString() + rook.id[1].toString());
@@ -453,59 +454,61 @@ function lit(activeSide, passiveSide) {
         }
 
         function second() {
-            rookX = (+rook.id[0] + 1);
+            rookX = (+pieceToMove.id[0] + 1);
 
-            while (emptySpaces.includes(rookX.toString() + rook.id[1].toString())) {
+            while (emptySpaces.includes(
+                rookX.toString() + pieceToMove.id[1])
+            ) {
                 document.getElementById(
-                    rookX.toString() + rook.id[1].toString()
+                    rookX.toString() + rook.id[1]
                 ).classList.add('lit');
-                litDivs.push(rookX.toString() + rook.id[1].toString());
+                litDivs.push(rookX.toString() + rook.id[1]);
 
                 rookX += 1;
             }
-            if (passiveSide.includes(rookX.toString() + rook.id[1].toString())) {
+            if (passiveSide.includes(rookX.toString() + rook.id[1])) {    
                 document.getElementById(
-                    rookX.toString() + rook.id[1].toString()
+                    rookX.toString() + pieceToMove.id[1]
                 ).classList.add('lit');
-                litDivs.push(rookX.toString() + rook.id[1].toString());
+                litDivs.push(rookX.toString() + pieceToMove.id[1]);
             }
         }
 
         function third() {
-            rookY = (+rook.id[1] - 1);
+            rookY = (pieceToMove.id[1] - 1);
 
-            while (emptySpaces.includes(rook.id[0].toString() + rookY.toString())) {
+            while (emptySpaces.includes(pieceToMove.id[0].toString() + rookY)) {
                 document.getElementById(
-                    rook.id[0].toString() + rookY.toString()
+                    pieceToMove.id[0].toString() + rookY
                 ).classList.add('lit');
-                litDivs.push(rook.id[0].toString() + rookY.toString());
+                litDivs.push(pieceToMove.id[0].toString() + rookY);
 
                 rookY -= 1;
             }
-            if (passiveSide.includes(rook.id[0].toString() + rookY.toString())) {
+            if (passiveSide.includes(pieceToMove.id[0].toString() + rookY)) {
                 document.getElementById(
-                    rook.id[0].toString() + rookY.toString()
+                    pieceToMove.id[0].toString() + rookY
                 ).classList.add('lit');
-                litDivs.push(rook.id[0].toString() + rookY.toString());
+                litDivs.push(pieceToMove.id[0].toString() + rookY);
             }
         }
 
         function fourth() {
-            rookY = (+rook.id[1] + 1);
+            rookY = (+pieceToMove.id[1] + 1);
 
-            while (emptySpaces.includes(rook.id[0].toString() + rookY.toString())) {
+            while (emptySpaces.includes(pieceToMove.id[0].toString() + rookY)) {
                 document.getElementById(
-                    rook.id[0].toString() + rookY.toString()
+                    pieceToMove.id[0].toString() + rookY
                 ).classList.add('lit');
-                litDivs.push(rook.id[0].toString() + rookY.toString());
+                litDivs.push(pieceToMove.id[0].toString() + rookY);
 
                 rookY += 1;
             }
-            if (passiveSide.includes(rook.id[0].toString() + rookY.toString())) {
+            if (passiveSide.includes(pieceToMove.id[0].toString() + rookY)) {
                 document.getElementById(
-                    rook.id[0].toString() + rookY.toString()
+                    pieceToMove.id[0].toString() + rookY
                 ).classList.add('lit');
-                litDivs.push(rook.id[0].toString() + rookY.toString());
+                litDivs.push(pieceToMove.id[0].toString() + rookY);
             }
         }
         
