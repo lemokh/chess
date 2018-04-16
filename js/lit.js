@@ -620,7 +620,7 @@ function lit(activeSide, passiveSide) {
             );
         });
         // -----------------------------------------------------------------
-        // highlights clicked piece's possible moves
+        // highlights all of clicked piece's possible moves
         switch (pieceToMove.name) {
             case 'pawn':
                 pawnLit();
@@ -644,7 +644,7 @@ function lit(activeSide, passiveSide) {
         }
         // console.log(litDivs);
         // -----------------------------------------------------------------
-        // adds click-listener to all litDivs
+        // adds click-listener to all litDivs for movePiece(e)
         litDivs.forEach(litDiv => {
             document.getElementById(litDiv).addEventListener(
                 'click', movePiece

@@ -120,7 +120,7 @@ function checkingSpace(somePiece, checkSpace, passiveSide) { // returns true/fal
         if (+someBishop.id[0] - (+checkSpace[0]) === (+checkSpace[1]) - (+someBishop.id[1])) { // if bishop aligns with checkSpace
 // UNSNAG THIS SECTION!!          
           // collects all attacking spaces between them
-          while (bishopX > (+checkSpace.id[0] + 1)) { 
+          while (bishopX > (+checkSpace[0] + 1)) { 
             bishopX -= 1;
             bishopY += 1;
             bishopMoves.push({ x: bishopX, y: bishopY });
