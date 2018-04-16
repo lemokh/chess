@@ -50,6 +50,7 @@ var emptySpaces = openSpaces(boardIds, pieces);
 function checkingSpace(somePiece, checkSpace, passiveSide) { // returns true/false if some-piece checks-space 
   // somePiece is an <img> in the passiveSide array 
   // checkSpace is a kingSpace <img> lacking any kingSide pieces
+  pinnedPieces = [];
   //--------------------------------------------------------------------------------------------
   function knightAttacks(someKnight, checkSpace) { // returns true/false if knight can checkSpace
     knightMoves = []; // contains the two spaces where knight might checkSpace
@@ -94,7 +95,8 @@ function checkingSpace(somePiece, checkSpace, passiveSide) { // returns true/fal
 
       if (+someBishop.id[1] < +checkSpace[1]) { // and if someBishop is above king (FIRST QUADRANT)
         if (+checkSpace[0] - (+someBishop.id[0]) === (+checkSpace[1]) - (+someBishop.id[1])) { // if someBishop aligns with king
-          while (someBishopX < (+checkSpace[0] - 1)) { // collects all attacking spaces between them
+          // while (someBishopX < ) ?
+          while (bishopX < (+checkSpace[0] - 1)) { // collects all attacking spaces between them
             bishopX += 1;
             bishopY += 1;
             bishopMoves.push({ x: bishopX, y: bishopY });
@@ -215,6 +217,7 @@ function checkingSpace(somePiece, checkSpace, passiveSide) { // returns true/fal
       } else if (nails[0].classList.contains('orange')) {
         if (someRook.classList.contains('orange')) {
           pinnedPieces.push(nails[0]);
+          // pinnedPieces is undefined here
         }
       }
     }

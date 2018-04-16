@@ -552,7 +552,8 @@ function lit(activeSide, passiveSide) {
         // array of kingSpaces devoid of kingSide pieces
         openAndOpponentHeldKingSpaces = exclude(kingSpaces, activeSide);
         // console.log(openAndOpponentHeldKingSpaces);
-
+        
+        // .map() here instead?
         openAndOpponentHeldKingSpaces.forEach(space => {
             passiveSide.forEach(passivePiece => {
                 console.log(checkingSpace(passivePiece, space, passiveSide));
@@ -562,7 +563,7 @@ function lit(activeSide, passiveSide) {
                 }
             }); // checkingSpace returns true/false if piece attacks space
         }); // array of opponent pieces that check a kingSpace
-        
+        console.log(openAndOpponentHeldKingSpaces);
         // removes any of those spaces from kingSpaces
         kingSpaces = exclude(openAndOpponentHeldKingSpaces, kingSpacesUnderAttack);
         console.log(kingSpaces);
