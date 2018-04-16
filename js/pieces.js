@@ -91,7 +91,7 @@ function checkingSpace(somePiece, checkSpace, passiveSide) { // returns true/fal
     if (+someBishop.id[0] === +checkSpace[0]) { return false; }
     if (+someBishop.id[1] === +checkSpace[1]) { return false; }
 
-    if (+someBishop.id[0] < +checkSpace[0]) { // if someBishop is left of king (LEFT BOARD SIDE)
+    if (+someBishop.id[0] < +checkSpace[0]) { // if someBishop.id is left of king (LEFT BOARD SIDE)
 
       if (+someBishop.id[1] < +checkSpace[1]) { // and if someBishop is above king (FIRST QUADRANT)
         if (+checkSpace[0] - (+someBishop.id[0]) === (+checkSpace[1]) - (+someBishop.id[1])) { // if someBishop aligns with king

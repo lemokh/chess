@@ -71,6 +71,7 @@ function lit(activeSide, passiveSide) {
         // updates pieceToMove's info at goToDiv 
         // if piece is eaten...
         if (goToDiv.name !== '') {
+            console.log(goToDiv.name);
             console.log('piece eaten');
              // if enPassantCell clicked --> en passant attack
             if (goToDiv.id === enPassantCell) { enPassant(e.target); }
@@ -521,15 +522,13 @@ function lit(activeSide, passiveSide) {
     }
     //========================================================================================
     function kingLit() {
-
-        function exclude(arr, arr2) { // kingSpaces, activeSide
-            return arr.filter(item => { // each item in arr
-                return !arr2.some(item2 => { // each item in arr2
-                    return item == item2.id;
-                }); // returns true if not a match
-            });
-        } // removes arr2 items from arr
-
+        // function exclude(arr, arr2) { // kingSpaces, activeSide
+        //     return arr.filter(item => { // each item in arr
+        //         return !arr2.some(item2 => { // each item in arr2
+        //             return item == item2.id;
+        //         }); // returns true if not a match
+        //     });
+        // } // removes arr2 items from arr
         kingSpaces = [
             (pieceToMove.id[0] - 1) + pieceToMove.id[1],
             (pieceToMove.id[0] - 1).toString() + (+pieceToMove.id[1] + 1),
@@ -550,8 +549,13 @@ function lit(activeSide, passiveSide) {
         kingSpacesUnderAttack = [];
 
         // array of kingSpaces devoid of kingSide pieces
-        openAndOpponentHeldKingSpaces = exclude(kingSpaces, activeSide);
-        // console.log(openAndOpponentHeldKingSpaces);
+        openAndOpponentHeldKingSpaces = kingSpaces.filter(kingSpace => { // each item in arr
+                return !activeSide.some(activePiece => { // each item in arr2
+                    return kingSpace == activePiece.id;
+                }); // returns true if not a match
+            });
+        
+        console.log(openAndOpponentHeldKingSpaces);
         
         // .map() here instead?
         openAndOpponentHeldKingSpaces.forEach(space => {
@@ -560,12 +564,18 @@ function lit(activeSide, passiveSide) {
                 // sees if any passivePieces check any empty or king-attackable spaces
                 if (checkingSpace(passivePiece, space, passiveSide)) {
                     kingSpacesUnderAttack.push(space);
+                    console.log(kingSpacesUnderAttack);
                 }
             }); // checkingSpace returns true/false if piece attacks space
         }); // array of opponent pieces that check a kingSpace
         console.log(openAndOpponentHeldKingSpaces);
         // removes any of those spaces from kingSpaces
-        kingSpaces = exclude(openAndOpponentHeldKingSpaces, kingSpacesUnderAttack);
+        kingSpaces = openAndOpponentHeldKingSpaces.filter(nonOwnKingSpace => { // each item in arr
+            return !kingSpacesUnderAttack.some(checkedKingSpace => { // each item in arr2
+                return nonOwnKingSpace == checkedKingSpace;
+            }); // returns true if not a match
+        });
+        
         console.log(kingSpaces);
         
         // highlights kingSpaces
