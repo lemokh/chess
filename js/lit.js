@@ -51,29 +51,31 @@ function lit(activeSide, passiveSide) {
     }
     //========================================================================================
     function movePiece(e) {
-        // -----------------------------------------------------------------
         // removes click-listener from litDivs
-        litDivs.forEach(item => {
-            document.getElementById(item).removeEventListener(
+        litDivs.forEach(litDiv => {
+            document.getElementById(litDiv).removeEventListener(
                 'click', movePiece
             );
         });
+        document.getElementById(pieceToMove.id).removeEventListener('click', pieceLit);
+         // -----------------------------------------------------------------
+        goToDiv = e.target;
         // -----------------------------------------------------------------
         // un-highlights litDivs & mainDiv
         document.getElementById(pieceToMove.id).classList.remove('mainLit');
         tempId = []; //maybe delete this here?
-        litDivs.forEach(item => {
-            document.getElementById(item).classList.remove('lit');
+        litDivs.forEach(litDiv => {
+            document.getElementById(litDiv).classList.remove('lit');
         });
         // -----------------------------------------------------------------
-        // updates pieceToMove's info to e.target's cell 
+        // updates pieceToMove's info at goToDiv 
         // if piece is eaten...
-        if (e.target.name !== '') {
+        if (goToDiv.name !== '') {
             console.log('piece eaten');
              // if enPassantCell clicked --> en passant attack
-            if (e.target.id === enPassantCell) { enPassant(e.target); }
+            if (goToDiv.id === enPassantCell) { enPassant(e.target); }
             // pushes eaten piece's image to its takenBox div
-            else if (e.target.classList.contains('blue')) {
+            else if (goToDiv.classList.contains('blue')) {
                 document.getElementById(
                     orangeTakenBoxIdCounter.toString()
                 ).src = e.target.src;
@@ -82,67 +84,60 @@ function lit(activeSide, passiveSide) {
             else {
                 document.getElementById(
                     blueTakenBoxIdCounter.toString()
-                ).src = e.target.src;
+                ).src = goToDiv.src;
                 blueTakenBoxIdCounter -= 1;
             }
             // updates class sides
             if (blues.includes(pieceToMove)) { // if pieceToMove is blue... 
-                e.target.classList.remove('orange');
-                e.target.classList.add('blue');
+                goToDiv.classList.remove('orange');
+                goToDiv.classList.add('blue');
                 pieceToMove.classList.remove('blue');
             }
             else { // since pieceToMove is orange...
-                e.target.classList.remove('blue');
-                e.target.classList.add('orange');
+                goToDiv.classList.remove('blue');
+                goToDiv.classList.add('orange');
                 pieceToMove.classList.remove('orange');
             }
             // gets index for clicked space
-            index2 = passiveSide.indexOf(e.target);
+            index2 = passiveSide.indexOf(goToDiv);
             // removes eaten piece from passiveSide array
             passiveSide.splice(index2, 1);
         } // -----------------------------------------------------------------
-        else { // since no piece is eaten --> e.target.name === ''
+        else { // since no piece is eaten --> goToDiv.name === ''
             if (blues.includes(pieceToMove)) { // if pieceToMove is blue
-                e.target.classList.add('blue');
+                goToDiv.classList.add('blue');
                 pieceToMove.classList.remove('blue');
-                // e.target.classList.remove('orange');
             }
-            else { // updates classList for pieceToMove & e.target
-                e.target.classList.add('orange');
+            else { // updates classList for pieceToMove & goToDiv
+                goToDiv.classList.add('orange');
                 pieceToMove.classList.remove('orange');
-                // e.target.classList.remove('blue');
             }
         } // -----------------------------------------------------------------
-        // updates pieceToMove's new & old space name
-        e.target.name = pieceToMove.name;
+        // updates pieceToMove's & goToDiv's name
+        goToDiv.name = pieceToMove.name;
         pieceToMove.name = '';
         // -----------------------------------------------------------------
-        // updates bishop's new & old space image
-        e.target.src = pieceToMove.src;
+        // updates pieceToMove's & goToDiv's image
+        goToDiv.src = pieceToMove.src;
         pieceToMove.src = './images/transparent.png';
         // -----------------------------------------------------------------
-        // gets index for clicked bishop
+        // gets index for clicked pieceToMove
         index1 = activeSide.indexOf(pieceToMove);
         // removes vacated space from activeSide array         
         activeSide.splice(index1, 1);
         // -----------------------------------------------------------------
         // updates activeSide & pieces array
-        activeSide.push(e.target);
+        activeSide.push(goToDiv);
         pieces = [...oranges, ...blues];
         // -----------------------------------------------------------------
-        // removes click-listeners from all activeSide pieces
-        activeSide.forEach(piece => {
-            document.getElementById(piece.id).removeEventListener(
+        // removes click-listeners from all activePieces
+        activeSide.forEach(activePiece => {
+            document.getElementById(activePiece.id).removeEventListener(
                 'click', pieceLit
             );
         });
         // -----------------------------------------------------------------
-        // removes click-listeners from all litDivs
-        litDivs.forEach(item => {
-            document.getElementById(item).removeEventListener(
-                'click', movePiece
-            );
-        });
+        // pieceToMove = undefined;
         // -----------------------------------------------------------------
         // toggles side & starts the next move 
         if (activeSide === blues) {
@@ -182,31 +177,45 @@ function lit(activeSide, passiveSide) {
                     }
                 }
             });
-
             // highlights empty space one ahead of pawn
             // emptySpaces --> ['02', '03', ...]
-            if (emptySpaces.includes(pieceToMove.id[0] + (pieceToMove.id[1] - 1))) {
+            if (emptySpaces.includes(
+                    pieceToMove.id[0] 
+                    + (pieceToMove.id[1] - 1)
+                )) {
                 document.getElementById(
-                    pieceToMove.id[0] + (pieceToMove.id[1] - 1)
+                    pieceToMove.id[0] 
+                    + (pieceToMove.id[1] - 1)
                 ).classList.add('lit');
-                // 
-                litDivs.push(pieceToMove.id[0] + (pieceToMove.id[1] - 1));
+                // -------------------------------------------------------
+                litDivs.push(
+                    pieceToMove.id[0]
+                    + (pieceToMove.id[1] - 1)
+                );
                 // highlights empty space two ahead of blue pawn
                 if (pieceToMove.id[1] === '6') { // if pawn in row 6
                     // if the cell two ahead of pawn is empty 
-                    if (emptySpaces.includes(pieceToMove.id[0] + (pieceToMove.id[1] - 2))) {
+                    if (emptySpaces.includes(
+                        pieceToMove.id[0] 
+                        + (pieceToMove.id[1] - 2
+                        ))) {
                         // highlights that cell
                         document.getElementById(
-                            pieceToMove.id[0] + (pieceToMove.id[1] - 2)
+                            pieceToMove.id[0] 
+                            + (pieceToMove.id[1] - 2)
                         ).classList.add('lit');
                         // adds that cell to litDivs array
-                        litDivs.push(pieceToMove.id[0] + (pieceToMove.id[1] - 2));
-
+                        litDivs.push(
+                            pieceToMove.id[0] 
+                            + (pieceToMove.id[1] - 2)
+                        );
+                        // -----------------------------------------------------------------
                         // ENPASSANT for blue pawn
-                        passiveSide.forEach(passivePiece => { // for each passiveSide piece
+                        passiveSide.forEach(
+                            passivePiece => { // for each passiveSide piece
                             if (passivePiece.name === 'pawn') { // if a pawn
-                                if (passivePiece.id[1] === '4') { // if in row 4
-                                    // if passiveSide pawn is one column right of clicked pawn
+                                if (passivePiece.id[1] === '4') { // is in row 4
+                                    // if a passivePawn is one column right of clicked pawn
                                     if (passivePiece.id[0] == (+pieceToMove.id[0] + 1)) {
                                         // stores enPassantCell for next move to attack
                                         enPassantCell = pieceToMove.id[0] + (pieceToMove.id[1] - 1);
@@ -289,7 +298,7 @@ function lit(activeSide, passiveSide) {
         block8 = false;
         let knightLight;
 
-        // if own pieces occupy knight space, no highlight there
+        // if own piece occupies knight space, no highlight there
         activeSide.forEach(activePiece => {
             switch (+activePiece.id[0]) {
                 case (+pieceToMove.id[0] + 1):
@@ -307,7 +316,6 @@ function lit(activeSide, passiveSide) {
             }
         });
 
-        // more concise switch() {...} here?
         if (!block1) {
             if ((+pieceToMove.id[0] + 1) < 8) { // FILTERS OUT OFF-BOARD KNIGHT MOVES
                 if ((+pieceToMove.id[1] + 2) < 8) {
@@ -396,12 +404,10 @@ function lit(activeSide, passiveSide) {
                 }
             }
         }
-    } // DONE
+    }
     //========================================================================================
     function bishopLit() {
-    
         function quadrant(bishopX, bishopY) {
-        // FIX: bishop doesn't highlight attackable pieces
             let bishopPathId = bishopX.toString() + bishopY;
         
             // while bishop path empty, highlight space
@@ -431,14 +437,15 @@ function lit(activeSide, passiveSide) {
                 }
             }
         }
+        
         quadrant(+pieceToMove.id[0] + 1, +pieceToMove.id[1] + 1);
         quadrant(+pieceToMove.id[0] + 1, pieceToMove.id[1] - 1);
         quadrant(pieceToMove.id[0] - 1, +pieceToMove.id[1] + 1);
         quadrant(pieceToMove.id[0] - 1, pieceToMove.id[1] - 1);
-    } // NEEDS to highlight attackable pieces
+    }
     //========================================================================================
     function rookLit() {
-        // covers queen case 
+        // in case of queen 
         if (pieceToMove.name === 'rook') {
             litDivs = [];
             tempId.push( pieceToMove.id );
@@ -448,6 +455,8 @@ function lit(activeSide, passiveSide) {
 
         // pushes correct divs to litDivs
         function first(rookX) {
+        // first(+pieceToMove.id[0] + 1);
+        // first(pieceToMove.id[0] - 1);
             rookPathId = rookX.toString() + pieceToMove.id[1];
             console.log(rookPathId);
 
@@ -477,6 +486,8 @@ function lit(activeSide, passiveSide) {
         }
 
         function second(rookY) {
+        // second(+pieceToMove.id[1] + 1);
+        // second(pieceToMove.id[1] - 1);
             rookPathId = pieceToMove.id[0].toString() + rookY;
             console.log(rookPathId);
 
@@ -505,10 +516,10 @@ function lit(activeSide, passiveSide) {
         }
         }
         first(+pieceToMove.id[0] + 1);
-        first(+pieceToMove.id[0] - 1);
+        first(pieceToMove.id[0] - 1);
         second(+pieceToMove.id[1] + 1);
-        second(+pieceToMove.id[1] - 1);
-    } // NEEDS TO LIGHT ATTACKABLE PIECES
+        second(pieceToMove.id[1] - 1);
+    }
     //========================================================================================
     function kingLit() {
 
@@ -573,9 +584,9 @@ function lit(activeSide, passiveSide) {
             
             tempId = [];
             
-            litDivs.forEach(item => {
+            litDivs.forEach(litDiv => {
                 document.getElementById(
-                    item
+                    litDiv
                 ).classList.remove('lit');
             });
         }
@@ -588,6 +599,13 @@ function lit(activeSide, passiveSide) {
         document.getElementById(
             pieceToMove.id
         ).classList.add('mainLit');
+        // -----------------------------------------------------------------
+        // removes click-listener from litDivs
+        litDivs.forEach(litDiv => {
+            document.getElementById(litDiv).removeEventListener(
+                'click', movePiece
+            );
+        });
         // -----------------------------------------------------------------
         // highlights clicked piece's possible moves
         switch (pieceToMove.name) {
@@ -611,9 +629,8 @@ function lit(activeSide, passiveSide) {
                 kingLit();
                 break;
         }
+        console.log(litDivs);
         // -----------------------------------------------------------------
-        // console.log(litDivs);
-        
         // adds click-listener to all litDivs
         litDivs.forEach(litDiv => {
             document.getElementById(litDiv).addEventListener(
