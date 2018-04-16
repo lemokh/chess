@@ -457,11 +457,11 @@ function lit(activeSide, passiveSide) {
         // first(+pieceToMove.id[0] + 1);
         // first(pieceToMove.id[0] - 1);
             rookPathId = rookX.toString() + pieceToMove.id[1];
-            console.log(rookPathId);
+            // console.log(rookPathId);
 
             // while rook path empty, highlight space
             while (emptySpaces.includes( rookPathId )) {    
-                console.log(emptySpaces.includes(rookPathId));
+                // console.log(emptySpaces.includes(rookPathId));
                 // add lit class
                 document.getElementById(
                     rookPathId
@@ -488,11 +488,11 @@ function lit(activeSide, passiveSide) {
         // second(+pieceToMove.id[1] + 1);
         // second(pieceToMove.id[1] - 1);
             rookPathId = pieceToMove.id[0].toString() + rookY;
-            console.log(rookPathId);
+            // console.log(rookPathId);
 
-           // while rook path empty, highlight space
-           while (emptySpaces.includes( rookPathId )) {    
-            console.log(emptySpaces.includes(rookPathId));
+            // while rook path empty, highlight space
+            while (emptySpaces.includes( rookPathId )) {    
+            // console.log(emptySpaces.includes(rookPathId));
             // add lit class
             document.getElementById(
                 rookPathId
@@ -532,7 +532,6 @@ function lit(activeSide, passiveSide) {
 
         kingSpaces = [
             (pieceToMove.id[0] - 1) + pieceToMove.id[1],
-            // { x: pieceToMove.dataset.x - 1, y: pieceToMove.dataset.y },
             (pieceToMove.id[0] - 1).toString() + (+pieceToMove.id[1] + 1),
             pieceToMove.id[0] + (+pieceToMove.id[1] + 1),
             (+pieceToMove.id[0] + 1).toString() + (+pieceToMove.id[1] + 1),
@@ -546,7 +545,7 @@ function lit(activeSide, passiveSide) {
             }
         }).filter(item => { return item !== undefined; });
 
-        console.log(kingSpaces); // ['37','57',...]
+        // console.log(kingSpaces); // ['37','57',...]
 
         kingSpacesUnderAttack = [];
 
@@ -556,15 +555,19 @@ function lit(activeSide, passiveSide) {
 
         openAndOpponentHeldKingSpaces.forEach(space => {
             passiveSide.forEach(passivePiece => {
+                console.log(checkingSpace(passivePiece, space, passiveSide));
+                // sees if any passivePieces check any empty or king-attackable spaces
                 if (checkingSpace(passivePiece, space, passiveSide)) {
                     kingSpacesUnderAttack.push(space);
                 }
             }); // checkingSpace returns true/false if piece attacks space
-        }); // array of pieces that attack a kingSpace
-
+        }); // array of opponent pieces that check a kingSpace
+        
+        // removes any of those spaces from kingSpaces
         kingSpaces = exclude(openAndOpponentHeldKingSpaces, kingSpacesUnderAttack);
         console.log(kingSpaces);
         
+        // highlights kingSpaces
         kingSpaces.forEach(space => {
             document.getElementById(space).classList.add('lit');
             litDivs.push(space);
@@ -628,7 +631,7 @@ function lit(activeSide, passiveSide) {
                 kingLit();
                 break;
         }
-        console.log(litDivs);
+        // console.log(litDivs);
         // -----------------------------------------------------------------
         // adds click-listener to all litDivs
         litDivs.forEach(litDiv => {
