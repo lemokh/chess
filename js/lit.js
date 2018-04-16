@@ -211,8 +211,7 @@ function lit(activeSide, passiveSide) {
                         );
                         // -----------------------------------------------------------------
                         // ENPASSANT for blue pawn
-                        passiveSide.forEach(
-                            passivePiece => { // for each passiveSide piece
+                        passiveSide.forEach(passivePiece => { // for each passiveSide piece
                             if (passivePiece.name === 'pawn') { // if a pawn
                                 if (passivePiece.id[1] === '4') { // is in row 4
                                     // if a passivePawn is one column right of clicked pawn
