@@ -1,5 +1,8 @@
-var player = 'blue', enPassantCell = '', orangeTakenBoxIdCounter = -16, blueTakenBoxIdCounter = -1,
-pawn, knight, bishop, rook, queen, king, enPassantedPawn, takenOrangeBox, takenBlueBox, pieceLit, gameEnds, tempSide, movedPiece, mainLitDiv, litDivs, unLitDivs, img, index1, index2, tempId, moves, takenBox, activeCells, openAndOpponentHeldKingSpaces, kingSpacesUnderAttack, orangeKingSpacesUnderAttack, orangelessKingSpaces, orangelessKingSpaces, blueKingSpaces, bluelessKingSpaces, orangeKingSpacesUnderAttack, block1, block2, block3, block4, block5, block6, block7, block8, vacantKingSpaces, whiteKing, blackKing, knightMoves, bishopMoves, bishopX, bishopY, rookMoves, kingSpaces, kingOpenSpaces, occupiedKingSpaces, kingAttackers, defenders, pinnedPieces, checkedPaths, nails, whites, blacks;
+var endOfGame = false,
+  enPassantCell = '',
+  orangeTakenBoxIdCounter = -16,
+  blueTakenBoxIdCounter = -1,
+  pawn, pieceToMove, knight, bishop, rook, queen, king, enPassantedPawn, takenOrangeBox, takenBlueBox, pieceLit, gameEnds, tempSide, movedPiece, mainLitDiv, litDivs, unLitDivs, img, index1, index2, tempId, moves, takenBox, activeCells, openAndOpponentHeldKingSpaces, kingSpacesUnderAttack, orangeKingSpacesUnderAttack, orangelessKingSpaces, orangelessKingSpaces, blueKingSpaces, bluelessKingSpaces, orangeKingSpacesUnderAttack, block1, block2, block3, block4, block5, block6, block7, block8, vacantKingSpaces, whiteKing, blackKing, knightMoves, bishopMoves, bishopX, bishopY, rookMoves, kingSpaces, kingOpenSpaces, occupiedKingSpaces, kingAttackers, defenders, pinnedPieces, checkedPaths, nails, whites, blacks;
 
 // holds pawns that can eat the enPassanter pawn
 var enPassantables = [];
@@ -37,7 +40,8 @@ var board = document.getElementById('board');
 let orangeNodes = board.getElementsByClassName('orange');
 let blueNodes = board.getElementsByClassName('blue');
 
-var oranges = Array.from(orangeNodes), blues = Array.from(blueNodes);
+var oranges = Array.from(orangeNodes),
+  blues = Array.from(blueNodes);
 
 var pieces = [...oranges, ...blues]; // WORKS
 
@@ -53,7 +57,7 @@ function checkingSpace(somePiece, checkSpace, passiveSide) { // returns true/fal
   //--------------------------------------------------------------------------------------------
   function knightAttacks(someKnight, checkSpace) { // returns true/false if knight can checkSpace
     knightMoves = []; // contains the two spaces where knight might checkSpace
-    
+
     if (+someKnight.id[0] < +checkSpace[0]) { // if someKnight is left of checkSpace
       if (+someKnight.id[1] < +checkSpace[1]) { // and if someKnight is above checkSpace
         knightMoves.push({ x: +someKnight.id[0] + 1, y: +someKnight.id[1] + 2 });
@@ -152,7 +156,8 @@ function checkingSpace(somePiece, checkSpace, passiveSide) { // returns true/fal
         if (someBishop.classList.contains('blue')) {
           pinnedPieces.push(nails[0]);
         }
-      } else if (nails[0].classList.contains('orange')) {
+      }
+      else if (nails[0].classList.contains('orange')) {
         if (someBishop.classList.contains('orange')) {
           pinnedPieces.push(nails[0]);
         }
@@ -210,7 +215,8 @@ function checkingSpace(somePiece, checkSpace, passiveSide) { // returns true/fal
         if (someRook.classList.contains('blue')) {
           pinnedPieces.push(nails[0]);
         }
-      } else if (nails[0].classList.contains('orange')) {
+      }
+      else if (nails[0].classList.contains('orange')) {
         if (someRook.classList.contains('orange')) {
           pinnedPieces.push(nails[0]);
         }
@@ -244,17 +250,23 @@ function checkingSpace(somePiece, checkSpace, passiveSide) { // returns true/fal
       if ([+somePiece.id[0] - 1, +somePiece.x + 1].includes(+checkSpace[0])) {
         if (passiveSide === blues) { return +checkSpace[1] === (+somePiece.id[1] - 1); }
         else { return +checkSpace[1] === (+somePiece.id[1] + 1); }
-      } return false;
-    //--------------------------------------------------------------------------------------------
-    case 'knight': return knightAttacks(somePiece, checkSpace); 
-    //--------------------------------------------------------------------------------------------
-    case 'bishop': return bishopAttacks(somePiece, checkSpace);
-    //--------------------------------------------------------------------------------------------
-    case 'rook': return rookAttacks(somePiece, checkSpace);
-    //--------------------------------------------------------------------------------------------
-    case 'queen': return queenAttacks(somePiece, checkSpace);
-    //--------------------------------------------------------------------------------------------
-    case 'king': return kingAttacks(somePiece, checkSpace);
+      }
+      return false;
+      //--------------------------------------------------------------------------------------------
+    case 'knight':
+      return knightAttacks(somePiece, checkSpace);
+      //--------------------------------------------------------------------------------------------
+    case 'bishop':
+      return bishopAttacks(somePiece, checkSpace);
+      //--------------------------------------------------------------------------------------------
+    case 'rook':
+      return rookAttacks(somePiece, checkSpace);
+      //--------------------------------------------------------------------------------------------
+    case 'queen':
+      return queenAttacks(somePiece, checkSpace);
+      //--------------------------------------------------------------------------------------------
+    case 'king':
+      return kingAttacks(somePiece, checkSpace);
   }
 } // returns true/false if somePiece checks space
 //===============================================================================================
