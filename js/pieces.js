@@ -47,7 +47,8 @@ var emptySpaces = openSpaces(boardIds, pieces);
 //========================================================================================
 //========================================================================================
 
-function checkingSpace(somePiece, checkSpace, passiveSide) { // returns true/false if some-piece checks-space 
+// returns true/false if some-piece checks-space 
+function checkingSpace(somePiece, checkSpace, passiveSide) {
   // somePiece is an <img> in the passiveSide array 
   // checkSpace is a kingSpace <img> lacking any kingSide pieces
   pinnedPieces = [];
@@ -111,24 +112,23 @@ function checkingSpace(somePiece, checkSpace, passiveSide) { // returns true/fal
     // contains spaces someBishop attacks enroute to checkSpace
     bishopMoves = [];
     nails = []; // collects possible pinnedPieces
-    bishopX = someBishop.id[0];
-    bishopY = someBishop.id[1];
+    bishopX = +someBishop.id[0];
+    bishopY = +someBishop.id[1];
 
-    if (+someBishop.id[0] === +checkSpace[0]) { return false; }
-    if (+someBishop.id[1] === +checkSpace[1]) { return false; }
+    if (someBishop.id === checkSpace) { return false; }
     
-    // (LEFT BOARD SIDE) if someBishop.id is left of king
-    if (+someBishop.id[0] < +checkSpace[0]) {
-      // (FIRST QUADRANT) and if someBishop is above king
-      if (+someBishop.id[1] < +checkSpace[1]) {
-        // if someBishop aligns with king
-        if (+checkSpace[0] - (+someBishop.id[0]) === (+checkSpace[1]) - (+someBishop.id[1])) {
-          // collects all attacking spaces between them
-          // while (someBishopX < ) ?
-          while (bishopX < (+checkSpace[0] - 1)) {  
+    // (LEFT BOARD SIDE) if someBishop.id is left of checkSpace
+    if (someBishop.id[0] < checkSpace[0]) {
+      // (FIRST QUADRANT) and if someBishop is above checkSpace
+      if (someBishop.id[1] < checkSpace[1]) {
+        // if someBishop's path aligns with checkSpace
+        if ( checkSpace[0] - someBishop.id[0] 
+          === checkSpace[1] - someBishop.id[1] ) {
+          // collects bishop's attack path to checkSpace
+          while (bishopX < (checkSpace[0] - 1)) {  
             bishopX += 1;
             bishopY += 1;
-            bishopMoves.push({ x: bishopX, y: bishopY });
+            bishopMoves.push( bishopX + bishopY.toString() );
           }
         }
         else { return false; } // bishop can't checkSpace
@@ -136,12 +136,13 @@ function checkingSpace(somePiece, checkSpace, passiveSide) { // returns true/fal
       else {
        // (THIRD QUADRANT) bishop is left of & below checkSpace
         // if someBishop aligns with checkSpace
-        if (+checkSpace[0] - (+someBishop.id[0]) === (+someBishop.id[1]) - (+checkSpace[1])) {
-           // collects all attacking spaces between them
-           while (bishopX < (+checkSpace.id[0] - 1)) {
+        if ( checkSpace[0] - someBishop.id[0]
+          === someBishop.id[1] - checkSpace[1] ) {
+          // collects bishop's attack path to checkSpace
+          while (bishopX < (checkSpace.id[0] - 1)) {
             bishopX += 1;
             bishopY -= 1;
-            bishopMoves.push({ x: bishopX, y: bishopY });
+            bishopMoves.push( bishopX + bishopY.toString() );
           }
         }
         else { return false; } // bishop cannot checkSpace
@@ -149,29 +150,28 @@ function checkingSpace(somePiece, checkSpace, passiveSide) { // returns true/fal
     }
     else {// (RIGHT BOARD SIDE) bishop is right of checkSpace
       // (SECOND QUADRANT) and someBishop is above checkSpace
-      if (+someBishop.id[1] < +checkSpace[1]) {
+      if (someBishop.id[1] < checkSpace[1]) {
         // if bishop aligns with checkSpace
-        if (+someBishop.id[0] - (+checkSpace[0]) === 
-           (+checkSpace[1]) - (+someBishop.id[1])) {
-// UNSNAG THIS SECTION!!
-          // collects all attacking spaces between them
+        if ( someBishop.id[0] - checkSpace[0]
+          === checkSpace[1] - someBishop.id[1] ) {
+          // collects bishop's attack path to checkSpace
           while (bishopX > (+checkSpace[0] + 1)) { 
             bishopX -= 1;
             bishopY += 1;
-            bishopMoves.push({ x: bishopX, y: bishopY });
+            bishopMoves.push( bishopX + bishopY.toString() );
           } // console.log(bishopMoves);
         }
         else { return false; } // bishop can't checkSpace  
       }
       else {// (FOURTH QUADRANT) bishop is right of & below checkSpace
         // if someBishop aligns with checkSpace
-        if (+someBishop.id[0] - (+checkSpace[0]) === 
-           (+someBishop.id[1]) - (+checkSpace[1])) {
-          // collects all attacking spaces between them
-          while (bishopX > +checkSpace[0] + 1) {
+        if ( someBishop.id[0] - checkSpace[0] 
+          === someBishop.id[1] - checkSpace[1] ) {
+          // collects bishop's attack path to checkSpace
+          while (bishopX > (checkSpace[0] + 1)) {
             bishopX -= 1;
             bishopY -= 1;
-            bishopMoves.push({ x: bishopX, y: bishopY });
+            bishopMoves.push( bishopX + bishopY.toString() );
           } // console.log(bishopMoves);
         }
         // bishop can't attack king 
