@@ -55,56 +55,59 @@ function checkingSpace(somePiece, checkSpace, passiveSide) {
   //--------------------------------------------------------------------------------------------
   // returns true/false if knight can checkSpace
   function knightAttacks(someKnight, checkSpace) {
-    // contains two spaces where knight might checkSpace
+    // to hold two spaces where knight might checkSpace
     knightMoves = [];
+    
     // if someKnight is left of checkSpace
-    if (+someKnight.id[0] < +checkSpace[0]) {
+    if (someKnight.id[0] < checkSpace[0]) {
       // and if someKnight is above checkSpace
-      if (+someKnight.id[1] < +checkSpace[1]) {
+      if (someKnight.id[1] < checkSpace[1]) {
         knightMoves.push(
-          { x: +someKnight.id[0] + 1,
-            y: +someKnight.id[1] + 2 }
+          (+someKnight.id[0] + 1) +
+          (+someKnight.id[1] + 2).toString()
         );
         knightMoves.push(
-          { x: +someKnight.id[0] + 2,
-            y: +someKnight.id[1] + 1 }
-        );
-      }
-      else { // someKnight is left of & below checkSpace
-        knightMoves.push({ x: +someKnight.id[0] + 1, y: +someKnight.id[1] - 2 });
-        knightMoves.push({ x: +someKnight.id[0] + 2, y: +someKnight.id[1] - 1 });
-      }
-    }
-    else { // someKnight is right of checkSpace
-      // and someKnight is above checkSpace
-      if (+someKnight.id[1] < +checkSpace[1]) {
-        knightMoves.push(
-          { x: +someKnight.id[0] - 1,
-            y: +someKnight.id[1] + 2 }
-        );
-        knightMoves.push(
-          { x: +someKnight.id[0] - 2,
-            y: +someKnight.id[1] + 1 }
+          (+someKnight.id[0] + 2) +
+          (+someKnight.id[1] + 1).toString()
         );
       }
-      else { // someKnight is right of & below checkSpace
+      else {
+      // since someKnight is left of & below checkSpace
         knightMoves.push(
-          { x: +someKnight.id[0] - 1,
-            y: +someKnight.id[1] - 2 }
+          (+someKnight.id[0] + 1) +
+          (someKnight.id[1] - 2).toString()
         );
         knightMoves.push(
-          { x: +someKnight.id[0] - 2,
-            y: +someKnight.id[1] - 1 }
+          (+someKnight.id[0] + 2) +
+          (someKnight.id[1] - 1).toString()
         );
-      } // push an id instead?
-    }
-    for (let i = 0; i < knightMoves.length; i++) {
-      if (knightMoves[i].x === +checkSpace[0]) {
-        if (knightMoves[i].y === +checkSpace[1]) { 
-          return true; 
-        }
       }
     }
+    else { 
+    // since someKnight is right of & above checkSpace
+      if (someKnight.id[1] < checkSpace[1]) {
+        knightMoves.push(
+          (someKnight.id[0] - 1) +
+          (+someKnight.id[1] + 2).toString()
+        );
+        knightMoves.push(
+          (someKnight.id[0] - 2) +
+          (+someKnight.id[1] + 1).toString()
+        );
+      }
+      else { 
+      // since someKnight is right of & below checkSpace
+        knightMoves.push(
+          (someKnight.id[0] - 1) +
+          (someKnight.id[1] - 2).toString()
+        );
+        knightMoves.push(
+          (someKnight.id[0] - 2) +
+          (someKnight.id[1] - 1).toString()
+        );
+      }
+    }
+    return knightMoves.includes(checkSpace); 
   } // returns true/false if knight can checkSpace
   //--------------------------------------------------------------------------------------------
   // returns true/false if someBishop can checkSpace
@@ -148,8 +151,10 @@ function checkingSpace(somePiece, checkSpace, passiveSide) {
         else { return false; } // bishop cannot checkSpace
       }
     }
-    else {// (RIGHT BOARD SIDE) bishop is right of checkSpace
-      // (SECOND QUADRANT) and someBishop is above checkSpace
+    else {// (RIGHT BOARD SIDE)
+      // since bishop is right of checkSpace
+      // (SECOND QUADRANT)
+      // and since someBishop is above checkSpace
       if (someBishop.id[1] < checkSpace[1]) {
         // if bishop aligns with checkSpace
         if ( someBishop.id[0] - checkSpace[0]
@@ -163,7 +168,8 @@ function checkingSpace(somePiece, checkSpace, passiveSide) {
         }
         else { return false; } // bishop can't checkSpace  
       }
-      else {// (FOURTH QUADRANT) bishop is right of & below checkSpace
+      else { // (FOURTH QUADRANT) 
+        // since bishop is right of & below checkSpace
         // if someBishop aligns with checkSpace
         if ( someBishop.id[0] - checkSpace[0] 
           === someBishop.id[1] - checkSpace[1] ) {
@@ -174,7 +180,7 @@ function checkingSpace(somePiece, checkSpace, passiveSide) {
             bishopMoves.push( bishopX + bishopY.toString() );
           } // console.log(bishopMoves);
         }
-        // bishop can't attack king 
+        // bishop can't attack king
         else { return false; }
       }
     } // console.log(bishopMoves);
