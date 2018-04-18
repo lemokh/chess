@@ -216,60 +216,63 @@ function checkingSpace(somePiece, checkSpace, passiveSide) {
   //--------------------------------------------------------------------------------------------
   // returns true/false if someRook can checkSpace
   function rookAttacks(someRook, checkSpace) {
+    // to hold spaces rook attacks enroute to checkSpace
     rookMoves = [];
-    // holds spaces rook attacks enroute to checkSpace
+    // to hold spaces that cannot be moved
     nails = [];
-    
-    // pushes spaces between Ys of someRook & checkSpace
-    // someRook.id --> '00'; checkSpace --> '46';
-    
-    // someRook & checkSpace share column x
-    if (+someRook.id[0] === +checkSpace[0]) {
-      // & someRook below checkSpace
-      if (+someRook.id[1] < +checkSpace[1]) {
-         // someRook.y++
-        for (let i = +someRook.id[1] + 1; i < +checkSpace[1]; i++) {
-          rookMoves.push({ x: +checkSpace[0], y: i });
+  
+    // someRook.id --> '##';   checkSpace --> '##';
+    // pushes row spaces between someRook & checkSpace
+  
+    // if someRook & checkSpace share column x
+    if (someRook.id[0] === checkSpace[0]) {
+      // & if someRook below checkSpace
+      if (someRook.id[1] < checkSpace[1]) {
+        // someRook.y++
+        for (let i = +someRook.id[1] + 1; i < checkSpace[1]; i++) {
+          rookMoves.push( checkSpace[0] + i.toString() );
         }
       }
-      else { // & someRook above checkSpace
+      else { // & since someRook above checkSpace
         // rook.y--
-        for (let i = +someRook.id[1] - 1; i > +checkSpace[1]; i--) {
-          rookMoves.push({ x: +checkSpace[0], y: i });
+        for (let i = +someRook.id[1] - 1; i > checkSpace[1]; i--) {
+          rookMoves.push( checkSpace[0] + i.toString() );
         }
       }
     }
-    // pushes all spaces between Xs of rook & checkSpace
-    // someRook & checkSpace share row y
-    else if (+someRook.id[1] === +checkSpace[1]) {
-      // & someRook left of checkSpace
-      if (+someRook.id[0] < +checkSpace[0]) {
+    // pushes column spaces between rook & checkSpace
+    
+    // else if someRook & checkSpace share row y
+    else if (someRook.id[1] === checkSpace[1]) {
+      // & if someRook left of checkSpace
+      if (someRook.id[0] < checkSpace[0]) {
         // someRook.x++
-        for (let i = +someRook.id[0] + 1; i < +checkSpace[0]; i++) {
-          rookMoves.push({ x: i, y: +checkSpace[1] });
+        for (let i = +someRook.id[0] + 1; i < checkSpace[0]; i++) {
+          rookMoves.push( i.toString() + checkSpace[1] );
         }
       }
-      else { // & rook right of checkSpace
+      else { // & since rook right of checkSpace
         // rook.x--
-        for (let i = +someRook.id[0] - 1; i > +checkSpace[0]; i--) {
-          rookMoves.push({ x: i, y: +checkSpace[1] });
+        for (let i = +someRook.id[0] - 1; i > checkSpace[0]; i--) {
+          rookMoves.push( i.toString() + checkSpace[1] );
         }
       }
     }
-    else { return false; } // rook can't check checkSpace
-    // sees if any piece blocks rook's check
-    // for each piece on board 
+    else { return false; } // rook can't checkSpace
+    
+    // sees if any piece blocks rook's attack path
+    
+    // for each piece's <img> on board 
     for (let i = 0; i < pieces.length; i++) {
-      // & each space rook moves enroute to checkSpace
+      // & each rook id enroute to checkSpace
       for (let k = 0; k < rookMoves.length; k++) {
-        if (+pieces[i].id[0] === rookMoves[k].x) {
-          if (+pieces[i].id[1] === rookMoves[k].y) {
-            nails.push(pieces[i]);
-            // expecting {x: _, y: _} ... got <img>
-          }
+        if (pieces[i].id === rookMoves[k]) {
+          // pushes nailed piece's <img>
+          nails.push(pieces[i]);
         }
       }
     }
+    // (passiveSide contains somePiece)
     if (nails.length === 1) {
       // if (nails[0].side !== someRook.side) {
       if (nails[0].classList.contains('blue')) {
@@ -316,15 +319,16 @@ function checkingSpace(somePiece, checkSpace, passiveSide) {
   // sees if some piece can check space
   switch (somePiece.name) {
     //--------------------------------------------------------------------------------------------
-    case 'pawn': // ADD PAWN JUMP TWO & ENPASSANT?
-      // if pawn is one left or right of check space,
-      // then sees if pawn can checkSpace
-      if ([+somePiece.id[0] - 1, +somePiece.x + 1].includes(+checkSpace[0])) {
+    case 'pawn':
+    // ADD PAWN JUMP TWO & ENPASSANT?
+      // if pawn is one left or right of check space
+      if ([somePiece.id[0] - 1, +somePiece.id[0] + 1].includes(+checkSpace[0])) {
+        // sees if pawn can checkSpace
         if (passiveSide === blues) {
-          return +checkSpace[1] === (+somePiece.id[1] - 1);
+          return checkSpace[1] == (somePiece.id[1] - 1);
         }
         else {
-          return +checkSpace[1] === (+somePiece.id[1] + 1);
+          return checkSpace[1] == (+somePiece.id[1] + 1);
         }
       } return false;
     //--------------------------------------------------------------------------------------------
