@@ -142,6 +142,8 @@ function checkingSpace(somePiece, checkSpace, passiveSide) {
         if ( checkSpace[0] - someBishop.id[0]
           === someBishop.id[1] - checkSpace[1] ) {
           // collects bishop's attack path to checkSpace
+  // FIX THIS --> can't read checkSpace.id[0]
+          console.log(checkSpace);
           while (bishopX < (checkSpace.id[0] - 1)) {
             bishopX += 1;
             bishopY -= 1;

@@ -48,6 +48,9 @@ function lit(activeSide, passiveSide) {
         passiveSide.splice(passiveSide.indexOf(enPassantedPawn), 1);
         pieces = [...oranges, ...blues];
         enPassantedPawn = undefined;
+        // CODE NEVER REACHES HERE!
+        // console.log(pawnMovesHere.name);
+        // pawnMovesHere.name = '';
     }
     //========================================================================================
     function movePiece(e) {
@@ -71,10 +74,11 @@ function lit(activeSide, passiveSide) {
         // updates pieceToMove's info at goToDiv 
         // if piece is eaten...
         if (goToDiv.name !== '') {
-            console.log(goToDiv.name);
             console.log('piece eaten');
              // if enPassantCell clicked --> en passant attack
-            if (goToDiv.id === enPassantCell) { enPassant(e.target); }
+            if (goToDiv.id === enPassantCell) {
+                enPassant(goToDiv);
+            }
             // pushes eaten piece's image to its takenBox div
             else if (goToDiv.classList.contains('blue')) {
                 document.getElementById(
