@@ -5,53 +5,68 @@ function lit(activeSide, passiveSide) {
     //========================================================================================
     // function toggleClocks() {}
     //========================================================================================
-    function enPassant (pawnMovesHere) {
-        // pawnMovesHere === e.target
-        console.log('enters enPassant(pawnMovesHere)');
-        // resets clicked enPassant cell info
-        enPassantables = [];
-        enPassantCell = '';
-
-        // puts enPassantCell in its takenBox
+    function eat(element) {
+        // puts element in its takenBox
         if (activeSide === blues) {
-            enPassantedPawn = document.getElementById(
-                pawnMovesHere.id[0] + (+pawnMovesHere.id[1] + 1)
-            );
-
             document.getElementById(
                 blueTakenBoxIdCounter.toString()
-            ).src = enPassantedPawn.src;
+            ).src = element.src;
 
             blueTakenBoxIdCounter -= 1;
 
-            enPassantedPawn.classList.remove('orange');
-            pawnMovesHere.classList.add('blue');
+            element.classList.remove('orange');
+            goToDiv.classList.add('blue');
             pieceToMove.classList.remove('blue');
         }
         else { // since orange turn
-            enPassantedPawn = document.getElementById(
-                pawnMovesHere.id[0] + (pawnMovesHere.id[1] - 1)
-            );
-
+            // puts element in its takenBox
             document.getElementById(
                 orangeTakenBoxIdCounter.toString()
-            ).src = enPassantedPawn.src;
+            ).src = element.src;
 
             orangeTakenBoxIdCounter -= 1;
 
-            enPassantedPawn.classList.remove('blue');
-            pawnMovesHere.classList.add('orange');
+            element.classList.remove('blue');
+            goToDiv.classList.add('orange');
             pieceToMove.classList.remove('orange');
         }
+        // gets clicked-space's passiveSide index
+        index2 = passiveSide.indexOf(goToDiv);
+        // removes eaten piece from passiveSide array
+        passiveSide.splice(index2, 1);
+    }
+    //============================================================================
+    // swaps pieceToMove & goToDiv info
+    function swapClass() {
+        // if pieceToMove is blue
+        if (blues.includes(pieceToMove)) {
+            pieceToMove.classList.remove('blue');
+            goToDiv.classList.add('blue');
+        }
+        else { // updates pieceToMove & goToDiv classList
+            pieceToMove.classList.remove('orange');
+            goToDiv.classList.add('orange');
+        }
+    }
+    //========================================================================================
+    function enPassant () {
+        console.log('enters enPassant()');
+        // resets clicked enPassant cell info
+        enPassantables = [];
+        enPassantCell = '';
+        
+        eat(enPassantedPawn);
+
+        // clear enPassantedPawn's div info
         enPassantedPawn.src = './images/transparent.png';
         enPassantedPawn.name = '';
         passiveSide.splice(
             passiveSide.indexOf(enPassantedPawn), 1
         );
         pieces = [...oranges, ...blues];
-        enPassantedPawn = undefined;
+        // enPassantedPawn = undefined;
         console.log('finished enPassant attack');
-        pawnMovesHere.name = '';
+        goToDiv.name = ''; // remove or = 'pawn'?
     }
     //========================================================================================
     function movePiece(e) {
@@ -67,6 +82,7 @@ function lit(activeSide, passiveSide) {
         ).removeEventListener('click', pieceLit);
         // -----------------------------------------------------------------
         goToDiv = e.target;
+    
         console.log('goToDiv  = e.target -->');
         console.log(goToDiv);
         // -----------------------------------------------------------------
@@ -80,68 +96,31 @@ function lit(activeSide, passiveSide) {
             document.getElementById(
                 litDiv
             ).classList.remove('lit');
-        });
-        // -----------------------------------------------------------------
-        // updates pieceToMove's info at goToDiv 
-        
-        // if goToDiv.name is not empty
-        // --> pieceToMove eats goToDiv's piece
-        if (goToDiv.name !== '') {
-            console.log('goToDiv.name is not empty');
-            // if enPassantCell is next clicked
-            // --> runs enPassant()
+        }); 
+        //---------------------------------------------------------------------
+        if (goToDiv.name === '') { // if goToDiv is empty
+            console.log('goToDiv IS empty');
+            // pieceToMove takes empty div or enPassant attack
             if (goToDiv.id === enPassantCell) {
-                
-                console.log('goToDiv.id equals enPassantCell --> enPassant(goToDiv)');
+                console.log('goToDiv.id equals enPassantCell --> enPassant()');
                 console.log('pieceToMove eats goToDiv piece');
-                
-                enPassant(goToDiv);
+                enPassant();
             }
-            // pushes eaten piece's image to its takenBox div
-            else if (goToDiv.classList.contains('blue')) {
-                document.getElementById(
-                    orangeTakenBoxIdCounter.toString()
-                ).src = e.target.src;
-                orangeTakenBoxIdCounter -= 1;
-            }
-            else {
-                document.getElementById(
-                    blueTakenBoxIdCounter.toString()
-                ).src = goToDiv.src;
-                blueTakenBoxIdCounter -= 1;
-            }
-            // updates class sides
-
-            // if pieceToMove is blue... 
-            if (blues.includes(pieceToMove)) {
-                goToDiv.classList.remove('orange');
-                goToDiv.classList.add('blue');
-                pieceToMove.classList.remove('blue');
-            }
-            else { // since pieceToMove is orange...
-                goToDiv.classList.remove('blue');
-                goToDiv.classList.add('orange');
-                pieceToMove.classList.remove('orange');
-            }
-            // clicked-space's passiveSide index
-            index2 = passiveSide.indexOf(goToDiv);
-            // removes eaten piece from passiveSide array
-            passiveSide.splice(index2, 1);
-        } // -----------------------------------------------------------------
-        else {  // since no piece eaten
-                // --> goToDiv.name === ""
-             
-            // console.log(goToDiv.name);
-            // if pieceToMove is blue
-            if (blues.includes(pieceToMove)) {
-                goToDiv.classList.add('blue');
-                pieceToMove.classList.remove('blue');
-            }
-            else { // updates classList of pieceToMove & goToDiv
-                pieceToMove.classList.remove('orange');
-                goToDiv.classList.add('orange');
-            }
-        } // -----------------------------------------------------------------
+            // else if (passivePawn is beside goToDiv) {
+            //     enPassanting = true;
+            //     enPassantables.push(passivePawn);
+            // }
+            console.log('swapClass()')
+            swapClass();
+        }
+        else { // since goToDiv is not empty
+            console.log('goToDiv NOT empty');
+            // pieceToMove eats passivePawn (goToDiv)
+            eat(goToDiv);
+        }
+        //------------------------------------------------------------------
+        // -----------------------------------------------------------------
+        // -----------------------------------------------------------------
         // updates pieceToMove's & goToDiv's name
         goToDiv.name = pieceToMove.name;
         pieceToMove.name = '';
@@ -166,7 +145,7 @@ function lit(activeSide, passiveSide) {
             ).removeEventListener('click', pieceLit);
         });
         // -----------------------------------------------------------------
-        // pieceToMove = undefined;
+        // pieceToMove = undefined; // unnecessary?
         // -----------------------------------------------------------------
         // toggles side & starts the next move 
         if (activeSide === blues) {
@@ -183,6 +162,7 @@ function lit(activeSide, passiveSide) {
     function pawnLit() {
         // highlights enPassant cell, if an option
         console.log('enters pawnLit()');
+        enPassantedPawn = document.getElementById(enPassantCell);
         //----------------------------------------------------
         if (enPassantables.length) {
             enPassantables2 = enPassantables;
@@ -191,13 +171,12 @@ function lit(activeSide, passiveSide) {
         //---------------------------------------------------
         if (enPassanting) {
             if (enPassantables2.includes(pieceToMove)) {
-                document.getElementById(
-                    enPassantCell
-                ).name = 'enPassantable';
+                // unnecessary?
+                // document.getElementById(
+                //     enPassantCell
+                // ).name = 'enPassantable';
                 
-                document.getElementById(
-                    enPassantCell
-                ).classList.add('lit');
+                enPassantedPawn.classList.add('lit');
                 
                 litDivs.push(enPassantCell);
             }
@@ -225,36 +204,39 @@ function lit(activeSide, passiveSide) {
             // highlights empty space one ahead of pawn
             // emptySpaces --> ['02', '03', ...]
             if (emptySpaces.includes(
-                    pieceToMove.id[0] 
-                    + (pieceToMove.id[1] - 1)
+                    pieceToMove.id[0] +
+                    (pieceToMove.id[1] - 1)
                 )) {
                 document.getElementById(
-                    pieceToMove.id[0] 
-                    + (pieceToMove.id[1] - 1)
+                    pieceToMove.id[0] +
+                    (pieceToMove.id[1] - 1)
                 ).classList.add('lit');
                 // -------------------------------------------------------
                 litDivs.push(
-                    pieceToMove.id[0]
-                    + (pieceToMove.id[1] - 1)
+                    pieceToMove.id[0] +
+                    (pieceToMove.id[1] - 1)
                 );
                 // highlights empty space two ahead of blue pawn
                 if (pieceToMove.id[1] === '6') { // if pawn in row 6
                     // if the cell two ahead of pawn is empty 
                     if (emptySpaces.includes(
-                        pieceToMove.id[0] 
-                        + (pieceToMove.id[1] - 2
+                        pieceToMove.id[0] +
+                        (pieceToMove.id[1] - 2
                         ))) {
                         // highlights that cell
                         document.getElementById(
-                            pieceToMove.id[0] 
-                            + (pieceToMove.id[1] - 2)
+                            pieceToMove.id[0] +
+                            (pieceToMove.id[1] - 2)
                         ).classList.add('lit');
                         // adds that cell to litDivs array
                         litDivs.push(
-                            pieceToMove.id[0] 
-                            + (pieceToMove.id[1] - 2)
+                            pieceToMove.id[0] +
+                            (pieceToMove.id[1] - 2)
                         );
                         // -----------------------------------------------------------------
+                        
+
+
                         // ENPASSANT for blue pawn
                         passiveSide.forEach(passivePiece => { // for each passiveSide piece
                             if (passivePiece.name === 'pawn') { // if a pawn
@@ -266,12 +248,14 @@ function lit(activeSide, passiveSide) {
                                         if (enPassantables.length) {
                                             if (enPassantables[0] !== passivePiece) {
                                                 // collects pawn that can attack enPassantCell on next move
+                                                enPassanting = true;
                                                 enPassantables.push(passivePiece);
                                                 console.log('enPassantables -->');
                                                 console.log(enPassantables);
                                             }
                                         } else {
                                             // collects pawn that can attack enPassantCell on next move
+                                            enPassanting = true;
                                             enPassantables.push(passivePiece);
                                             console.log('enPassantables -->');
                                             console.log(enPassantables);
@@ -282,12 +266,14 @@ function lit(activeSide, passiveSide) {
                                         if (enPassantables.length) {
                                             if (enPassantables[0] !== passivePiece) {
                                                 // collects pawn that can attack enPassantCell on next move
+                                                enPassanting = true;
                                                 enPassantables.push(passivePiece);
                                                 console.log('enPassantables -->');
                                                 console.log(enPassantables);
                                             }
                                         } else {
                                             // collects pawn that can attack enPassantCell on next move
+                                            enPassanting = true;
                                             enPassantables.push(passivePiece);
                                             console.log('enPassantables -->');
                                             console.log(enPassantables);
@@ -330,7 +316,9 @@ function lit(activeSide, passiveSide) {
                         ).classList.add('lit');
 
                         litDivs.push(pieceToMove.id[0] + (+pieceToMove.id[1] + 2));
-
+                         // -----------------------------------------------------------------
+                        
+                        
                         // ENPASSANT for orange pawn
                         passiveSide.forEach(passivePiece => {
                             if (passivePiece.name === 'pawn') {
