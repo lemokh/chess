@@ -8,6 +8,7 @@ function lit(activeSide, passiveSide) {
     function eat(element) {
         // puts element in its takenBox
         if (activeSide === blues) {
+
             document.getElementById(
                 blueTakenBoxIdCounter.toString()
             ).src = element.src;
@@ -49,26 +50,6 @@ function lit(activeSide, passiveSide) {
         }
     }
     //========================================================================================
-    function enPassant () {
-        console.log('enters enPassant()');
-        // resets clicked enPassant cell info
-        enPassantables = [];
-        enPassantCell = '';
-        
-        eat(enPassantedPawn);
-
-        // clear enPassantedPawn's div info
-        enPassantedPawn.src = './images/transparent.png';
-        enPassantedPawn.name = '';
-        passiveSide.splice(
-            passiveSide.indexOf(enPassantedPawn), 1
-        );
-        pieces = [...oranges, ...blues];
-        // enPassantedPawn = undefined;
-        console.log('finished enPassant attack');
-        goToDiv.name = ''; // remove or = 'pawn'?
-    }
-    //========================================================================================
     function movePiece(e) {
         console.log('removes click-listener from litDivs');
         // removes click-listener from litDivs
@@ -82,7 +63,16 @@ function lit(activeSide, passiveSide) {
         ).removeEventListener('click', pieceLit);
         // -----------------------------------------------------------------
         goToDiv = e.target;
-    
+        
+        if (activeSide === blues) {
+            prevGoToDiv = document.getElementById(
+                goToDiv.id[0] + (+goToDiv.id[1] + 1)
+            );
+        } else {
+            prevGoToDiv = document.getElementById(
+                goToDiv.id[0] + (goToDiv.id[1] - 1)
+            );
+        }
         console.log('goToDiv  = e.target -->');
         console.log(goToDiv);
         // -----------------------------------------------------------------
@@ -98,24 +88,45 @@ function lit(activeSide, passiveSide) {
             ).classList.remove('lit');
         }); 
         //---------------------------------------------------------------------
+        //---------------------------------------------------------------------
+        //---------------------------------------------------------------------
         if (goToDiv.name === '') { // if goToDiv is empty
             console.log('goToDiv IS empty');
+// !! PREVENT PAWN NOT JUMP FROM ACCESSING THIS!!
+            
             // pieceToMove takes empty div or enPassant attack
             if (goToDiv.id === enPassantCell) {
-                console.log('goToDiv.id equals enPassantCell --> enPassant()');
+                if (prevGoToDiv.id[1] !== (+goToDiv.id[1] + 1)) {
+                    if (prevGoToDiv.id[1] !== (goToDiv.id[1] - 1)) {
+                             
+                console.log('goToDiv.id equals enPassantCell');
                 console.log('pieceToMove eats goToDiv piece');
-                enPassant();
+                
+                eat(prevGoToDiv);
+                
+                // clears goToDiv's info
+                prevGoToDiv.src = './images/transparent.png';
+                prevGoToDiv.name = '';
+                passiveSide.splice(
+                    passiveSide.indexOf(prevGoToDiv.id), 1
+                );
+                pieces = [...oranges, ...blues];
+                
+                console.log('finished enPassant attack');
+                
+                // resets clicked enPassant cell info
+                enPassantables = [];
+                enPassantCell = '';
+                enPassantedPawn = undefined;
+                    }
+                }
             }
-            // else if (passivePawn is beside goToDiv) {
-            //     enPassanting = true;
-            //     enPassantables.push(passivePawn);
-            // }
-            console.log('swapClass()')
+            console.log('swapClass()');
             swapClass();
         }
         else { // since goToDiv is not empty
             console.log('goToDiv NOT empty');
-            // pieceToMove eats passivePawn (goToDiv)
+            // pieceToMove eats goToDiv's piece
             eat(goToDiv);
         }
         //------------------------------------------------------------------
