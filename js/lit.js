@@ -92,33 +92,30 @@ function lit(activeSide, passiveSide) {
         //---------------------------------------------------------------------
         if (goToDiv.name === '') { // if goToDiv is empty
             console.log('goToDiv IS empty');
-// !! PREVENT PAWN NOT JUMP FROM ACCESSING THIS!!
-            
             // pieceToMove takes empty div or enPassant attack
             if (goToDiv.id === enPassantCell) {
-                if (prevGoToDiv.id[1] !== (+goToDiv.id[1] + 1)) {
-                    if (prevGoToDiv.id[1] !== (goToDiv.id[1] - 1)) {
+                if (prevGoToDiv.id[1] == (+goToDiv.id[1] + 2) ||
+                    prevGoToDiv.id[1] == (goToDiv.id[1] - 2)) {
                              
-                console.log('goToDiv.id equals enPassantCell');
-                console.log('pieceToMove eats goToDiv piece');
-                
-                eat(prevGoToDiv);
-                
-                // clears goToDiv's info
-                prevGoToDiv.src = './images/transparent.png';
-                prevGoToDiv.name = '';
-                passiveSide.splice(
-                    passiveSide.indexOf(prevGoToDiv.id), 1
-                );
-                pieces = [...oranges, ...blues];
-                
-                console.log('finished enPassant attack');
-                
-                // resets clicked enPassant cell info
-                enPassantables = [];
-                enPassantCell = '';
-                enPassantedPawn = undefined;
-                    }
+                    console.log('goToDiv.id equals enPassantCell');
+                    console.log('pieceToMove eats goToDiv piece');
+                    
+                    eat(prevGoToDiv);
+                    
+                    // clears goToDiv's info
+                    prevGoToDiv.src = './images/transparent.png';
+                    prevGoToDiv.name = '';
+                    passiveSide.splice(
+                        passiveSide.indexOf(prevGoToDiv.id), 1
+                    );
+                    pieces = [...oranges, ...blues];
+                    
+                    console.log('finished enPassant attack');
+                    
+                    // resets clicked enPassant cell info
+                    enPassantables = [];
+                    enPassantCell = '';
+                    enPassantedPawn = undefined;
                 }
             }
             console.log('swapClass()');
