@@ -94,10 +94,11 @@ function lit(activeSide, passiveSide) {
             console.log('goToDiv IS empty');
             // pieceToMove takes empty div or enPassant attack
             if (goToDiv.id === enPassantCell) {
-                if (prevGoToDiv.id[1] == (+goToDiv.id[1] + 2) ||
-                    prevGoToDiv.id[1] == (goToDiv.id[1] - 2)) {
-                             
-                    console.log('goToDiv.id equals enPassantCell');
+                console.log('goToDiv.id equals enPassantCell');
+
+                if (goToDiv.id[1] == (+pieceToMove.id[1] + 2) ||
+                    goToDiv.id[1] == (pieceToMove.id[1] - 2)) {
+
                     console.log('pieceToMove eats goToDiv piece');
                     
                     eat(prevGoToDiv);
