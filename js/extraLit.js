@@ -185,6 +185,7 @@ function lit(activeSide, passiveSide) {
     function pawnLit() {
         // highlights enPassant cell, if an option
         console.log('enters pawnLit()');
+
         // enPassantedPawn = document.getElementById(enPassantCell);
         //----------------------------------------------------
         /*
@@ -212,67 +213,69 @@ function lit(activeSide, passiveSide) {
         //---------------------------------------------------
         // highlights all possible moves for pieceToMove
         if (activeSide === blues) {
-            // highlights where pawn can attack
+            // collects where pawnToMove can enPassant attack
+            if (pawnJumpId !== undefined) {
+                // if pawnToMove & pawnJump share row
+                if (pieceToMove.id[1] === pawnJumpId[1]) {
+                    // and if besides eachother
+                    if (pieceToMove.id[0] == (+pawnJumpId[0] + 1)) {
+                        // adds enPassant attack div to litDivs
+                        litDivs.push(document.getElementById(
+                            pawnJumpId[0] + (+pawnJumpId[1] + 1) 
+                        ));
+                    } // and if besides eachother
+                    if (pieceToMove.id[0] == (pawnJumpId[0] - 1)) {
+                        // adds enPassant attack div to litDivs
+                        litDivs.push(document.getElementById(
+                            pawnJumpId[0] + (+pawnJumpId[1] + 1) 
+                        )); // simply add the id instead ??
+                    }
+                }
+            }
+            // collects where pawnToMove can attack
             passiveSide.forEach(passivePiece => {
-                // if passivePiece is one row ahead of pawn
+                // if passivePiece is one row ahead of pawnToMove
                 if (passivePiece.id[1] == (pieceToMove.id[1] - 1)) {
-                    // if passivePiece is one column right of pawn
+                    // if passivePiece is right beside pawnToMove
                     if (passivePiece.id[0] == (+pieceToMove.id[0] + 1)) {
-                        document.getElementById(passivePiece.id).classList.add('lit');
                         litDivs.push(passivePiece.id);
                     }
-                    // if passiveSide piece is one column left of pawn
+                    // if passivePiece is left beside pawnToMove
                     if (passivePiece.id[0] == (pieceToMove.id[0] - 1)) {
-                        document.getElementById(passivePiece.id).classList.add('lit');
                         litDivs.push(passivePiece.id);
                     }
                 }
-            }); //---------------------------------------------------
-            // highlights empty space one ahead of pawn
-            // emptySpaces --> ['02', '03', ...]
-            if (emptySpaces.includes(
-                pieceToMove.id[0] +
-                (pieceToMove.id[1] - 1)
-            )) {
-                // document.getElementById(
-                //     pieceToMove.id[0] +
-                //     (pieceToMove.id[1] - 1)
-                // ).classList.add('lit');
-                // -------------------------------------------------------
-                litDivs.push(
-                    pieceToMove.id[0] +
-                    (pieceToMove.id[1] - 1)
-                ); //---------------------------------------------------
+            });
+            //---------------------------------------------------
+            // collects empty space one ahead of pawnToMove
+            if (document.getElementById(pieceToMove.id[0] + (pieceToMove.id[1] - 1)).side === '') { 
+                litDivs.push(pieceToMove.id[0] + (pieceToMove.id[1] - 1));
                 //---------------------------------------------------
-                // highlights empty space two ahead of blue pawn
-                // if clicked-pawn in row 6
+                //---------------------------------------------------
+                // collects empty space two ahead of blue pawnToMove
+                // if blue pawnToMove in row 6
                 if (pieceToMove.id[1] === '6') {
-                    // if the cell two ahead of pawn is empty 
+                    // if empty cell two ahead of pawnToMove
                     if (pieceToMove.id[0] + (pieceToMove.id[1] - 2).side === '') {
-                        // highlights that cell
-                        // document.getElementById(
-                        //     pieceToMove.id[0] +
-                        //     (pieceToMove.id[1] - 2)
-                        // ).classList.add('lit');
-                        
-                        // adds that cell to litDivs array & pawnJumpId
+                        // adds that empty cell to litDivs array & pawnJumpId
                         litDivs.push(pieceToMove.id[0] + (pieceToMove.id[1] - 2));
                         pawnJumpId = pieceToMove.id[0] + (pieceToMove.id[1] - 2);
                         // -----------------------------------------------------------------
-                        // ENPASSANT for blue pawn -----------------------
-                        // since pawn can jump two,
-                        // checks for enPassant possibility
-
+                        /*
                         // for each passiveSide piece
                         passiveSide.forEach(passivePiece => {
                             // if a pawn
                             if (passivePiece.name === 'pawn') {
-                                // and in row 4
+                                // if in row 4
                                 if (passivePiece.id[1] === '4') {
-                                    // and if one column right of pieceToMove
+                                    // if one right beside pieceToMove
                                     if (passivePiece.id[0] == (+pieceToMove.id[0] + 1)) {
+                                        
+                                        // comment this section
+                                        
                                         // stores enPassantCell for next move to attack
                                         // enPassantCell = pieceToMove.id[0] + (pieceToMove.id[1] - 1);
+                                        
                                         if (enPassantables.length) {
                                             if (enPassantables[0] !== passivePiece) {
                                                 // collects pawn that can attack enPassantCell on next move
@@ -288,7 +291,9 @@ function lit(activeSide, passiveSide) {
                                             console.log('enPassantables -->');
                                             console.log(enPassantables);
                                         }
-                                    } // same for one column left of clicked pawn
+                                        
+
+                                    } // if left beside pieceToMove
                                     if (passivePiece.id[0] == (pieceToMove.id[0] - 1)) {
                                         enPassantCell = pieceToMove.id[0] + (pieceToMove.id[1] - 1);
                                         if (enPassantables.length) {
@@ -299,8 +304,7 @@ function lit(activeSide, passiveSide) {
                                                 console.log('enPassantables -->');
                                                 console.log(enPassantables);
                                             }
-                                        } else {
-                                            // collects pawn that can attack enPassantCell on next move
+                                        } else { // collects pawn that can attack enPassantCell on next move
                                             enPassanting = true;
                                             enPassantables.push(passivePiece);
                                             console.log('enPassantables -->');
@@ -310,6 +314,7 @@ function lit(activeSide, passiveSide) {
                                 }
                             }
                         });
+                        */
                     }
                 }
             }
