@@ -66,10 +66,11 @@ function lit(activeSide, passiveSide) {
         goToDiv = e.target;
         
         if (activeSide === blues) {
+            // prevGoToDiv = one behind goToDiv
             prevGoToDiv = document.getElementById(
                 goToDiv.id[0] + (+goToDiv.id[1] + 1)
             );
-        } else {
+        } else { // prevGoToDiv = one behind goToDiv
             prevGoToDiv = document.getElementById(
                 goToDiv.id[0] + (goToDiv.id[1] - 1)
             );
@@ -82,7 +83,7 @@ function lit(activeSide, passiveSide) {
         document.getElementById(
             pieceToMove.id
         ).classList.remove('mainLit');
-        tempId = []; //maybe delete this here?
+        tempId = []; // ?
         litDivs.forEach(litDiv => {
             document.getElementById(
                 litDiv
@@ -91,7 +92,7 @@ function lit(activeSide, passiveSide) {
         //---------------------------------------------------------------------
         //---------------------------------------------------------------------
         // -----------------------------------------------------------------
-        if (goToDiv.name === '') { // if goToDiv is empty
+        if (goToDiv.side === '') { // if goToDiv is empty
             console.log('goToDiv IS empty');
             // pieceToMove takes empty div or enPassant attack
             if (goToDiv.id === enPassantCell) {
@@ -291,8 +292,8 @@ function lit(activeSide, passiveSide) {
                     // if empty cell two ahead of orange pawnToMove
                     if (document.getElementById(pieceToMove.id[0] + (+pieceToMove.id[1] + 2)).side === '') {
                         // adds that empty cell to litDivs array & pawnJumpId
-                        litDivs.push(pieceToMove.id[0] + (+pieceToMove.id[1] + 2));
                         pawnJumpId = pieceToMove.id[0] + (+pieceToMove.id[1] + 2);
+                        litDivs.push(pawnJumpId);
                     }
                 }
             }
