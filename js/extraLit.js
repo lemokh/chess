@@ -2,9 +2,9 @@ function lit(activeSide, passiveSide) {
     litDivs = []; // holds lit ids on which to apply click-listeners
     tempId = []; // for un-highlighting all cells on clicking new piece
     emptySpaces = openSpaces(boardIds, pieces); // updates emptySpaces
-    //========================================================================================
+    //======================================
     // function toggleClocks() {}
-    //============================================================================
+    //======================================
     // swaps pieceToMove & goToDiv info
     function swapSide() {
         console.log('enters swapSide()');
@@ -12,25 +12,25 @@ function lit(activeSide, passiveSide) {
         goToDiv.name = pieceToMove.name;
         goToDiv.side = pieceToMove.side;
         goToDiv.src = pieceToMove.src;
-        // -----------------------------------------------------------------
-        // gets pieceToMove index
+        // ---------------------------------------------
+        // gets pieceToMove's activeSide index
         index1 = activeSide.indexOf(pieceToMove);
-        // removes vacated space from activeSide array    
+        // removes now-empty pieceToMove from activeSide    
         activeSide.splice(index1, 1);
-        // -----------------------------------------------------------------
+        // ---------------------------------------------
         // un-informs pieceToMove
         pieceToMove.name = ''; 
         pieceToMove.side = ''; 
         pieceToMove.src = './images/transparent.png';
-        // -----------------------------------------------------------------
+        // ---------------------------------------------
         // updates activeSide & pieces array
         activeSide.push(goToDiv);
         pieces = [...oranges, ...blues];
     }
-    //========================================================================================
+    //==================================================
     // eat(goToDiv) --> normal pawn attack
     // eat(pawnJumpDiv) --> enPassant attack
-    function eat() {
+    function eat(element) {
         console.log('enters eat('+element+')');
         // puts element in its proper takenBox
         if (activeSide === blues) { // if blue side
@@ -56,7 +56,7 @@ function lit(activeSide, passiveSide) {
         element.name = '';
         element.src = './images/transparent.png'
     }
-    //========================================================================================
+    //=============================================
     function movePiece(e) {
         console.log('enters movePiece(e)');
         console.log('removes click-listener from litDivs');
@@ -89,20 +89,29 @@ function lit(activeSide, passiveSide) {
 
         console.log('goToDiv  = e.target -->');
         console.log(goToDiv);
-        
         console.log('pawnJumpDiv -->');
         console.log(pawnJumpDiv);
+        //---------------------------------------------------------------------
+        if (!pawnJumpDiv) {
+            if (pieceToMove.id[1] === pawnJumpDiv.id[1]) {
+                if (pieceToMove.id[0] === (+pawnJumpDiv.id[0] + 1)
+                   || pieceToMove.id[0] === (pawnJumpDiv.id[0] - 1)
+                ) { enPassanting = true;}
+            }
+        }
         //---------------------------------------------------------------------
         // if goToDiv IS empty
         if (goToDiv.side === '') {
             console.log('goToDiv IS empty');
-            // covers enPassant attack
-            if (goToDiv.id === pawnJumpDiv.id[0] + 
-                (pawnJumpDiv.id[1] - 1)
-                || // assign individually??
-                goToDiv.id === pawnJumpDiv.id[0] + 
-                (+pawnJumpDiv.id[1] + 1)
-            ) { eat(pawnJumpDiv); }
+            if (enPassanting) {
+                // covers enPassant attack
+                if (goToDiv.id === pawnJumpDiv.id[0] + 
+                    (pawnJumpDiv.id[1] - 1)
+                    || // assign individually??
+                    goToDiv.id === pawnJumpDiv.id[0] + 
+                    (+pawnJumpDiv.id[1] + 1)
+                ) { eat(pawnJumpDiv); }
+            }
             // covers pawnToMove moving one or two empty spaces
             swapSide();
         }
@@ -129,35 +138,27 @@ function lit(activeSide, passiveSide) {
             lit(blues, oranges);
         }
     }
-    //========================================================================================
-    //========================================================================================
-    //========================================================================================
-    //========================================================================================
-    //========================================================================================
-    //========================================================================================
-    //========================================================================================
-    //========================================================================================
-    //========================================================================================
-    //========================================================================================
+    //=============================================
+    //=============================================
+    //=============================================
+    //=============================================
+    //=============================================
+    //=============================================
+    //=============================================
+    //=============================================
+    //=============================================
+    //=============================================
     function pawnLit() {
         // highlights enPassant cell, if an option
         console.log('enters pawnLit()');
-        console.log('pawnJumpDiv.id -->');
-        // console.log(pawnJumpDiv.id);
+        console.log('pawnJumpDiv -->');
+        console.log(pawnJumpDiv);
         // enPassantedPawn = document.getElementById(enPassantCell);
-        //----------------------------------------------------
-        /*
-        if (enPassantables.length) {
-            enPassantables2 = enPassantables;
-            enPassantables = [];
-        }
-        */
-        //---------------------------------------------------
         //---------------------------------------------------
         // highlights all possible moves for blue pawnToMove
         if (activeSide === blues) {
             // collects where blue pawnToMove can enPassant attack
-            if (pawnJumpDiv.id !== undefined) {
+            if (pawnJumpDiv !== undefined) {
                 // if blue pawnToMove & pawnJump share row
                 if (pieceToMove.id[1] === pawnJumpDiv.id[1]) {
                     // and if besides eachother
@@ -171,7 +172,7 @@ function lit(activeSide, passiveSide) {
                         // adds enPassant attack div to litDivs
                         litDivs.push(document.getElementById(
                             pawnJumpDiv.id[0] + (+pawnJumpDiv.id[1] + 1) 
-                        )); // simply add the id instead ??
+                        ));
                     }
                 }
             }
@@ -211,9 +212,8 @@ function lit(activeSide, passiveSide) {
         }
         else { // since activeSide === oranges...
             // collects where orange pawnToMove can enPassant attack
-            if (pawnJumpDiv.id !== undefined) {
-                console.log('pawnJumpDiv.id !== undefined');
-                // if orange pawnToMove & pawnJump share row
+            if (pawnJumpDiv !== undefined) {
+                // if orange pawnToMove & pawnJumpDiv share row
                 if (pieceToMove.id[1] === pawnJumpDiv.id[1]) {
                     // and if beside eachother
                     if (pieceToMove.id[0] == (+pawnJumpDiv.id[0] + 1)) {
@@ -226,7 +226,7 @@ function lit(activeSide, passiveSide) {
                         // adds enPassant attack div to litDivs
                         litDivs.push(document.getElementById(
                             pawnJumpDiv.id[0] + (+pawnJumpDiv.id[1] + 1) 
-                        )); // simply add the id instead ??
+                        ));
                     }
                 }
             }
@@ -261,9 +261,9 @@ function lit(activeSide, passiveSide) {
                     }
                 }
             }
-            //---------------------------------------------------
-            // -----------------------------------------------------------------
-            // -----------------------------------------------------------------
+            //--------------------------------------------------
+            // -------------------------------------------------
+            // -------------------------------------------------
             // ENPASSANT for orange pawn
                         // passiveSide.forEach(passivePiece => {
                         //     if (passivePiece.name === 'pawn') {
@@ -307,35 +307,12 @@ function lit(activeSide, passiveSide) {
                 // }
             // }
         }
-        // ========================================================================================
+        // =======================================================
         litDivs.forEach(litDiv => {
             document.getElementById(litDiv).classList.add('lit');
         });
-    } // -----------------------------------------------------------------
-        
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-    
-    
-    
-    
-    
-    
-    
-    //========================================================================================
+    } // WORKS!
+    //============================================================
     function knightLit() {
         block1 = false;
         block2 = false;
@@ -454,7 +431,7 @@ function lit(activeSide, passiveSide) {
             }
         }
     }
-    //========================================================================================
+    //============================================================
     function bishopLit() {
         function quadrant(bishopX, bishopY) {
             let bishopPathId = bishopX.toString() + bishopY;
@@ -492,7 +469,7 @@ function lit(activeSide, passiveSide) {
         quadrant(pieceToMove.id[0] - 1, +pieceToMove.id[1] + 1);
         quadrant(pieceToMove.id[0] - 1, pieceToMove.id[1] - 1);
     }
-    //========================================================================================
+    //============================================================
     function rookLit() {
         // in case of queen 
         if (pieceToMove.name === 'rook') {
@@ -569,7 +546,7 @@ function lit(activeSide, passiveSide) {
         second(+pieceToMove.id[1] + 1);
         second(pieceToMove.id[1] - 1);
     }
-    //========================================================================================
+    //============================================================
     function kingLit() {
         kingSpaces = [
             (pieceToMove.id[0] - 1) + pieceToMove.id[1],
@@ -621,46 +598,47 @@ function lit(activeSide, passiveSide) {
             litDivs.push(space);
         });
     }
-    //========================================================================================
-    //========================================================================================
-    //========================================================================================
+    //============================================================
+    //============================================================
+    //============================================================
     function pieceLit(e) {
         console.log('enters pieceLit(e)');
-        // -----------------------------------------------------------------
+        // -------------------------------------------------------
         // resets activeSide cells when any clicked
         if (tempId.length) {
-
+            // un-lightens temp[0] --> mainLitDiv
             document.getElementById(
                 tempId[0]
             ).classList.remove('mainLit');
-            
-            tempId = [];
-            
+            // un-lightens litDivs
             litDivs.forEach(litDiv => {
                 document.getElementById(
                     litDiv
                 ).classList.remove('lit');
             });
+            // ---------------------------------------
+            tempId = []; // ??
+            // ---------------------------------------
         }
-        // -----------------------------------------------------------------
+        // -------------------------------------------
         pieceToMove = e.target;
         console.log('pieceToMove -->');
         console.log(pieceToMove);
-        // -----------------------------------------------------------------
+        // -------------------------------------------
         litDivs = [];
         tempId.push( pieceToMove.id );
         // highlights clicked pieceToMove
         document.getElementById(
             pieceToMove.id
         ).classList.add('mainLit');
-        // -----------------------------------------------------------------
+        // -----------------------------------------------------
         // removes click-listener from litDivs
         litDivs.forEach(litDiv => {
             document.getElementById(litDiv).removeEventListener(
                 'click', movePiece
             );
         });
-        // -----------------------------------------------------------------
+        // -----------------------------------------------------
         console.log('enters switch('+pieceToMove.name+')');
         // highlights all of clicked piece's possible moves
         switch (pieceToMove.name) {
@@ -685,7 +663,7 @@ function lit(activeSide, passiveSide) {
                 break;
         }
         // console.log(litDivs);
-        // -----------------------------------------------------------------
+        // -------------------------------------------------------
         console.log('click-listens to litDivs --> movePiece(e)');
         // adds click-listener to all litDivs for movePiece(e)
         litDivs.forEach(litDiv => {
@@ -707,9 +685,9 @@ function lit(activeSide, passiveSide) {
         });
         */
         // if (!nails.includes(pieceToMove.id)) {}
-        // -----------------------------------------------------------------
+        // ---------------------------------------------------------
     }
-    //========================================================================================
+    //==============================================================
     // runs pieceLit(e) for all clicked activeSide pieces
     activeSide.forEach(activePiece => {
         document.getElementById(
@@ -717,5 +695,5 @@ function lit(activeSide, passiveSide) {
         ).addEventListener('click', pieceLit);
         console.log('click-listens to activeSide --> pieceLit(e)');
     });
-} //========================================================================================
+} //================================================================
 lit(blues, oranges);
