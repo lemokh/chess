@@ -92,18 +92,18 @@ function lit(activeSide, passiveSide) {
         console.log('pawnJumpDiv -->');
         console.log(pawnJumpDiv);
         //---------------------------------------------------------------------
-        if (!pawnJumpDiv) {
-            if (pieceToMove.id[1] === pawnJumpDiv.id[1]) {
-                if (pieceToMove.id[0] === (+pawnJumpDiv.id[0] + 1)
-                   || pieceToMove.id[0] === (pawnJumpDiv.id[0] - 1)
-                ) { enPassanting = true;}
-            }
-        }
+        // if (!pawnJumpDiv) {
+        //     if (pieceToMove.id[1] === pawnJumpDiv.id[1]) {
+        //         if (pieceToMove.id[0] === (+pawnJumpDiv.id[0] + 1)
+        //            || pieceToMove.id[0] === (pawnJumpDiv.id[0] - 1)
+        //         ) { enPassanting = true; }
+        //     }
+        // }
         //---------------------------------------------------------------------
         // if goToDiv IS empty
         if (goToDiv.side === '') {
             console.log('goToDiv IS empty');
-            if (enPassanting) {
+            // if (enPassanting) {
                 // covers enPassant attack
                 if (goToDiv.id === pawnJumpDiv.id[0] + 
                     (pawnJumpDiv.id[1] - 1)
@@ -111,7 +111,7 @@ function lit(activeSide, passiveSide) {
                     goToDiv.id === pawnJumpDiv.id[0] + 
                     (+pawnJumpDiv.id[1] + 1)
                 ) { eat(pawnJumpDiv); }
-            }
+            // }
             // covers pawnToMove moving one or two empty spaces
             swapSide();
         }
@@ -307,11 +307,7 @@ function lit(activeSide, passiveSide) {
                 // }
             // }
         }
-        // =======================================================
-        litDivs.forEach(litDiv => {
-            document.getElementById(litDiv).classList.add('lit');
-        });
-    }
+    } // must turn off enPassant
     //============================================================
     function knightLit() {
         block1 = false;
@@ -345,10 +341,7 @@ function lit(activeSide, passiveSide) {
         if (!block1) {
             if ((+pieceToMove.id[0] + 1) < 8) { // FILTERS OUT OFF-BOARD KNIGHT MOVES
                 if ((+pieceToMove.id[1] + 2) < 8) {
-                    knightLight = (+pieceToMove.id[0] + 1).toString() + (+pieceToMove.id[1] + 2);
-                    document.getElementById(
-                        knightLight
-                    ).classList.add('lit');
+                    knightLight = (+pieceToMove.id[0] + 1) + (+pieceToMove.id[1] + 2).toString();
                     litDivs.push( knightLight );
                 }
             }
@@ -356,10 +349,7 @@ function lit(activeSide, passiveSide) {
         if (!block2) {
             if ((+pieceToMove.id[0] + 1) < 8) {
                 if ((pieceToMove.id[1] - 2) >= 0) {
-                    knightLight = (+pieceToMove.id[0] + 1).toString() + (pieceToMove.id[1] - 2);
-                    document.getElementById(
-                        knightLight
-                    ).classList.add('lit');
+                    knightLight = (+pieceToMove.id[0] + 1) + (pieceToMove.id[1] - 2).toString();
                     litDivs.push( knightLight );
                 }
             }
@@ -367,10 +357,7 @@ function lit(activeSide, passiveSide) {
         if (!block3) {
             if ((+pieceToMove.id[0] - 1) >= 0) {
                 if ((+pieceToMove.id[1] + 2) < 8) {
-                    knightLight = (pieceToMove.id[0] - 1).toString() + (+pieceToMove.id[1] + 2);
-                    document.getElementById(
-                        knightLight    
-                    ).classList.add('lit');
+                    knightLight = (pieceToMove.id[0] - 1) + (+pieceToMove.id[1] + 2).toString();
                     litDivs.push( knightLight );
                 }
             }
@@ -378,10 +365,7 @@ function lit(activeSide, passiveSide) {
         if (!block4) {
             if ((+pieceToMove.id[0] - 1) >= 0) {
                 if ((+pieceToMove.id[1] - 2) >= 0) {
-                    knightLight = (pieceToMove.id[0] - 1).toString() + (pieceToMove.id[1] - 2);
-                    document.getElementById(
-                        knightLight                        
-                    ).classList.add('lit');
+                    knightLight = (pieceToMove.id[0] - 1) + (pieceToMove.id[1] - 2).toString();
                     litDivs.push( knightLight );
                 }
             }
@@ -389,10 +373,7 @@ function lit(activeSide, passiveSide) {
         if (!block5) {
             if ((+pieceToMove.id[0] + 2) < 8) {
                 if ((+pieceToMove.id[1] + 1) < 8) {
-                    knightLight = (+pieceToMove.id[0] + 2).toString() + (+pieceToMove.id[1] + 1);
-                    document.getElementById(
-                        knightLight    
-                    ).classList.add('lit');
+                    knightLight = (+pieceToMove.id[0] + 2) + (+pieceToMove.id[1] + 1).toString();
                     litDivs.push( knightLight );
                 }
             }
@@ -400,10 +381,7 @@ function lit(activeSide, passiveSide) {
         if (!block6) {
             if ((+pieceToMove.id[0] + 2) < 8) {
                 if ((+pieceToMove.id[1] - 1) >= 0) {
-                    knightLight = (+pieceToMove.id[0] + 2).toString() + (pieceToMove.id[1] - 1);
-                    document.getElementById(
-                        knightLight    
-                    ).classList.add('lit');
+                    knightLight = (+pieceToMove.id[0] + 2) + (pieceToMove.id[1] - 1).toString();
                     litDivs.push( knightLight );
                 }
             }
@@ -411,10 +389,7 @@ function lit(activeSide, passiveSide) {
         if (!block7) {
             if ((+pieceToMove.id[0] - 2) >= 0) {
                 if ((+pieceToMove.id[1] + 1) < 8) {
-                    knightLight = (pieceToMove.id[0] - 2).toString() + (+pieceToMove.id[1] + 1);
-                    document.getElementById(
-                        knightLight
-                    ).classList.add('lit');
+                    knightLight = (pieceToMove.id[0] - 2) + (+pieceToMove.id[1] + 1).toString();
                     litDivs.push( knightLight );
                 }
             }
@@ -422,10 +397,7 @@ function lit(activeSide, passiveSide) {
         if (!block8) {
             if ((+pieceToMove.id[0] - 2) >= 0) {
                 if ((+pieceToMove.id[1] - 1) >= 0) {
-                    knightLight = (pieceToMove.id[0] - 2).toString() + (pieceToMove.id[1] - 1);
-                    document.getElementById(
-                        knightLight
-                    ).classList.add('lit');
+                    knightLight = (pieceToMove.id[0] - 2) + (pieceToMove.id[1] - 1).toString();
                     litDivs.push( knightLight );
                 }
             }
@@ -434,14 +406,10 @@ function lit(activeSide, passiveSide) {
     //============================================================
     function bishopLit() {
         function quadrant(bishopX, bishopY) {
-            let bishopPathId = bishopX.toString() + bishopY;
+            let bishopPathId = bishopX + bishopY.toString();
         
             // while bishop path empty, highlight space
-            while (emptySpaces.includes(bishopPathId)) {
-                // add lit class
-                document.getElementById(
-                    bishopPathId
-                ).classList.add('lit');
+            while (emptySpaces.includes( bishopPathId )) {
                 // add id to litDivs
                 litDivs.push( bishopPathId );
                 // increment bishopX
@@ -453,12 +421,11 @@ function lit(activeSide, passiveSide) {
                     bishopY += 1;
                 } else { bishopY -= 1; }
                 // updates bishopPathId
-                bishopPathId = bishopX.toString() + bishopY;
+                bishopPathId = bishopX + bishopY.toString();
             }
             // highlights attackable pieces in bishop's path
             for (let i = 0; i < passiveSide.length; i++) {
                 if (passiveSide[i].id === bishopPathId) {
-                    document.getElementById(bishopPathId).classList.add('lit');
                     litDivs.push( bishopPathId );
                 }
             }
@@ -478,68 +445,52 @@ function lit(activeSide, passiveSide) {
             // highlights clicked pieceToMove
             document.getElementById(pieceToMove.id).classList.add('mainLit');
         }
-
         // pushes correct divs to litDivs
         function first(rookX) {
-        // first(+pieceToMove.id[0] + 1);
-        // first(pieceToMove.id[0] - 1);
-            rookPathId = rookX.toString() + pieceToMove.id[1];
+            // first(+pieceToMove.id[0] + 1);
+            // first(pieceToMove.id[0] - 1);
+            rookPathId = rookX + pieceToMove.id[1];
             // console.log(rookPathId);
 
             // while rook path empty, highlight space
             while (emptySpaces.includes( rookPathId )) {    
                 // console.log(emptySpaces.includes(rookPathId));
-                // add lit class
-                document.getElementById(
-                    rookPathId
-                ).classList.add('lit');
                 // add rookPathId to litDivs
                 litDivs.push( rookPathId );
                 // increment rookX
                 if (rookX > +pieceToMove.id[0]) { rookX += 1; }
                 else { rookX -= 1; }
                 // updates rookPathId
-                rookPathId = rookX.toString() + pieceToMove.id[1];
+                rookPathId = rookX + pieceToMove.id[1];
             }
 
             // highlights attackable pieces in rook's path
             for (let i = 0; i < passiveSide.length; i++) {
                 if (passiveSide[i].id === rookPathId) {
-                    document.getElementById(rookPathId).classList.add('lit');
                     litDivs.push( rookPathId );
                 }
             }
         }
-
         function second(rookY) {
-        // second(+pieceToMove.id[1] + 1);
-        // second(pieceToMove.id[1] - 1);
-            rookPathId = pieceToMove.id[0].toString() + rookY;
-            // console.log(rookPathId);
-
+            // second(+pieceToMove.id[1] + 1);
+            // second(pieceToMove.id[1] - 1);
+            rookPathId = pieceToMove.id[0] + rookY;
             // while rook path empty, highlight space
-            while (emptySpaces.includes( rookPathId )) {    
-            // console.log(emptySpaces.includes(rookPathId));
-            // add lit class
-            document.getElementById(
-                rookPathId
-            ).classList.add('lit');
-            // add rookPathId to litDivs
-            litDivs.push( rookPathId );
-            // increment rookY
-            if (rookY > +pieceToMove.id[1]) { rookY += 1; }
-            else { rookY -= 1; }
-            // updates rookPathId
-            rookPathId = pieceToMove.id[0].toString() + rookY;
+            while (emptySpaces.includes( rookPathId )) {
+                // add rookPathId to litDivs
+                litDivs.push( rookPathId );
+                // increment rookY
+                if (rookY > +pieceToMove.id[1]) { rookY += 1; }
+                else { rookY -= 1; }
+                // updates rookPathId
+                rookPathId = pieceToMove.id[0] + rookY;
+            }
         }
-
         // highlights attackable pieces in rook's path
         for (let i = 0; i < passiveSide.length; i++) {
             if (passiveSide[i].id === rookPathId) {
-                document.getElementById(rookPathId).classList.add('lit');
                 litDivs.push( rookPathId );
             }
-        }
         }
         first(+pieceToMove.id[0] + 1);
         first(pieceToMove.id[0] - 1);
@@ -550,13 +501,13 @@ function lit(activeSide, passiveSide) {
     function kingLit() {
         kingSpaces = [
             (pieceToMove.id[0] - 1) + pieceToMove.id[1],
-            (pieceToMove.id[0] - 1).toString() + (+pieceToMove.id[1] + 1),
+            (pieceToMove.id[0] - 1) + (+pieceToMove.id[1] + 1).toString(),
             pieceToMove.id[0] + (+pieceToMove.id[1] + 1),
-            (+pieceToMove.id[0] + 1).toString() + (+pieceToMove.id[1] + 1),
+            (+pieceToMove.id[0] + 1) + (+pieceToMove.id[1] + 1).toString(),
             (+pieceToMove.id[0] + 1) + pieceToMove.id[1],
-            (+pieceToMove.id[0] + 1).toString() + (pieceToMove.id[1] - 1),
+            (+pieceToMove.id[0] + 1) + (pieceToMove.id[1] - 1).toString(),
             pieceToMove.id[0] + (pieceToMove.id[1] - 1),
-            (pieceToMove.id[0] - 1).toString() + (pieceToMove.id[1] - 1)
+            (pieceToMove.id[0] - 1) + (pieceToMove.id[1] - 1).toString()
         ].map(space => { // keeps only on-board kingSpaces
             if (+space[0] >= 0 && +space[0] <= 7) {
                 if (+space[1] >= 0 && +space[1] <= 7) { return space; }
@@ -593,10 +544,7 @@ function lit(activeSide, passiveSide) {
         }); // console.log(kingSpaces);
         
         // highlights kingSpaces
-        kingSpaces.forEach(space => {
-            document.getElementById(space).classList.add('lit');
-            litDivs.push(space);
-        });
+        kingSpaces.forEach(space => { litDivs.push(space); });
     }
     //============================================================
     //============================================================
@@ -661,12 +609,11 @@ function lit(activeSide, passiveSide) {
             case 'king':
                 kingLit();
                 break;
-        }
-        // console.log(litDivs);
-        // -------------------------------------------------------
-        console.log('click-listens to litDivs --> movePiece(e)');
-        // adds click-listener to all litDivs for movePiece(e)
+        } // -------------------------------------------------------
+        console.log('lightens & click-listens to litDivs --> movePiece(e)');
+        // lightens & click-listens all litDivs --> movePiece(e)
         litDivs.forEach(litDiv => {
+            document.getElementById(litDiv).classList.add('lit');
             document.getElementById(litDiv).addEventListener(
                 'click', movePiece
             );
