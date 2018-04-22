@@ -103,15 +103,14 @@ function lit(activeSide, passiveSide) {
         // if goToDiv IS empty
         if (goToDiv.side === '') {
             console.log('goToDiv IS empty');
-            // if (enPassanting) {
-                // covers enPassant attack
-                // if (goToDiv.id === pawnJumpDiv.id[0] + 
-                //     (pawnJumpDiv.id[1] - 1)
-                //     || // assign individually??
-                //     goToDiv.id === pawnJumpDiv.id[0] + 
-                //     (+pawnJumpDiv.id[1] + 1)
-                // ) { eat(pawnJumpDiv); }
-            // }
+             
+            // covers enPassant attack
+            // if (goToDiv.id === pawnJumpDiv.id[0] + 
+            //     (pawnJumpDiv.id[1] - 1)
+            //     || // assign individually??
+            //     goToDiv.id === pawnJumpDiv.id[0] + 
+            //     (+pawnJumpDiv.id[1] + 1)
+            // ) { eat(pawnJumpDiv); }
 
             // PROBLEMATIC LOGIC
             // these are combinable?
@@ -125,7 +124,7 @@ function lit(activeSide, passiveSide) {
                     // eat(pawnJumpDiv);
                 } else {enPassanting = false;} // un-needed?
             }
-            
+            // if orange turn
             if (activeSide === oranges) {
                 if (goToDiv.id === (pieceToMove.id[0] + (+pieceToMove.id[1] + 2))) {
                     enPassanting = true;
