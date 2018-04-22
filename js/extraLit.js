@@ -114,22 +114,25 @@ function lit(activeSide, passiveSide) {
             // }
 
             // PROBLEMATIC LOGIC
+            // these are combinable?
+            
             // if blue turn
             if (activeSide === blues) {
                 // if goToDiv matches 
                 if (goToDiv.id === (pieceToMove.id[0] + (pieceToMove.id[1] - 2))) {
                     enPassanting = true;
+                    pawnJumpDiv = goToDiv;
                     // eat(pawnJumpDiv);
-                } else {enPassanting = false;}
+                } else {enPassanting = false;} // un-needed?
             }
             
             if (activeSide === oranges) {
-                if (goToDiv.id === pieceToMove.id[0] + (+pieceToMove.id[1] + 1)) {
+                if (goToDiv.id === (pieceToMove.id[0] + (+pieceToMove.id[1] + 2))) {
                     enPassanting = true;
+                    pawnJumpDiv = goToDiv;
                     // eat(pawnJumpDiv);
-                } else {enPassanting = false;}
+                } else {enPassanting = false;} // un-needed?
             }  
-                 
 
             // covers pawnToMove moving one or two empty spaces
             swapSide();
@@ -174,9 +177,17 @@ function lit(activeSide, passiveSide) {
         console.log(pawnJumpDiv);
         // enPassantedPawn = document.getElementById(enPassantCell);
         //---------------------------------------------------
+        // collects where blue pawnToMove can enPassant attack
+        if (enPassanting) { // if(pawnJumpDiv.length) {}
+            litDivs.push(pawnJumpDiv.id);
+        }
+        //---------------------------------------------------
         // highlights all possible moves for blue pawnToMove
         if (activeSide === blues) {
             // collects where blue pawnToMove can enPassant attack
+            // if (enPassanting) { // if(pawnJumpDiv.length) {}
+            //     litDivs.push(pawnJumpDiv.id);
+            // }
             /*
             if (pawnJumpDiv !== undefined) {
                 // if blue pawnToMove & pawnJump share row
@@ -222,10 +233,10 @@ function lit(activeSide, passiveSide) {
                     // if empty cell two ahead of blue pawnToMove
                     if (document.getElementById(pieceToMove.id[0] + (pieceToMove.id[1] - 2)).side === '') {
                         // adds that empty cell to litDivs array & pawnJumpDiv.id
-                        pawnJumpDiv = document.getElementById(
-                            pieceToMove.id[0] + (pieceToMove.id[1] - 2)
-                        );
-                        litDivs.push(pawnJumpDiv.id);
+                        // pawnJumpDiv = document.getElementById(
+                        //     pieceToMove.id[0] + (pieceToMove.id[1] - 2)
+                        // );
+                        litDivs.push(pieceToMove.id[0] + (pieceToMove.id[1] - 2));
                     }
                 }
             }
@@ -276,9 +287,8 @@ function lit(activeSide, passiveSide) {
                     // if empty cell two ahead of orange pawnToMove
                     if (document.getElementById(pieceToMove.id[0] + (+pieceToMove.id[1] + 2)).side === '') {
                         // adds that empty cell to litDivs array & pawnJumpDiv.id
-                        pawnJumpDiv.id = pieceToMove.id[0] + (+pieceToMove.id[1] + 2);
-                        pawnJumpDiv = document.getElementById(pawnJumpDiv.id);
-                        litDivs.push(pawnJumpDiv.id);
+                        // pawnJumpDiv = document.getElementById(pawnJumpDiv.id);
+                        litDivs.push(pieceToMove.id[0] + (+pieceToMove.id[1] + 2));
                     }
                 }
             }
