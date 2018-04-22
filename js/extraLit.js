@@ -164,15 +164,15 @@ function lit(activeSide, passiveSide) {
                     // and if besides eachother
                     if (pieceToMove.id[0] == (+pawnJumpDiv.id[0] + 1)) {
                         // adds enPassant attack div to litDivs
-                        litDivs.push(document.getElementById(
+                        litDivs.push(
                             pawnJumpDiv.id[0] + (+pawnJumpDiv.id[1] + 1) 
-                        ));
+                        );
                     } // and if besides eachother
                     if (pieceToMove.id[0] == (pawnJumpDiv.id[0] - 1)) {
                         // adds enPassant attack div to litDivs
-                        litDivs.push(document.getElementById(
+                        litDivs.push(
                             pawnJumpDiv.id[0] + (+pawnJumpDiv.id[1] + 1) 
-                        ));
+                        );
                     }
                 }
             }
@@ -218,15 +218,15 @@ function lit(activeSide, passiveSide) {
                     // and if beside eachother
                     if (pieceToMove.id[0] == (+pawnJumpDiv.id[0] + 1)) {
                         // adds enPassant attack div to litDivs
-                        litDivs.push(document.getElementById(
+                        litDivs.push(
                             pawnJumpDiv.id[0] + (+pawnJumpDiv.id[1] + 1) 
-                        ));
+                        );
                     } // and if beside eachother
                     if (pieceToMove.id[0] == (pawnJumpDiv.id[0] - 1)) {
                         // adds enPassant attack div to litDivs
-                        litDivs.push(document.getElementById(
+                        litDivs.push(
                             pawnJumpDiv.id[0] + (+pawnJumpDiv.id[1] + 1) 
-                        ));
+                        );
                     }
                 }
             }
@@ -311,7 +311,7 @@ function lit(activeSide, passiveSide) {
         litDivs.forEach(litDiv => {
             document.getElementById(litDiv).classList.add('lit');
         });
-    } // WORKS!
+    }
     //============================================================
     function knightLit() {
         block1 = false;
