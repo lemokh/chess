@@ -1,5 +1,5 @@
-var player = 'blue', enPassantCell = '', orangeTakenBoxIdCounter = -16, blueTakenBoxIdCounter = -1,
-bishopPathId, rookPathId, pieceToMove, goToDiv, prevGoToDiv, enPassantGoToDiv, pawnJumpDiv, enPassanting, enPassantables2 = [], enPassantedPawn, takenOrangeBox, takenBlueBox, pieceLit, gameEnds, tempSide, movedPiece, mainLitDiv, litDivs, unLitDivs, img, index1, index2, tempId, moves, takenBox, activeCells, openAndOpponentHeldKingSpaces, kingSpacesUnderAttack, orangeKingSpacesUnderAttack, orangelessKingSpaces, orangelessKingSpaces, blueKingSpaces, bluelessKingSpaces, orangeKingSpacesUnderAttack, block1, block2, block3, block4, block5, block6, block7, block8, vacantKingSpaces, whiteKing, blackKing, knightMoves, bishopMoves, bishopX, bishopY, rookMoves, kingSpaces, kingOpenSpaces, occupiedKingSpaces, kingAttackers, defenders, pinnedPieces, checkedPaths, nails, whites, blacks;
+var player = 'blue', enPassantCell = '', orangeTakenBoxIdCounter = -16, blueTakenBoxIdCounter = -1, enPassanting = false;
+bishopPathId, rookPathId, pieceToMove, goToDiv, prevGoToDiv, enPassantGoToDiv, pawnJumpDiv, enPassantables2 = [], enPassantedPawn, takenOrangeBox, takenBlueBox, pieceLit, gameEnds, tempSide, movedPiece, mainLitDiv, litDivs, unLitDivs, img, index1, index2, tempId, moves, takenBox, activeCells, openAndOpponentHeldKingSpaces, kingSpacesUnderAttack, orangeKingSpacesUnderAttack, orangelessKingSpaces, orangelessKingSpaces, blueKingSpaces, bluelessKingSpaces, orangeKingSpacesUnderAttack, block1, block2, block3, block4, block5, block6, block7, block8, vacantKingSpaces, whiteKing, blackKing, knightMoves, bishopMoves, bishopX, bishopY, rookMoves, kingSpaces, kingOpenSpaces, occupiedKingSpaces, kingAttackers, defenders, pinnedPieces, checkedPaths, nails, whites, blacks;
 
 // holds one or two pawn(s) that can eat the enPassanter pawn
 var enPassantables = [];
@@ -146,7 +146,7 @@ function checkingSpace(somePiece, checkSpace, passiveSide) {
         if ( checkSpace[0] - someBishop.id[0]
           === someBishop.id[1] - checkSpace[1] ) {
           // collects bishop's attack path to checkSpace
-  // FIX THIS --> can't read checkSpace.id[0]
+    // FIX THIS --> can't read checkSpace.id[0]
           console.log(checkSpace);
           while (bishopX < (checkSpace.id[0] - 1)) {
             bishopX += 1;
