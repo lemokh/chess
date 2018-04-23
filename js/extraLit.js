@@ -4,31 +4,57 @@ function lit(activeSide, passiveSide) {
     emptySpaces = openSpaces(boardIds, pieces); // updates emptySpaces
     //======================================
     // function toggleClocks() {}
+    // I NEED TO YOGA EVERY DAY
     //======================================
     // swaps pieceToMove & goToDiv info
     function swapSide() {
         console.log('enters swapSide()');
 
         // CONSOLE.LOG THE HELL OUT OF THIS!
+        console.log('console-logging the hell out of swapSide()!');
+        
+        console.log('pieceToMove -->');
+        console.log(pieceToMove);
 
+        console.log('goToDiv -->');
+        console.log(goToDiv);
         // re-informs goToDiv
         goToDiv.name = pieceToMove.name;
         goToDiv.side = pieceToMove.side;
         goToDiv.src = pieceToMove.src;
+
+        console.log('goToDiv -->');
+        console.log(goToDiv); // no change noticed
+
+        console.log('activeSide -->');
+        console.log(activeSide);
         // ---------------------------------------------
         // gets pieceToMove's activeSide index
         index1 = activeSide.indexOf(pieceToMove);
         // removes now-empty pieceToMove from activeSide    
         activeSide.splice(index1, 1);
+
+        console.log('activeSide -->');
+        console.log(activeSide);
         // ---------------------------------------------
+        console.log('pieceToMove -->');
+        console.log(pieceToMove);
         // un-informs pieceToMove
         pieceToMove.name = ''; 
         pieceToMove.side = ''; 
         pieceToMove.src = './images/transparent.png';
+
+        console.log('pieceToMove -->');
+        console.log(pieceToMove);
         // ---------------------------------------------
+        console.log('pieces -->');
+        console.log(pieces);
         // updates activeSide & pieces array
         activeSide.push(goToDiv);
         pieces = [...oranges, ...blues];
+
+        console.log('pieces -->');
+        console.log(pieces);
     }
     //==================================================
     // eat(goToDiv) --> normal pawn attack
