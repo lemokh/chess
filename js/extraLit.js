@@ -5,62 +5,11 @@ function lit(activeSide, passiveSide) {
     //======================================
     // function toggleClocks() {}
     // I NEED TO YOGA EVERY DAY
-    //======================================
-    // swaps pieceToMove & goToDiv info
-    function swapSide() {
-        console.log('enters swapSide()');
-
-        // CONSOLE.LOG THE HELL OUT OF THIS!
-        console.log('console-logging the hell out of swapSide()!');
-        
-        console.log('pieceToMove -->');
-        console.log(pieceToMove);
-
-        console.log('goToDiv -->');
-        console.log(goToDiv);
-        // re-informs goToDiv
-        goToDiv.name = pieceToMove.name;
-        goToDiv.side = pieceToMove.side;
-        goToDiv.src = pieceToMove.src;
-
-        console.log('goToDiv -->');
-        console.log(goToDiv); // no change noticed
-
-        console.log('activeSide -->');
-        console.log(activeSide);
-        // ---------------------------------------------
-        // gets pieceToMove's activeSide index
-        index1 = activeSide.indexOf(pieceToMove);
-        // removes now-empty pieceToMove from activeSide    
-        activeSide.splice(index1, 1);
-
-        console.log('activeSide -->');
-        console.log(activeSide);
-        // ---------------------------------------------
-        console.log('pieceToMove -->');
-        console.log(pieceToMove);
-        // un-informs pieceToMove
-        pieceToMove.name = ''; 
-        pieceToMove.side = ''; 
-        pieceToMove.src = './images/transparent.png';
-
-        console.log('pieceToMove -->');
-        console.log(pieceToMove);
-        // ---------------------------------------------
-        console.log('pieces -->');
-        console.log(pieces);
-        // updates activeSide & pieces array
-        activeSide.push(goToDiv);
-        pieces = [...oranges, ...blues];
-
-        console.log('pieces -->');
-        console.log(pieces);
-    }
     //==================================================
     // eat(goToDiv) --> normal pawn attack
     // eat(pawnJumpDiv) --> enPassant attack
     function eat(element) {
-        console.log('enters eat('+element+')');
+        console.log('ENTERS eat('+element+')');
         // puts element in its proper takenBox
         if (activeSide === blues) { // if blue side
             document.getElementById(
@@ -79,21 +28,36 @@ function lit(activeSide, passiveSide) {
         
         // CONSOLE.LOG THE HELL OUT OF THIS!
 
+        console.log('passiveSide -->');
+        console.log(passiveSide);
+
         // gets element's passiveSide index
         index2 = passiveSide.indexOf(element);
         // removes eaten piece from passiveSide array
         passiveSide.splice(index2, 1);
+
+        console.log('passiveSide -->');
+        console.log(passiveSide);
+        // ---------------------------------------------
+        console.log('element -->');
+        console.log(element);
         // un-informs pawnJumpDiv
         element.side = '';
         element.name = '';
         element.src = './images/transparent.png'
+
+        console.log('element -->');
+        console.log(element);
         // resets pawnJumpDiv
         pawnJumpDiv = undefined;
+        console.log('pawnJumpDiv = undefined');
+
+        console.log('ENTERS eat()');
     }
     //=============================================
     function movePiece(e) {
         console.log('enters movePiece(e)');
-        console.log('removes click-listener from litDivs');
+        console.log('removes click-listener from litDivs & pieceToMove');
         // removes click-listeners from pieceToMove
         document.getElementById(
             pieceToMove.id
@@ -121,8 +85,10 @@ function lit(activeSide, passiveSide) {
         // -----------------------------------------------------------------
         goToDiv = e.target;
 
-        console.log('goToDiv  = e.target -->');
+        console.log('goToDiv -->');
         console.log(goToDiv);
+        console.log('e.target -->');
+        console.log(e.target);
         console.log('pawnJumpDiv -->');
         console.log(pawnJumpDiv);
         //---------------------------------------------------------------------
@@ -180,11 +146,68 @@ function lit(activeSide, passiveSide) {
                 } // un-needed?
             }
             // covers pawnToMove moving one or two empty spaces
-            swapSide();
+            //======================================
+        // swaps pieceToMove & goToDiv info
+        console.log('ENTERS swapSide()');
+
+        console.log('console-logging the hell out of swapSide()!');
+        
+        // !! already has pieceToMove.name = 'okokok' !!
+        console.log('pieceToMove -->');
+        console.log(pieceToMove); 
+
+        console.log('goToDiv -->');
+        console.log(goToDiv);
+
+
+
+        elem.hasAttribute(name) // checks for existence.
+        elem.getAttribute(name) // gets the value.
+        elem.setAttribute(name, value) // sets the value.
+        elem.removeAttribute(name) // removes the attribute.
+        
+        // re-informs goToDiv --> NOT WORKING!
+        e.target.name = pieceToMove.name;
+        e.target.side = pieceToMove.side;
+        e.target.src = pieceToMove.src;
+
+        console.log('e.target -->');
+        console.log(e.target); // no change noticed
+
+        console.log('activeSide -->');
+        console.log(activeSide);
+        // ---------------------------------------------
+        // gets pieceToMove's activeSide index
+        index1 = activeSide.indexOf(pieceToMove);
+        // removes now-empty pieceToMove from activeSide    
+        activeSide.splice(index1, 1);
+
+        console.log('activeSide -->');
+        console.log(activeSide);
+        // ---------------------------------------------
+        console.log('pieceToMove -->');
+        console.log(pieceToMove);
+        // un-informs pieceToMove
+        pieceToMove.name = 'okokok'; 
+        pieceToMove.side = 'okokok'; 
+        pieceToMove.src = './images/transparent.png';
+
+        console.log('pieceToMove -->');
+        console.log(pieceToMove);
+        // ---------------------------------------------
+        console.log('pieces -->');
+        console.log(pieces);
+        // updates activeSide & pieces array
+        activeSide.push(goToDiv);
+        pieces = [...oranges, ...blues];
+
+        console.log('pieces -->');
+        console.log(pieces);
+        console.log('EXITS swapSide()');
         }
         else { // since goToDiv is NOT empty
             console.log('goToDiv NOT empty');
-            eat(goToDiv); // pieceToMove eats goToDiv
+            eat(e.target); // pieceToMove eats goToDiv
         }
         // -----------------------------------------------------------------
         // removes click-listeners from activePieces
