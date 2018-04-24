@@ -105,15 +105,6 @@ function lit(activeSide, passiveSide) {
                         console.log('pawnJumpDiv -->');
                         console.log(pawnJumpDiv);
                     }
-                    // resets enPassanting
-                    enPassanting = false;
-                    console.log('enPassanting = false');
-                    // resets pawnJumpDiv
-                    pawnJumpDiv = undefined;
-                    console.log('pawnJumpDiv = undefined');
-                    // resets enPassantDiv
-                    enPassantDiv = undefined;
-                    console.log('enPassantDiv = undefined');
                 }
                 // covers bluePawn taking any NON-enPassant empty space
                 if (activeSide === blues) { // if blue's turn
@@ -201,6 +192,16 @@ function lit(activeSide, passiveSide) {
         console.log(pieceToMove);
 
         console.log('EXITS swapSide()');
+        // --------------------------------------------
+        // resets enPassanting
+        enPassanting = false;
+        console.log('enPassanting = false');
+        // resets pawnJumpDiv
+        pawnJumpDiv = undefined;
+        console.log('pawnJumpDiv = undefined');
+        // resets enPassantDiv
+        enPassantDiv = undefined;
+        console.log('enPassantDiv = undefined');
         // ---------------------------------------------
         // removes click-listeners from activePieces
         activeSide.forEach(activePiece => {
