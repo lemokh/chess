@@ -35,16 +35,6 @@ function lit(activeSide, passiveSide) {
         console.log('passiveSide -->');
         console.log(passiveSide);
         // ---------------------------------------------
-        console.log('element -->');
-        console.log(element);
-        // un-informs pawnJumpDiv
-        element.dataset.name = 'empty';
-        element.dataset.side = 'empty';
-        element.src = './images/transparent.png'
-
-        console.log('element -->');
-        console.log(element);
-
         console.log('EXITS eat()');
     }
     //=============================================
@@ -80,8 +70,10 @@ function lit(activeSide, passiveSide) {
 
         console.log('goToDiv -->');
         console.log(goToDiv);
+        
         console.log('e.target -->');
         console.log(e.target);
+        
         console.log('pawnJumpDiv -->');
         console.log(pawnJumpDiv);
         //---------------------------------------------------------------------
@@ -95,34 +87,35 @@ function lit(activeSide, passiveSide) {
         //---------------------------------------------------------------------
         // if goToDiv IS empty
         if (goToDiv.dataset.side === 'empty') {
-            console.log('goToDiv IS empty');
-             
-            // covers enPassant attack
-            // if (goToDiv.id === pawnJumpDiv.id[0] + 
-            //     (pawnJumpDiv.id[1] - 1)
-            //     || // assign individually??
-            //     goToDiv.id === pawnJumpDiv.id[0] + 
-            //     (+pawnJumpDiv.id[1] + 1)
-            // ) { eat(pawnJumpDiv); }
-
-            // PROBLEMATIC LOGIC
-            // these are combinable?
-            
-            // if goToDiv IS empty...
-            
-            // covers enPassant attack
+            console.log('goToDiv IS empty');            
+            // covers anySide enPassant pawn attack
             if (pieceToMove.dataset.name === 'pawn') {
                 if (enPassanting) {
                     if (goToDiv === enPassantDiv) {
                         eat(pawnJumpDiv); // WORKS!
-                    } // resets enPassanting & pawnJumpDiv
+                        // ---------------------------
+                        console.log('pawnJumpDiv -->');
+                        console.log(pawnJumpDiv);
+                        
+                        // sets pawnJumpDiv to empty cell
+                        pawnJumpDiv.setAttribute('data-name' = 'empty');
+                        pawnJumpDiv.setAttribute('data-side' = 'empty');
+                        pawnJumpDiv.setAttribute('src' = '/images/transparent.png');
+
+                        console.log('pawnJumpDiv -->');
+                        console.log(pawnJumpDiv);
+                    }
+                    // resets enPassanting
                     enPassanting = false;
                     console.log('enPassanting = false');
-                    // put at end of movePiece()?
+                    // resets pawnJumpDiv
                     pawnJumpDiv = undefined;
                     console.log('pawnJumpDiv = undefined');
+                    // resets enPassantDiv
+                    enPassantDiv = undefined;
+                    console.log('enPassantDiv = undefined');
                 }
-                // covers taking any NON-enPassant empty space
+                // covers bluePawn taking any NON-enPassant empty space
                 if (activeSide === blues) { // if blue's turn
                     // if pawnToMove jumps two spaces
                     if (goToDiv.id === (pieceToMove.id[0] + (pieceToMove.id[1] - 2))) {
@@ -141,7 +134,10 @@ function lit(activeSide, passiveSide) {
                     // if pawnToMove jumps two spaces
                     if (goToDiv.id === (pieceToMove.id[0] + (+pieceToMove.id[1] + 2))) {
                         enPassanting = true;
+                        console.log('enPassanting = true');
+                        
                         pawnJumpDiv = goToDiv;
+                        console.log('pawnJumpDiv = goToDiv');
                     } // else { // pawnToMove jumps one space
                         // enPassanting = false;
                         // pawnJumpDiv = undefined;
@@ -151,7 +147,7 @@ function lit(activeSide, passiveSide) {
         }
         else { // since goToDiv is NOT empty
             console.log('goToDiv NOT empty');
-            eat(e.target); // pieceToMove eats goToDiv
+            eat(goToDiv); // pieceToMove eats goToDiv
         }
         // covers pawnToMove moving one or two empty spaces
         //======================================
@@ -168,9 +164,9 @@ function lit(activeSide, passiveSide) {
         console.log(e.target);
 
         // re-informs goToDiv --> NOT WORKING!
-        e.target.setAttribute('data-name', pieceToMove.dataset.side);
-        e.target.setAttribute('data-side', pieceToMove.dataset.side);
-        e.target.setAttribute('src', pieceToMove.src);
+        goToDiv.setAttribute('data-name', pieceToMove.dataset.side);
+        goToDiv.setAttribute('data-side', pieceToMove.dataset.side);
+        goToDiv.setAttribute('src', pieceToMove.src);
 
         console.log('e.target -->');
         console.log(e.target); // no change noticed
@@ -182,9 +178,17 @@ function lit(activeSide, passiveSide) {
         index1 = activeSide.indexOf(pieceToMove);
         // removes now-empty pieceToMove from activeSide    
         activeSide.splice(index1, 1);
-
+        // ---------------------------------------------       
         console.log('activeSide -->');
         console.log(activeSide);
+        console.log('pieces -->');
+        console.log(pieces);
+        // updates activeSide & pieces array
+        activeSide.push(goToDiv);
+        pieces = [...oranges, ...blues];
+
+        console.log('pieces -->');
+        console.log(pieces);
         // ---------------------------------------------
         console.log('pieceToMove -->');
         console.log(pieceToMove);
@@ -195,17 +199,9 @@ function lit(activeSide, passiveSide) {
 
         console.log('pieceToMove -->');
         console.log(pieceToMove);
-        // ---------------------------------------------
-        console.log('pieces -->');
-        console.log(pieces);
-        // updates activeSide & pieces array
-        activeSide.push(goToDiv);
-        pieces = [...oranges, ...blues];
 
-        console.log('pieces -->');
-        console.log(pieces);
         console.log('EXITS swapSide()');
-        // -----------------------------------------------------------------
+        // ---------------------------------------------
         // removes click-listeners from activePieces
         activeSide.forEach(activePiece => {
             document.getElementById(
@@ -245,34 +241,36 @@ function lit(activeSide, passiveSide) {
         // highlights all possible moves for blue pawnToMove
         if (activeSide === blues) { // if blue's turn
             // if enPassant attack is possible
-            if (enPassanting) { // if(pawnJumpDiv.length) {}
-                // adds enPassant attack div to litDivs
-                enPassantDiv = document.getElementById(
-                    pawnJumpDiv.id[0] + (pawnJumpDiv.id[1] - 1)
-                );
-                litDivs.push(enPassantDiv.id);
-            } // else {enPassantDiv = undefined;}
-            
-            /*
-            if (pawnJumpDiv !== undefined) {
-                // if blue pawnToMove & pawnJump share row
-                if (pieceToMove.id[1] === pawnJumpDiv.id[1]) {
-                    // and if besides eachother
-                    if (pieceToMove.id[0] == (+pawnJumpDiv.id[0] + 1)) {
-                        // adds enPassant attack div to litDivs
-                        litDivs.push(
-                            pawnJumpDiv.id[0] + (+pawnJumpDiv.id[1] + 1) 
-                        );
-                    } // and if besides eachother
-                    if (pieceToMove.id[0] == (pawnJumpDiv.id[0] - 1)) {
-                        // adds enPassant attack div to litDivs
-                        litDivs.push(
-                            pawnJumpDiv.id[0] + (+pawnJumpDiv.id[1] + 1) 
-                        );
-                    }
+            if (enPassanting) { // if (pawnJumpDiv.length) {}
+                // covers enPassant attack
+                // if blue pawnToMove is besides pawnJump
+                if (pieceToMove.id === (pawnJumpDiv.id[0] - 1) + pawnJumpDiv.id[1]
+                || pieceToMove.id === (+pawnJumpDiv.id[0] + 1) + pawnJumpDiv.id[1]) {
+                     // adds enPassant attack div to litDivs
+                    enPassantDiv = document.getElementById(
+                        pawnJumpDiv.id[0] + (pawnJumpDiv.id[1] - 1) 
+                    );
+                    litDivs.push(enPassantDiv.id);
                 }
-            } */
-
+            } // else {enPassantDiv = undefined;}
+            /*
+            // if blue pawnToMove & pawnJump share row
+            if (pieceToMove.id[1] === pawnJumpDiv.id[1]) {
+                // and if besides eachother
+                if (pieceToMove.id[0] == (+pawnJumpDiv.id[0] + 1)) {
+                    // adds enPassant attack div to litDivs
+                    litDivs.push(
+                        pawnJumpDiv.id[0] + (+pawnJumpDiv.id[1] + 1)
+                    );
+                } // and if besides eachother
+                if (pieceToMove.id[0] == (pawnJumpDiv.id[0] - 1)) {
+                    // adds enPassant attack div to litDivs
+                    litDivs.push(
+                        pawnJumpDiv.id[0] + (+pawnJumpDiv.id[1] + 1) 
+                    );
+                }
+            }
+            */
             // collects potential normal attack divs
             passiveSide.forEach(passivePiece => {
                 // if passivePiece is one row ahead of blue pawnToMove
@@ -306,15 +304,18 @@ function lit(activeSide, passiveSide) {
                     }
                 }
             }
-        }
+        } // WORKS!
         else { // since orange's turn...
             // if enPassant attack is possible
             if (enPassanting) { // if(pawnJumpDiv.length) {}
-                // adds enPassant attack div to litDivs
-                enPassantDiv = document.getElementById(
-                    pawnJumpDiv.id[0] + (+pawnJumpDiv.id[1] + 1)
-                );
-                litDivs.push(enPassantDiv.id);
+                if (pieceToMove.id === (pawnJumpDiv.id[0] - 1) + pawnJumpDiv.id[1]
+                    || pieceToMove.id === (+pawnJumpDiv.id[0] + 1) + pawnJumpDiv.id[1]) {
+                    // adds enPassant attack div to litDivs
+                    enPassantDiv = document.getElementById(
+                        pawnJumpDiv.id[0] + (+pawnJumpDiv.id[1] + 1)
+                    );
+                    litDivs.push(enPassantDiv.id);
+                }
             } // else {enPassantDiv = undefined;}
             /*
             if (pawnJumpDiv !== undefined) {
@@ -368,7 +369,7 @@ function lit(activeSide, passiveSide) {
             //--------------------------------------------------
             // -------------------------------------------------
             // -------------------------------------------------
-        }
+        } // WORKS!
     } // must turn off enPassant once not possible
     //============================================================
     function knightLit() {
