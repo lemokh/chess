@@ -7,6 +7,19 @@ function lit(activeSide, passiveSide) {
     //==================================================
     // eat(goToDiv); --> normal pawn attack
     // eat(pawnJumpDiv); --> enPassant attack
+    // --------------------------------------------
+    function enPassantReset() {
+        // resets enPassanting
+        enPassanting = false;
+        console.log('enPassanting = false');
+        // resets pawnJumpDiv
+        pawnJumpDiv = undefined;
+        console.log('pawnJumpDiv = undefined');
+        // resets enPassantDiv
+        enPassantDiv = undefined;
+        console.log('enPassantDiv = undefined');
+    }
+    //=============================================
     function eat(element) {
         console.log('ENTERS eat('+element+')');
         // puts element in its proper takenBox
@@ -155,13 +168,13 @@ function lit(activeSide, passiveSide) {
         console.log(e.target);
 
         // re-informs goToDiv --> NOT WORKING!
-        goToDiv.setAttribute('data-name', pieceToMove.dataset.side);
+        goToDiv.setAttribute('data-name', pieceToMove.dataset.name);
         goToDiv.setAttribute('data-side', pieceToMove.dataset.side);
         goToDiv.setAttribute('src', pieceToMove.src);
 
         console.log('e.target -->');
         console.log(e.target); // no change noticed
-
+        // ---------------------------------------------
         console.log('activeSide -->');
         console.log(activeSide);
         // ---------------------------------------------
@@ -172,14 +185,24 @@ function lit(activeSide, passiveSide) {
         // ---------------------------------------------       
         console.log('activeSide -->');
         console.log(activeSide);
+        // ---------------------------------------------
         console.log('pieces -->');
         console.log(pieces);
+
         // updates activeSide & pieces array
         activeSide.push(goToDiv);
         pieces = [...oranges, ...blues];
 
         console.log('pieces -->');
         console.log(pieces);
+        // ---------------------------------------------
+        // pieceToMove.getAttribute('data-name') is already 'empty' here
+        if (pieceToMove.getAttribute('data-name') === 'pawn') {
+            console.log('!!!!!!!');
+            if (goToDiv !== pawnJumpDiv) {
+                enPassantReset();
+            }
+        } else { enPassantReset(); }
         // ---------------------------------------------
         console.log('pieceToMove -->');
         console.log(pieceToMove);
@@ -192,16 +215,6 @@ function lit(activeSide, passiveSide) {
         console.log(pieceToMove);
 
         console.log('EXITS swapSide()');
-        // --------------------------------------------
-        // resets enPassanting
-        enPassanting = false;
-        console.log('enPassanting = false');
-        // resets pawnJumpDiv
-        pawnJumpDiv = undefined;
-        console.log('pawnJumpDiv = undefined');
-        // resets enPassantDiv
-        enPassantDiv = undefined;
-        console.log('enPassantDiv = undefined');
         // ---------------------------------------------
         // removes click-listeners from activePieces
         activeSide.forEach(activePiece => {
@@ -675,9 +688,10 @@ function lit(activeSide, passiveSide) {
             );
         });
         // -----------------------------------------------------
-        console.log('enters switch('+pieceToMove.dataset.side+')');
+        console.log('enters switch('+pieceToMove.getAttribute('data-name')+')');
+        console.log(pieceToMove.hasAttribute('data-name'));
         // highlights all of clicked piece's possible moves
-        switch (pieceToMove.dataset.name) {
+        switch (pieceToMove.getAttribute('data-name')) {
             case 'pawn':
                 pawnLit();
                 break;
