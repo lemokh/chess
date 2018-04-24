@@ -98,9 +98,9 @@ function lit(activeSide, passiveSide) {
                         console.log(pawnJumpDiv);
                         
                         // sets pawnJumpDiv to empty cell
-                        pawnJumpDiv.setAttribute('data-name' = 'empty');
-                        pawnJumpDiv.setAttribute('data-side' = 'empty');
-                        pawnJumpDiv.setAttribute('src' = '/images/transparent.png');
+                        pawnJumpDiv.setAttribute('data-name', 'empty');
+                        pawnJumpDiv.setAttribute('data-side', 'empty');
+                        pawnJumpDiv.setAttribute('src', '/images/transparent.png');
 
                         console.log('pawnJumpDiv -->');
                         console.log(pawnJumpDiv);
