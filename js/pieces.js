@@ -43,9 +43,9 @@ var pieces = [...oranges, ...blues]; // WORKS
 
 var emptySpaces = openSpaces(boardIds, pieces);
 
-emptySpaces.forEach( emptySpace => {
-  document.getElementById(emptySpace).side = '';
-});
+// emptySpaces.forEach( emptySpace => {
+//   document.getElementById(emptySpace).side = '';
+// });
 
 //========================================================================================
 //========================================================================================

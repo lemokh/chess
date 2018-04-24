@@ -42,8 +42,8 @@ function lit(activeSide, passiveSide) {
         console.log('element -->');
         console.log(element);
         // un-informs pawnJumpDiv
-        element.side = '';
-        element.name = '';
+        element.side = 'empty';
+        element.name = 'empty';
         element.src = './images/transparent.png'
 
         console.log('element -->');
@@ -101,7 +101,7 @@ function lit(activeSide, passiveSide) {
         // }
         //---------------------------------------------------------------------
         // if goToDiv IS empty
-        if (goToDiv.side === '') {
+        if (goToDiv.side === 'empty') {
             console.log('goToDiv IS empty');
              
             // covers enPassant attack
@@ -147,63 +147,59 @@ function lit(activeSide, passiveSide) {
             }
             // covers pawnToMove moving one or two empty spaces
             //======================================
-        // swaps pieceToMove & goToDiv info
-        console.log('ENTERS swapSide()');
+            // swaps pieceToMove & goToDiv info
+            console.log('ENTERS swapSide()');
 
-        console.log('console-logging the hell out of swapSide()!');
-        
-        // !! already has pieceToMove.name = 'okokok' !!
-        console.log('pieceToMove -->');
-        console.log(pieceToMove); 
+            console.log('console-logging the hell out of swapSide()!');
+            
+            // !! already has pieceToMove.name = 'okokok' !!
+            console.log('pieceToMove -->');
+            console.log(pieceToMove); 
 
-        console.log('goToDiv -->');
-        console.log(goToDiv);
+            console.log('e.target -->');
+            console.log(e.target);
 
+            // elem.getAttribute(name) // gets attr value
+            // elem.setAttribute(name, value) // sets attr value
+            
+            // re-informs goToDiv --> NOT WORKING!
+            e.target.setAttribute(name, pieceToMove.name);
+            e.target.setAttribute(side, pieceToMove.side);
+            e.target.setAttribute(src, pieceToMove.src);
 
+            console.log('e.target -->');
+            console.log(e.target); // no change noticed
 
-        elem.hasAttribute(name) // checks for existence.
-        elem.getAttribute(name) // gets the value.
-        elem.setAttribute(name, value) // sets the value.
-        elem.removeAttribute(name) // removes the attribute.
-        
-        // re-informs goToDiv --> NOT WORKING!
-        e.target.name = pieceToMove.name;
-        e.target.side = pieceToMove.side;
-        e.target.src = pieceToMove.src;
+            console.log('activeSide -->');
+            console.log(activeSide);
+            // ---------------------------------------------
+            // gets pieceToMove's activeSide index
+            index1 = activeSide.indexOf(pieceToMove);
+            // removes now-empty pieceToMove from activeSide    
+            activeSide.splice(index1, 1);
 
-        console.log('e.target -->');
-        console.log(e.target); // no change noticed
+            console.log('activeSide -->');
+            console.log(activeSide);
+            // ---------------------------------------------
+            console.log('pieceToMove -->');
+            console.log(pieceToMove);
+            // un-informs pieceToMove
+            pieceToMove.setAttribute(name, 'empty'); 
+            pieceToMove.setAttribute(side, 'empty'); 
+            pieceToMove.setAttribute(src, './images/transparent.png');
 
-        console.log('activeSide -->');
-        console.log(activeSide);
-        // ---------------------------------------------
-        // gets pieceToMove's activeSide index
-        index1 = activeSide.indexOf(pieceToMove);
-        // removes now-empty pieceToMove from activeSide    
-        activeSide.splice(index1, 1);
+            console.log('pieceToMove -->');
+            console.log(pieceToMove);
+            // ---------------------------------------------
+            console.log('pieces -->');
+            console.log(pieces);
+            // updates activeSide & pieces array
+            activeSide.push(goToDiv);
+            pieces = [...oranges, ...blues];
 
-        console.log('activeSide -->');
-        console.log(activeSide);
-        // ---------------------------------------------
-        console.log('pieceToMove -->');
-        console.log(pieceToMove);
-        // un-informs pieceToMove
-        pieceToMove.name = 'okokok'; 
-        pieceToMove.side = 'okokok'; 
-        pieceToMove.src = './images/transparent.png';
-
-        console.log('pieceToMove -->');
-        console.log(pieceToMove);
-        // ---------------------------------------------
-        console.log('pieces -->');
-        console.log(pieces);
-        // updates activeSide & pieces array
-        activeSide.push(goToDiv);
-        pieces = [...oranges, ...blues];
-
-        console.log('pieces -->');
-        console.log(pieces);
-        console.log('EXITS swapSide()');
+            console.log('pieces -->');
+            console.log(pieces);
+            console.log('EXITS swapSide()');
         }
         else { // since goToDiv is NOT empty
             console.log('goToDiv NOT empty');
@@ -293,7 +289,7 @@ function lit(activeSide, passiveSide) {
             });
             //---------------------------------------------------
             // collects empty space one ahead of blue pawnToMove
-            if (document.getElementById(pieceToMove.id[0] + (pieceToMove.id[1] - 1)).side === '') { 
+            if (document.getElementById(pieceToMove.id[0] + (pieceToMove.id[1] - 1)).getAttribute(side) === 'empty') { 
                 litDivs.push(pieceToMove.id[0] + (pieceToMove.id[1] - 1));
                 //---------------------------------------------------
                 //---------------------------------------------------
@@ -301,7 +297,7 @@ function lit(activeSide, passiveSide) {
                 // if blue pawnToMove in row 6
                 if (pieceToMove.id[1] === '6') {
                     // if empty cell two ahead of blue pawnToMove
-                    if (document.getElementById(pieceToMove.id[0] + (pieceToMove.id[1] - 2)).side === '') {
+                    if (document.getElementById(pieceToMove.id[0] + (pieceToMove.id[1] - 2)).getAttribute(side) === 'empty') {
                         // adds that empty cell to litDivs array & pawnJumpDiv.id
                         // pawnJumpDiv = document.getElementById(
                         //     pieceToMove.id[0] + (pieceToMove.id[1] - 2)
@@ -354,7 +350,7 @@ function lit(activeSide, passiveSide) {
                 }
             });
             // collects empty space one ahead of orange pawnToMove
-            if (document.getElementById(pieceToMove.id[0] + (+pieceToMove.id[1] + 1)).side === '') { 
+            if (document.getElementById(pieceToMove.id[0] + (+pieceToMove.id[1] + 1)).side === 'empty') { 
                 litDivs.push(pieceToMove.id[0] + (+pieceToMove.id[1] + 1));
                 //---------------------------------------------------
                 //---------------------------------------------------
@@ -362,7 +358,7 @@ function lit(activeSide, passiveSide) {
                 // if orange pawnToMove in row 1
                 if (pieceToMove.id[1] === '1') {
                     // if empty cell two ahead of orange pawnToMove
-                    if (document.getElementById(pieceToMove.id[0] + (+pieceToMove.id[1] + 2)).side === '') {
+                    if (document.getElementById(pieceToMove.id[0] + (+pieceToMove.id[1] + 2)).side === 'empty') {
                         // adds that empty cell to litDivs array & pawnJumpDiv.id
                         // pawnJumpDiv = document.getElementById(pawnJumpDiv.id);
                         litDivs.push(pieceToMove.id[0] + (+pieceToMove.id[1] + 2));
