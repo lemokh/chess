@@ -149,7 +149,9 @@ function lit(activeSide, passiveSide) {
                 }
             }
         }
-        else { // since goToDiv is NOT empty
+        else { // since goToDiv's side !== empty
+            // ADD CONDITONS FOR ELSE HERE!!
+            // 
             console.log('goToDiv NOT empty');
             eat(goToDiv); // pieceToMove eats goToDiv
         }
@@ -484,13 +486,8 @@ function lit(activeSide, passiveSide) {
     function bishopLit() {
         function quadrant(bishopX, bishopY) {
             let bishopPathId = bishopX.toString() + bishopY;
-        
             // while bishop path empty, highlight space
             while (emptySpaces.includes(bishopPathId)) {
-                // add lit class
-                document.getElementById(
-                    bishopPathId
-                ).classList.add('lit');
                 // add id to litDivs
                 litDivs.push( bishopPathId );
                 // increment bishopX
@@ -507,7 +504,6 @@ function lit(activeSide, passiveSide) {
             // highlights attackable pieces in bishop's path
             for (let i = 0; i < passiveSide.length; i++) {
                 if (passiveSide[i].id === bishopPathId) {
-                    document.getElementById(bishopPathId).classList.add('lit');
                     litDivs.push( bishopPathId );
                 }
             }
@@ -525,23 +521,15 @@ function lit(activeSide, passiveSide) {
             litDivs = [];
             tempId.push( pieceToMove.id );
             // highlights clicked pieceToMove
-            document.getElementById(pieceToMove.id).classList.add('mainLit');
+            //document.getElementById(pieceToMove.id).classList.add('mainLit');
         }
-
         // pushes correct divs to litDivs
         function first(rookX) {
         // first(+pieceToMove.id[0] + 1);
         // first(pieceToMove.id[0] - 1);
             rookPathId = rookX.toString() + pieceToMove.id[1];
-            // console.log(rookPathId);
-
             // while rook path empty, highlight space
-            while (emptySpaces.includes( rookPathId )) {    
-                // console.log(emptySpaces.includes(rookPathId));
-                // add lit class
-                document.getElementById(
-                    rookPathId
-                ).classList.add('lit');
+            while (emptySpaces.includes( rookPathId )) {
                 // add rookPathId to litDivs
                 litDivs.push( rookPathId );
                 // increment rookX
@@ -550,45 +538,33 @@ function lit(activeSide, passiveSide) {
                 // updates rookPathId
                 rookPathId = rookX.toString() + pieceToMove.id[1];
             }
-
             // highlights attackable pieces in rook's path
             for (let i = 0; i < passiveSide.length; i++) {
                 if (passiveSide[i].id === rookPathId) {
-                    document.getElementById(rookPathId).classList.add('lit');
                     litDivs.push( rookPathId );
                 }
             }
         }
-
         function second(rookY) {
         // second(+pieceToMove.id[1] + 1);
         // second(pieceToMove.id[1] - 1);
             rookPathId = pieceToMove.id[0].toString() + rookY;
-            // console.log(rookPathId);
-
             // while rook path empty, highlight space
-            while (emptySpaces.includes( rookPathId )) {    
-            // console.log(emptySpaces.includes(rookPathId));
-            // add lit class
-            document.getElementById(
-                rookPathId
-            ).classList.add('lit');
-            // add rookPathId to litDivs
-            litDivs.push( rookPathId );
-            // increment rookY
-            if (rookY > +pieceToMove.id[1]) { rookY += 1; }
-            else { rookY -= 1; }
-            // updates rookPathId
-            rookPathId = pieceToMove.id[0].toString() + rookY;
-        }
-
-        // highlights attackable pieces in rook's path
-        for (let i = 0; i < passiveSide.length; i++) {
-            if (passiveSide[i].id === rookPathId) {
-                document.getElementById(rookPathId).classList.add('lit');
+            while (emptySpaces.includes( rookPathId )) {
+                // add rookPathId to litDivs
                 litDivs.push( rookPathId );
+                // increment rookY
+                if (rookY > +pieceToMove.id[1]) { rookY += 1; }
+                else { rookY -= 1; }
+                // updates rookPathId
+                rookPathId = pieceToMove.id[0].toString() + rookY;
             }
-        }
+            // highlights attackable pieces in rook's path
+            for (let i = 0; i < passiveSide.length; i++) {
+                if (passiveSide[i].id === rookPathId) {
+                    litDivs.push( rookPathId );
+                }
+            }
         }
         first(+pieceToMove.id[0] + 1);
         first(pieceToMove.id[0] - 1);
@@ -608,7 +584,9 @@ function lit(activeSide, passiveSide) {
             (pieceToMove.id[0] - 1).toString() + (pieceToMove.id[1] - 1)
         ].map(space => { // keeps only on-board kingSpaces
             if (+space[0] >= 0 && +space[0] <= 7) {
-                if (+space[1] >= 0 && +space[1] <= 7) { return space; }
+                if (+space[1] >= 0 && +space[1] <= 7) {
+                    return space;
+                }
             }
         }).filter(item => { return item !== undefined; });
 
@@ -642,10 +620,7 @@ function lit(activeSide, passiveSide) {
         }); // console.log(kingSpaces);
         
         // highlights kingSpaces
-        kingSpaces.forEach(space => {
-            document.getElementById(space).classList.add('lit');
-            litDivs.push(space);
-        });
+        kingSpaces.forEach(space => { litDivs.push(space); });
     } // extraLit.js
     //============================================================
     //============================================================
