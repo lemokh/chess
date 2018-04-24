@@ -34,8 +34,8 @@ function openSpaces(arr1, arr2) { // maybe this needs fixing
 
 var board = document.getElementById('board');
 
-let orangeNodes = board.getElementsByClassName('orange');
-let blueNodes = board.getElementsByClassName('blue');
+let orangeNodes = board.querySelectorAll("[data-side='orange']");
+let blueNodes = board.querySelectorAll("[data-side='blue']");
 
 var oranges = Array.from(orangeNodes), blues = Array.from(blueNodes);
 

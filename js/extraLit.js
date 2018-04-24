@@ -84,8 +84,8 @@ function lit(activeSide, passiveSide) {
         console.log('goToDiv -->');
         console.log(goToDiv);
         
-        console.log('e.target -->');
-        console.log(e.target);
+        console.log('pieceToMove -->');
+        console.log(pieceToMove);
         
         console.log('pawnJumpDiv -->');
         console.log(pawnJumpDiv);
@@ -99,10 +99,10 @@ function lit(activeSide, passiveSide) {
         // }
         //---------------------------------------------------------------------
         // if goToDiv IS empty
-        if (goToDiv.dataset.side === 'empty') {
+        if (goToDiv.getAttribute('data-side') === 'empty') {
             console.log('goToDiv IS empty');            
             // covers anySide enPassant pawn attack
-            if (pieceToMove.dataset.name === 'pawn') {
+            if (pieceToMove.getAttribute('data-name') === 'pawn') {
                 if (enPassanting) {
                     if (goToDiv === enPassantDiv) {
                         eat(pawnJumpDiv); // WORKS!
@@ -113,7 +113,7 @@ function lit(activeSide, passiveSide) {
                         // sets pawnJumpDiv to empty cell
                         pawnJumpDiv.setAttribute('data-name', 'empty');
                         pawnJumpDiv.setAttribute('data-side', 'empty');
-                        pawnJumpDiv.setAttribute('src', '/images/transparent.png');
+                        pawnJumpDiv.setAttribute('src', './images/transparent.png');
 
                         console.log('pawnJumpDiv -->');
                         console.log(pawnJumpDiv);
@@ -689,7 +689,6 @@ function lit(activeSide, passiveSide) {
         });
         // -----------------------------------------------------
         console.log('enters switch('+pieceToMove.getAttribute('data-name')+')');
-        console.log(pieceToMove.hasAttribute('data-name'));
         // highlights all of clicked piece's possible moves
         switch (pieceToMove.getAttribute('data-name')) {
             case 'pawn':
@@ -700,7 +699,7 @@ function lit(activeSide, passiveSide) {
                 break;
             case 'bishop':
                 bishopLit();
-                break;
+                break; 
             case 'rook':
                 rookLit();
                 break;
@@ -711,6 +710,7 @@ function lit(activeSide, passiveSide) {
             case 'king':
                 kingLit();
                 break;
+            default: alert('Error! pieceToMove name is empty')
         } // -------------------------------------------------------
         console.log('lightens & click-listens to litDivs --> movePiece(e)');
         // lightens & click-listens all litDivs --> movePiece(e)
