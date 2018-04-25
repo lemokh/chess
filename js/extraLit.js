@@ -63,7 +63,7 @@ function lit(activeSide, passiveSide) {
             document.getElementById(
                 litDiv
             ).removeEventListener('click', movePiece);
-        });
+         });
         // -----------------------------------------------------------------
         console.log('un-lightens mainDiv & litDivs');
         // un-lightens mainDiv
