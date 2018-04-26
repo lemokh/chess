@@ -636,7 +636,7 @@ function lit(activeSide, passiveSide) {
                 litDivs.push(checkSpaceId); // add to litDivs
             }
         });
-        console.log(litDivs);
+        // console.log(litDivs);
     } // extraLit.js
     //============================================================
     //============================================================

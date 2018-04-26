@@ -129,7 +129,7 @@ function checkingSpace(somePiece, checkSpace) {
         if ( checkSpace[0] - someBishop.id[0] 
           === checkSpace[1] - someBishop.id[1] ) {
           // collects bishop's attack path to checkSpace
-          while (bishopX < (checkSpace[0] - 1)) {  
+          while (bishopX < (checkSpace[0] - 1)) {
             bishopX += 1;
             bishopY += 1;
             bishopMoves.push( bishopX + bishopY.toString() );
@@ -161,7 +161,7 @@ function checkingSpace(somePiece, checkSpace) {
         if ( someBishop.id[0] - checkSpace[0]
           === checkSpace[1] - someBishop.id[1] ) {
           // collects bishop's attack path to checkSpace
-          while (bishopX > (+checkSpace[0] + 1)) { 
+          while (bishopX > (+checkSpace[0] + 1)) {
             bishopX -= 1;
             bishopY += 1;
             bishopMoves.push( bishopX + bishopY.toString() );
@@ -191,7 +191,9 @@ function checkingSpace(somePiece, checkSpace) {
       // for each space in bishop's path to checkSpace
       for (let k = 0; k < bishopMoves.length; k++) {
         // if a piece matches a bishopMove, add piece to nails
-        if (+pieces[i].id === bishopMoves[k]) { nails.push(pieces[i]); }
+        if (pieces[i].id === bishopMoves[k]) {
+          nails.push(pieces[i]);
+        }
       }
     }
     if (nails.length === 1) { // if only one nail
