@@ -581,34 +581,36 @@ function lit(activeSide, passiveSide) {
             pieceToMove.id[0] + (pieceToMove.id[1] - 1),
             (pieceToMove.id[0] - 1).toString() + (pieceToMove.id[1] - 1)
         ].map(space => { // keeps only on-board kingSpaces
-            if (+space[0] >= 0 && +space[0] <= 7) {
-                if (+space[1] >= 0 && +space[1] <= 7) {
+            if ( (+space[0] >= 0) && (+space[0] <= 7) ) {
+                if ( (+space[1] >= 0) && (+space[1] <= 7) ) {
                     return space;
                 }
             }
-        }).filter(item => { return item !== undefined; });
+        }).filter(item => { return item !== undefined; }); // WORKS!
 
         kingSpacesUnderAttack = [];
 
-        // array of kingSpaces devoid of kingSide pieces
-        openAndOpponentHeldKingSpaces = kingSpaces.filter(kingSpace => { // each item in arr
-                return !activeSide.some(activePiece => { // each item in arr2
-                    return kingSpace == activePiece.id;
-                }); // returns true if not a match
-            }); //console.log(openAndOpponentHeldKingSpaces);
-        
-        // .map() here instead?
-        openAndOpponentHeldKingSpaces.forEach(space => {
+        // array of kingSpace ids devoid of kingSide pieces
+        openAndOpponentHeldKingSpaces = kingSpaces.filter(kingSpace => {
+            // for each item in arr
+            return !activeSide.some(activePiece => {
+                // for each item in arr2
+                return kingSpace == activePiece.id;
+            }); // returns true if not a match
+        }); // WORKS!
+
+        openAndOpponentHeldKingSpaces.forEach(checkSpaceId => {
             passiveSide.forEach(passivePiece => {
-                console.log(checkingSpace(passivePiece, space, passiveSide));
+                // console.log(checkingSpace(passivePiece, checkSpace, passiveSide));
+                
                 // sees if any passivePieces check any empty or king-attackable spaces
-                if (checkingSpace(passivePiece, space, passiveSide)) {
-                    kingSpacesUnderAttack.push(space);
-                    console.log(kingSpacesUnderAttack);
+                if (checkingSpace(passivePiece, checkSpaceId, passiveSide)) {
+                    kingSpacesUnderAttack.push(checkSpaceId);
+                    // console.log(kingSpacesUnderAttack);
                 }
             }); // checkingSpace returns true/false if piece attacks space
         }); // array of opponent pieces that check a kingSpace
-        // console.log(openAndOpponentHeldKingSpaces);
+        console.log(openAndOpponentHeldKingSpaces);
         
         // removes any of those spaces from kingSpaces
         kingSpaces = openAndOpponentHeldKingSpaces.filter(nonOwnKingSpace => { // each item in arr
