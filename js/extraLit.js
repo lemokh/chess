@@ -598,29 +598,45 @@ function lit(activeSide, passiveSide) {
                 return kingSpace == activePiece.id;
             }); // returns true if not a match
         }); // WORKS!
-
+        /*
         openAndOpponentHeldKingSpaces.forEach(checkSpaceId => {
             passiveSide.forEach(passivePiece => {
-                // console.log(checkingSpace(passivePiece, checkSpace, passiveSide));
-                
-                // sees if any passivePieces check any empty or king-attackable spaces
-                if (checkingSpace(passivePiece, checkSpaceId, passiveSide)) {
+                console.log(checkingSpace(passivePiece, checkSpaceId));
+                // if a passivePiece checks a kingSpace devoid of kingSide pieces
+                if (checkingSpace(passivePiece, checkSpaceId)) {
+                    // add that space's id to the kingSpacesUnderAttack array
                     kingSpacesUnderAttack.push(checkSpaceId);
-                    // console.log(kingSpacesUnderAttack);
+                    console.log(kingSpacesUnderAttack);
                 }
             }); // checkingSpace returns true/false if piece attacks space
         }); // array of opponent pieces that check a kingSpace
-        console.log(openAndOpponentHeldKingSpaces);
+        // WORKS!
         
         // removes any of those spaces from kingSpaces
-        kingSpaces = openAndOpponentHeldKingSpaces.filter(nonOwnKingSpace => { // each item in arr
+        kingSpaces = openAndOpponentHeldKingSpaces.filter(notOwnKingSpace => { // each item in arr
             return !kingSpacesUnderAttack.some(checkedKingSpace => { // each item in arr2
-                return nonOwnKingSpace == checkedKingSpace;
+                return (notOwnKingSpace == checkedKingSpace);
             }); // returns true if not a match
         }); // console.log(kingSpaces);
         
         // highlights kingSpaces
         kingSpaces.forEach(space => { litDivs.push(space); });
+        */
+        openAndOpponentHeldKingSpaces.forEach(checkSpaceId => {
+            kingAble = true;
+
+            passiveSide.forEach(passivePiece => {
+                // if no passivePiece can check a kingSpace devoid of kingSide pieces
+                // checkingSpace returns true/false if piece attacks space
+                if (checkingSpace(passivePiece, checkSpaceId)) {
+                    kingAble = false;
+                }
+            });
+            if (kingAble) {
+                litDivs.push(checkSpaceId); // add to litDivs
+            }
+        });
+        console.log(litDivs);
     } // extraLit.js
     //============================================================
     //============================================================

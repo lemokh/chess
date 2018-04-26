@@ -1,5 +1,5 @@
 var player = 'blue', enPassantCell = '', orangeTakenBoxIdCounter = -16, blueTakenBoxIdCounter = -1, enPassanting = false,
-bishopPathId, rookPathId, pieceToMove, goToDiv, enPassantDiv, prevGoToDiv, enPassantGoToDiv, pawnJumpDiv, enPassantables2 = [], enPassantedPawn, takenOrangeBox, takenBlueBox, pieceLit, gameEnds, tempSide, movedPiece, mainLitDiv, litDivs, unLitDivs, img, index1, index2, tempPiece, tempId, moves, takenBox, activeCells, openAndOpponentHeldKingSpaces, kingSpacesUnderAttack, orangeKingSpacesUnderAttack, orangelessKingSpaces, orangelessKingSpaces, blueKingSpaces, bluelessKingSpaces, orangeKingSpacesUnderAttack, block1, block2, block3, block4, block5, block6, block7, block8, vacantKingSpaces, whiteKing, blackKing, knightMoves, bishopMoves, bishopX, bishopY, rookMoves, kingSpaces, kingOpenSpaces, occupiedKingSpaces, kingAttackers, defenders, pinnedPieces, checkedPaths, nails, whites, blacks;
+bishopPathId, rookPathId, kingAble, pieceToMove, goToDiv, enPassantDiv, prevGoToDiv, enPassantGoToDiv, pawnJumpDiv, enPassantables2 = [], enPassantedPawn, takenOrangeBox, takenBlueBox, pieceLit, gameEnds, tempSide, movedPiece, mainLitDiv, litDivs, unLitDivs, img, index1, index2, tempPiece, tempId, moves, takenBox, activeCells, openAndOpponentHeldKingSpaces, kingSpacesUnderAttack, orangeKingSpacesUnderAttack, orangelessKingSpaces, orangelessKingSpaces, blueKingSpaces, bluelessKingSpaces, orangeKingSpacesUnderAttack, block1, block2, block3, block4, block5, block6, block7, block8, vacantKingSpaces, whiteKing, blackKing, knightMoves, bishopMoves, bishopX, bishopY, rookMoves, kingSpaces, kingOpenSpaces, occupiedKingSpaces, kingAttackers, defenders, pinnedPieces, checkedPaths, nails, whites, blacks;
 
 // holds one or two pawn(s) that can eat the enPassanter pawn
 var enPassantables = [];
@@ -49,15 +49,14 @@ var emptySpaces = openSpaces(boardIds, pieces);
 
 //========================================================================================
 //========================================================================================
-//========================================================================================
 
 // returns true/false if some-piece checks-space 
-function checkingSpace(somePiece, checkSpace, passiveSide) {
+function checkingSpace(somePiece, checkSpace) {
   // somePiece is a passiveSide <img>
-  // checkSpace is a kingSpace-ID devoid of a kingSide piece
+  // checkSpace is an activeSide kingSpace-ID not held by an activeSide piece
   pinnedPieces = [];
   //--------------------------------------------------------------------------------------------
-  // returns true/false if knight can checkSpace
+  // returns true/false if some passiveSide knight can attack checkSpace
   function knightAttacks(someKnight, checkSpace) {
     // to hold two spaces where knight might checkSpace
     knightMoves = [];
@@ -110,9 +109,9 @@ function checkingSpace(somePiece, checkSpace, passiveSide) {
       }
     }
     return knightMoves.includes(checkSpace); 
-  } // returns true/false if knight can checkSpace
+  }
   //--------------------------------------------------------------------------------------------
-  // returns true/false if someBishop can checkSpace
+  // returns true/false if some passiveSide bishop can attack checkSpace
   function bishopAttacks(someBishop, checkSpace) {
     // contains spaces someBishop attacks enroute to checkSpace
     bishopMoves = [];
@@ -206,7 +205,7 @@ function checkingSpace(somePiece, checkSpace, passiveSide) {
     return nails.length === 0;
   }
   //--------------------------------------------------------------------------------------------
-  // returns true/false if someRook can checkSpace
+  // returns true/false if some passiveSide rook can attack checkSpace
   function rookAttacks(someRook, checkSpace) {
     // to hold spaces rook attacks enroute to checkSpace
     rookMoves = [];
@@ -275,7 +274,7 @@ function checkingSpace(somePiece, checkSpace, passiveSide) {
     return nails.length === 0;
   }
   //--------------------------------------------------------------------------------------------
-  // returns true/false if queen can checkSpace
+  // returns true/false if some passiveSide queen can attack checkSpace
   function queenAttacks(someQueen, checkSpace) {
     return (
       bishopAttacks(someQueen, checkSpace) 
@@ -283,16 +282,16 @@ function checkingSpace(somePiece, checkSpace, passiveSide) {
     );
   }
   //--------------------------------------------------------------------------------------------
-  // returns true if someKing can attack checkSpace
+  // returns true if the passiveSide king can attack checkSpace
   function kingAttacks(someKing, checkSpace) {
-    switch (+checkSpace[0]) { // if checkSpace's x equals
-      case +someKing.id[0]: // someKing's x
+    switch (+checkSpace[0]) { // if checkSpace's column equals
+      case +someKing.id[0]: // passiveSide king's column
         return (
           ( checkSpace[1] == (+someKing.id[1] + 1) )
           || 
           ( checkSpace[1] == (someKing.id[1] - 1) )
         );
-      case +someKing.id[0] + 1: // someKing's x + 1
+      case +someKing.id[0] + 1: // passiveSide king's column + 1
         return (
           ( checkSpace[1] == someKing.id[1] )
           ||
@@ -300,7 +299,7 @@ function checkingSpace(somePiece, checkSpace, passiveSide) {
           ||
           ( checkSpace[1] == (someKing.id[1] - 1) )
         );
-      case someKing.id[0] - 1: // someKing's x - 1
+      case someKing.id[0] - 1: // passiveSide king's column - 1
         return (
           ( checkSpace[1] == someKing.id[1] )
           ||
@@ -308,24 +307,24 @@ function checkingSpace(somePiece, checkSpace, passiveSide) {
           ||
           ( checkSpace[1] == (someKing.id[1] - 1) )
         );
+      default: console.log('king ');
     }
   }
   //--------------------------------------------------------------------------------------------
   //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/  
   //--------------------------------------------------------------------------------------------
   // sees if some piece can check space
-  switch (somePiece.name) {
+  switch (somePiece.getAttribute('data-name')) {
     //--------------------------------------------------------------------------------------------
-    case 'pawn': // ADD PAWN JUMP TWO & ENPASSANT????
+    case 'pawn':
       // if pawn is beside checkSpace
-      if ([somePiece.id[0] - 1, +somePiece.id[0] + 1].includes(+checkSpace[0])) {
+      if (somePiece.id[0] - 1 == checkSpace[0]
+      || (+somePiece.id[0] + 1) == checkSpace[0]) {
         // sees if pawn can checkSpace
-        if (passiveSide === blues) {
+        // if passiveSide is blue
+        if (somePiece.getAttribute('data-side') === 'blue') {
           return checkSpace[1] == (somePiece.id[1] - 1);
-        }
-        else {
-          return checkSpace[1] == (+somePiece.id[1] + 1);
-        }
+        } else { return checkSpace[1] == (+somePiece.id[1] + 1); }
       } return false;
     //--------------------------------------------------------------------------------------------
     case 'knight': return knightAttacks(somePiece, checkSpace); 
