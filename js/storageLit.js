@@ -4,34 +4,32 @@ function lit(activeSide, passiveSide) {
     // function toggleClocks() {}
     //=============================================
     function castling(e) {
-        pieceToMove = e.target;
-        castleDivs = [];
+        castleIds.forEach(id => {
+            document.getElementById(id).classList.remove('castleLit');
+            document.getElementById('27').removeEventListener('click', castling);
+        });
+        //--------------------
+        castleIds = [];
+        litDivs = [];
+        //--------------------
         switch (goToDiv.id) {
             case '27':
-                document.getElementById('27').removeEventListener('click', castling);
-                document.getElementById('27').classList.remove('castleLit');
                 swapSide(document.getElementById('07'), document.getElementById('37'));
                 blueKingFirstMove = true;
                 break;
             case '67':
-                document.getElementById('67').removeEventListener('click', castling);
-                document.getElementById('67').classList.remove('castleLit');
                 swapSide(document.getElementById('77'), document.getElementById('57'));
                 blueKingFirstMove = true;
                 break;
             case '20':
-                document.getElementById('20').removeEventListener('click', castling);
-                document.getElementById('20').classList.remove('castleLit');
                 swapSide(document.getElementById('00'), document.getElementById('30'));
                 orangeKingFirstMove = true;
                 break;
             case '70':
-                document.getElementById('70').removeEventListener('click', castling);
-                document.getElementById('70').classList.remove('castleLit');
                 swapSide(document.getElementById('70'), document.getElementById('50'));
                 orangeKingFirstMove = true;
                 break;
-        } swapSide(pieceToMove, goToDiv);
+        } swapSide(e.target, goToDiv);
     }
     //=============================================
     function enPassantReset() {
@@ -622,16 +620,12 @@ function lit(activeSide, passiveSide) {
             if (!blueKingFirstMove) {
                 if (!blueRook1FirstMove) {
                     if (['17', '27', '37'].every(id => document.getElementById(id).getAttribute('data-side') === 'empty')) {
-                        castleDivs.push('27');
-                        document.getElementById('27').classList.add('castleLit');
-                        document.getElementById('27').addEventListener('click', castling);
+                        castleIds.push('27');
                     }
                 }
                 if (!blueRook2FirstMove) {
                     if (['57', '67'].every(id => document.getElementById(id).getAttribute('data-side') === 'empty')) {
-                        castleDivs.push('67');
-                        document.getElementById('67').classList.add('castleLit');
-                        document.getElementById('67').addEventListener('click', castling);
+                        castleIds.push('67');
                     }
                 }
             }
@@ -640,83 +634,87 @@ function lit(activeSide, passiveSide) {
             if (!orangeKingFirstMove) {
                 if (!orangeRook1FirstMove) {
                     if (['10', '20', '30'].every(id => document.getElementById(id).getAttribute('data-side') === 'empty')) {
-                        castleDivs.push('20');
-                        document.getElementById('20').classList.add('castleLit');
-                        document.getElementById('20').addEventListener('click', castling);
+                        castleIds.push('20');
                     }
                 }
                 if (!orangeRook2FirstMove) {
                     if (['50', '60'].every(id => document.getElementById(id).getAttribute('data-side') === 'empty')) {
-                        castleDivs.push('60');
-                        document.getElementById('60').classList.add('castleLit');
-                        document.getElementById('60').addEventListener('click', castling);
+                        castleIds.push('60');
                     }
                 }
             }
         }
-        // ----------------------------------------------------------------
-        kingSpaces = [
-            (pieceToMove.id[0] - 1) + pieceToMove.id[1],
-            (pieceToMove.id[0] - 1).toString() + (+pieceToMove.id[1] + 1),
-            pieceToMove.id[0] + (+pieceToMove.id[1] + 1),
-            (+pieceToMove.id[0] + 1).toString() + (+pieceToMove.id[1] + 1),
-            (+pieceToMove.id[0] + 1) + pieceToMove.id[1],
-            (+pieceToMove.id[0] + 1).toString() + (pieceToMove.id[1] - 1),
-            pieceToMove.id[0] + (pieceToMove.id[1] - 1),
-            (pieceToMove.id[0] - 1).toString() + (pieceToMove.id[1] - 1)
-        ].map(space => { // keeps only on-board kingSpaces
-            if ( (+space[0] >= 0) && (+space[0] <= 7) ) {
-                if ( (+space[1] >= 0) && (+space[1] <= 7) ) {
-                    return space;
-                }
-            }
-        }).filter(item => { return item !== undefined; }); // WORKS!
-        // ----------------------------------------------------------------
-        // array of kingSpace ids devoid of kingSide pieces
-        openAndOpponentHeldKingSpaces = kingSpaces.filter(kingSpace => {
-            // for each item in arr
-            return !activeSide.some(activePiece => {
-                // for each item in arr2
-                return kingSpace == activePiece.id;
-            }); // returns true if not a match
-        }); // WORKS!
-
-        /*  DO I NEED KINGSPACES IN CHECKMATE?
-        openAndOpponentHeldKingSpaces.forEach(checkSpaceId => {
-            passiveSide.forEach(passivePiece => {
-                console.log(checkingSpace(passivePiece, checkSpaceId));
-                // if a passivePiece checks a kingSpace devoid of kingSide pieces
-                if (checkingSpace(passivePiece, checkSpaceId)) {
-                    // add that space's id to the kingSpacesUnderAttack array
-                    kingSpacesUnderAttack.push(checkSpaceId);
-                    console.log(kingSpacesUnderAttack);
-                }
-            }); // checkingSpace returns true/false if piece attacks space
-        }); // array of opponent pieces that check a kingSpace
-        // WORKS!
-        
-        // removes any of those spaces from kingSpaces
-        kingSpaces = openAndOpponentHeldKingSpaces.filter(notOwnKingSpace => { // each item in arr
-            return !kingSpacesUnderAttack.some(checkedKingSpace => { // each item in arr2
-                return (notOwnKingSpace == checkedKingSpace);
-            }); // returns true if not a match
-        }); // console.log(kingSpaces);
-        
-        // highlights kingSpaces
-        kingSpaces.forEach(space => { litDivs.push(space); });
-        */
-
-        openAndOpponentHeldKingSpaces.forEach(checkSpaceId => {
-            kingAble = true;
-            passiveSide.forEach(passivePiece => {
-                // if no passivePiece can check a kingSpace devoid of kingSide pieces
-                if (checkingSpace(passivePiece, checkSpaceId)) {
-                    kingAble = false;
-                } // checkingSpace returns true/false if piece attacks space
+        if (castleIds.length) {
+            castleIds.forEach(id => {
+                document.getElementById(id).classList.add('castleLit');
+                document.getElementById('27').addEventListener('click', castling);
             });
-            if (kingAble) { litDivs.push(checkSpaceId); }
-        }); // console.log(litDivs);
-    } // WORKS!
+        }
+        else {
+            // ----------------------------------------------------------------
+            kingSpaces = [
+                (pieceToMove.id[0] - 1) + pieceToMove.id[1],
+                (pieceToMove.id[0] - 1).toString() + (+pieceToMove.id[1] + 1),
+                pieceToMove.id[0] + (+pieceToMove.id[1] + 1),
+                (+pieceToMove.id[0] + 1).toString() + (+pieceToMove.id[1] + 1),
+                (+pieceToMove.id[0] + 1) + pieceToMove.id[1],
+                (+pieceToMove.id[0] + 1).toString() + (pieceToMove.id[1] - 1),
+                pieceToMove.id[0] + (pieceToMove.id[1] - 1),
+                (pieceToMove.id[0] - 1).toString() + (pieceToMove.id[1] - 1)
+            ].map(space => { // keeps only on-board kingSpaces
+                if ( (+space[0] >= 0) && (+space[0] <= 7) ) {
+                    if ( (+space[1] >= 0) && (+space[1] <= 7) ) {
+                        return space;
+                    }
+                }
+            }).filter(item => { return item !== undefined; }); // WORKS!
+            // ----------------------------------------------------------------
+            // array of kingSpace ids devoid of kingSide pieces
+            openAndOpponentHeldKingSpaces = kingSpaces.filter(kingSpace => {
+                // for each item in arr
+                return !activeSide.some(activePiece => {
+                    // for each item in arr2
+                    return kingSpace == activePiece.id;
+                }); // returns true if not a match
+            }); // WORKS!
+
+            /*  DO I NEED KINGSPACES IN CHECKMATE?
+            openAndOpponentHeldKingSpaces.forEach(checkSpaceId => {
+                passiveSide.forEach(passivePiece => {
+                    console.log(checkingSpace(passivePiece, checkSpaceId));
+                    // if a passivePiece checks a kingSpace devoid of kingSide pieces
+                    if (checkingSpace(passivePiece, checkSpaceId)) {
+                        // add that space's id to the kingSpacesUnderAttack array
+                        kingSpacesUnderAttack.push(checkSpaceId);
+                        console.log(kingSpacesUnderAttack);
+                    }
+                }); // checkingSpace returns true/false if piece attacks space
+            }); // array of opponent pieces that check a kingSpace
+            // WORKS!
+            
+            // removes any of those spaces from kingSpaces
+            kingSpaces = openAndOpponentHeldKingSpaces.filter(notOwnKingSpace => { // each item in arr
+                return !kingSpacesUnderAttack.some(checkedKingSpace => { // each item in arr2
+                    return (notOwnKingSpace == checkedKingSpace);
+                }); // returns true if not a match
+            }); // console.log(kingSpaces);
+            
+            // highlights kingSpaces
+            kingSpaces.forEach(space => { litDivs.push(space); });
+            */
+
+            openAndOpponentHeldKingSpaces.forEach(checkSpaceId => {
+                kingAble = true;
+                passiveSide.forEach(passivePiece => {
+                    // if no passivePiece can check a kingSpace devoid of kingSide pieces
+                    if (checkingSpace(passivePiece, checkSpaceId)) {
+                        kingAble = false;
+                    } // checkingSpace returns true/false if piece attacks space
+                });
+                if (kingAble) { litDivs.push(checkSpaceId); }
+            }); // console.log(litDivs);
+        } // WORKS!
+    }
     //============================================================
     //============================================================
     //============================================================
@@ -780,10 +778,12 @@ function lit(activeSide, passiveSide) {
         // -----------------------------------------------------------------
         console.log('lightens & click-listens to litDivs --> movePiece(e)');
         // lightens & click-listens all litDivs --> movePiece(e)
-        litDivs.forEach(litDiv => {
-            document.getElementById( litDiv ).classList.add('lit');
-            document.getElementById( litDiv ).addEventListener('click', movePiece);
-        });
+        if (litDivs.length) {
+            litDivs.forEach(litDiv => {
+                document.getElementById( litDiv ).classList.add('lit');
+                document.getElementById( litDiv ).addEventListener('click', movePiece);
+            }); // enters movePiece(e) on litDiv-click, unless castling
+        }
         // ---------------------------------------------------------
         // what about castleDiv click-listener?
         // if (!nails.includes(pieceToMove.id)) {}

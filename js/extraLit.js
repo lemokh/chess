@@ -6,7 +6,7 @@ function lit(activeSide, passiveSide) {
     //=============================================
     function castling(e) {
         pieceToMove = e.target;
-        castleDivs = [];
+        castleIds = [];
         switch (goToDiv.id) {
             case '27':
                 document.getElementById('27').removeEventListener('click', castling);
@@ -624,14 +624,14 @@ function lit(activeSide, passiveSide) {
             if (!blueKingFirstMove) {
                 if (!blueRook1FirstMove) {
                     if (['17', '27', '37'].every(id => document.getElementById(id).getAttribute('data-side') === 'empty')) {
-                        castleDivs.push('27');
+                        castleIds.push('27');
                         document.getElementById('27').classList.add('castleLit');
                         document.getElementById('27').addEventListener('click', castling);
                     }
                 }
                 if (!blueRook2FirstMove) {
                     if (['57', '67'].every(id => document.getElementById(id).getAttribute('data-side') === 'empty')) {
-                        castleDivs.push('67');
+                        castleIds.push('67');
                         document.getElementById('67').classList.add('castleLit');
                         document.getElementById('67').addEventListener('click', castling);
                     }
@@ -642,14 +642,14 @@ function lit(activeSide, passiveSide) {
             if (!orangeKingFirstMove) {
                 if (!orangeRook1FirstMove) {
                     if (['10', '20', '30'].every(id => document.getElementById(id).getAttribute('data-side') === 'empty')) {
-                        castleDivs.push('20');
+                        castleIds.push('20');
                         document.getElementById('20').classList.add('castleLit');
                         document.getElementById('20').addEventListener('click', castling);
                     }
                 }
                 if (!orangeRook2FirstMove) {
                     if (['50', '60'].every(id => document.getElementById(id).getAttribute('data-side') === 'empty')) {
-                        castleDivs.push('60');
+                        castleIds.push('60');
                         document.getElementById('60').classList.add('castleLit');
                         document.getElementById('60').addEventListener('click', castling);
                     }
