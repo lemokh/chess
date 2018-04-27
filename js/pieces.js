@@ -53,7 +53,7 @@ var emptySpaces = openSpaces(boardIds, pieces);
 // returns true/false if some-piece checks-space 
 function checkingSpace(somePiece, checkSpace) {
   // somePiece is a passiveSide <img>
-  // checkSpace is an activeSide kingSpace-ID not held by an activeSide piece
+  // checkSpace is an activeSideID (kingSpace not held by an activeSide piece)
   pinnedPieces = [];
   //--------------------------------------------------------------------------------------------
   // returns true/false if some passiveSide knight can attack checkSpace

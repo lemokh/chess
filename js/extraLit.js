@@ -550,7 +550,7 @@ function lit(activeSide, passiveSide) {
                 }
             }
         }
-    } // WORKS!
+    } // WORKS!  (SOME PROBLEMS LIGHTENING RIGHT SPACE)
     //============================================================
     function bishopLit() {
         function quadrant(bishopX, bishopY) {
@@ -642,12 +642,34 @@ function lit(activeSide, passiveSide) {
     //============================================================
     function kingLit() {
         kingSpacesUnderAttack = [];
+
+
+        // CASTLE CODE STILL NEEDS:
+        // IF (ANY PASSIVE PIECE CAN ATTACK ANY CASTLEDIVS) {
+        //   PREVENT CASTLING FOR ONLY THAT ROOK & FOR ONLY THAT TURN
+        // }
+
+        
+        // ------------------------------------------------
+
         // covers king castling
         if (pieceToMove.getAttribute('data-side') === 'blue') {
             if (!blueKingFirstMove) {
                 if (!blueRook1FirstMove) {
                     if (['17', '27', '37'].every(id => document.getElementById(id).getAttribute('data-side') === 'empty')) {
                         castleIds.push('27');
+                        // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+                        // for each passivePiece --> use for-looop
+                        passiveSide.forEach(passivePiece => {
+                            // if any can attack a castleId
+                            ['17', '27', '37'].forEach(id => {
+                                // then stop checking & clear castleIds
+                                if (!checkingSpace(passivePiece, id)) {
+                                    castleIds = [];
+                                }
+                            });
+                        }); // DO THIS FOR THE OTHER THREE SECTIONS
+                        // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
                     }
                 }
                 if (!blueRook2FirstMove) {
