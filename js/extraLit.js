@@ -2,12 +2,9 @@ function lit(activeSide, passiveSide) {
     litDivs = []; // holds lit ids on which to apply click-listeners
     tempId = []; // for un-highlighting all cells on clicking new piece
     emptySpaces = openSpaces(boardIds, pieces); // updates emptySpaces
-    //======================================
+    //=============================================
     // function toggleClocks() {}
-    //==================================================
-    // eat(goToDiv); --> normal pawn attack
-    // eat(pawnJumpDiv); --> enPassant attack
-    // --------------------------------------------
+    //=============================================
     function enPassantReset() {
         // resets enPassanting
         enPassanting = false;
@@ -20,6 +17,44 @@ function lit(activeSide, passiveSide) {
         console.log('enPassantDiv = undefined');
     }
     //=============================================
+    function swapSide (fromDiv, toDiv) {
+        // swaps pieceToMove & goToDiv info
+        console.log('ENTERS swapSide()');
+
+        // re-informs goToDiv --> NOT WORKING!
+        toDiv.setAttribute('data-name', fromDiv.dataset.name);
+        toDiv.setAttribute('data-side', fromDiv.dataset.side);
+        toDiv.setAttribute('src', fromDiv.src);
+        // ---------------------------------------------
+        // ---------------------------------------------
+        // gets pieceToMove's activeSide index
+        index1 = activeSide.indexOf(pieceToMove);
+        // removes now-empty pieceToMove from activeSide    
+        activeSide.splice(index1, 1);
+        // ---------------------------------------------       
+        // updates activeSide & pieces array
+        activeSide.push(toDiv);
+        pieces = [...oranges, ...blues];
+        // ---------------------------------------------
+        // pieceToMove.getAttribute('data-name') is already 'empty' here
+        if (pieceToMove.getAttribute('data-name') === 'pawn') {
+            console.log('!!!!!!!');
+            if (goToDiv !== pawnJumpDiv) {
+                enPassantReset();
+            }
+        } else { enPassantReset(); } // necessary!
+        // ---------------------------------------------
+        // un-informs pieceToMove
+        fromDiv.setAttribute('data-name', 'empty'); 
+        fromDiv.setAttribute('data-side', 'empty'); 
+        fromDiv.setAttribute('src', './images/transparent.png');
+        
+        console.log('EXITS swapSide()');
+    }
+    //=============================================
+    // eat(goToDiv); --> normal pawn attack
+    // eat(pawnJumpDiv); --> enPassant attack
+    // --------------------------------------------
     function eat(element) {
         console.log('ENTERS eat('+element+')');
         // puts element in its proper takenBox
@@ -112,6 +147,7 @@ function lit(activeSide, passiveSide) {
         console.log('pawnJumpDiv -->');
         console.log(pawnJumpDiv);
         //---------------------------------------------------------------------
+       
         //---------------------------------------------------------------------
         // if goToDiv IS empty
         if (goToDiv.getAttribute('data-side') === 'empty') {
@@ -120,18 +156,12 @@ function lit(activeSide, passiveSide) {
             if (pieceToMove.getAttribute('data-name') === 'pawn') {
                 if (enPassanting) {
                     if (goToDiv === enPassantDiv) {
-                        eat(pawnJumpDiv); // WORKS!
-                        // ---------------------------
-                        console.log('pawnJumpDiv -->');
-                        console.log(pawnJumpDiv);
-                        
+                        eat(pawnJumpDiv); // WORKS!... I think
+                        // ---------------------------                        
                         // sets pawnJumpDiv to empty cell
                         pawnJumpDiv.setAttribute('data-name', 'empty');
                         pawnJumpDiv.setAttribute('data-side', 'empty');
                         pawnJumpDiv.setAttribute('src', './images/transparent.png');
-
-                        console.log('pawnJumpDiv -->');
-                        console.log(pawnJumpDiv);
                     }
                 }
                 // covers bluePawn taking any NON-enPassant empty space
@@ -165,73 +195,47 @@ function lit(activeSide, passiveSide) {
             }
         }
         else { // since goToDiv's side !== empty
-            // ADD CONDITONS FOR ELSE HERE!!
-            // 
             console.log('goToDiv NOT empty');
-            eat(goToDiv); // pieceToMove eats goToDiv
+            // ADD CONDITONS FOR ELSE HERE!!
+            // MAKE A SPECIAL CASTLELIT CLASS JUST FOR CASTLING
+            if (castling) {
+                if (pieceToMove.getAttribute('data-name') === 'king') {                   
+                    switch (goToDiv.id) {
+                        case '27': 
+                            document.getElementById('27').classList.add('castleLit');
+                            document.getElementById('27').removeEventListener('click', pieceLit);
+                            swapSide(pieceToMove, goToDiv);
+                            swapSide(document.getElementById('07'), document.getElementById('37')
+                            );
+                            break;
+                        case '67':
+                            document.getElementById('67').classList.add('castleLit');
+                            document.getElementById('67').removeEventListener('click', pieceLit);
+                            swapSide(pieceToMove, goToDiv);
+                            swapSide(document.getElementById('77'), document.getElementById('57'));
+                            break;
+                        case '20':
+                            document.getElementById('20').classList.add('castleLit');
+                            document.getElementById('20').removeEventListener('click', pieceLit);
+                            swapSide(pieceToMove, goToDiv);
+                            swapSide(document.getElementById('00'), document.getElementById('30'));
+                            break;
+                        case '70':
+                            document.getElementById('70').classList.add('castleLit');
+                            document.getElementById('70').removeEventListener('click', pieceLit);
+                            swapSide(pieceToMove, goToDiv);
+                            swapSide(document.getElementById('70'), document.getElementById('50'));
+                            break;
+                    }
+                }
+                castling = false;
+                // REMOVE CLICK-LISTENER FROM CASTLELIT DIV
+            }
+            else { eat(goToDiv); } // pieceToMove eats goToDiv
         }
         // covers pawnToMove moving one or two empty spaces
         //======================================
-        // swaps pieceToMove & goToDiv info
-        console.log('ENTERS swapSide()');
-
-        console.log('console-logging the hell out of swapSide()!');
-        
-        // !! already has pieceToMove.dataset = 'okokok' !!
-        console.log('pieceToMove -->');
-        console.log(pieceToMove); 
-
-        console.log('e.target -->');
-        console.log(e.target);
-
-        // re-informs goToDiv --> NOT WORKING!
-        goToDiv.setAttribute('data-name', pieceToMove.dataset.name);
-        goToDiv.setAttribute('data-side', pieceToMove.dataset.side);
-        goToDiv.setAttribute('src', pieceToMove.src);
-
-        console.log('e.target -->');
-        console.log(e.target); // no change noticed
-        // ---------------------------------------------
-        console.log('activeSide -->');
-        console.log(activeSide);
-        // ---------------------------------------------
-        // gets pieceToMove's activeSide index
-        index1 = activeSide.indexOf(pieceToMove);
-        // removes now-empty pieceToMove from activeSide    
-        activeSide.splice(index1, 1);
-        // ---------------------------------------------       
-        console.log('activeSide -->');
-        console.log(activeSide);
-        // ---------------------------------------------
-        console.log('pieces -->');
-        console.log(pieces);
-
-        // updates activeSide & pieces array
-        activeSide.push(goToDiv);
-        pieces = [...oranges, ...blues];
-
-        console.log('pieces -->');
-        console.log(pieces);
-        // ---------------------------------------------
-        // pieceToMove.getAttribute('data-name') is already 'empty' here
-        if (pieceToMove.getAttribute('data-name') === 'pawn') {
-            console.log('!!!!!!!');
-            if (goToDiv !== pawnJumpDiv) {
-                enPassantReset();
-            }
-        } else { enPassantReset(); }
-        // ---------------------------------------------
-        console.log('pieceToMove -->');
-        console.log(pieceToMove);
-        // un-informs pieceToMove
-        pieceToMove.setAttribute('data-name', 'empty'); 
-        pieceToMove.setAttribute('data-side', 'empty'); 
-        pieceToMove.setAttribute('src', './images/transparent.png');
-
-        console.log('pieceToMove -->');
-        console.log(pieceToMove);
-
-        console.log('EXITS swapSide()');
+        swapSide(pieceToMove, goToDiv);
         // ---------------------------------------------
         // removes click-listeners from activePieces
         activeSide.forEach(activePiece => {
@@ -240,8 +244,6 @@ function lit(activeSide, passiveSide) {
             ).removeEventListener('click', pieceLit);
         });
         // -----------------------------------------------
-        // pieceToMove = undefined;
-        // console.log('pieceToMove = undefined');
         // -----------------------------------------------
         // toggles side & starts next move 
         if (activeSide === blues) {
@@ -586,34 +588,52 @@ function lit(activeSide, passiveSide) {
     }
     //============================================================
     function kingLit() {
-        
-        if (!kingFirstMove) {
-            if (!rook1FirstMove) {
-                if (pieceToMove.getAttribute('data-side') === 'blue') {
-                    rookId1 = '07';
-                    rookId2 = '77';
-        
-                    if (['17', '27', '37'].every(x => { document.getElementById(x).getAttribute('data-side') === 'empty' })) {
-                        litDivs.push('27');
+        // covers castling
+        if (pieceToMove.getAttribute('data-side') === 'blue') {
+            // rookId1 = '07';
+            // rookId2 = '77';
+            if (!blueKingFirstMove) {
+                if (!blueRook1FirstMove) {
+                    if (['17', '27', '37'].every(id => document.getElementById(id).getAttribute('data-side') === 'empty')) {
+                        castling = true;
+                        castleDivs.push('27');
+                        document.getElementById('27').classList.add('castleLit');
+                        document.getElementById('27').addEventListener('click', pieceLit);
                     }
-                    if (['57', '67'].every(x => { x.getAttribute('data-side') === 'empty' })) {
-                        litDivs.push('67');
+                }
+                if (!blueRook2FirstMove) {
+                    if (['57', '67'].every(id => document.getElementById(id).getAttribute('data-side') === 'empty')) {
+                        castling = true;
+                        castleDivs.push('67');
+                        document.getElementById('67').classList.add('castleLit');
+                        document.getElementById('67').addEventListener('click', pieceLit);
                     }
-                } else { // since activeSide is orange
-                    rookId1 = '07';
-                    rookId2 = '77';
-                    
-                    if (['10', '20', '30'].every(x => { document.getElementById(x).getAttribute('data-side') === 'empty' })) {
-                        litDivs.push('20');
+                }
+            }
+        }       
+        else { // since activeSide is orange
+            // rookId1 = '00';
+            // rookId2 = '70';
+            if (!orangeKingFirstMove) {
+                if (!orangeRook1FirstMove) {
+                    if (['10', '20', '30'].every(id => document.getElementById(id).getAttribute('data-side') === 'empty')) {
+                        castling = true;
+                        castleDivs.push('20');
+                        document.getElementById('20').classList.add('castleLit');
+                        document.getElementById('20').addEventListener('click', pieceLit);
                     }
-                    if (['50', '60'].every(x => { x.getAttribute('data-side') === 'empty' })) {
-                        litDivs.push('60');
+                }
+                if (!orangeRook2FirstMove) {
+                    if (['50', '60'].every(id => document.getElementById(id).getAttribute('data-side') === 'empty')) {
+                        castling = true;
+                        castleDivs.push('60');
+                        document.getElementById('60').classList.add('castleLit');
+                        document.getElementById('60').addEventListener('click', pieceLit);
                     }
                 }
             }
         }
-
-
+        // -------------------------------------------------------------------------------------
         kingSpaces = [
             (pieceToMove.id[0] - 1) + pieceToMove.id[1],
             (pieceToMove.id[0] - 1).toString() + (+pieceToMove.id[1] + 1),
@@ -677,7 +697,7 @@ function lit(activeSide, passiveSide) {
             if (kingAble) { litDivs.push(checkSpaceId); }
         });
         // console.log(litDivs);
-    } // extraLit.js
+    } // WORKS!
     //============================================================
     //============================================================
     //============================================================
@@ -695,6 +715,12 @@ function lit(activeSide, passiveSide) {
                 document.getElementById(
                     litDiv
                 ).classList.remove('lit');
+            });
+            // un-lightens castleDivs
+            castleDivs.forEach(castleDiv => {
+                document.getElementById(
+                    castleDiv
+                ).classList.remove('castleLit');
             });
             // ---------------------------------------
             tempId = []; // ??

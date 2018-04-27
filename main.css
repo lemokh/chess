@@ -110,6 +110,10 @@ https://github.com/lemokh/Photos/blob/master/siennaSquare.jpg?raw=true
   /*background-blend-mode: luminosity;*/
 }
 
+.castleLit {
+   background-color: rgb(220, 20, 103);
+}
+
 .noClick {
   pointer-events: none;
 }
