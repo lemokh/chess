@@ -4,6 +4,7 @@ function lit(activeSide, passiveSide) {
     // function toggleClocks() {}
     //=============================================
     function castling(e) {
+        console.log('enters castling(e)')
         castleIds.forEach(id => {
             document.getElementById(id).classList.remove('castleLit');
             document.getElementById('27').removeEventListener('click', castling);
@@ -12,24 +13,25 @@ function lit(activeSide, passiveSide) {
         castleIds = [];
         litDivs = [];
         //--------------------
-        switch (goToDiv.id) {
+        switch (e.target.id) {
             case '27':
-                swapSide(document.getElementById('07'), document.getElementById('37'));
+                swapSide( document.getElementById('07'), document.getElementById('37') );
                 blueKingFirstMove = true;
                 break;
             case '67':
-                swapSide(document.getElementById('77'), document.getElementById('57'));
+                swapSide( document.getElementById('77'), document.getElementById('57') );
                 blueKingFirstMove = true;
                 break;
             case '20':
-                swapSide(document.getElementById('00'), document.getElementById('30'));
+                swapSide( document.getElementById('00'), document.getElementById('30') );
                 orangeKingFirstMove = true;
                 break;
             case '70':
-                swapSide(document.getElementById('70'), document.getElementById('50'));
+                swapSide( document.getElementById('70'), document.getElementById('50') );
                 orangeKingFirstMove = true;
                 break;
-        } swapSide(e.target, goToDiv);
+        }
+        swapSide(pieceToMove, e.target);
     }
     //=============================================
     function enPassantReset() {
@@ -647,7 +649,7 @@ function lit(activeSide, passiveSide) {
         if (castleIds.length) {
             castleIds.forEach(id => {
                 document.getElementById(id).classList.add('castleLit');
-                document.getElementById('27').addEventListener('click', castling);
+                document.getElementById(id).addEventListener('click', castling);
             });
         }
         else {
@@ -721,6 +723,7 @@ function lit(activeSide, passiveSide) {
     function pieceLit(e) {
         console.log('enters pieceLit(e)');
         // ----------------------------------------------
+        // resets litDivs on clicking multiple activeSide pieces
         if (pieceToMove !== undefined) {
             console.log(pieceToMove);
             // stop click-listening to pieceToMove
@@ -785,7 +788,6 @@ function lit(activeSide, passiveSide) {
             }); // enters movePiece(e) on litDiv-click, unless castling
         }
         // ---------------------------------------------------------
-        // what about castleDiv click-listener?
         // if (!nails.includes(pieceToMove.id)) {}
         // ---------------------------------------------------------
     } //==============================================================
