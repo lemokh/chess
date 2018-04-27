@@ -5,14 +5,19 @@ function lit(activeSide, passiveSide) {
     //=============================================
     function castling(e) {
         console.log('enters castling(e)')
+        // -------------------------------------------------
+        // un-lightens & stops click-listening all castleIds
         castleIds.forEach(id => {
             document.getElementById(id).classList.remove('castleLit');
-            document.getElementById('27').removeEventListener('click', castling);
+            document.getElementById(id).removeEventListener('click', castling);
         });
-        //--------------------
+        // -------------------------------------
+        pieceToMove.classList.remove('mainLit');
+        // -------------------------------------
         castleIds = [];
         litDivs = [];
-        //--------------------
+        // ------------------------------------------------
+        // castles rook & prevents that side from castling again
         switch (e.target.id) {
             case '27':
                 swapSide( document.getElementById('07'), document.getElementById('37') );
@@ -26,13 +31,33 @@ function lit(activeSide, passiveSide) {
                 swapSide( document.getElementById('00'), document.getElementById('30') );
                 orangeKingFirstMove = true;
                 break;
-            case '70':
+            case '60': // DOESN'T WORK!!
                 swapSide( document.getElementById('70'), document.getElementById('50') );
                 orangeKingFirstMove = true;
                 break;
         }
+        // castles king
         swapSide(pieceToMove, e.target);
-    }
+        //\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//\\//
+        // removes click-listeners from activePieces
+        activeSide.forEach(activePiece => {
+            document.getElementById(
+                activePiece.id
+            ).removeEventListener('click', pieceLit);
+        });
+        // -----------------------------------------------
+        // -----------------------------------------------
+        // toggles side & starts next move 
+        if (activeSide === blues) {
+            // toggleClocks();
+            console.log('toggles activeSide to orange');
+            lit(oranges, blues);
+        } else {
+            // toggleClocks();
+            console.log('toggles activeSide to blue');
+            lit(blues, oranges);
+        }
+    } // WORKS!
     //=============================================
     function enPassantReset() {
         // resets enPassanting
@@ -44,7 +69,7 @@ function lit(activeSide, passiveSide) {
         // resets enPassantDiv
         enPassantDiv = undefined;
         console.log('enPassantDiv = undefined');
-    }
+    } // WORKS!
     //=============================================
     function swapSide (fromDiv, toDiv) {
         // swaps pieceToMove & goToDiv info
@@ -79,7 +104,7 @@ function lit(activeSide, passiveSide) {
         fromDiv.setAttribute('src', './images/transparent.png');
         
         console.log('EXITS swapSide()');
-    }
+    } // WORKS!
     //=============================================
     // eat(goToDiv); --> normal pawn attack
     // eat(pawnJumpDiv); --> enPassant attack
@@ -113,7 +138,7 @@ function lit(activeSide, passiveSide) {
         console.log(passiveSide);
         // ---------------------------------------------
         console.log('EXITS eat()');
-    }
+    } // WORKS!  (I THINK)
     //=============================================
     //=============================================
     //=============================================
@@ -289,7 +314,7 @@ function lit(activeSide, passiveSide) {
             console.log('toggles side');
             lit(blues, oranges);
         }
-    }
+    } // WORKS!  (I THINK)
     //=============================================
     //=============================================
     //=============================================
@@ -617,7 +642,7 @@ function lit(activeSide, passiveSide) {
     //============================================================
     function kingLit() {
         kingSpacesUnderAttack = [];
-        // covers castling
+        // covers king castling
         if (pieceToMove.getAttribute('data-side') === 'blue') {
             if (!blueKingFirstMove) {
                 if (!blueRook1FirstMove) {
@@ -646,13 +671,14 @@ function lit(activeSide, passiveSide) {
                 }
             }
         }
-        if (castleIds.length) {
+        // lightens & click-listens all castleIds
+        if (castleIds.length) { // if king is castling
             castleIds.forEach(id => {
                 document.getElementById(id).classList.add('castleLit');
                 document.getElementById(id).addEventListener('click', castling);
             });
         }
-        else {
+        else { // since king not castling
             // ----------------------------------------------------------------
             kingSpaces = [
                 (pieceToMove.id[0] - 1) + pieceToMove.id[1],
@@ -716,7 +742,7 @@ function lit(activeSide, passiveSide) {
                 if (kingAble) { litDivs.push(checkSpaceId); }
             }); // console.log(litDivs);
         } // WORKS!
-    }
+    } // WORKS! (I THINK)
     //============================================================
     //============================================================
     //============================================================
@@ -790,7 +816,8 @@ function lit(activeSide, passiveSide) {
         // ---------------------------------------------------------
         // if (!nails.includes(pieceToMove.id)) {}
         // ---------------------------------------------------------
-    } //==============================================================
+    } // WORKS! 
+    //==============================================================
     // runs pieceLit(e) for all clicked activeSide pieces
     activeSide.forEach(activePiece => {
         document.getElementById( activePiece.id ).addEventListener('click', pieceLit);
