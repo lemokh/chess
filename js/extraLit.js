@@ -65,6 +65,28 @@ function lit(activeSide, passiveSide) {
             ).removeEventListener('click', movePiece);
          });
         // -----------------------------------------------------------------
+        if (pieceToMove.getAttribute('data-name') === 'king') {
+            if (pieceToMove.getAttribute('data-side') === 'blue') {
+                blueKingFirstMove = true;
+            } else { orangeKingFirstMove = true; }
+        }
+        // -----------------------------------------------------------------
+        if (pieceToMove.getAttribute('data-name') === 'rook') {
+            if (pieceToMove.getAttribute('data-side') === 'blue') {
+                if (pieceToMove.id === '07') {
+                    blueRook1FirstMove = true;
+                } else if (pieceToMove.id === '77') {
+                    blueRook2FirstMove = true;
+                }
+            } else {
+                if (pieceToMove.id === '00') {
+                    orangeRook1FirstMove = true;
+                } else if (pieceToMove.id === '70') {
+                    orangeRook2FirstMove = true;
+                }
+            }
+        }
+        // -----------------------------------------------------------------
         console.log('un-lightens mainDiv & litDivs');
         // un-lightens mainDiv
         document.getElementById(
@@ -90,13 +112,6 @@ function lit(activeSide, passiveSide) {
         console.log('pawnJumpDiv -->');
         console.log(pawnJumpDiv);
         //---------------------------------------------------------------------
-        // if (!pawnJumpDiv) {
-        //     if (pieceToMove.id[1] === pawnJumpDiv.id[1]) {
-        //         if (pieceToMove.id[0] === (+pawnJumpDiv.id[0] + 1)
-        //            || pieceToMove.id[0] === (pawnJumpDiv.id[0] - 1)
-        //         ) { enPassanting = true; }
-        //     }
-        // }
         //---------------------------------------------------------------------
         // if goToDiv IS empty
         if (goToDiv.getAttribute('data-side') === 'empty') {
@@ -571,6 +586,34 @@ function lit(activeSide, passiveSide) {
     }
     //============================================================
     function kingLit() {
+        
+        if (!kingFirstMove) {
+            if (!rook1FirstMove) {
+                if (pieceToMove.getAttribute('data-side') === 'blue') {
+                    rookId1 = '07';
+                    rookId2 = '77';
+        
+                    if (['17', '27', '37'].every(x => { document.getElementById(x).getAttribute('data-side') === 'empty' })) {
+                        litDivs.push('27');
+                    }
+                    if (['57', '67'].every(x => { x.getAttribute('data-side') === 'empty' })) {
+                        litDivs.push('67');
+                    }
+                } else { // since activeSide is orange
+                    rookId1 = '07';
+                    rookId2 = '77';
+                    
+                    if (['10', '20', '30'].every(x => { document.getElementById(x).getAttribute('data-side') === 'empty' })) {
+                        litDivs.push('20');
+                    }
+                    if (['50', '60'].every(x => { x.getAttribute('data-side') === 'empty' })) {
+                        litDivs.push('60');
+                    }
+                }
+            }
+        }
+
+
         kingSpaces = [
             (pieceToMove.id[0] - 1) + pieceToMove.id[1],
             (pieceToMove.id[0] - 1).toString() + (+pieceToMove.id[1] + 1),
@@ -598,7 +641,8 @@ function lit(activeSide, passiveSide) {
                 return kingSpace == activePiece.id;
             }); // returns true if not a match
         }); // WORKS!
-        /*
+
+        /*  DO I NEED KINGSPACES IN CHECKMATE?
         openAndOpponentHeldKingSpaces.forEach(checkSpaceId => {
             passiveSide.forEach(passivePiece => {
                 console.log(checkingSpace(passivePiece, checkSpaceId));
@@ -624,17 +668,13 @@ function lit(activeSide, passiveSide) {
         */
         openAndOpponentHeldKingSpaces.forEach(checkSpaceId => {
             kingAble = true;
-
             passiveSide.forEach(passivePiece => {
                 // if no passivePiece can check a kingSpace devoid of kingSide pieces
-                // checkingSpace returns true/false if piece attacks space
                 if (checkingSpace(passivePiece, checkSpaceId)) {
                     kingAble = false;
-                }
+                } // checkingSpace returns true/false if piece attacks space
             });
-            if (kingAble) {
-                litDivs.push(checkSpaceId); // add to litDivs
-            }
+            if (kingAble) { litDivs.push(checkSpaceId); }
         });
         // console.log(litDivs);
     } // extraLit.js
