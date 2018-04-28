@@ -138,7 +138,7 @@ function lit(activeSide, passiveSide) {
         console.log(passiveSide);
         // ---------------------------------------------
         console.log('EXITS eat()');
-    } // WORKS!  (I THINK)
+    } // WORKS!
     //=============================================
     //=============================================
     //=============================================
@@ -550,7 +550,7 @@ function lit(activeSide, passiveSide) {
                 }
             }
         }
-    } // WORKS!  (SOME PROBLEMS LIGHTENING RIGHT SPACE)
+    } // WORKS!
     //============================================================
     function bishopLit() {
         function quadrant(bishopX, bishopY) {
@@ -642,39 +642,32 @@ function lit(activeSide, passiveSide) {
     //============================================================
     function kingLit() {
         kingSpacesUnderAttack = [];
-
-
-        // CASTLE CODE STILL NEEDS:
-        // IF (ANY PASSIVE PIECE CAN ATTACK ANY CASTLEDIVS) {
-        //   PREVENT CASTLING FOR ONLY THAT ROOK & FOR ONLY THAT TURN
-        // }
-
-        
-        // ------------------------------------------------
-
+        // ----------------------------------------------------
         // covers king castling
         if (pieceToMove.getAttribute('data-side') === 'blue') {
             if (!blueKingFirstMove) {
                 if (!blueRook1FirstMove) {
                     if (['17', '27', '37'].every(id => document.getElementById(id).getAttribute('data-side') === 'empty')) {
-                        castleIds.push('27');
-                        // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-                        // for each passivePiece --> use for-looop
-                        passiveSide.forEach(passivePiece => {
-                            // if any can attack a castleId
-                            ['17', '27', '37'].forEach(id => {
-                                // then stop checking & clear castleIds
-                                if (!checkingSpace(passivePiece, id)) {
-                                    castleIds = [];
+                        noCastle = false;
+                        for (let i = 0; i < 3; i++) {
+                            for (let k = 0; k < passiveSide.length; k++) {
+                                if (checkingSpace(passiveSide[k], ['17', '27', '37'][i])) {
+                                    noCastle = true;
                                 }
-                            });
-                        }); // DO THIS FOR THE OTHER THREE SECTIONS
-                        // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+                            }
+                        }  if (!noCastle) { castleIds.push('27'); }
                     }
-                }
+                } // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
                 if (!blueRook2FirstMove) {
                     if (['57', '67'].every(id => document.getElementById(id).getAttribute('data-side') === 'empty')) {
-                        castleIds.push('67');
+                        noCastle = false;
+                        for (let i = 0; i < 2; i++) {
+                            for (let k = 0; k < passiveSide.length; k++) {
+                                if (checkingSpace(passiveSide[k], ['57', '67'][i])) {
+                                    noCastle = true;
+                                }
+                            }
+                        }  if (!noCastle) { castleIds.push('67'); }
                     }
                 }
             }
@@ -683,12 +676,26 @@ function lit(activeSide, passiveSide) {
             if (!orangeKingFirstMove) {
                 if (!orangeRook1FirstMove) {
                     if (['10', '20', '30'].every(id => document.getElementById(id).getAttribute('data-side') === 'empty')) {
-                        castleIds.push('20');
+                        for (let i = 0; i < 3; i++) {
+                            noCastle = false;
+                            for (let k = 0; k < passiveSide.length; k++) {
+                                if (checkingSpace(passiveSide[k], ['10', '20', '30'][i])) {
+                                    noCastle = true;
+                                }
+                            }
+                        }  if (!noCastle) { castleIds.push('20'); }
                     }
                 }
                 if (!orangeRook2FirstMove) {
                     if (['50', '60'].every(id => document.getElementById(id).getAttribute('data-side') === 'empty')) {
-                        castleIds.push('60');
+                        noCastle = false;
+                        for (let i = 0; i < 2; i++) {
+                            for (let k = 0; k < passiveSide.length; k++) {
+                                if (checkingSpace(passiveSide[k], ['50', '60'][i])) {
+                                    noCastle = true;
+                                }
+                            }
+                        }  if (!noCastle) { castleIds.push('60'); }
                     }
                 }
             }
@@ -764,33 +771,39 @@ function lit(activeSide, passiveSide) {
                 if (kingAble) { litDivs.push(checkSpaceId); }
             }); // console.log(litDivs);
         } // WORKS!
-    } // WORKS! (I THINK)
+    } // WORKS!
     //============================================================
     //============================================================
     //============================================================
     function pieceLit(e) {
         console.log('enters pieceLit(e)');
-        // ----------------------------------------------
+        // -----------------------------------------------------
         // resets litDivs on clicking multiple activeSide pieces
         if (pieceToMove !== undefined) {
             console.log(pieceToMove);
             // stop click-listening to pieceToMove
             pieceToMove.removeEventListener('click', movePiece);
-            // stop click-listening to litDivs
-            litDivs.forEach(litDiv => {
-                document.getElementById(litDiv).removeEventListener(
-                    'click', movePiece
-                );
-            });
-            // -------------------------------------------
+            // -------------------------------------------------
             // un-lightens pieceToMove
             pieceToMove.classList.remove('mainLit');
-            // un-lightens litDivs
-            litDivs.forEach(litDiv => {
-                document.getElementById(litDiv).classList.remove('lit');
-            });
-            // -------------------------------------------
-            litDivs = [];
+            // -----------------------------------------------------------
+            // un-lightens, clears out & stops click-listening all litDivs
+            if (litDivs.length) {
+                litDivs.forEach(litDiv => {
+                    document.getElementById(litDiv).classList.remove('lit');
+                    document.getElementById(litDiv).removeEventListener('click', movePiece);
+                });
+                litDivs = [];
+            }
+            // -------------------------------------------------------------
+            // un-lightens, clears out & stops click-listening all castleIds
+            if (castleIds.length) { // if king ready to castle
+                castleIds.forEach(id => { // reset castling process 
+                    document.getElementById(id).classList.remove('castleLit');
+                    document.getElementById(id).removeEventListener('click', castling);
+                });
+                castleIds = [];
+            }
         }
         //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\//
         pieceToMove = e.target;
@@ -843,7 +856,7 @@ function lit(activeSide, passiveSide) {
     // runs pieceLit(e) for all clicked activeSide pieces
     activeSide.forEach(activePiece => {
         document.getElementById( activePiece.id ).addEventListener('click', pieceLit);
-        // console.log('click-listens to activeSide --> pieceLit(e)');
+        console.log('click-listens to activeSide --> pieceLit(e)');
     });
 } //================================================================
 lit(blues, oranges);
