@@ -47,6 +47,7 @@ function lit(activeSide, passiveSide) {
         });
         // -----------------------------------------------
         // -----------------------------------------------
+        /*
         // toggles side & starts next move 
         if (activeSide === blues) {
             // toggleClocks();
@@ -56,7 +57,7 @@ function lit(activeSide, passiveSide) {
             // toggleClocks();
             console.log('toggles activeSide to blue');
             lit(blues, oranges);
-        }
+        } */
     } // WORKS!
     //=============================================
     function enPassantReset() {
@@ -270,6 +271,7 @@ function lit(activeSide, passiveSide) {
         });
         // -----------------------------------------------
         // -----------------------------------------------
+        /*
         // toggles side & starts next move 
         if (activeSide === blues) {
             // toggleClocks();
@@ -279,7 +281,7 @@ function lit(activeSide, passiveSide) {
             // toggleClocks();
             console.log('toggles activeSide to blue');
             lit(blues, oranges);
-        }
+        } */
     } // WORKS!
     //=============================================
     //=============================================
@@ -863,6 +865,6 @@ function nextMove() {
     // toggleClocks();
     lit(activity, passivity); // begin next turn
 }
-// lit(activity, passivity);
-// lit(blues, oranges);
+
+lit(blues, oranges);
 while (!endOfGame) { nextMove(); }
