@@ -140,7 +140,7 @@ function lit(activeSide, passiveSide) {
         console.log(passiveSide);
         // ---------------------------------------------
         console.log('EXITS eat()');
-    } // NOT WORKING!
+    } // WORKS!
     //=============================================
     //=============================================
     //=============================================
@@ -209,7 +209,7 @@ function lit(activeSide, passiveSide) {
         console.log(pawnJumpDiv);
         //---------------------------------------------------------------------
         //---------------------------------------------------------------------
-        // if goToDiv IS empty
+        // IF goToDiv IS EMPTY
         if (goToDiv.getAttribute('data-side') === 'empty') {
             console.log('goToDiv IS empty');            
             // covers anySide enPassant pawn attack
@@ -254,44 +254,9 @@ function lit(activeSide, passiveSide) {
                 }
             }
         }
-        else { // since goToDiv's side !== empty
+        else { // SINCE goToDiv NOT EMPTY
             console.log('goToDiv NOT empty');
-            // ADD CONDITONS FOR ELSE HERE!!
-            // MAKE A SPECIAL CASTLELIT CLASS JUST FOR CASTLING
-            if (castling) {
-                if (pieceToMove.getAttribute('data-name') === 'king') {                   
-                    switch (goToDiv.id) {
-                        case '27': 
-                            document.getElementById('27').classList.add('castleLit');
-                            document.getElementById('27').removeEventListener('click', pieceLit);
-                            swapSide(pieceToMove, goToDiv);
-                            swapSide(document.getElementById('07'), document.getElementById('37')
-                            );
-                            break;
-                        case '67':
-                            document.getElementById('67').classList.add('castleLit');
-                            document.getElementById('67').removeEventListener('click', pieceLit);
-                            swapSide(pieceToMove, goToDiv);
-                            swapSide(document.getElementById('77'), document.getElementById('57'));
-                            break;
-                        case '20':
-                            document.getElementById('20').classList.add('castleLit');
-                            document.getElementById('20').removeEventListener('click', pieceLit);
-                            swapSide(pieceToMove, goToDiv);
-                            swapSide(document.getElementById('00'), document.getElementById('30'));
-                            break;
-                        case '70':
-                            document.getElementById('70').classList.add('castleLit');
-                            document.getElementById('70').removeEventListener('click', pieceLit);
-                            swapSide(pieceToMove, goToDiv);
-                            swapSide(document.getElementById('70'), document.getElementById('50'));
-                            break;
-                    }
-                }
-                castling = false;
-                // REMOVE CLICK-LISTENER FROM CASTLELIT DIV
-            }
-            else { eat(goToDiv); } // pieceToMove eats goToDiv
+            eat(goToDiv); // pieceToMove eats goToDiv
         }
         // covers pawnToMove moving one or two empty spaces
         //======================================
@@ -686,7 +651,7 @@ function lit(activeSide, passiveSide) {
                             }
                         }  if (!noCastle) { castleIds.push('20'); }
                     }
-                }
+                } // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
                 if (!orangeRook2FirstMove) {
                     if (['50', '60'].every(id => document.getElementById(id).getAttribute('data-side') === 'empty')) {
                         noCastle = false;
@@ -860,4 +825,4 @@ function lit(activeSide, passiveSide) {
         // console.log('click-listens to activeSide --> pieceLit(e)');
     });
 } //================================================================
-// lit(blues, oranges);
+lit(blues, oranges);

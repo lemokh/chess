@@ -47,16 +47,16 @@ function lit(activeSide, passiveSide) {
         });
         // -----------------------------------------------
         // -----------------------------------------------
-        // // toggles side & starts next move 
-        // if (activeSide === blues) {
-        //     // toggleClocks();
-        //     console.log('toggles activeSide to orange');
-        //     lit(oranges, blues);
-        // } else {
-        //     // toggleClocks();
-        //     console.log('toggles activeSide to blue');
-        //     lit(blues, oranges);
-        // }
+        // toggles side & starts next move 
+        if (activeSide === blues) {
+            // toggleClocks();
+            console.log('toggles activeSide to orange');
+            lit(oranges, blues);
+        } else {
+            // toggleClocks();
+            console.log('toggles activeSide to blue');
+            lit(blues, oranges);
+        }
     } // WORKS!
     //=============================================
     function enPassantReset() {
@@ -140,7 +140,7 @@ function lit(activeSide, passiveSide) {
         console.log(passiveSide);
         // ---------------------------------------------
         console.log('EXITS eat()');
-    } // NOT WORKING!
+    } // WORKS!
     //=============================================
     //=============================================
     //=============================================
@@ -209,7 +209,7 @@ function lit(activeSide, passiveSide) {
         console.log(pawnJumpDiv);
         //---------------------------------------------------------------------
         //---------------------------------------------------------------------
-        // if goToDiv IS empty
+        // IF goToDiv IS EMPTY
         if (goToDiv.getAttribute('data-side') === 'empty') {
             console.log('goToDiv IS empty');            
             // covers anySide enPassant pawn attack
@@ -254,44 +254,9 @@ function lit(activeSide, passiveSide) {
                 }
             }
         }
-        else { // since goToDiv's side !== empty
+        else { // SINCE goToDiv NOT EMPTY
             console.log('goToDiv NOT empty');
-            // ADD CONDITONS FOR ELSE HERE!!
-            // MAKE A SPECIAL CASTLELIT CLASS JUST FOR CASTLING
-            if (castling) {
-                if (pieceToMove.getAttribute('data-name') === 'king') {                   
-                    switch (goToDiv.id) {
-                        case '27': 
-                            document.getElementById('27').classList.add('castleLit');
-                            document.getElementById('27').removeEventListener('click', pieceLit);
-                            swapSide(pieceToMove, goToDiv);
-                            swapSide(document.getElementById('07'), document.getElementById('37')
-                            );
-                            break;
-                        case '67':
-                            document.getElementById('67').classList.add('castleLit');
-                            document.getElementById('67').removeEventListener('click', pieceLit);
-                            swapSide(pieceToMove, goToDiv);
-                            swapSide(document.getElementById('77'), document.getElementById('57'));
-                            break;
-                        case '20':
-                            document.getElementById('20').classList.add('castleLit');
-                            document.getElementById('20').removeEventListener('click', pieceLit);
-                            swapSide(pieceToMove, goToDiv);
-                            swapSide(document.getElementById('00'), document.getElementById('30'));
-                            break;
-                        case '70':
-                            document.getElementById('70').classList.add('castleLit');
-                            document.getElementById('70').removeEventListener('click', pieceLit);
-                            swapSide(pieceToMove, goToDiv);
-                            swapSide(document.getElementById('70'), document.getElementById('50'));
-                            break;
-                    }
-                }
-                castling = false;
-                // REMOVE CLICK-LISTENER FROM CASTLELIT DIV
-            }
-            else { eat(goToDiv); } // pieceToMove eats goToDiv
+            eat(goToDiv); // pieceToMove eats goToDiv
         }
         // covers pawnToMove moving one or two empty spaces
         //======================================
@@ -305,17 +270,17 @@ function lit(activeSide, passiveSide) {
         });
         // -----------------------------------------------
         // -----------------------------------------------
-        // // toggles side & starts next move 
-        // if (activeSide === blues) {
-        //     // toggleClocks();
-        //     console.log('toggles activeSide to orange');
-        //     lit(oranges, blues);
-        // } else {
-        //     // toggleClocks();
-        //     console.log('toggles activeSide to blue');
-        //     lit(blues, oranges);
-        // }
-    } // WORKS!  (I THINK)
+        // toggles side & starts next move 
+        if (activeSide === blues) {
+            // toggleClocks();
+            console.log('toggles activeSide to orange');
+            lit(oranges, blues);
+        } else {
+            // toggleClocks();
+            console.log('toggles activeSide to blue');
+            lit(blues, oranges);
+        }
+    } // WORKS!
     //=============================================
     //=============================================
     //=============================================
@@ -686,7 +651,7 @@ function lit(activeSide, passiveSide) {
                             }
                         }  if (!noCastle) { castleIds.push('20'); }
                     }
-                }
+                } // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
                 if (!orangeRook2FirstMove) {
                     if (['50', '60'].every(id => document.getElementById(id).getAttribute('data-side') === 'empty')) {
                         noCastle = false;
@@ -862,15 +827,17 @@ function lit(activeSide, passiveSide) {
 } //================================================================
 //==================================================================
 function nextMove() {
-    for (i = 0; i < activeSide.length; i++) {
-        if (activeSide[i].getAttribute('data-name') === 'king') {
-            activeKingId = activeSide[i]; 
+    // sets activeKingId
+    for (i = 0; i < activity.length; i++) {
+        if (activity[i].getAttribute('data-name') === 'king') {
+            activeKingId = activity[i].id; 
             break;
         }
-    }
-    for (i = 0; i < passiveSide.length; i++) {
+    } console.log(activeKingId);
+    // declares if activeKing is in check...
+    for (i = 0; i < passivity.length; i++) {
         // if a passivePiece can check activeKing
-        if (checkingSpace(passiveSide[i], activeKingId)) {
+        if (checkingSpace(passivity[i], activeKingId)) {
             // if (isMate()) {
             //     endOfGame = true;
             //     console.log(activeKingId.getAttribute('data-side')+' CHECK MATED!');
@@ -891,11 +858,11 @@ function nextMove() {
     }
     else {
         activity = blues;
-        passivity = oranges; 
+        passivity = oranges;
     }
     // toggleClocks();
     lit(activity, passivity); // begin next turn
 }
-lit(activity, passivity);
+// lit(activity, passivity);
 // lit(blues, oranges);
 while (!endOfGame) { nextMove(); }
