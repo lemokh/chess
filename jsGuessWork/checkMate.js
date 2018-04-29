@@ -1,8 +1,23 @@
-function isCheck(pieces, player) { // returns EITHER an array of checking pieces OR false
+// returns EITHER an array of checking pieces OR false
+function isCheck(pieces, player) {
   
   whites = []; blacks = []; pinnedPieces = []; checkedPaths = [];
   
-  function checkingKing(somePiece, king) { // returns true/false if piece checks opposing king
+  function setKingValues() {
+    pieces.forEach(item => { // sets whiteKing & blackKing values
+      if (item.name === 'king') {
+        if (item.side === 'blue') { whiteKing = item; } // cover for more multiple white kings?
+        else { blackKing = item; }
+      } 
+      else { // since not a king, add piece to whites or blacks array
+        if (item.side === 'blue') { whites.push(item); }
+        else { blacks.push(item); }
+      }
+    });
+  }
+  // checkingSpace yields same result I think
+  // returns true/false if piece checks opposing king
+  function checkingKing(somePiece, king) {
     
     function knightAttacks(knight, king) { // returns true/false if knight checks king
       // console.log([knight, king]);
@@ -191,8 +206,8 @@ function isCheck(pieces, player) { // returns EITHER an array of checking pieces
         return queenAttacks(somePiece, whiteKing); // sees if black queen checks whiteKing
     }
   }
-  
-  function inCheck(passiveSide, king) { // discerns if check occurs   
+  // discerns if check occurs
+  function inCheck(passiveSide, king) {   
     kingAttackers = []; // contains pieces checking king
     
     passiveSide.forEach(item => {
@@ -203,17 +218,7 @@ function isCheck(pieces, player) { // returns EITHER an array of checking pieces
     else { console.log(''+activeSide+' in check'); }
   } // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-  pieces.forEach(function(item) { // sets whiteKing & blackKing values
-    if (item.name === 'king') {
-      if (item.side === 'blue') { whiteKing = item; } // cover for more multiple white kings?
-      else { blackKing = item; }
-    } 
-    else { // since not a king, add piece to whites or blacks array
-      if (item.side === 'blue') { whites.push(item); }
-      else { blacks.push(item); }
-    }
-  });
-  
+  setKingValues();
   inCheck(passiveSide, activeSideKing); 
 }
 
@@ -222,19 +227,19 @@ function isCheck(pieces, player) { // returns EITHER an array of checking pieces
 //===============================================================================================
 
 // returns true/false if check mate
-function isMate(pieces, player) { 
-  // returns true/false if king checkmate --> player = turn to avoid checkmate 
+function isMate(pieces, side) { 
+  // returns true/false if king checkmate --> side = turn to avoid checkmate 
   //===============================================================================================
-  if ( !(isCheck(pieces, player)) ) { return false; }
   if (kingAttackers.length > 1) { return true; }
   // console.log(kingAttackers); // WORKS! -->  OPTIMIZE kingAttackers INTO kingAttacker
   //===============================================================================================
-  function checkMate(passiveSide, opposingKing, king, kingSide) { // returns true/false if check mate
+  // returns true/false if check mate for activeKing
+  function checkMate(passiveSide, opposingKing, king, kingSide) {
     
     occupiedKingSpaces = []; // contains {x,y} of all pieces surrounding king
     
     kingSpaces = [
-    
+
       {x: king.x - 1, y: king.y},
       {x: king.x - 1, y: king.y + 1},
       {x: king.x, y: king.y + 1},
@@ -282,12 +287,15 @@ function isMate(pieces, player) {
     
     if (kingOpenSpaces.length > 0) { return false; } // not checkmate
     //============================================================================================================
-    else { // since king can't move: can king/kingSide EAT checking piece or BLOCK its checking path?
-      
+    else {
+      // since king can't move out of check: 
+      // can king/kingSide EAT checking piece or BLOCK its checking path?
       let defenders = [], pawnDefenders = [];
-  
-      for (let i = 0; i < kingSide.length; i++) { // if unpinned, add to defenders
+      
+      // populates defenders & pawnDefenders with unpinned kingSide pieces
+      for (let i = 0; i < kingSide.length; i++) {
         // console.log(!pinnedPieces.includes(kingSide[i])); // WORKS!
+        // if unpinned, add to defenders
         if (kingSide[i].name === 'pawn') {
           if (!pinnedPieces.includes(kingSide[i])) {
             pawnDefenders.push(kingSide[i]);
@@ -296,9 +304,9 @@ function isMate(pieces, player) {
         else if (!pinnedPieces.includes(kingSide[i])) {
           defenders.push(kingSide[i]);
         } 
-      } 
-      // populates defenders & pawnDefenders with unpinned kingSide pieces --> WORKS!
- 
+      } // WORKS!
+
+      // RETURNS TRUE/FALSE IF CHECK MATE
       function blockCheck() { // RETURNS FALSE IF ANY DEFENDERS BLOCK CHECK
         for (let k = 0; k < checkedPaths.length; k++) {
           for (let i = 0; i < pawnDefenders.length; i++) {
@@ -331,10 +339,12 @@ function isMate(pieces, player) {
           }
         } // sees if any defenders can block any checkedPaths space
         return true; // check mate
-      } // RETURNS TRUE/FALSE IF CHECK MATE --> WORKS!
+      } // WORKS!
 
-    // 1. EN PASSANT? --> if king's attacker is a pawn, is en passant possible? --> WORKS!
+    // 1. EN PASSANT? --> if king's attacker is a pawn,
+      // can any kingSide pawn do enPassant to eat attacker possible? --> WORKS!
       if (kingAttackers[0].name === "pawn") {
+        // make this a separate function to run here...
         if (kingAttackers[0].prevY === kingAttackers[0].y + 2) { // white pawn
           for (let p = 0; p < pawnDefenders.length; p++) {
             if (kingAttackers[0].y === pawnDefenders[p].y) { // Y aligns
@@ -361,12 +371,9 @@ function isMate(pieces, player) {
         }
       } 
       
-    // 2. IS KINGATTACKER COVERED?
-      
-      // does opposingKing cover kingAttacker?
-      if (checkingSpace(opposingKing, kingAttackers[0])) { // opposingKing covers attacker
-        return blockCheck();
-      }
+    // 2. IS KINGATTACKER COVERED BY OWN SIDE?      
+      // if opposingKing covers attacker
+      if (checkingSpace(opposingKing, kingAttackers[0])) { return blockCheck(); }
       
       // do any passiveSide pieces cover kingAttacker?
       if (passiveSide.length > 1) { // if only one, passiveSide[0] is kingAttackers[0]
@@ -377,8 +384,7 @@ function isMate(pieces, player) {
         }
       }
       
-    // 3. SINCE UNCOVERED, IS KINGATTACKER EATABLE?
-      
+      // 3. SINCE UNCOVERED, IS KINGATTACKER EATABLE?
       // does king EAT its attacker?
       if (checkingSpace(king, kingAttackers[0])) { return false; } // king EATS, not mate
       
@@ -392,13 +398,13 @@ function isMate(pieces, player) {
         if (checkingSpace(pawnDefenders[k], kingAttackers[0])) { return false; }
       } // PawnDefender EATS, not mate
       
-    // 3. SINCE UNEATABLE, IS KINGATTACKER'S PATH BLOCKABLE?
+    // 3. SINCE KINGATTACKER IS UNEATABLE, IS KINGATTACKER'S PATH BLOCKABLE?
       return blockCheck();
     }
   } // returns true/false if check mate
   //===============================================================================================
   //===============================================================================================
-  if (player === 'blue') { return checkMate(blacks, blackKing, whiteKing, whites); }
+  if (side === blues) { return checkMate(blacks, blackKing, whiteKing, whites); }
   else { return checkMate(whites, whiteKing, blackKing, blacks); }
 }
 
@@ -409,8 +415,9 @@ function isMate(pieces, player) {
 //===============================================================================================
 //===============================================================================================
 
-if (isCheck(passiveSide, activeKingId)) {
-  if (isMate(passiveSide, activeKingId)) { endGame = true; }
+if ( isCheck(passiveSide, activeKingId) ) { // if activeKing in check
+  if ( isMate(passiveSide, activeKingId) ) { endOfGame = true; }
+  else { console.log('activeKing IN CHECK!'); }
 }
 
 //===============================================================================================
@@ -522,7 +529,7 @@ function checkingSpace(somePiece, checkSpace) {
         else { return false; } // bishop cannot checkSpace
       }
     }
-    else {// (RIGHT BOARD SIDE)
+    else { // (RIGHT BOARD SIDE)
       // since bishop is right of checkSpace
       // (SECOND QUADRANT)
       // and since someBishop is above checkSpace
