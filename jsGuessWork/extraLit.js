@@ -208,7 +208,6 @@ function lit(activeSide, passiveSide) {
         console.log('pawnJumpDiv -->');
         console.log(pawnJumpDiv);
         //---------------------------------------------------------------------
-       
         //---------------------------------------------------------------------
         // if goToDiv IS empty
         if (goToDiv.getAttribute('data-side') === 'empty') {
@@ -309,11 +308,11 @@ function lit(activeSide, passiveSide) {
         // toggles side & starts next move 
         if (activeSide === blues) {
             // toggleClocks();
-            console.log('toggles side');
+            console.log('toggles activeSide to orange');
             lit(oranges, blues);
         } else {
             // toggleClocks();
-            console.log('toggles side');
+            console.log('toggles activeSide to blue');
             lit(blues, oranges);
         }
     } // WORKS!  (I THINK)

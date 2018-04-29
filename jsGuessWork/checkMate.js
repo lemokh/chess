@@ -192,18 +192,16 @@ function isCheck(pieces, player) { // returns EITHER an array of checking pieces
     }
   }
   
-  function inCheck(passiveSide, king) { // discerns if check occurs
-    
+  function inCheck(passiveSide, king) { // discerns if check occurs   
     kingAttackers = []; // contains pieces checking king
     
     passiveSide.forEach(item => {
       if (checkingKing(item, king)) { kingAttackers.push(item); }
     }); //console.log(kingAttackers);
-    
-    // returns 
+    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     if (kingAttackers.length > 0) { isMate(); }
     else { console.log(''+activeSide+' in check'); }
-  }
+  } // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
   pieces.forEach(function(item) { // sets whiteKing & blackKing values
     if (item.name === 'king') {
