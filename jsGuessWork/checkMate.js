@@ -415,8 +415,8 @@ function isMate(pieces, side) {
 //===============================================================================================
 //===============================================================================================
 
-if ( isCheck(passiveSide, activeKingId) ) { // if activeKing in check
-  if ( isMate(passiveSide, activeKingId) ) { endOfGame = true; }
+if ( isCheck(passiveSide, activeKing.id) ) { // if activeKing in check
+  if ( isMate(passiveSide, activeKing.id) ) { endOfGame = true; }
   else { console.log('activeKing IN CHECK!'); }
 }
 

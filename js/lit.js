@@ -4,21 +4,47 @@ function lit(activeSide, passiveSide) {
     emptySpaces = openSpaces(boardIds, pieces); // updates emptySpaces
     // function toggleClocks() {}
     //=============================================
-    // sets activeKingId
+    // sets activeKing
     for (i = 0; i < activeSide.length; i++) {
         if (activeSide[i].getAttribute('data-name') === 'king') {
-            activeKingId = activeSide[i].id;
+            activeKing = activeSide[i];
             break;
         }
-    } console.log(activeKingId);
+    } console.log(activeKing);
     //=============================================
-    function isMate() {
+    function isMate() { // returns true/false if activeKing is check mated
+        kingAttackers.forEach(kingAttacker => { // for loop so can break?
+            pieceToMove = activeKing;
+            kingLit();
+            // -------------------------------------------------
+            // stops click-listening to pieceToMove
+            // pieceToMove.removeEventListener('click', movePiece);
+            // ------------------------------------------------------------
+            // un-lightens, clears out & stops click-listening to castleIds
+            if (castleIds.length) { // if king ready to castle
+                castleIds.forEach(id => { // reset castling process 
+                    document.getElementById(id).classList.remove('castleLit');
+                    document.getElementById(id).removeEventListener('click', castling);
+                });
+                castleIds = [];
+            }
+            // un-lightens, clears out & stops click-listening to litDivs
+            if (litDivs.length) { // if not check mate
+                litDivs.forEach(litDiv => {
+                    document.getElementById(litDiv).classList.remove('lit');
+                    document.getElementById(litDiv).removeEventListener('click', movePiece);
+                });
+            } else { // since activeKing unable to move out of check or eat it's attacker
+                // can any activePiece eat kingAttacker?
 
+                // can any activePiece block kingAttacker's check path?
+            }
+        });
     }
     //=============================================
     // populates kingAttackers array
     passiveSide.forEach(item => {
-        if (checkingSpace(item, activeKingId)) { kingAttackers.push(item); }
+        if (checkingSpace(item, activeKing.id)) { kingAttackers.push(item); }
     });
     console.log('kingAttackers -->');
     console.log(kingAttackers);
@@ -27,10 +53,9 @@ function lit(activeSide, passiveSide) {
     if (kingAttackers.length > 0) {
         if (isMate()) {
             endOfGame = true;
-            alert(activeKingId.getAttribute('data-side')+' CHECK MATED!');
+            alert(activeKing.getAttribute('data-side')+' CHECK MATED!');
         }
-        else { alert(document.getElementById(activeKingId).getAttribute('data-side')+' king CHECKED!'); }
-
+        else { alert(activeKing.getAttribute('data-side')+' king CHECKED!'); }
     }
     // --------------------------------------------
     // declares if activeKing is in check...
@@ -869,24 +894,24 @@ function lit(activeSide, passiveSide) {
 lit(blues, oranges);
 //==================================================================
 // function nextMove() {
-    // // sets activeKingId
+    // // sets activeKing
     // for (i = 0; i < activity.length; i++) {
     //     if (activity[i].getAttribute('data-name') === 'king') {
-    //         activeKingId = activity[i].id; 
+    //         activeKing = activity[i]; 
     //         break;
     //     }
-    // } console.log(activeKingId);
+    // } console.log(activeKing);
     // // declares if activeKing is in check...
     // for (i = 0; i < passivity.length; i++) {
     //     // if a passivePiece can check activeKing
-    //     if (checkingSpace(passivity[i], activeKingId)) {
+    //     if (checkingSpace(passivity[i], activeKing.id)) {
     //         // if (isMate()) {
     //         //     endOfGame = true;
-    //         //     console.log(activeKingId.getAttribute('data-side')+' CHECK MATED!');
+    //         //     console.log(activeKing.getAttribute('data-side')+' CHECK MATED!');
     //         // }
     //         // else {
     //             // declares activeKing in check
-    //             console.log(activeKingId.getAttribute('data-side')+' IN CHECK!');
+    //             console.log(activeKing.getAttribute('data-side')+' IN CHECK!');
     //         // }
     //         break;
     //     }
