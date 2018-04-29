@@ -60,6 +60,7 @@ function lit(activeSide, passiveSide) {
     } // WORKS!
     //=============================================
     function enPassantReset() {
+        console.log('ENTERS enPassantReset()');
         // resets enPassanting
         enPassanting = false;
         console.log('enPassanting = false');
@@ -75,7 +76,7 @@ function lit(activeSide, passiveSide) {
         // swaps pieceToMove & goToDiv info
         console.log('ENTERS swapSide()');
 
-        // re-informs goToDiv --> NOT WORKING!
+        // re-informs goToDiv --> WORKS!
         toDiv.setAttribute('data-name', fromDiv.getAttribute('data-name'));
         toDiv.setAttribute('data-side', fromDiv.getAttribute('data-side'));
         toDiv.setAttribute('src', fromDiv.src);
@@ -90,17 +91,18 @@ function lit(activeSide, passiveSide) {
         activeSide.push(toDiv);
         pieces = [...oranges, ...blues];
         // ---------------------------------------------
-        // pieceToMove.getAttribute('data-name') is already 'empty' here
+        // UNDERSTAND THIS LOGIC!!
+        // if pawn moves but not enPassant attack, resets enPassant process
         if (pieceToMove.getAttribute('data-name') === 'pawn') {
-            console.log('!!!!!!!');
             if (toDiv !== pawnJumpDiv) {
                 enPassantReset();
             }
-        } else { enPassantReset(); } // necessary!
+        }
+        else { enPassantReset(); } // necessary! ??
         // ---------------------------------------------
         // un-informs pieceToMove
-        fromDiv.setAttribute('data-name', 'empty'); 
-        fromDiv.setAttribute('data-side', 'empty'); 
+        fromDiv.setAttribute('data-name', 'empty');
+        fromDiv.setAttribute('data-side', 'empty');
         fromDiv.setAttribute('src', './images/transparent.png');
         
         console.log('EXITS swapSide()');
@@ -138,7 +140,7 @@ function lit(activeSide, passiveSide) {
         console.log(passiveSide);
         // ---------------------------------------------
         console.log('EXITS eat()');
-    } // WORKS!
+    } // NOT WORKING!
     //=============================================
     //=============================================
     //=============================================
@@ -392,7 +394,7 @@ function lit(activeSide, passiveSide) {
         } // WORKS! ----------------------------------------------
         else { // since orange's turn...
             // if enPassant attack is possible
-            if (enPassanting) { // if(pawnJumpDiv.length) {}
+            if (enPassanting) { // if (pawnJumpDiv.length) {}
                 if ((pieceToMove.id === (pawnJumpDiv.id[0] - 1) + pawnJumpDiv.id[1])
                 || (pieceToMove.id === (+pawnJumpDiv.id[0] + 1) + pawnJumpDiv.id[1])) {
                     // adds enPassant attack div to litDivs
@@ -776,27 +778,27 @@ function lit(activeSide, passiveSide) {
     //============================================================
     //============================================================
     function pieceLit(e) {
-        console.log('enters pieceLit(e)');
+        console.log('ENTERS pieceLit(e)');
         // -----------------------------------------------------
         // resets litDivs on clicking multiple activeSide pieces
         if (pieceToMove !== undefined) {
-            console.log(pieceToMove);
+            // console.log(pieceToMove);
             // stop click-listening to pieceToMove
             pieceToMove.removeEventListener('click', movePiece);
             // -------------------------------------------------
             // un-lightens pieceToMove
             pieceToMove.classList.remove('mainLit');
             // -----------------------------------------------------------
-            // un-lightens, clears out & stops click-listening all litDivs
-            if (litDivs.length) {
+            // un-lightens, clears out & stops click-listening to litDivs
+            // if (litDivs.length) {
                 litDivs.forEach(litDiv => {
                     document.getElementById(litDiv).classList.remove('lit');
                     document.getElementById(litDiv).removeEventListener('click', movePiece);
                 });
                 litDivs = [];
-            }
+            // }
             // -------------------------------------------------------------
-            // un-lightens, clears out & stops click-listening all castleIds
+            // un-lightens, clears out & stops click-listening to castleIds
             if (castleIds.length) { // if king ready to castle
                 castleIds.forEach(id => { // reset castling process 
                     document.getElementById(id).classList.remove('castleLit');
@@ -840,7 +842,7 @@ function lit(activeSide, passiveSide) {
         } // ---------------------------------------------------------------
         // -----------------------------------------------------------------
         // -----------------------------------------------------------------
-        console.log('lightens & click-listens to litDivs --> movePiece(e)');
+        // console.log('lightens & click-listens to litDivs --> movePiece(e)');
         // lightens & click-listens all litDivs --> movePiece(e)
         if (litDivs.length) {
             litDivs.forEach(litDiv => {
@@ -856,7 +858,7 @@ function lit(activeSide, passiveSide) {
     // runs pieceLit(e) for all clicked activeSide pieces
     activeSide.forEach(activePiece => {
         document.getElementById( activePiece.id ).addEventListener('click', pieceLit);
-        console.log('click-listens to activeSide --> pieceLit(e)');
+        // console.log('click-listens to activeSide --> pieceLit(e)');
     });
 } //================================================================
-lit(blues, oranges);
+// lit(blues, oranges);

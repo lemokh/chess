@@ -1,28 +1,32 @@
-// re-appropriate lit.js
-function nextMove() {
-    if (checkMate()) { return endSequence(); }; // write this!
 //===============================================================================
-    // add click listener to activeSide --> DONE LIT
-        // on-click: highlight possible moves --> DONE LIT
-    // add click listener to lit spaces --> DONE LIT
-        // on-click: unhighlight possible moves --> DONE LIT
-            
-            // **remove both click listeners --> DONE LIT
-            
-            // **if ( {x2, y2} contains passiveSide --> image div) {
-                // remove that piece from passiveSide array
-                // add that piece to its takenBox div
-            // }
-            // DO IN LIT
-            
-            // set moved piece's {x1, x2} to be {x2, y2} within activeSide array
-            // movedPiece.x = litSpace.x;
-            // movedPiece.y = litSpace.y;
-            // DONE LIT
-            
-            // update pieces array --> pieces = [...oranges, ...blues];
-            // DONE HERE
+function nextMove() {
+    if (checkMate(_,_)) { endSequence(); };
+    else { // toggleSide
+        lit();
+    }
 
-            // tempSide = activeSide; activeSide = passiveSide; passiveSide = tempSide;
-            // DONE HERE
 }
+
+// if (any passiveSide checks activeSide king) {
+//   if (activeSide king can prevent checkMate) { return false; }
+//   else { endGame = true; return true; }
+// } else { return false; }
+
+
+function begin() {
+    lit(blues, oranges);
+    while (!endOfGame) { nextMove(); }
+}
+
+
+
+
+isCheck(passiveSide, activeSideKing);
+
+if (isMate(passiveSide, activeSideKing)) { endGame = true; }
+else { console.log(''+activeSide+' in check'); }
+
+
+// change function name from isCheck to checkMate
+
+// 
