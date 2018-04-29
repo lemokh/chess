@@ -3,6 +3,31 @@ function lit(activeSide, passiveSide) {
     emptySpaces = openSpaces(boardIds, pieces); // updates emptySpaces
     // function toggleClocks() {}
     //=============================================
+    // sets activeKingId
+    for (i = 0; i < activeSide.length; i++) {
+        if (activeSide[i].getAttribute('data-name') === 'king') {
+            activeKingId = activeSide[i].id; 
+            break;
+        }
+    } console.log(activeKingId);
+    // --------------------------------------------
+    // declares if activeKing is in check...
+    for (i = 0; i < passiveSide.length; i++) {
+        // if a passivePiece can check activeKing
+        if (checkingSpace(passiveSide[i], activeKingId)) {
+            // if (isMate()) {
+            //     endOfGame = true;
+            //     console.log(activeKingId.getAttribute('data-side')+' CHECK MATED!');
+            // }
+            // else {
+                // declares activeKing in check
+                console.log(document.getElementById(activeKingId).getAttribute('data-side')+' king IN CHECK!');
+            // }
+            break;
+        }
+        // else {}
+    }
+    //=============================================
     function castling(e) {
         console.log('enters castling(e)')
         // -------------------------------------------------
@@ -47,7 +72,7 @@ function lit(activeSide, passiveSide) {
         });
         // -----------------------------------------------
         // -----------------------------------------------
-        /*
+        
         // toggles side & starts next move 
         if (activeSide === blues) {
             // toggleClocks();
@@ -57,7 +82,7 @@ function lit(activeSide, passiveSide) {
             // toggleClocks();
             console.log('toggles activeSide to blue');
             lit(blues, oranges);
-        } */
+        }
     } // WORKS!
     //=============================================
     function enPassantReset() {
@@ -271,7 +296,6 @@ function lit(activeSide, passiveSide) {
         });
         // -----------------------------------------------
         // -----------------------------------------------
-        /*
         // toggles side & starts next move 
         if (activeSide === blues) {
             // toggleClocks();
@@ -281,7 +305,7 @@ function lit(activeSide, passiveSide) {
             // toggleClocks();
             console.log('toggles activeSide to blue');
             lit(blues, oranges);
-        } */
+        }
     } // WORKS!
     //=============================================
     //=============================================
@@ -828,43 +852,44 @@ function lit(activeSide, passiveSide) {
     });
 } //================================================================
 //==================================================================
-function nextMove() {
-    // sets activeKingId
-    for (i = 0; i < activity.length; i++) {
-        if (activity[i].getAttribute('data-name') === 'king') {
-            activeKingId = activity[i].id; 
-            break;
-        }
-    } console.log(activeKingId);
-    // declares if activeKing is in check...
-    for (i = 0; i < passivity.length; i++) {
-        // if a passivePiece can check activeKing
-        if (checkingSpace(passivity[i], activeKingId)) {
-            // if (isMate()) {
-            //     endOfGame = true;
-            //     console.log(activeKingId.getAttribute('data-side')+' CHECK MATED!');
-            // }
-            // else {
-                // declares activeKing in check
-                console.log(activeKingId.getAttribute('data-side')+' IN CHECK!');
-            // }
-            break;
-        }
-        // else {}
-    }
-    // toggles side & starts next move
-    console.log('toggling sides');
-    if (activity === blues) {
-        activity = oranges;
-        passivity = blues;
-    }
-    else {
-        activity = blues;
-        passivity = oranges;
-    }
+// function nextMove() {
+    // // sets activeKingId
+    // for (i = 0; i < activity.length; i++) {
+    //     if (activity[i].getAttribute('data-name') === 'king') {
+    //         activeKingId = activity[i].id; 
+    //         break;
+    //     }
+    // } console.log(activeKingId);
+    // // declares if activeKing is in check...
+    // for (i = 0; i < passivity.length; i++) {
+    //     // if a passivePiece can check activeKing
+    //     if (checkingSpace(passivity[i], activeKingId)) {
+    //         // if (isMate()) {
+    //         //     endOfGame = true;
+    //         //     console.log(activeKingId.getAttribute('data-side')+' CHECK MATED!');
+    //         // }
+    //         // else {
+    //             // declares activeKing in check
+    //             console.log(activeKingId.getAttribute('data-side')+' IN CHECK!');
+    //         // }
+    //         break;
+    //     }
+    //     // else {}
+    // }
+    // // toggles side & starts next move
+    // console.log('toggling sides');
+    // if (activity === blues) {
+    //     activity = oranges;
+    //     passivity = blues;
+    // }
+    // else {
+    //     activity = blues;
+    //     passivity = oranges;
+    // }
     // toggleClocks();
-    lit(activity, passivity); // begin next turn
-}
-
+    // lit(activity, passivity); // begin next turn
+// }
 lit(blues, oranges);
-while (!endOfGame) { nextMove(); }
+
+// causes infinity regression
+// while (!endOfGame) { nextMove(); }
