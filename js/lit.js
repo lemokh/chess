@@ -6,7 +6,7 @@ function lit(activeSide, passiveSide) {
     // sets activeKingId
     for (i = 0; i < activeSide.length; i++) {
         if (activeSide[i].getAttribute('data-name') === 'king') {
-            activeKingId = activeSide[i].id; 
+            activeKingId = activeSide[i].id;
             break;
         }
     } console.log(activeKingId);
@@ -845,12 +845,17 @@ function lit(activeSide, passiveSide) {
         // ---------------------------------------------------------
     } // WORKS! 
     //==============================================================
-    // runs pieceLit(e) for all clicked activeSide pieces
-    activeSide.forEach(activePiece => {
-        document.getElementById( activePiece.id ).addEventListener('click', pieceLit);
-        // console.log('click-listens to activeSide --> pieceLit(e)');
-    });
+    if (endOfGame) { endSequence(); }
+    else {
+        // runs pieceLit(e) for all clicked activeSide pieces
+        activeSide.forEach(activePiece => {
+            document.getElementById( activePiece.id ).addEventListener('click', pieceLit);
+            // console.log('click-listens to activeSide --> pieceLit(e)');
+        });
+    }
+    
 } //================================================================
+lit(blues, oranges);
 //==================================================================
 // function nextMove() {
     // // sets activeKingId
@@ -889,7 +894,6 @@ function lit(activeSide, passiveSide) {
     // toggleClocks();
     // lit(activity, passivity); // begin next turn
 // }
-lit(blues, oranges);
 
-// causes infinity regression
-// while (!endOfGame) { nextMove(); }
+
+// WRITE THE LOGIC TO DETECT CHECKMATE!
