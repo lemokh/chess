@@ -21,13 +21,13 @@ function lit(activeSide, passiveSide) {
             // pieceToMove.removeEventListener('click', movePiece);
             // ------------------------------------------------------------
             // un-lightens, clears out & stops click-listening to castleIds
-            if (castleIds.length) { // if king ready to castle
-                castleIds.forEach(id => { // reset castling process 
-                    document.getElementById(id).classList.remove('castleLit');
-                    document.getElementById(id).removeEventListener('click', castling);
-                });
-                castleIds = [];
-            }
+            // if (castleIds.length) { // if king ready to castle
+            //     castleIds.forEach(id => { // reset castling process 
+            //         document.getElementById(id).classList.remove('castleLit');
+            //         document.getElementById(id).removeEventListener('click', castling);
+            //     });
+            //     castleIds = [];
+            // }
             // un-lightens, clears out & stops click-listening to litDivs
             if (litDivs.length) { // if not check mate
                 litDivs.forEach(litDiv => {
@@ -36,8 +36,19 @@ function lit(activeSide, passiveSide) {
                 });
             } else { // since activeKing unable to move out of check or eat it's attacker
                 // can any activePiece eat kingAttacker?
-
-                // can any activePiece block kingAttacker's check path?
+                kingAttackers.forEach(kingAttacker => {
+                    activeSide.forEach(activePiece => {
+                        if (activePiece.getAttribute('data-name') !== 'king') {
+                            if (!(pinnedPieces.includes(activePiece))) {
+                                if (checkingSpace(activePiece, kingAttacker.id)) {
+                                    return false;
+                                } // else { enPassantKingAttacker(); }
+                            }
+                        }
+                        // can an activePiece block kingAttacker's check path?
+                        else { return blockCheck(); }
+                    });
+                });
             }
         });
     }
@@ -321,7 +332,7 @@ function lit(activeSide, passiveSide) {
         // covers pawnToMove moving one or two empty spaces
         //======================================
         swapSide(pieceToMove, goToDiv);
-        // ---------------------------------------------
+        // ----------------------------------------------
         // removes click-listeners from activePieces
         activeSide.forEach(activePiece => {
             document.getElementById(

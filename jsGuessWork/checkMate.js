@@ -185,7 +185,6 @@ function isCheck(pieces, player) {
       return ( bishopAttacks(queen, king) || rookAttacks(queen, king) );
     }
     
-
     switch (somePiece.name) { // conditions for each piece (except king) to check opposing king
       case 'pawn':
         if (somePiece.side === 'blue') { // sees if white pawn checks blackKing or if black pawn checks whiteKing
