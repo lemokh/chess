@@ -4,10 +4,10 @@ function lit(activeSide, passiveSide) {
     emptySpaces = openSpaces(boardIds, pieces); // updates emptySpaces
     // function toggleClocks() {}
 
-    // if king in check, no castling
     // ADD bluePinnedPieces & orangePinnedPieces, if need be...
-
-    // PUT THIS IN pieceLit(e) SWITCH: to prevent lighting up any pinnedPieces
+    
+    // to prevent lighting up any pinnedPieces
+    // PUT THIS IN pieceLit(e) SWITCH:
     // if (!(pinnedPieces.includes(pieceToMove))) {__collect litDivs__}
     //=============================================
     // sets activeKing
@@ -979,28 +979,31 @@ function lit(activeSide, passiveSide) {
         // -------------------------------------------
         // console.log('enters switch('+pieceToMove.getAttribute('data-name')+')');
         // -------------------------------------------
-        // highlights all of clicked piece's possible moves
-        switch (pieceToMove.getAttribute('data-name')) {
-            case 'pawn':
-                pawnLit();
-                break;
-            case 'knight':
-                knightLit();
-                break;
-            case 'bishop':
-                bishopLit();
-                break; 
-            case 'rook':
-                rookLit();
-                break;
-            case 'queen':
-                bishopLit();
-                rookLit();
-                break;
-            case 'king':
-                kingLit();
-                break;
-            default: alert('ERROR! pieceToMove is empty')
+        // if pieceToMove is not pinned
+        if (!(pinnedPieces.includes(pieceToMove))) {
+            // highlights all of clicked piece's possible moves
+            switch (pieceToMove.getAttribute('data-name')) {
+                case 'pawn':
+                    pawnLit();
+                    break;
+                case 'knight':
+                    knightLit();
+                    break;
+                case 'bishop':
+                    bishopLit();
+                    break; 
+                case 'rook':
+                    rookLit();
+                    break;
+                case 'queen':
+                    bishopLit();
+                    rookLit();
+                    break;
+                case 'king':
+                    kingLit();
+                    break;
+                default: alert('ERROR! pieceToMove is empty')
+            }
         } // ---------------------------------------------------------------
         // -----------------------------------------------------------------
         // -----------------------------------------------------------------
