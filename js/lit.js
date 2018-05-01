@@ -28,8 +28,8 @@ function lit(activeSide, passiveSide) {
             //     });
             //     castleIds = [];
             // }
-            // un-lightens, clears out & stops click-listening to litDivs
-            if (litDivs.length) { // if not check mate
+            if (litDivs.length) { // if king can move, not check mate
+                // un-lightens & stops click-listening to litDivs
                 litDivs.forEach(litDiv => {
                     document.getElementById(litDiv).classList.remove('lit');
                     document.getElementById(litDiv).removeEventListener('click', movePiece);
@@ -37,7 +37,9 @@ function lit(activeSide, passiveSide) {
             } //////////////////////////**************************//////////////////////
             else { // since activeKing unable to move out of check [or eat it's attacker]
                 // since king unable to move out of check:
+
 // CONVERT THIS WHOLE ELSE SECTION INTO LIT.JS DATA FORMAT
+                
                 // can kingSide EAT checking piece or BLOCK its checking path?
                 defenders = [], pawnDefenders = [];
                 
