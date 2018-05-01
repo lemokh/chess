@@ -40,30 +40,40 @@ function lit(activeSide, passiveSide) {
                     document.getElementById(litDiv).classList.remove('lit');
                     document.getElementById(litDiv).removeEventListener('click', movePiece);
                 });
+                return false;
             } //////////////////////////**************************//////////////////////
             else { // since activeKing unable to move out of check [or eat it's attacker]
                 // since king unable to move out of check:
-
-                // CONVERT THIS WHOLE ELSE SECTION INTO LIT.JS DATA FORMAT
-                
-                // Can any activeSide pieces:
-                // EAT kingAttacker <-- or --> BLOCK its path to king?
                 defenders = [], pawnDefenders = [];
-                
-                // populates defenders & pawnDefenders with unpinned activeSide pieces
-                for (let i = 0; i < activeSide.length; i++) {
-                    // console.log(!pinnedPieces.includes(kingSide[i])); // WORKS!
-                    // if unpinned, add to defenders
-                    if (activeSide[i].getAttribute('data-name') === 'pawn') {
-                        if (!pinnedPieces.includes(activeSide[i])) {
-                            pawnDefenders.push(activeSide[i]);
+                // Can an activePiece: EAT kingAttacker or BLOCK its path to activeKing?
+
+                // loops through active pieces
+                for (let a = 0; a < activeSide.length; a++) {
+                    // if that piece is not pinned
+                    if (!(pinnedPieces.includes(activeSide[a]))) {
+                        // if that piece can eat attacker
+                        if (checkingSpace(activeSide[a], kingAttackers[i].id)) {
+                            return false; // not check mate
                         }
-                    } 
-                    else if (!pinnedPieces.includes(activeSide[i])) {
-                        defenders.push(activeSide[i]);
-                    } 
+                        switch(kingAttackers[i].getAttribute('data-name')) {
+                            case 'bishop', 'rook', 'queen':
+                                // loops through checkedPaths
+                                for (let z = 0; z < checkedPaths.length; z++) {
+                                    // if that active piece can occupy that checkedPaths id
+                                    if (checkingSpace(activeSide[a], checkedPaths[z])) {
+                                        return false; // not check mate
+                                    }
+                                } break;
+                            // populates pawnDefenders with unpinned activePieces
+                            case 'pawn': pawnDefenders.push(activeSide[a]); break;
+                            // populates defenders with unpinned activePieces
+                            default: defenders.push(activeSide[a]); break;
+                        }
+                    }
+                    return true; // check mate!
                 } // WORKS!
 
+                /*
                 // RETURNS FALSE/TRUE IF ANY DEFENDERS BLOCK THE CHECK MATE
                 function blockCheck() { // checkedPaths!?!?
                     for (let k = 0; k < checkedPaths.length; k++) {
@@ -172,6 +182,7 @@ function lit(activeSide, passiveSide) {
                     // can an activePiece block kingAttacker's check path?
                     else { return blockCheck(); }
                 }
+                */
             } //////////////////////////**************************//////////////////////
         }
     }
@@ -182,14 +193,14 @@ function lit(activeSide, passiveSide) {
     });
     console.log('kingAttackers -->');
     console.log(kingAttackers);
-    
+    // --------------------------------
     // if activeKing in check
     if (kingAttackers.length > 0) {
         if (isMate()) {
             endOfGame = true;
-            alert(activeKing.getAttribute('data-side')+' CHECK MATED!');
-        } // --------------------------------------------
-        else { alert(activeKing.getAttribute('data-side')+' king CHECKED!'); }
+            alert(activeKing.getAttribute('data-side') + ' CHECK MATED!');
+        } // -------------------------------------------------------------------
+        else { alert(activeKing.getAttribute('data-side') + ' king CHECKED!'); }
     }
     //=============================================
     function castling(e) {
@@ -785,7 +796,7 @@ function lit(activeSide, passiveSide) {
                         }
                     }
                 }
-            }  // ----------------------------------------------------  
+            }  // ------------------------------------------------------
             else { // since activeSide is orange
                 if (!orangeKingFirstMove) {
                     if (!orangeRook1FirstMove) {
@@ -799,7 +810,7 @@ function lit(activeSide, passiveSide) {
                                 }
                             }  if (!noCastle) { castleIds.push('20'); }
                         }
-                    } // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+                    } // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
                     if (!orangeRook2FirstMove) {
                         if (['50', '60'].every(id => document.getElementById(id).getAttribute('data-side') === 'empty')) {
                             noCastle = false;
@@ -849,7 +860,7 @@ function lit(activeSide, passiveSide) {
                     return kingSpace == activePiece.id;
                 }); // returns true if not a match
             }); // WORKS!
-
+            // ----------------------------------------------------------------
             openAndOpponentHeldKingSpaces.forEach(checkSpaceId => {
                 kingAble = true;
                 passiveSide.forEach(passivePiece => {
@@ -860,7 +871,8 @@ function lit(activeSide, passiveSide) {
                 });
                 if (kingAble) { litDivs.push(checkSpaceId); }
             }); // console.log(litDivs);
-
+            // ----------------------------------------------------------------
+            
             /* // ----------------------------------------------------
             // DO I NEED KINGSPACES IN CHECKMATE?
             openAndOpponentHeldKingSpaces.forEach(checkSpaceId => {

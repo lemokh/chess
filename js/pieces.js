@@ -115,12 +115,12 @@ function checkingSpace(somePiece, checkSpace) {
   //--------------------------------------------------------------------------------------------
   // returns true/false if some passiveSide bishop can attack checkSpace
   function bishopAttacks(someBishop, checkSpace) {
-    // contains spaces someBishop attacks enroute to checkSpace
-    bishopMoves = [];
+    bishopMoves = []; // collects someBishop's id route to checkSpace
     nails = []; // collects possible pinnedPieces
     bishopX = +someBishop.id[0];
     bishopY = +someBishop.id[1];
 
+    // someBishop & checkSpace cannot have the same id
     if (someBishop.id === checkSpace) { return false; }
     
     // (LEFT BOARD SIDE) if someBishop.id is left of checkSpace
@@ -188,42 +188,45 @@ function checkingSpace(somePiece, checkSpace) {
       }
     } // console.log(bishopMoves);
 
-    // sees if any piece obstructs bishop's check
-    for (let i = 0; i < pieces.length; i++) { // for each piece on board
-      // for each space in bishop's path to checkSpace
+    // sees if any piece blocks rook's path to checkSpace
+    
+    // loops through pieces array
+    for (let i = 0; i < pieces.length; i++) {
+      // loops through rook's id path to checkSpace
       for (let k = 0; k < bishopMoves.length; k++) {
-        // if a piece matches a bishopMove, add piece to nails
+        // if that any piece id blocks rook's path to checkSpace 
         if (pieces[i].id === bishopMoves[k]) {
-          nails.push(pieces[i]);
+          // adds that piece to nails
+          nails.push(pieces[i]); // array of <img>
         }
       }
     }
+
     if (nails.length === 1) { // if only one nail
-      // if that one nail & that bishop are on the same side
-      if (nails[0].getAttribute('data-side') 
-      === someBishop.getAttribute('data-side')) {
-          // collect that nailed piece into pinnedPieces
+      // if that nail & someBishop aren't on the same side
+      if (nails[0].getAttribute('data-side') !== someBishop.getAttribute('data-side')) {
+          // collects that nailed piece into pinnedPieces
           pinnedPieces.push(nails[0]);
+          
           alert('NEW PINNED PIECE ADDED');
+          console.log('pinnedPieces -->');
+          console.log(pinnedPieces);
       }
     } 
     // returns true/false if no pieces block
-    // return nails.length === 0;
-    if (nails.length === 0) {
-      rookMoves.forEach(move => {
-        checkedPaths.push(move);
-      });
-      return true;
+    else if (!nails.length) {
+      // checkedPaths array becomes someBishop's id route to checkSpace id
+      checkedPaths = bishopMoves;
+      return true; // someBishop checks space
     }
-    else { return false; }
+    else { return false; } // not a check
   }
   //--------------------------------------------------------------------------------------------
   // returns true/false if some passiveSide rook can attack checkSpace
   function rookAttacks(someRook, checkSpace) {
-    // to hold spaces rook attacks enroute to checkSpace
-    rookMoves = [];
-    // to hold spaces that cannot be moved
-    nails = [];
+    
+    rookMoves = []; // will hold spaces rook attacks enroute to checkSpace
+    nails = []; // will hold spaces that cannot be moved
   
     // someRook.id --> '##';   checkSpace --> '##';
 
@@ -265,36 +268,38 @@ function checkingSpace(somePiece, checkSpace) {
     }
     else { return false; } // rook can't checkSpace
     
-    // sees if any piece blocks rook's attack path
+    // sees if any piece blocks rook's path to checkSpace
     
-    // for each piece <img> on board 
+    // loops through pieces array
     for (let i = 0; i < pieces.length; i++) {
-      // & each id in rook's path to checkSpace
+      // loops through rook's id path to checkSpace
       for (let k = 0; k < rookMoves.length; k++) {
+        // if that any piece id blocks rook's path to checkSpace 
         if (pieces[i].id === rookMoves[k]) {
+          // adds that piece to nails
           nails.push(pieces[i]); // array of <img>
         }
       }
     }
+
     if (nails.length === 1) { // if only one nail
-      // if that one nail & that bishop are on the same side
-      if (nails[0].getAttribute('data-side')
-      === someRook.getAttribute('data-side')) {
-          // that rook is a pinnedPiece
+      // if that nail & someBishop aren't on the same side
+      if (nails[0].getAttribute('data-side') !== someRook.getAttribute('data-side')) {
+          // collects that nailed piece into pinnedPieces
           pinnedPieces.push(nails[0]);
+          
           alert('NEW PINNED PIECE ADDED');
+          console.log('pinnedPieces -->');
+          console.log(pinnedPieces);
       }
-    }
+    } 
     // returns true/false if no pieces block
-    // return nails.length === 0;
-    if (nails.length === 0) {
-      rookMoves.forEach(move => {
-        // pushes an id
-        checkedPaths.push(move);
-      });
-      return true;
-    } // returns true if no pieces block, else returns false
-    else { return false; }
+    else if (!nails.length) {
+      // checkedPaths array becomes someRook's id route to checkSpace id
+      checkedPaths = rookMoves;
+      return true; // someRook checks space
+    }
+    else { return false; } // not a check
   }
   //--------------------------------------------------------------------------------------------
   // returns true/false if some passiveSide queen can attack checkSpace
