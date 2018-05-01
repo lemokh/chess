@@ -3,6 +3,12 @@ function lit(activeSide, passiveSide) {
     kingAttackers = []; // contains all passivePieces that check activeKing
     emptySpaces = openSpaces(boardIds, pieces); // updates emptySpaces
     // function toggleClocks() {}
+
+    // if king in check, no castling
+    // ADD bluePinnedPieces & orangePinnedPieces, if need be...
+
+    // PUT THIS IN pieceLit(e) SWITCH: to prevent lighting up any pinnedPieces
+    // if (!(pinnedPieces.includes(pieceToMove))) {__collect litDivs__}
     //=============================================
     // sets activeKing
     for (i = 0; i < activeSide.length; i++) {
@@ -160,7 +166,8 @@ function lit(activeSide, passiveSide) {
                         if (!(pinnedPieces.includes(activePiece))) {
                             if (checkingSpace(activePiece, kingAttacker.id)) {
                                 return false;
-                            } // else { enPassantKingAttacker(); }
+                            } 
+                            // else { enPassantKingAttacker(); } // !!!!!!!!!!!!!!
                         }
                     }
                     // can an activePiece block kingAttacker's check path?
@@ -797,58 +804,60 @@ function lit(activeSide, passiveSide) {
         kingSpacesUnderAttack = [];
         // ----------------------------------------------------
         // covers king castling
-        if (pieceToMove.getAttribute('data-side') === 'blue') {
-            if (!blueKingFirstMove) {
-                if (!blueRook1FirstMove) {
-                    if (['17', '27', '37'].every(id => document.getElementById(id).getAttribute('data-side') === 'empty')) {
-                        noCastle = false;
-                        for (let i = 0; i < 3; i++) {
-                            for (let k = 0; k < passiveSide.length; k++) {
-                                if (checkingSpace(passiveSide[k], ['17', '27', '37'][i])) {
-                                    noCastle = true;
+        if (kingAttackers.length === 0) { // if king not in check
+            if (pieceToMove.getAttribute('data-side') === 'blue') {
+                if (!blueKingFirstMove) {
+                    if (!blueRook1FirstMove) {
+                        if (['17', '27', '37'].every(id => document.getElementById(id).getAttribute('data-side') === 'empty')) {
+                            noCastle = false;
+                            for (let i = 0; i < 3; i++) {
+                                for (let k = 0; k < passiveSide.length; k++) {
+                                    if (checkingSpace(passiveSide[k], ['17', '27', '37'][i])) {
+                                        noCastle = true;
+                                    }
                                 }
-                            }
-                        }  if (!noCastle) { castleIds.push('27'); }
-                    }
-                } // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-                if (!blueRook2FirstMove) {
-                    if (['57', '67'].every(id => document.getElementById(id).getAttribute('data-side') === 'empty')) {
-                        noCastle = false;
-                        for (let i = 0; i < 2; i++) {
-                            for (let k = 0; k < passiveSide.length; k++) {
-                                if (checkingSpace(passiveSide[k], ['57', '67'][i])) {
-                                    noCastle = true;
+                            }  if (!noCastle) { castleIds.push('27'); }
+                        }
+                    } // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+                    if (!blueRook2FirstMove) {
+                        if (['57', '67'].every(id => document.getElementById(id).getAttribute('data-side') === 'empty')) {
+                            noCastle = false;
+                            for (let i = 0; i < 2; i++) {
+                                for (let k = 0; k < passiveSide.length; k++) {
+                                    if (checkingSpace(passiveSide[k], ['57', '67'][i])) {
+                                        noCastle = true;
+                                    }
                                 }
-                            }
-                        }  if (!noCastle) { castleIds.push('67'); }
+                            }  if (!noCastle) { castleIds.push('67'); }
+                        }
                     }
                 }
-            }
-        }  // ----------------------------------------------------  
-        else { // since activeSide is orange
-            if (!orangeKingFirstMove) {
-                if (!orangeRook1FirstMove) {
-                    if (['10', '20', '30'].every(id => document.getElementById(id).getAttribute('data-side') === 'empty')) {
-                        for (let i = 0; i < 3; i++) {
+            }  // ----------------------------------------------------  
+            else { // since activeSide is orange
+                if (!orangeKingFirstMove) {
+                    if (!orangeRook1FirstMove) {
+                        if (['10', '20', '30'].every(id => document.getElementById(id).getAttribute('data-side') === 'empty')) {
+                            for (let i = 0; i < 3; i++) {
+                                noCastle = false;
+                                for (let k = 0; k < passiveSide.length; k++) {
+                                    if (checkingSpace(passiveSide[k], ['10', '20', '30'][i])) {
+                                        noCastle = true;
+                                    }
+                                }
+                            }  if (!noCastle) { castleIds.push('20'); }
+                        }
+                    } // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+                    if (!orangeRook2FirstMove) {
+                        if (['50', '60'].every(id => document.getElementById(id).getAttribute('data-side') === 'empty')) {
                             noCastle = false;
-                            for (let k = 0; k < passiveSide.length; k++) {
-                                if (checkingSpace(passiveSide[k], ['10', '20', '30'][i])) {
-                                    noCastle = true;
+                            for (let i = 0; i < 2; i++) {
+                                for (let k = 0; k < passiveSide.length; k++) {
+                                    if (checkingSpace(passiveSide[k], ['50', '60'][i])) {
+                                        noCastle = true;
+                                    }
                                 }
-                            }
-                        }  if (!noCastle) { castleIds.push('20'); }
-                    }
-                } // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-                if (!orangeRook2FirstMove) {
-                    if (['50', '60'].every(id => document.getElementById(id).getAttribute('data-side') === 'empty')) {
-                        noCastle = false;
-                        for (let i = 0; i < 2; i++) {
-                            for (let k = 0; k < passiveSide.length; k++) {
-                                if (checkingSpace(passiveSide[k], ['50', '60'][i])) {
-                                    noCastle = true;
-                                }
-                            }
-                        }  if (!noCastle) { castleIds.push('60'); }
+                            }  if (!noCastle) { castleIds.push('60'); }
+                        }
                     }
                 }
             }
