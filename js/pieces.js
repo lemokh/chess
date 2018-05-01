@@ -56,7 +56,7 @@ var emptySpaces = openSpaces(boardIds, pieces);
 function checkingSpace(somePiece, checkSpace) {
   // somePiece is a passiveSide <img>
   // checkSpace is an activeSideID (kingSpace not held by an activeSide piece)
-  pinnedPieces = [];
+  pinnedPieces = []; checkedPaths = [];
   //--------------------------------------------------------------------------------------------
   // returns true/false if some passiveSide knight can attack checkSpace
   function knightAttacks(someKnight, checkSpace) {
@@ -202,11 +202,19 @@ function checkingSpace(somePiece, checkSpace) {
       // if that one nail & that bishop are on the same side
       if (nails[0].getAttribute('data-side') 
       === someBishop.getAttribute('data-side')) {
-          pinnedPieces.push(nails[0]); // that nail is a pinnedPiece
+          // collect that nailed piece into pinnedPieces
+          pinnedPieces.push(nails[0]);
       }
     } 
     // returns true/false if no pieces block
-    return nails.length === 0;
+    // return nails.length === 0;
+    if (nails.length === 0) {
+      rookMoves.forEach(move => {
+        checkedPaths.push(move);
+      });
+      return true;
+    }
+    else { return false; }
   }
   //--------------------------------------------------------------------------------------------
   // returns true/false if some passiveSide rook can attack checkSpace
@@ -225,13 +233,13 @@ function checkingSpace(somePiece, checkSpace) {
       // if someRook below checkSpace
       if (someRook.id[1] < checkSpace[1]) {
         // someRook.y++
-        for (let i = +someRook.id[1] + 1; i < checkSpace[1]; i++) {
+        for (let i = (+someRook.id[1] + 1); i < checkSpace[1]; i++) {
           rookMoves.push( checkSpace[0] + i.toString() );
         }
       }
       else { // & since someRook above checkSpace
         // rook.y--
-        for (let i = +someRook.id[1] - 1; i > checkSpace[1]; i--) {
+        for (let i = (someRook.id[1] - 1); i > checkSpace[1]; i--) {
           rookMoves.push( checkSpace[0] + i.toString() );
         }
       }
@@ -243,13 +251,13 @@ function checkingSpace(somePiece, checkSpace) {
       // if someRook left of checkSpace
       if (someRook.id[0] < checkSpace[0]) {
         // someRook.x++
-        for (let i = +someRook.id[0] + 1; i < checkSpace[0]; i++) {
+        for (let i = (+someRook.id[0] + 1); i < checkSpace[0]; i++) {
           rookMoves.push( i.toString() + checkSpace[1] );
         }
       }
       else { // since rook right of checkSpace
         // rook.x--
-        for (let i = +someRook.id[0] - 1; i > checkSpace[0]; i--) {
+        for (let i = (someRook.id[0] - 1); i > checkSpace[0]; i--) {
           rookMoves.push( i.toString() + checkSpace[1] );
         }
       }
@@ -275,7 +283,15 @@ function checkingSpace(somePiece, checkSpace) {
       }
     }
     // returns true/false if no pieces block
-    return nails.length === 0;
+    // return nails.length === 0;
+    if (nails.length === 0) {
+      rookMoves.forEach(move => {
+        // pushes an id
+        checkedPaths.push(move);
+      });
+      return true;
+    } // returns true if no pieces block, else returns false
+    else { return false; }
   }
   //--------------------------------------------------------------------------------------------
   // returns true/false if some passiveSide queen can attack checkSpace
