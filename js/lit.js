@@ -22,6 +22,8 @@ function lit(activeSide, passiveSide) {
         for(let i = 0; i < kingAttackers.length; i++) {
             pieceToMove = activeKing;
             kingLit();
+            console.log('litDivs -->');
+            console.log(litDivs);
             // -------------------------------------------------
             // stops click-listening to pieceToMove
             // pieceToMove.removeEventListener('click', movePiece);
@@ -200,7 +202,14 @@ function lit(activeSide, passiveSide) {
             endOfGame = true;
             alert(activeKing.getAttribute('data-side') + ' CHECK MATED!');
         } // -------------------------------------------------------------------
-        else { alert(activeKing.getAttribute('data-side') + ' king CHECKED!'); }
+        else {
+            alert(activeKing.getAttribute('data-side') + ' king CHECKED!');
+            // run a special function that:
+            // only adds clickListeners to activePieces able to prevent checkMate
+            // pre-lighten them with grey background
+            // --> & on click, only lighten moves that prevent checkMate
+            // then reset them to normal pieces, once fully moved
+        }
     }
     //=============================================
     function castling(e) {
