@@ -13,7 +13,7 @@ function lit(activeSide, passiveSide) {
     } console.log(activeKing);
     //=============================================
     function isMate() { // returns true/false if activeKing is check mated
-        kingAttackers.forEach(kingAttacker => { // for loop so can break?
+        kingAttackers.forEach(kingAttacker => { // use breakable for-loop instead?
             pieceToMove = activeKing;
             kingLit();
             // -------------------------------------------------
@@ -34,22 +34,136 @@ function lit(activeSide, passiveSide) {
                     document.getElementById(litDiv).classList.remove('lit');
                     document.getElementById(litDiv).removeEventListener('click', movePiece);
                 });
-            } else { // since activeKing unable to move out of check or eat it's attacker
-                // can any activePiece eat kingAttacker?
-                kingAttackers.forEach(kingAttacker => {
-                    activeSide.forEach(activePiece => {
-                        if (activePiece.getAttribute('data-name') !== 'king') {
-                            if (!(pinnedPieces.includes(activePiece))) {
-                                if (checkingSpace(activePiece, kingAttacker.id)) {
-                                    return false;
-                                } // else { enPassantKingAttacker(); }
+            } //////////////////////////**************************//////////////////////
+            else { // since activeKing unable to move out of check [or eat it's attacker]
+                // since king unable to move out of check:
+// CONVERT THIS WHOLE ELSE SECTION INTO LIT.JS DATA FORMAT
+                // can kingSide EAT checking piece or BLOCK its checking path?
+                defenders = [], pawnDefenders = [];
+                
+                // populates defenders & pawnDefenders with unpinned kingSide pieces
+                for (let i = 0; i < kingSide.length; i++) {
+                    // console.log(!pinnedPieces.includes(kingSide[i])); // WORKS!
+                    // if unpinned, add to defenders
+                    if (kingSide[i].name === 'pawn') {
+                        if (!pinnedPieces.includes(kingSide[i])) {
+                            pawnDefenders.push(kingSide[i]);
+                        }
+                    } 
+                    else if (!pinnedPieces.includes(kingSide[i])) {
+                        defenders.push(kingSide[i]);
+                    } 
+                } // WORKS!
+
+                // RETURNS TRUE/FALSE IF CHECK MATE
+                function blockCheck() { // RETURNS FALSE IF ANY DEFENDERS BLOCK CHECK
+                    for (let k = 0; k < checkedPaths.length; k++) {
+                        for (let i = 0; i < pawnDefenders.length; i++) {
+                            if (pawnDefenders[i].x === checkedPaths[k].x) { // if Xs align
+                                if (pawnDefenders[i].side === 'blue') { // if pawn blue
+                                    if (pawnDefenders[i].y === 6) { // if first move
+                                        // if blue pawn can block check, not check mate
+                                        if (pawnDefenders[i].y - 1 === checkedPaths[k].y) { return false; }  
+                                        if (pawnDefenders[i].y - 2 === checkedPaths[k].y) { return false; }
+                                    } // since not first move ---------------------------------------------
+                                    // if blue pawn can block check, not check mate
+                                    else if (pawnDefenders[i].y - 1 === checkedPaths[k].y) { return false; } 
+                                } // since pawn orange -----------------------------------------------------
+                                else {
+                                    if (pawnDefenders[i].y === 1) { // if first move
+                                        // if orange pawn can block check, not check mate
+                                        if (pawnDefenders[i].y + 1 === checkedPaths[k].y) { return false; }  
+                                        if (pawnDefenders[i].y + 2 === checkedPaths[k].y) { return false; }
+                                    } // since not first move ---------------------------------------------
+                                    // if orange pawn can block check, not check mate
+                                    else if (pawnDefenders[i].x === checkedPaths[k].x) {
+                                        if (pawnDefenders[i].y + 1 === checkedPaths[k].y) { return false; }
+                                    }
+                                }
+                            }
+                        } // ends pawnDefender for-loop
+
+                        // for each defender
+                        for (let j = 0; j < defenders.length; j++) {
+                            // if defender can block check, not check mate
+                            if (checkingSpace(defenders[j], checkedPaths[k])) {
+                                return false;
+                            } 
+                        }
+                    } // sees if any defenders can block any checkedPaths space
+                    return true; // check mate
+                } // WORKS!
+
+                // 1. EN PASSANT? --> if king's attacker is a pawn,
+                // can any kingSide pawn do enPassant to eat attacker possible? --> WORKS!
+                if (kingAttackers[0].name === "pawn") { // make this a separate function to run here...
+                    if (kingAttackers[0].prevY === kingAttackers[0].y + 2) { // white pawn
+                        for (let p = 0; p < pawnDefenders.length; p++) {
+                            if (kingAttackers[0].y === pawnDefenders[p].y) { // Y aligns
+                                if (pawnDefenders[p].x === kingAttackers[0].x - 1) { // left
+                                    return false; // pawnDefender eats kingAttacker
+                                }
+                                if (pawnDefenders[p].x === kingAttackers[0].x + 1) { // right
+                                    return false; // pawnDefender eats kingAttacker
+                                }
                             }
                         }
-                        // can an activePiece block kingAttacker's check path?
-                        else { return blockCheck(); }
-                    });
+                    }
+                    else if (kingAttackers[0].prevY === kingAttackers[0].y - 2) { // black pawn
+                        for (let p = 0; p < pawnDefenders.length; p++) {
+                            if (kingAttackers[0].y === pawnDefenders[p].y) { // Y aligns
+                                if (pawnDefenders[p].x === kingAttackers[0].x + 1) { // left
+                                    return false; // pawnDefender eats kingAttacker
+                                }
+                                if (pawnDefenders[p].x === kingAttackers[0].x - 1) { // right
+                                    return false; // pawnDefender eats kingAttacker
+                                }
+                            }
+                        }
+                    }      
+                    // 2. IS KINGATTACKER COVERED BY OWN SIDE?      
+                    // if opposingKing covers attacker
+                    if (checkingSpace(opposingKing, kingAttackers[0])) {
+                        return blockCheck();
+                    }
+                    // do any passiveSide pieces cover kingAttacker?
+                    if (passiveSide.length > 1) { // if only one, passiveSide[0] is kingAttackers[0]
+                        for (let i = 0; i < passiveSide.length; i++) {
+                            if (checkingSpace(passiveSide[i], kingAttackers[0])) {
+                                return blockCheck();
+                            } // passiveSide covers attacker
+                        }
+                    }
+                    // 3. SINCE UNCOVERED, IS kingAttacker EATABLE?
+                    // if king EATS its attacker, not check mate
+                    if (checkingSpace(king, kingAttackers[0])) { return false; }
+                    
+                    // do any defenders Eat king's attacker? --> WORKS!
+                    for (let j = 0; j < defenders.length; j++) {
+                        if (checkingSpace(defenders[j], kingAttackers[0])) { return false; } 
+                    } // if defender EATS, not check mate
+                    
+                    // do any pawnDefenders Eat king's attacker? --> WORKS!
+                    for (let k = 0; k < pawnDefenders.length; k++) {
+                        if (checkingSpace(pawnDefenders[k], kingAttackers[0])) { return false; }
+                    } // if pawnDefender EATS, not check mate
+                    
+                    // 3. SINCE kingAttacker IS UNEATABLE, IS kingAttacker's PATH BLOCKABLE?
+                    return blockCheck();
+                } // -----------------------------------------------------------------------
+                // can any activePiece eat kingAttacker?
+                activeSide.forEach(activePiece => {
+                    if (activePiece.getAttribute('data-name') !== 'king') {
+                        if (!(pinnedPieces.includes(activePiece))) {
+                            if (checkingSpace(activePiece, kingAttacker.id)) {
+                                return false;
+                            } // else { enPassantKingAttacker(); }
+                        }
+                    }
+                    // can an activePiece block kingAttacker's check path?
+                    else { return blockCheck(); }
                 });
-            }
+            } //////////////////////////**************************//////////////////////
         });
     }
     //=============================================

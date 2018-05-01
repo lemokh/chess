@@ -229,7 +229,7 @@ function isCheck(pieces, player) {
 function isMate(pieces, side) { 
   // returns true/false if king checkmate --> side = turn to avoid checkmate 
   //===============================================================================================
-  if (kingAttackers.length > 1) { return true; }
+  if (kingAttackers.length > 1) { return true; } // this is not correct
   // console.log(kingAttackers); // WORKS! -->  OPTIMIZE kingAttackers INTO kingAttacker
   //===============================================================================================
   // returns true/false if check mate for activeKing
