@@ -204,6 +204,7 @@ function checkingSpace(somePiece, checkSpace) {
       === someBishop.getAttribute('data-side')) {
           // collect that nailed piece into pinnedPieces
           pinnedPieces.push(nails[0]);
+          alert('NEW PINNED PIECE ADDED');
       }
     } 
     // returns true/false if no pieces block
@@ -234,13 +235,13 @@ function checkingSpace(somePiece, checkSpace) {
       if (someRook.id[1] < checkSpace[1]) {
         // someRook.y++
         for (let i = (+someRook.id[1] + 1); i < checkSpace[1]; i++) {
-          rookMoves.push( checkSpace[0] + i.toString() );
+          rookMoves.push( checkSpace[0] + i ); // id
         }
       }
       else { // & since someRook above checkSpace
         // rook.y--
         for (let i = (someRook.id[1] - 1); i > checkSpace[1]; i--) {
-          rookMoves.push( checkSpace[0] + i.toString() );
+          rookMoves.push( checkSpace[0] + i ); // id
         }
       }
     }
@@ -252,13 +253,13 @@ function checkingSpace(somePiece, checkSpace) {
       if (someRook.id[0] < checkSpace[0]) {
         // someRook.x++
         for (let i = (+someRook.id[0] + 1); i < checkSpace[0]; i++) {
-          rookMoves.push( i.toString() + checkSpace[1] );
+          rookMoves.push( i + checkSpace[1] ); // id
         }
       }
       else { // since rook right of checkSpace
         // rook.x--
         for (let i = (someRook.id[0] - 1); i > checkSpace[0]; i--) {
-          rookMoves.push( i.toString() + checkSpace[1] );
+          rookMoves.push( i + checkSpace[1] ); // id
         }
       }
     }
@@ -279,7 +280,9 @@ function checkingSpace(somePiece, checkSpace) {
       // if that one nail & that bishop are on the same side
       if (nails[0].getAttribute('data-side')
       === someRook.getAttribute('data-side')) {
-          pinnedPieces.push(nails[0]); // that rook is a pinnedPiece
+          // that rook is a pinnedPiece
+          pinnedPieces.push(nails[0]);
+          alert('NEW PINNED PIECE ADDED');
       }
     }
     // returns true/false if no pieces block
