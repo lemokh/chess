@@ -189,6 +189,14 @@ function lit(activeSide, passiveSide) {
         }
     }
     //=============================================
+    function preventCheckMate() {
+        // only adds clickListeners to activePieces able to prevent checkMate
+        // pre-lighten them with grey background
+        // --> & on click, only lighten moves that prevent checkMate
+        // then reset them to normal pieces, once fully moved
+        // toggleSides();
+    }
+    //=============================================
     // populates kingAttackers array
     passiveSide.forEach(item => {
         if (checkingSpace(item, activeKing.id)) { kingAttackers.push(item); }
@@ -204,11 +212,9 @@ function lit(activeSide, passiveSide) {
         } // -------------------------------------------------------------------
         else {
             alert(activeKing.getAttribute('data-side') + ' king CHECKED!');
-            // run a special function that:
-            // only adds clickListeners to activePieces able to prevent checkMate
-            // pre-lighten them with grey background
-            // --> & on click, only lighten moves that prevent checkMate
-            // then reset them to normal pieces, once fully moved
+            // preventCheckMate();
+            // matePreventers.push();
+            matePreventers
         }
     }
     //=============================================
