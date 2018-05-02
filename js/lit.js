@@ -43,18 +43,21 @@ function lit(activeSide, passiveSide) {
                     document.getElementById(litDiv).removeEventListener('click', movePiece);
                 });
                 return false;
-            } //////////////////////////**************************//////////////////////
+            } // WORKS! /////////////////**************************//////////////////////
             else { // since activeKing unable to move out of check [or eat it's attacker]
                 // since king unable to move out of check:
                 defenders = [], pawnDefenders = [];
                 // Can an activePiece: EAT kingAttacker or BLOCK its path to activeKing?
 
-                // loops through active pieces
+                // loops through activeSide pieces
                 for (let a = 0; a < activeSide.length; a++) {
                     // if that piece is not pinned
                     if (!(pinnedPieces.includes(activeSide[a]))) {
                         // if that piece can eat attacker
                         if (checkingSpace(activeSide[a], kingAttackers[i].id)) {
+                            matePreventers.push(
+                                { piece: activeSide[a], checkId: kingAttackers[i].id }
+                            );  // collect both active piece & kingAttacker's id 
                             return false; // not check mate
                         }
                         switch(kingAttackers[i].getAttribute('data-name')) {
@@ -63,6 +66,9 @@ function lit(activeSide, passiveSide) {
                                 for (let z = 0; z < checkedPaths.length; z++) {
                                     // if that active piece can occupy that checkedPaths id
                                     if (checkingSpace(activeSide[a], checkedPaths[z])) {
+                                        matePreventers.push(
+                                            { piece: activeSide[a], checkId: checkPaths[z] }
+                                        ); // collect both active piece & checkedPath id 
                                         return false; // not check mate
                                     }
                                 } break;
@@ -189,23 +195,33 @@ function lit(activeSide, passiveSide) {
         }
     }
     //=============================================
+    // function preventMateLit(e) {
+    //     // un-lightens all matePreventers except the clicked piece
+    //     // matePreventers.forEach(unLightenPiece => {
+    //     //     if (unLightenPiece !== e.target) {
+    //     //         unLightenPiece.classList.remove('preventMateLit');
+    //     //         unLightenPiece.removeEventListener('click', preventMateLit);
+    //     //     }
+    //     // });
+    //     // on-click, only lightens that piece's preventCheckMate moves
+    //     preventMatables.forEach(preventMatable => {
+    //         preventMatable.classList.add('lit');
+    //         preventMatable.addEventListener('click', movePiece);
+    //     });
+    // }
+    //=============================================
     function preventCheckMate() {
         // only click listens to preventMateAble activePieces
         matePreventers.forEach(matePreventer => {
             // pre-lightens them with grey background
             matePreventer.classList.add('preventMateLit');
-            matePreventer.addEventListener('click', function preventMateLit() {
-                // on-click, only lighten moves that prevent checkMate
-                preventMatables.forEach(preventMatable => {
-                    preventMatable.classList.add('lit');
-                    preventMatable.addEventListener('click', movePiece);
-                });
-            });
+            matePreventer.addEventListener('click', pieceLit);
         });
         // then reset them to normal pieces, once fully moved
+        
         // toggleSides();
-        if (activeSide === blues) { lit(oranges, blues); }
-        else { lit(blues, oranges); }
+        // if (activeSide === blues) { lit(oranges, blues); }
+        // else { lit(blues, oranges); }
     }
     //=============================================
     // populates kingAttackers array
