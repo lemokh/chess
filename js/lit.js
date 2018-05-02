@@ -190,11 +190,22 @@ function lit(activeSide, passiveSide) {
     }
     //=============================================
     function preventCheckMate() {
-        // only adds clickListeners to activePieces able to prevent checkMate
-        // pre-lighten them with grey background
-        // --> & on click, only lighten moves that prevent checkMate
+        // only click listens to preventMateAble activePieces
+        matePreventers.forEach(matePreventer => {
+            // pre-lightens them with grey background
+            matePreventer.classList.add('preventMateLit');
+            matePreventer.addEventListener('click', function preventMateLit() {
+                // on-click, only lighten moves that prevent checkMate
+                preventMatables.forEach(preventMatable => {
+                    preventMatable.classList.add('lit');
+                    preventMatable.addEventListener('click', movePiece);
+                });
+            });
+        });
         // then reset them to normal pieces, once fully moved
         // toggleSides();
+        if (activeSide === blues) { lit(oranges, blues); }
+        else { lit(blues, oranges); }
     }
     //=============================================
     // populates kingAttackers array
@@ -212,9 +223,7 @@ function lit(activeSide, passiveSide) {
         } // -------------------------------------------------------------------
         else {
             alert(activeKing.getAttribute('data-side') + ' king CHECKED!');
-            // preventCheckMate();
-            // matePreventers.push();
-            matePreventers
+            preventCheckMate();
         }
     }
     //=============================================
@@ -999,6 +1008,7 @@ function lit(activeSide, passiveSide) {
     //==============================================================
     if (endOfGame) {
         // endSequence();
+        alert('ENG OF GAME');
     }
     else { // runs pieceLit(e) for all clicked activeSide pieces
         // console.log('click-listens to activeSide --> pieceLit(e)');
@@ -1010,6 +1020,7 @@ function lit(activeSide, passiveSide) {
 } //================================================================
 lit(blues, oranges);
 //==================================================================
+
 // function nextMove() {
     // // sets activeKing
     // for (i = 0; i < activity.length; i++) {
