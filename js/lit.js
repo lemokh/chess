@@ -50,7 +50,7 @@ function lit(activeSide, passiveSide) {
         else { // since activeKing paralyzed & only one kingAttacker
             console.log('king unable to move out of check');
             mate = true;
-            defenders = [], pawnDefenders = [];
+            // defenders = [], pawnDefenders = [];
             // -------------------------------------------------
             // can an activePiece EAT or BLOCK kingAttacker?
             // -------------------------------------------------
@@ -65,7 +65,7 @@ function lit(activeSide, passiveSide) {
                         if (checkingSpace(activePiece, kingAttackers[0].id)) {
                             // collects activePiece & kingAttacker's id 
                             heroics.push(
-                                { from: activePiece.id, to: kingAttacker.id }
+                                { actor: activePiece, acteeId: kingAttacker.id }
                             );
                             mate = false; // not check mate
                             // if (heroics.length) {}
@@ -130,7 +130,7 @@ function lit(activeSide, passiveSide) {
                                     if (checkingSpace(activePiece, pathId)) {
                                         // collects activePiece & pathId
                                         heroics.push(
-                                            { from: activePiece.id, to: pathId }
+                                            { actor: activePiece.id, acteeId: pathId }
                                         );
                                         mate = false; // not check mate
                                     }
@@ -278,15 +278,26 @@ function lit(activeSide, passiveSide) {
     //=============================================
     function preventCheckMate() {
         console.log('ENTERS PreventCheckMate()')
-        // only click listens to preventMateAble activePieces
-        matePreventers.forEach(matePreventer => {
+        // only click listens to heroic activePieces
+        heroics.forEach(obj => {
+            // heroics is [ {actor:__, acteeId:__}, ... ]
             // pre-lightens them with grey background
-            matePreventer.classList.add('preventMateLit');
-            matePreventer.addEventListener('click', pieceLit);
+            if (!obj.actor.classList.includes('preventMateLit')) {
+                obj.actor.classList.add('preventMateLit');
+            }
+            obj.actor.addEventListener('click', pieceLit);
         });
-        // then reset them to normal pieces, once fully moved
-        
-        // toggleSides();
+        // THEN reset each heroics.actor to normal pieces, once fully moved
+        /*
+        heroics.forEach(obj => {
+            // heroics is [ {actor:__, acteeId:__}, ... ]
+            // pre-lightens them with grey background
+            obj.actor.classList.remove('preventMateLit');
+            obj.actor.removeEventListener('click', pieceLit);
+        });
+        */
+
+        // AND toggleSides();
         // if (activeSide === blues) { lit(oranges, blues); }
         // else { lit(blues, oranges); }
     }
@@ -301,7 +312,7 @@ function lit(activeSide, passiveSide) {
     // --------------------------------
     // --------------------------------
     // if activeKing in check
-    if (kingAttackers.length > 0) {
+    if (kingAttackers.length) {
         if (isMate()) { // if check mate
             endOfGame = true;
             alert(activeKing.getAttribute('data-side') + ' CHECK MATED!');
