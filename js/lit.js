@@ -136,7 +136,8 @@ function lit(activeSide, passiveSide) {
                             }
                         });
                     }
-                            // break;
+                        // break;
+                        
                         // populates pawnDefenders with unpinned activePawns
                         // case 'pawn': pawnDefenders.push(activePiece); break;
                         // populates defenders with unpinned activeKnights
@@ -713,28 +714,27 @@ function lit(activeSide, passiveSide) {
         block6 = false;
         block7 = false;
         block8 = false;
-        knightLight;
 
         // if own piece occupies knight space, no highlight there
         activeSide.forEach(activePiece => {
             switch (+activePiece.id[0]) {
-                case (+pieceToMove.id[0] + 1):
-                    if (activePiece.id[1] == (+pieceToMove.id[1] + 2)) { block1 = true; break; }
-                    if (activePiece.id[1] == (pieceToMove.id[1] - 2)) { block2 = true; break; }
-                case (pieceToMove.id[0] - 1):
-                    if (activePiece.id[1] == (+pieceToMove.id[1] + 2)) { block3 = true; break; }
-                    if (activePiece.id[1] == (pieceToMove.id[1] - 2)) { block4 = true; break; }
-                case (+pieceToMove.id[0] + 2):
-                    if (activePiece.id[1] == (+pieceToMove.id[1] + 1)) { block5 = true; break; }
-                    if (activePiece.id[1] == (pieceToMove.id[1] - 1)) { block6 = true; break; }
-                case (pieceToMove.id[0] - 2):
-                    if (activePiece.id[1] == (+pieceToMove.id[1] + 1)) { block7 = true; break; }
-                    if (activePiece.id[1] == (pieceToMove.id[1] - 1)) { block8 = true; break; }
+                case (+pieceToMove.id[0] + 1): // if x is one to the right
+                    if (activePiece.id[1] === (+pieceToMove.id[1] + 2)) { block1 = true; break; }
+                    if (activePiece.id[1] === (+pieceToMove.id[1] - 2)) { block2 = true; break; }
+                case (pieceToMove.id[0] - 1): // if x is one to the left
+                    if (activePiece.id[1] === (+pieceToMove.id[1] + 2)) { block3 = true; break; }
+                    if (activePiece.id[1] === (+pieceToMove.id[1] - 2)) { block4 = true; break; }
+                case (+pieceToMove.id[0] + 2): // if x is two to the right
+                    if (activePiece.id[1] === (+pieceToMove.id[1] + 1)) { block5 = true; break; }
+                    if (activePiece.id[1] === (+pieceToMove.id[1] - 1)) { block6 = true; break; }
+                case (pieceToMove.id[0] - 2): // if x is two to the left
+                    if (activePiece.id[1] === (+pieceToMove.id[1] + 1)) { block7 = true; break; }
+                    if (activePiece.id[1] === (+pieceToMove.id[1] - 1)) { block8 = true; break; }
             }
         });
 
-        if (!block1) {
-            if ((+pieceToMove.id[0] + 1) < 8) { // FILTERS OUT OFF-BOARD KNIGHT MOVES
+        if (!block1) { // OMITS OFF-BOARD KNIGHT MOVES & 
+            if ((+pieceToMove.id[0] + 1) < 8) {
                 if ((+pieceToMove.id[1] + 2) < 8) {
                     knightLight = (+pieceToMove.id[0] + 1) + (+pieceToMove.id[1] + 2).toString();
                     litDivs.push( knightLight );
@@ -761,7 +761,7 @@ function lit(activeSide, passiveSide) {
             if ((+pieceToMove.id[0] - 1) >= 0) {
                 if ((+pieceToMove.id[1] - 2) >= 0) {
                     knightLight = (pieceToMove.id[0] - 1) + (pieceToMove.id[1] - 2).toString();
-                    litDivs.push( knightLight );
+                    litDivs.push(knightLight);
                 }
             }
         }
@@ -959,14 +959,14 @@ function lit(activeSide, passiveSide) {
         else { // since king not castling
             // ----------------------------------------------------------------
             kingSpaces = [
-                (pieceToMove.id[0] - 1) + pieceToMove.id[1],
-                (pieceToMove.id[0] - 1).toString() + (+pieceToMove.id[1] + 1),
+                (+pieceToMove.id[0] - 1) + pieceToMove.id[1],
+                (+pieceToMove.id[0] - 1).toString() + (+pieceToMove.id[1] + 1),
                 pieceToMove.id[0] + (+pieceToMove.id[1] + 1),
                 (+pieceToMove.id[0] + 1).toString() + (+pieceToMove.id[1] + 1),
                 (+pieceToMove.id[0] + 1) + pieceToMove.id[1],
-                (+pieceToMove.id[0] + 1).toString() + (pieceToMove.id[1] - 1),
-                pieceToMove.id[0] + (pieceToMove.id[1] - 1),
-                (pieceToMove.id[0] - 1).toString() + (pieceToMove.id[1] - 1)
+                (+pieceToMove.id[0] + 1).toString() + (+pieceToMove.id[1] - 1),
+                pieceToMove.id[0] + (+pieceToMove.id[1] - 1),
+                (+pieceToMove.id[0] - 1).toString() + (+pieceToMove.id[1] - 1)
             ].map(space => { // keeps only on-board kingSpaces
                 if ( (+space[0] >= 0) && (+space[0] <= 7) ) {
                     if ( (+space[1] >= 0) && (+space[1] <= 7) ) {
@@ -980,7 +980,7 @@ function lit(activeSide, passiveSide) {
                 // for each item in arr
                 return !activeSide.some(activePiece => {
                     // for each item in arr2
-                    return kingSpace == activePiece.id;
+                    return (+kingSpace === +activePiece.id);
                 }); // returns true if not a match
             }); // WORKS!
             // ----------------------------------------------------------------
