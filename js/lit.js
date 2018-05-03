@@ -57,92 +57,92 @@ function lit(activeSide, passiveSide) {
             // for each activeSide piece
             // for (let a = 0; a < activeSide.length; a++) {
             activeSide.forEach(activePiece => {
-                // if activePiece is not activeKing
-                if (activePiece.getAttribute('data-name') !== 'king') {
-                    // if activePiece is not pinned
-                    if (!(pinnedPieces.includes(activePiece))) {
-                        // if activePiece can eat kingAttacker
-                        if (checkingSpace(activePiece, kingAttackers[0].id)) {
-                            // collects activePiece & kingAttacker's id 
-                            heroics.push(
-                                { actor: activePiece, acteeId: kingAttacker.id }
-                            );
-                            mate = false; // not check mate
-                            // if (heroics.length) {}
-                        }
-                        // if activePiece can BLOCK kingAttacker
-                        
-                        // RETURNS FALSE/TRUE IF ANY DEFENDERS BLOCK THE CHECK MATE
-                        /*
-                        function blockCheck() {
-                            // for (let k = 0; k < checkedPaths.length; k++) {
-                            checkedPaths.forEach(pathId => {
-                                // loops through pawnDefenders
-                                for (let i = 0; i < pawnDefenders.length; i++) {
-                                    if (pawnDefenders[i].id[0] === checkedPaths[k][0]) { // if Xs align
-                                        if (pawnDefenders[i].getAttribute('data-side') === 'blue') { // if pawn blue
-                                            if (pawnDefenders[i][1] === 6) { // if first move
-                                                // if blue pawn can block check, not check mate
-                                                if ((pawnDefenders[i][1] - 1) === checkedPaths[k][1]) { return false; }  
-                                                if ((pawnDefenders[i][1] - 2) === checkedPaths[k][1]) { return false; }
-                                            } // since not first move ---------------------------------------------
+                // if activePiece is not pinned
+                if (!pinnedPieces.includes(activePiece)) {
+                    // if activePiece can eat kingAttacker
+                    if (checkingSpace(activePiece, kingAttackers[0].id)) {
+                        // collects activePiece & kingAttacker's id 
+                        heroics.push(
+                            { actor: activePiece, acteeId: kingAttackers[0].id }
+                        );
+                        mate = false; // not check mate
+                        // if (heroics.length) {}
+                    }
+                    // if activePiece can BLOCK kingAttacker
+                    
+                    // RETURNS FALSE/TRUE IF ANY DEFENDERS BLOCK THE CHECK MATE
+                    /*
+                    function blockCheck() {
+                        // for (let k = 0; k < checkedPaths.length; k++) {
+                        checkedPaths.forEach(pathId => {
+                            // loops through pawnDefenders
+                            for (let i = 0; i < pawnDefenders.length; i++) {
+                                if (pawnDefenders[i].id[0] === checkedPaths[k][0]) { // if Xs align
+                                    if (pawnDefenders[i].getAttribute('data-side') === 'blue') { // if pawn blue
+                                        if (pawnDefenders[i][1] === 6) { // if first move
                                             // if blue pawn can block check, not check mate
-                                            else if ((pawnDefenders[i].id[1] - 1) === checkedPaths[k][1]) { return false; } 
-                                        } // since pawn orange -----------------------------------------------------
-                                        else {
-                                            if (pawnDefenders[i].id[1] === 1) { // if first move
-                                                // if orange pawn can block check, not check mate
-                                                if ((+pawnDefenders[i].id[1] + 1) === checkedPaths[k][1]) { return false; }  
-                                                if ((+pawnDefenders[i].id[1] + 2) === checkedPaths[k][1]) { return false; }
-                                            } // since not first move ---------------------------------------------
+                                            if ((pawnDefenders[i][1] - 1) === checkedPaths[k][1]) { return false; }  
+                                            if ((pawnDefenders[i][1] - 2) === checkedPaths[k][1]) { return false; }
+                                        } // since not first move ---------------------------------------------
+                                        // if blue pawn can block check, not check mate
+                                        else if ((pawnDefenders[i].id[1] - 1) === checkedPaths[k][1]) { return false; } 
+                                    } // since pawn orange -----------------------------------------------------
+                                    else {
+                                        if (pawnDefenders[i].id[1] === 1) { // if first move
                                             // if orange pawn can block check, not check mate
-                                            else if (pawnDefenders[i].id[0] === checkedPaths[k][0]) {
-                                                if ((+pawnDefenders[i].id[1] + 1) === checkedPaths[k][1]) { return false; }
-                                            }
+                                            if ((+pawnDefenders[i].id[1] + 1) === checkedPaths[k][1]) { return false; }  
+                                            if ((+pawnDefenders[i].id[1] + 2) === checkedPaths[k][1]) { return false; }
+                                        } // since not first move ---------------------------------------------
+                                        // if orange pawn can block check, not check mate
+                                        else if (pawnDefenders[i].id[0] === checkedPaths[k][0]) {
+                                            if ((+pawnDefenders[i].id[1] + 1) === checkedPaths[k][1]) { return false; }
                                         }
                                     }
-                                } // ends pawnDefender for-loop
-                               
-                                // for each knightDefender
-                                // for (let j = 0; j < defenders.length; j++) {
-                                knightDefenders.forEach(knightDefender => {
-                                    // if can block check, not check mate
-                                    if (checkingSpace(knightDefender, pathId)) {
-                                        heroics.push(
-                                            { from: activePiece.id, to: pathId }
-                                        );
-                                        mate = false; // not check mate
-                                    }
-                                })
-                            });    
-                             // sees if any defenders can block any checkedPath space
-                            return true; // check mate
-                        } // WORKS!
-                        */
+                                }
+                            } // ends pawnDefender for-loop
+                            
+                            // for each knightDefender
+                            // for (let j = 0; j < defenders.length; j++) {
+                            knightDefenders.forEach(knightDefender => {
+                                // if can block check, not check mate
+                                if (checkingSpace(knightDefender, pathId)) {
+                                    heroics.push(
+                                        { from: activePiece.id, to: pathId }
+                                    );
+                                    mate = false; // not check mate
+                                }
+                            })
+                        });    
+                            // sees if any defenders can block any checkedPath space
+                        return true; // check mate
+                    } // WORKS!
+                    */
 
-                        // if kingAttacker's name is...
-                        // switch (kingAttackers[0].getAttribute('data-name')) {
-                            // case 'bishop', 'rook', 'queen':
-                                // loops through all checkedPaths for each activePiece  
-                                // for (let z = 0; z < checkedPaths.length; z++) {
-                                checkedPaths.forEach(pathId => {
-                                    // if unpinned activePiece can move to pathId
-                                    if (checkingSpace(activePiece, pathId)) {
-                                        // collects activePiece & pathId
-                                        heroics.push(
-                                            { actor: activePiece.id, acteeId: pathId }
-                                        );
-                                        mate = false; // not check mate
-                                    }
-                                }); 
-                                // break;
-                            // populates pawnDefenders with unpinned activePawns
-                            // case 'pawn': pawnDefenders.push(activePiece); break;
-                            // populates defenders with unpinned activeKnights
-                            // default: defenders.push(activePiece); break;   
-                        // }
-                        // blockCheck();
+                    // if kingAttacker's name is...
+                    // switch (kingAttackers[0].getAttribute('data-name')) {
+                        // case 'bishop', 'rook', 'queen':
+                            // loops through all checkedPaths for each activePiece  
+                            // for (let z = 0; z < checkedPaths.length; z++) {
+                            // if activePiece is not activeKing
+                    if (activePiece.getAttribute('data-name') !== 'king') {
+                        checkedPaths.forEach(pathId => {
+                            // if unpinned activePiece can move to pathId
+                            if (checkingSpace(activePiece, pathId)) {
+                                // collects activePiece & pathId
+                                heroics.push(
+                                    { actor: activePiece.id, acteeId: pathId }
+                                );
+                                mate = false; // not check mate
+                            }
+                        });
                     }
+                            // break;
+                        // populates pawnDefenders with unpinned activePawns
+                        // case 'pawn': pawnDefenders.push(activePiece); break;
+                        // populates defenders with unpinned activeKnights
+                        // default: defenders.push(activePiece); break;   
+                    // }
+                    // blockCheck();
                 }
             }); // WORKS!
             return mate; // check mate!
