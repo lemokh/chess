@@ -891,7 +891,7 @@ function lit(activeSide, passiveSide) {
         kingSpacesUnderAttack = [];
         // ----------------------------------------------------
         // covers king castling
-        if (kingAttackers.length === 0) { // if king not in check
+        if (!kingAttackers.length) { // if king not in check
             if (pieceToMove.getAttribute('data-side') === 'blue') {
                 if (!blueKingFirstMove) {
                     if (!blueRook1FirstMove) {
@@ -949,6 +949,19 @@ function lit(activeSide, passiveSide) {
                 }
             }
         }
+        // if king in check...
+        /*
+        PINNEDPIECES DOESN'T WORK EITHER!
+
+        else { // since king in check
+            can king move out of check?
+
+            can king eat kingAttacker?
+            if (kingSpaces.includes(kingAttackers[0])) {
+
+            }
+        }
+        */
         // lightens & click-listens all castleIds
         if (castleIds.length) { // if king is castling
             castleIds.forEach(id => {
@@ -980,19 +993,17 @@ function lit(activeSide, passiveSide) {
                 // for each item in arr
                 return !activeSide.some(activePiece => {
                     // for each item in arr2
-                    return (+kingSpace === +activePiece.id);
+                    return (kingSpace === activePiece.id);
                 }); // returns true if not a match
             }); // WORKS!
             // ----------------------------------------------------------------
             openAndOpponentHeldKingSpaces.forEach(checkSpaceId => {
-                kingAble = true;
                 passiveSide.forEach(passivePiece => {
-                    // if no passivePiece can check a kingSpace devoid of activeSide pieces
+                    // if passivePiece can check a kingSpace devoid of activePiece
                     if (checkingSpace(passivePiece, checkSpaceId)) {
-                        kingAble = false;
+                        litDivs.push(checkSpaceId);
                     } // checkingSpace returns true/false if piece attacks space
                 });
-                if (kingAble) { litDivs.push(checkSpaceId); }
             }); // console.log(litDivs);
             // ----------------------------------------------------------------
             
