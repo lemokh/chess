@@ -282,10 +282,10 @@ function lit(activeSide, passiveSide) {
         heroics.forEach(obj => {
             // heroics is [ {actor:__, acteeId:__}, ... ]
             // pre-lightens them with grey background
-            if (!obj.actor.classList.includes('preventMateLit')) {
-                obj.actor.classList.add('preventMateLit');
-            }
-            obj.actor.addEventListener('click', pieceLit);
+            // if (!(obj.actor).classList.includes('preventMateLit')) {
+                (obj.actor).classList.add('preventMateLit');
+            // }
+            (obj.actor).addEventListener('click', pieceLit);
         });
         // THEN reset each heroics.actor to normal pieces, once fully moved
         /*
