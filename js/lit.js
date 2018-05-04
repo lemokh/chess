@@ -1,11 +1,10 @@
 function lit(activeSide, passiveSide) {
     litDivs = []; // holds lit ids on which to apply click-listeners
-    kingAttackers = []; // contains all passivePieces that check activeKing
+    // kingAttackers = []; // contains all passivePieces that check activeKing
     emptySpaces = openSpaces(boardIds, pieces); // updates emptySpaces
+    //=============================================
     // function toggleClocks() {}
-
-    // ADD bluePinnedPieces & orangePinnedPieces, if need be...
-    
+    //=============================================
     // to prevent lighting up any pinnedPieces
     // PUT THIS IN pieceLit(e) SWITCH:
     // if (!(pinnedPieces.includes(pieceToMove))) {__collect litDivs__}
@@ -18,11 +17,13 @@ function lit(activeSide, passiveSide) {
         }
     } console.log(activeKing);
     //=============================================
-    
     function isMate() { // returns true/false if activeKing is check mated
+        // litDivs = [];
+        // kingAttackers = [];
         pieceToMove = activeKing;
         kingLit();
         // ------------------------
+        console.log('ENTERS isMate()');
         console.log('litDivs -->');
         console.log(litDivs);
         // -------------------------------------------------
@@ -283,21 +284,16 @@ function lit(activeSide, passiveSide) {
         heroics.forEach(obj => {
             // heroics is [ {actor:__, acteeId:__}, ... ]
             // pre-lightens them with grey background
-            // if (!(obj.actor).classList.includes('preventMateLit')) {
-                (obj.actor).classList.add('preventMateLit');
-            // }
+            (obj.actor).classList.add('preventMateLit');
             (obj.actor).addEventListener('click', pieceLit);
         });
         // THEN reset each heroics.actor to normal pieces, once fully moved
-        /*
         heroics.forEach(obj => {
             // heroics is [ {actor:__, acteeId:__}, ... ]
             // pre-lightens them with grey background
             obj.actor.classList.remove('preventMateLit');
             obj.actor.removeEventListener('click', pieceLit);
         });
-        */
-
         // AND toggleSides();
         // if (activeSide === blues) { lit(oranges, blues); }
         // else { lit(blues, oranges); }
@@ -314,12 +310,16 @@ function lit(activeSide, passiveSide) {
     // --------------------------------
     // if activeKing in check
     if (kingAttackers.length) {
+        console.log('isMate() -->');
+        console.log(isMate());
         if (isMate()) { // if check mate
             endOfGame = true;
             alert(activeKing.getAttribute('data-side') + ' CHECK MATED!');
         } // -------------------------------------------------------------------
         else { // if activeKing in check, but not check mate
             alert(activeKing.getAttribute('data-side') + ' king CHECKED!');
+            console.log('litDivs -->');
+            console.log(litDivs);
             if (!litDivs.length) { preventCheckMate(); }
         }
     }
@@ -523,12 +523,12 @@ function lit(activeSide, passiveSide) {
         // -----------------------------------------------------------------
         // -----------------------------------------------------------------
         goToDiv = e.target;
-
-        console.log('goToDiv -->');
-        console.log(goToDiv);
         
         console.log('pieceToMove -->');
         console.log(pieceToMove);
+        
+        console.log('goToDiv -->');
+        console.log(goToDiv);
         
         console.log('pawnJumpDiv -->');
         console.log(pawnJumpDiv);
@@ -595,6 +595,9 @@ function lit(activeSide, passiveSide) {
         });
         // -----------------------------------------------
         // -----------------------------------------------
+        pieceToMove = activeKing;
+        kingLit();
+        if (kingAttackers.length) { kingAttackers = []; }
         // toggles side & starts next move 
         if (activeSide === blues) {
             // toggleClocks();
@@ -949,12 +952,9 @@ function lit(activeSide, passiveSide) {
                 }
             }
         }
-        // if king in check...
         /*
-        PINNEDPIECES DOESN'T WORK EITHER!
-
-        else { // since king in check
-            can king move out of check?
+        within else { // since king in check... only lighten heroic pieces...
+            if king cannot move out of check
 
             can king eat kingAttacker?
             if (kingSpaces.includes(kingAttackers[0])) {
@@ -1001,7 +1001,9 @@ function lit(activeSide, passiveSide) {
                 passiveSide.forEach(passivePiece => {
                     // if passivePiece can check a kingSpace devoid of activePiece
                     if (checkingSpace(passivePiece, checkSpaceId)) {
-                        litDivs.push(checkSpaceId);
+                        if (!litDivs.includes(checkSpaceId)) {
+                            litDivs.push(checkSpaceId);
+                        }
                     } // checkingSpace returns true/false if piece attacks space
                 });
             }); // console.log(litDivs);
@@ -1079,28 +1081,38 @@ function lit(activeSide, passiveSide) {
         // console.log('enters switch('+pieceToMove.getAttribute('data-name')+')');
         // -------------------------------------------
         // highlights all of clicked piece's possible moves
-        switch (pieceToMove.getAttribute('data-name')) {
-            case 'pawn':
-                pawnLit();
-                break;
-            case 'knight':
-                knightLit();
-                break;
-            case 'bishop':
-                bishopLit();
-                break; 
-            case 'rook':
-                rookLit();
-                break;
-            case 'queen':
-                bishopLit();
-                rookLit();
-                break;
-            case 'king':
-                kingLit();
-                break;
-            default: alert('ERROR! pieceToMove is empty')
-        } // ---------------------------------------------------------------
+        function possibleMoves() {
+            switch (pieceToMove.getAttribute('data-name')) {
+                case 'pawn':
+                    pawnLit();
+                    break;
+                case 'knight':
+                    knightLit();
+                    break;
+                case 'bishop':
+                    bishopLit();
+                    break; 
+                case 'rook':
+                    rookLit();
+                    break;
+                case 'queen':
+                    bishopLit();
+                    rookLit();
+                    break;
+                case 'king':
+                    kingLit();
+                    break;
+                default: alert('ERROR! pieceToMove is empty')
+            }
+        }
+        if (pinnedPieces.includes(pieceToMove)) {
+            if (kingAttackers.length === 1) {
+                if (checkingSpace(pieceToMove, kingAttackers[0])) {
+                    litDivs.push(kingAttackers[0].id);
+                }
+            }
+        } else { possibleMoves(); }
+         // ---------------------------------------------------------------
         // -----------------------------------------------------------------
         // -----------------------------------------------------------------
         // console.log('lightens & click-listens to litDivs --> movePiece(e)');
@@ -1123,7 +1135,7 @@ function lit(activeSide, passiveSide) {
     else { // runs pieceLit(e) for all clicked activeSide pieces
         // console.log('click-listens to activeSide --> pieceLit(e)');
         activeSide.forEach(activePiece => {
-            document.getElementById( activePiece.id ).addEventListener('click', pieceLit);
+            activePiece.addEventListener('click', pieceLit);
         });
     }
     
