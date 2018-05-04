@@ -1,5 +1,5 @@
 function lit(activeSide, passiveSide) {
-    litDivs = []; // holds lit ids on which to apply click-listeners
+    litDivs = []; // contains lit ids on which to apply click-listeners
     // kingAttackers = []; // contains all passivePieces that check activeKing
     emptySpaces = openSpaces(boardIds, pieces); // updates emptySpaces
     //=============================================
@@ -74,29 +74,29 @@ function lit(activeSide, passiveSide) {
                     // RETURNS FALSE/TRUE IF ANY DEFENDERS BLOCK THE CHECK MATE
                     /*
                     function blockCheck() {
-                        // for (let k = 0; k < checkedPaths.length; k++) {
-                        checkedPaths.forEach(pathId => {
+                        // for (let k = 0; k < pathOfCheck.length; k++) {
+                        pathOfCheck.forEach(pathId => {
                             // loops through pawnDefenders
                             for (let i = 0; i < pawnDefenders.length; i++) {
-                                if (pawnDefenders[i].id[0] === checkedPaths[k][0]) { // if Xs align
+                                if (pawnDefenders[i].id[0] === pathOfCheck[k][0]) { // if Xs align
                                     if (pawnDefenders[i].getAttribute('data-side') === 'blue') { // if pawn blue
                                         if (pawnDefenders[i][1] === 6) { // if first move
                                             // if blue pawn can block check, not check mate
-                                            if ((pawnDefenders[i][1] - 1) === checkedPaths[k][1]) { return false; }  
-                                            if ((pawnDefenders[i][1] - 2) === checkedPaths[k][1]) { return false; }
+                                            if ((pawnDefenders[i][1] - 1) === pathOfCheck[k][1]) { return false; }  
+                                            if ((pawnDefenders[i][1] - 2) === pathOfCheck[k][1]) { return false; }
                                         } // since not first move ---------------------------------------------
                                         // if blue pawn can block check, not check mate
-                                        else if ((pawnDefenders[i].id[1] - 1) === checkedPaths[k][1]) { return false; } 
+                                        else if ((pawnDefenders[i].id[1] - 1) === pathOfCheck[k][1]) { return false; } 
                                     } // since pawn orange -----------------------------------------------------
                                     else {
                                         if (pawnDefenders[i].id[1] === 1) { // if first move
                                             // if orange pawn can block check, not check mate
-                                            if ((+pawnDefenders[i].id[1] + 1) === checkedPaths[k][1]) { return false; }  
-                                            if ((+pawnDefenders[i].id[1] + 2) === checkedPaths[k][1]) { return false; }
+                                            if ((+pawnDefenders[i].id[1] + 1) === pathOfCheck[k][1]) { return false; }  
+                                            if ((+pawnDefenders[i].id[1] + 2) === pathOfCheck[k][1]) { return false; }
                                         } // since not first move ---------------------------------------------
                                         // if orange pawn can block check, not check mate
-                                        else if (pawnDefenders[i].id[0] === checkedPaths[k][0]) {
-                                            if ((+pawnDefenders[i].id[1] + 1) === checkedPaths[k][1]) { return false; }
+                                        else if (pawnDefenders[i].id[0] === pathOfCheck[k][0]) {
+                                            if ((+pawnDefenders[i].id[1] + 1) === pathOfCheck[k][1]) { return false; }
                                         }
                                     }
                                 }
@@ -114,7 +114,7 @@ function lit(activeSide, passiveSide) {
                                 }
                             })
                         });    
-                            // sees if any defenders can block any checkedPath space
+                            // sees if any defenders can block any pathOfCheck space
                         return true; // check mate
                     } // WORKS!
                     */
@@ -122,11 +122,11 @@ function lit(activeSide, passiveSide) {
                     // if kingAttacker's name is...
                     // switch (kingAttackers[0].getAttribute('data-name')) {
                         // case 'bishop', 'rook', 'queen':
-                            // loops through all checkedPaths for each activePiece  
-                            // for (let z = 0; z < checkedPaths.length; z++) {
+                            // loops through all pathOfCheck for each activePiece  
+                            // for (let z = 0; z < pathOfCheck.length; z++) {
                             // if activePiece is not activeKing
                     if (activePiece.getAttribute('data-name') !== 'king') {
-                        checkedPaths.forEach(pathId => {
+                        pathOfCheck.forEach(pathId => {
                             // if unpinned activePiece can move to pathId
                             if (checkingSpace(activePiece, pathId)) {
                                 // collects activePiece & pathId
@@ -152,27 +152,27 @@ function lit(activeSide, passiveSide) {
             /*
             // RETURNS FALSE/TRUE IF ANY DEFENDERS BLOCK THE CHECK MATE
             function blockCheck() {
-                for (let k = 0; k < checkedPaths.length; k++) {
+                for (let k = 0; k < pathOfCheck.length; k++) {
                     for (let i = 0; i < pawnDefenders.length; i++) {
-                        if (pawnDefenders[i].id[0] === checkedPaths[k][0]) { // if Xs align
+                        if (pawnDefenders[i].id[0] === pathOfCheck[k][0]) { // if Xs align
                             if (pawnDefenders[i].getAttribute('data-side') === 'blue') { // if pawn blue
                                 if (pawnDefenders[i][1] === 6) { // if first move
                                     // if blue pawn can block check, not check mate
-                                    if ((pawnDefenders[i][1] - 1) === checkedPaths[k][1]) { return false; }  
-                                    if ((pawnDefenders[i][1] - 2) === checkedPaths[k][1]) { return false; }
+                                    if ((pawnDefenders[i][1] - 1) === pathOfCheck[k][1]) { return false; }  
+                                    if ((pawnDefenders[i][1] - 2) === pathOfCheck[k][1]) { return false; }
                                 } // since not first move ---------------------------------------------
                                 // if blue pawn can block check, not check mate
-                                else if ((pawnDefenders[i].id[1] - 1) === checkedPaths[k][1]) { return false; } 
+                                else if ((pawnDefenders[i].id[1] - 1) === pathOfCheck[k][1]) { return false; } 
                             } // since pawn orange -----------------------------------------------------
                             else {
                                 if (pawnDefenders[i].id[1] === 1) { // if first move
                                     // if orange pawn can block check, not check mate
-                                    if ((+pawnDefenders[i].id[1] + 1) === checkedPaths[k][1]) { return false; }  
-                                    if ((+pawnDefenders[i].id[1] + 2) === checkedPaths[k][1]) { return false; }
+                                    if ((+pawnDefenders[i].id[1] + 1) === pathOfCheck[k][1]) { return false; }  
+                                    if ((+pawnDefenders[i].id[1] + 2) === pathOfCheck[k][1]) { return false; }
                                 } // since not first move ---------------------------------------------
                                 // if orange pawn can block check, not check mate
-                                else if (pawnDefenders[i].id[0] === checkedPaths[k][0]) {
-                                    if ((+pawnDefenders[i].id[1] + 1) === checkedPaths[k][1]) { return false; }
+                                else if (pawnDefenders[i].id[0] === pathOfCheck[k][0]) {
+                                    if ((+pawnDefenders[i].id[1] + 1) === pathOfCheck[k][1]) { return false; }
                                 }
                             }
                         }
@@ -180,9 +180,9 @@ function lit(activeSide, passiveSide) {
                     // for each defender
                     for (let j = 0; j < defenders.length; j++) {
                         // if defender can block check, not check mate
-                        if (checkingSpace(defenders[j], checkedPaths[k])) { return false; }
+                        if (checkingSpace(defenders[j], pathOfCheck[k])) { return false; }
                     }
-                } // sees if any defenders can block any checkedPath space
+                } // sees if any defenders can block any pathOfCheck space
                 return true; // check mate
             } // WORKS!
 
@@ -1003,8 +1003,8 @@ function lit(activeSide, passiveSide) {
                     if (checkingSpace(passivePiece, checkSpaceId)) {
                         if (!litDivs.includes(checkSpaceId)) {
                             litDivs.push(checkSpaceId);
-                        }
-                    } // checkingSpace returns true/false if piece attacks space
+                        } // activeKing
+                    }
                 });
             }); // console.log(litDivs);
             // ----------------------------------------------------------------

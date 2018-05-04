@@ -1,5 +1,5 @@
 var player = 'blue',  kingAttackers= [], defenders = [], pawnDefenders = [], enPassantCell = '', orangeTakenBoxIdCounter = -16, blueTakenBoxIdCounter = -1, enPassanting = false, endOfGame = false,
-heroics = [], mate, knightLight, bishopPathId, rookPathId, blueKingFirstMove, blueRook1FirstMove, activeKing, blueRook2FirstMove,  orangeKingFirstMove, orangeRook1FirstMove, orangeRook2FirstMove, castleIds = [], noCastle, kingAble, pieceToMove, goToDiv, enPassantDiv, prevGoToDiv, enPassantGoToDiv, pawnJumpDiv, enPassantables2 = [], enPassantedPawn, knightLight, takenOrangeBox, takenBlueBox, pieceLit, gameEnds, tempSide, movedPiece, mainLitDiv, litDivs, unLitDivs, img, index1, index2, tempPiece, moves, takenBox, activeCells, openAndOpponentHeldKingSpaces, kingSpacesUnderAttack, orangeKingSpacesUnderAttack, orangelessKingSpaces, orangelessKingSpaces, blueKingSpaces, bluelessKingSpaces, orangeKingSpacesUnderAttack, block1, block2, block3, block4, block5, block6, block7, block8, vacantKingSpaces, whiteKing, blackKing, knightMoves, bishopMoves, bishopX, bishopY, rookMoves, kingSpaces, kingOpenSpaces, occupiedKingSpaces, defenders, pinnedPieces, checkedPaths, nails, whites, blacks;
+heroics = [], mate, knightLight, bishopPathId, rookPathId, blueKingFirstMove, blueRook1FirstMove, activeKing, blueRook2FirstMove,  orangeKingFirstMove, orangeRook1FirstMove, orangeRook2FirstMove, castleIds = [], noCastle, kingAble, pieceToMove, goToDiv, enPassantDiv, prevGoToDiv, enPassantGoToDiv, pawnJumpDiv, enPassantables2 = [], enPassantedPawn, knightLight, takenOrangeBox, takenBlueBox, pieceLit, gameEnds, tempSide, movedPiece, mainLitDiv, litDivs, unLitDivs, img, index1, index2, tempPiece, moves, takenBox, activeCells, openAndOpponentHeldKingSpaces, kingSpacesUnderAttack, orangeKingSpacesUnderAttack, orangelessKingSpaces, orangelessKingSpaces, blueKingSpaces, bluelessKingSpaces, orangeKingSpacesUnderAttack, block1, block2, block3, block4, block5, block6, block7, block8, vacantKingSpaces, whiteKing, blackKing, knightMoves, bishopMoves, bishopX, bishopY, rookMoves, kingSpaces, kingOpenSpaces, occupiedKingSpaces, defenders, pinnedPieces, pathOfCheck = [], nails, whites, blacks;
 
 // holds one or two pawn(s) that can eat the enPassanter pawn
 var enPassantables = [];
@@ -54,11 +54,11 @@ var emptySpaces = openSpaces(boardIds, pieces);
 
 // returns true/false if some-piece checks-space 
 function checkingSpace(somePiece, checkSpace) {
-  // somePiece is a passiveSide <img>
+  // somePiece is a <img>
   // checkSpace is an activeSideID (kingSpace not held by an activeSide piece)
-  pinnedPieces = []; checkedPaths = [];
+  pinnedPieces = []; pathOfCheck = [];
   //--------------------------------------------------------------------------------------------
-  // returns true/false if some passiveSide knight can attack checkSpace
+  // returns true/false if the knight can attack checkSpace
   function knightAttacks(someKnight, checkSpace) {
     // to hold two spaces where knight might checkSpace
     knightMoves = [];
@@ -113,7 +113,7 @@ function checkingSpace(somePiece, checkSpace) {
     return knightMoves.includes(checkSpace); 
   }
   //--------------------------------------------------------------------------------------------
-  // returns true/false if some passiveSide bishop can attack checkSpace
+  // returns true/false if the bishop can attack checkSpace
   function bishopAttacks(someBishop, checkSpace) {
     bishopMoves = []; // collects someBishop's id route to checkSpace
     nails = []; // collects possible pinnedPieces
@@ -215,14 +215,14 @@ function checkingSpace(somePiece, checkSpace) {
     } 
     // returns true/false if no pieces block
     else if (!nails.length) {
-      // checkedPaths array becomes someBishop's id route to checkSpace id
-      checkedPaths = bishopMoves;
+      // pathOfCheck array becomes someBishop's id route to checkSpace id
+      pathOfCheck = bishopMoves;
       return true; // someBishop checks space
     }
     else { return false; } // not a check
   }
   //--------------------------------------------------------------------------------------------
-  // returns true/false if some passiveSide rook can attack checkSpace
+  // returns true/false if the rook can attack checkSpace
   function rookAttacks(someRook, checkSpace) {
     
     rookMoves = []; // will hold spaces rook attacks enroute to checkSpace
@@ -295,14 +295,14 @@ function checkingSpace(somePiece, checkSpace) {
     } 
     // returns true/false if no pieces block
     else if (!nails.length) {
-      // checkedPaths array becomes someRook's id route to checkSpace id
-      checkedPaths = rookMoves;
+      // pathOfCheck array becomes someRook's id route to checkSpace id
+      pathOfCheck = rookMoves;
       return true; // someRook checks space
     }
     else { return false; } // not a check
   }
   //--------------------------------------------------------------------------------------------
-  // returns true/false if some passiveSide queen can attack checkSpace
+  // returns true/false if the queen can attack checkSpace
   function queenAttacks(someQueen, checkSpace) {
     return (
       bishopAttacks(someQueen, checkSpace) 
@@ -310,16 +310,16 @@ function checkingSpace(somePiece, checkSpace) {
     );
   }
   //--------------------------------------------------------------------------------------------
-  // returns true if the passiveSide king can attack checkSpace
+  // returns true if the king can attack checkSpace
   function kingAttacks(someKing, checkSpace) {
     switch (+checkSpace[0]) { // if checkSpace's column equals
-      case +someKing.id[0]: // passiveSide king's column
+      case +someKing.id[0]: // king's column
         return (
           ( checkSpace[1] == (+someKing.id[1] + 1) )
           || 
           ( checkSpace[1] == (someKing.id[1] - 1) )
         );
-      case +someKing.id[0] + 1: // passiveSide king's column + 1
+      case +someKing.id[0] + 1: // king's column + 1
         return (
           ( checkSpace[1] == someKing.id[1] )
           ||
@@ -327,7 +327,7 @@ function checkingSpace(somePiece, checkSpace) {
           ||
           ( checkSpace[1] == (someKing.id[1] - 1) )
         );
-      case someKing.id[0] - 1: // passiveSide king's column - 1
+      case someKing.id[0] - 1: // king's column - 1
         return (
           ( checkSpace[1] == someKing.id[1] )
           ||
@@ -349,7 +349,7 @@ function checkingSpace(somePiece, checkSpace) {
       if (somePiece.id[0] - 1 == checkSpace[0]
       || (+somePiece.id[0] + 1) == checkSpace[0]) {
         // sees if pawn can checkSpace
-        // if passiveSide is blue
+        // if pawn is blue
         if (somePiece.getAttribute('data-side') === 'blue') {
           return checkSpace[1] == (somePiece.id[1] - 1);
         } else { return checkSpace[1] == (+somePiece.id[1] + 1); }

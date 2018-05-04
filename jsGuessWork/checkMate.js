@@ -1,7 +1,7 @@
 // returns EITHER an array of checking pieces OR false
 function isCheck(pieces, player) {
   
-  whites = []; blacks = []; pinnedPieces = []; checkedPaths = [];
+  whites = []; blacks = []; pinnedPieces = []; pathOfCheck = [];
   
   function setKingValues() {
     pieces.forEach(item => { // sets whiteKing & blackKing values
@@ -124,7 +124,7 @@ function isCheck(pieces, player) {
       }
       if (nails.length === 0) {
         bishopMoves.forEach(move => {
-          checkedPaths.push(move);
+          pathOfCheck.push(move);
         });
         return true;
       } // returns true if no pieces block, else returns false
@@ -174,7 +174,7 @@ function isCheck(pieces, player) {
       }
       if (nails.length === 0) {
         rookMoves.forEach(move => {
-          checkedPaths.push(move);
+          pathOfCheck.push(move);
         });
         return true;
       } // returns true if no pieces block, else returns false
@@ -307,36 +307,36 @@ function isMate(pieces, side) {
 
       // RETURNS TRUE/FALSE IF CHECK MATE
       function blockCheck() { // RETURNS FALSE IF ANY DEFENDERS BLOCK CHECK
-        for (let k = 0; k < checkedPaths.length; k++) {
+        for (let k = 0; k < pathOfCheck.length; k++) {
           for (let i = 0; i < pawnDefenders.length; i++) {
-            if (pawnDefenders[i].x === checkedPaths[k].x) { // if Xs align
+            if (pawnDefenders[i].x === pathOfCheck[k].x) { // if Xs align
               if (pawnDefenders[i].side === 'blue') { // if white pawn
                 if (pawnDefenders[i].y === 6) { // if first move
-                  if (pawnDefenders[i].y - 1 === checkedPaths[k].y) { return false; }  
-                  if (pawnDefenders[i].y - 2 === checkedPaths[k].y) { return false; }
+                  if (pawnDefenders[i].y - 1 === pathOfCheck[k].y) { return false; }  
+                  if (pawnDefenders[i].y - 2 === pathOfCheck[k].y) { return false; }
                   // pawn can block check, not a mate
                 } // since not first move
-                else if (pawnDefenders[i].y - 1 === checkedPaths[k].y) { return false; } 
+                else if (pawnDefenders[i].y - 1 === pathOfCheck[k].y) { return false; } 
                 // pawn can block check, not a mate
               } // since black pawn =====================================
               else {
                 if (pawnDefenders[i].y === 1) { // if first move
-                  if (pawnDefenders[i].y + 1 === checkedPaths[k].y) { return false; }  
-                  if (pawnDefenders[i].y + 2 === checkedPaths[k].y) { return false; }
+                  if (pawnDefenders[i].y + 1 === pathOfCheck[k].y) { return false; }  
+                  if (pawnDefenders[i].y + 2 === pathOfCheck[k].y) { return false; }
                   // pawn can block check, not a mate
                 } // since not first move
-                else if (pawnDefenders[i].x === checkedPaths[k].x) {
-                  if (pawnDefenders[i].y + 1 === checkedPaths[k].y) { return false; } 
+                else if (pawnDefenders[i].x === pathOfCheck[k].x) {
+                  if (pawnDefenders[i].y + 1 === pathOfCheck[k].y) { return false; } 
                   // pawn can block check, not a mate
                 }
               }
             }
           } // ends pawnDefender for-loop
           for (let j = 0; j < defenders.length; j++) { // for each defender
-            if (checkingSpace(defenders[j], checkedPaths[k])) { return false; } 
+            if (checkingSpace(defenders[j], pathOfCheck[k])) { return false; } 
             // defender can block check, not a mate
           }
-        } // sees if any defenders can block any checkedPaths space
+        } // sees if any defenders can block any pathOfCheck space
         return true; // check mate
       } // WORKS!
 
