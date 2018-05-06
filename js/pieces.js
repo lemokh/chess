@@ -32,10 +32,11 @@ var blues = Array.from(blueNodes);
 var pieces = [...oranges, ...blues];
 // ---------------------------------
 /*
+////////////////////////////////////
 emptySpaces.forEach( emptySpace => {
   document.getElementById( emptySpace ).getAttribute('data-side') === 'empty';
 });
-//////////////////////////////////
+///////////////////////
 function endGameNow() {
   remove activeSide click listener
   // -------------------------------------------------
@@ -50,7 +51,7 @@ function endGameNow() {
 //==============================================
 // returns true/false if some-piece checks-space
 function checkingSpace(somePiece, checkSpaceId) {
-  // somePiece is a <img>
+  // somePiece is an <img>
   // checkSpaceId is an id (kingSpace not held by an activeSide piece)
   pinnedPieces = []; pathOfCheck = [];
   //---------------------------------------------------------

@@ -80,12 +80,18 @@ function lit(activeSide, passiveSide) {
         });
     }
     //==============================
+    
+    /*
     // populates kingAttackers array
     passiveSide.forEach(item => {
         if (checkingSpace(item, activeKing.id)) { kingAttackers.push(item); }
     });// --------------------------------------------------------
     console.log('kingAttackers -->');  console.log(kingAttackers);
+    */
+
     // -----------------------------------------------------------
+    
+    
     // if activeKing in check
     if (kingAttackers.length) { // provided by kingLit() via its checkingSpace()
         console.log('isMate() -->');  console.log(isMate());
@@ -104,23 +110,44 @@ function lit(activeSide, passiveSide) {
                 console.log('ENTERS PreventCheckMate()')
                 // -----------------------------------------
                 // grey-lightens & click-listens only to heroic activePieces
+                
+                if (kingAttackers.length > 1) {
+                    endOfGame = true;
+                    // -----------------------------------------------------------
+                    alert(activeKing.getAttribute('data-side') + ' CHECK MATED!');
+                    console.log('ACTIVEKING CHECK MATED!');
+                }
+                else {
+                    heroics = activeSide.map(piece => !pinnedPieces.includes)
+                }
+                /*
                 heroics.forEach(obj => { // heroics is [ {actor:__, acteeId:__}, ... ]
                     // pre-lightens them with grey background
                     (obj.actor).classList.add('preventMateLit');
                     (obj.actor).addEventListener('click', pieceLit);
                 }); // THEN, once fully moved, resets each heroics.actor to normal
+                
                 console.log('FULLY MOVED HEROIC PIECE!');
+                
                 heroics.forEach(obj => {
                     // un-lightens & stops click-listening to heroic activePieces 
                     obj.actor.classList.remove('preventMateLit');
                     obj.actor.removeEventListener('click', pieceLit);
                 });
+                */
+
                 // next turn
                 // if (activeSide === blues) { lit(oranges, blues); }
                 // else { lit(blues, oranges); }
             }
         }
     } // BE SURE THIS IS CORRECT!!
+    
+
+    // -----------------------------------------------------------
+
+
+
     //====================
     function castling(e) {
         console.log('enters castling(e)')
