@@ -17,7 +17,7 @@ function lit(activeSide, passiveSide) {
         // returns true/false if activeKing is check mated
         // -------------------------------------
         // litDivs = [];  // kingAttackers = [];
-        pieceToMove = activeKing;
+        // pieceToMove = activeKing;
         kingLit(); // fills litDivs if activeKing can move
         // kingLit() runs checkingSpace()
         // --------------------------------------------------------------------------------
