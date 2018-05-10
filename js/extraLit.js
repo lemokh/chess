@@ -16,8 +16,10 @@ function lit(activeSide, passiveSide) {
     function isMate() {
         // returns true/false if activeKing is check mated
         // -------------------------------------
-        // litDivs = [];  // kingAttackers = [];
-        // pieceToMove = activeKing;
+        litDivs = [];
+        kingAttackers = [];
+        
+        pieceToMove = activeKing;
         kingLit(); // fills litDivs if activeKing can move
         // kingLit() runs checkingSpace()
         // --------------------------------------------------------------------------------
@@ -62,7 +64,7 @@ function lit(activeSide, passiveSide) {
                 }
             }); // WORKS!
             return mate; // check mate!        
-        } // **************************************
+        } // **************************
     }
     //==========================
     function preventMateLit(e) {
@@ -79,19 +81,30 @@ function lit(activeSide, passiveSide) {
             preventMatable.addEventListener('click', movePiece);
         });
     }
-    //==============================
-    
-    /*
+    //===============
+    function lit1() {
+        // lighten & click-listen to emptyId div
+        document.getElementById(emptyId).classList.add('lit');
+        document.getElementById(emptyId).addEventListener('click', lit2);
+    }
+    //=================================================================
+    function lit2() {
+        // un-lighten & stop click-listening to emptyId div
+        document.getElementById(emptyId).classList.remove('lit');
+        document.getElementById(emptyId).removeEventListener('click', lit2);
+        // move activePiece to emptyId div
+        swapSide(activePiece, document.getElementById(emptyId));
+        // start next turn
+        if (activeSide === blues) { lit(oranges, blues); }
+        else { lit(blues, oranges); }  
+    }
+    //===============================
     // populates kingAttackers array
-    passiveSide.forEach(item => {
-        if (checkingSpace(item, activeKing.id)) { kingAttackers.push(item); }
+    passiveSide.forEach(passivePiece => {
+        if (checkingSpace(passivePiece, activeKing.id)) { kingAttackers.push(item); }
     });// --------------------------------------------------------
     console.log('kingAttackers -->');  console.log(kingAttackers);
-    */
-
-    // -----------------------------------------------------------
-    
-    
+    // -----------------------------------------------------------    
     // if activeKing in check
     if (kingAttackers.length) { // provided by kingLit() via its checkingSpace()
         console.log('isMate() -->');  console.log(isMate());
@@ -108,17 +121,31 @@ function lit(activeSide, passiveSide) {
             // -----------------------------------------------------------
             if (!litDivs.length) { // if activeKing cannot move
                 console.log('ENTERS PreventCheckMate()')
-                // -----------------------------------------
-                // grey-lightens & click-listens only to heroic activePieces
-                
+                // -------------------------------------
+                // grey-lightens & click-listens only to heroic activePieces                
                 if (kingAttackers.length > 1) {
                     endOfGame = true;
                     // -----------------------------------------------------------
                     alert(activeKing.getAttribute('data-side') + ' CHECK MATED!');
                     console.log('ACTIVEKING CHECK MATED!');
                 }
-                else {
-                    heroics = activeSide.map(piece => !pinnedPieces.includes)
+                else { // heroics = array of unpinned activePieces
+                    heroics = activeSide.map(piece => !pinnedPieces.includes(piece));
+                    // for each id in kingAttacker's pathOfCheck array
+                    pathOfCheck.forEach(emptyId => {
+                        // for each unpinned activePiece
+                        heroics.forEach(activePiece => {
+                            // if activePiece not king
+                            if (activePiece.getAttribute('data-name') === 'king') {
+                                // if activePiece can take emptyId
+                                if (checkingSpace(activePiece, emptyId)) {
+                                    // grey-lighten & click-listen to activePiece
+                                    activePiece.classList.add('greyLit');
+                                    activePiece.addEventListener('click', lit1);
+                                }
+                            }
+                        });
+                    });
                 }
                 /*
                 heroics.forEach(obj => { // heroics is [ {actor:__, acteeId:__}, ... ]
@@ -135,19 +162,10 @@ function lit(activeSide, passiveSide) {
                     obj.actor.removeEventListener('click', pieceLit);
                 });
                 */
-
-                // next turn
-                // if (activeSide === blues) { lit(oranges, blues); }
-                // else { lit(blues, oranges); }
             }
         }
-    } // BE SURE THIS IS CORRECT!!
-    
-
+    } // BE SURE THIS IS CORRECT!
     // -----------------------------------------------------------
-
-
-
     //====================
     function castling(e) {
         console.log('enters castling(e)')
