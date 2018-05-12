@@ -140,7 +140,7 @@ function lit(activeSide, passiveSide) {
                     pathOfCheck.forEach(emptyId => {
                         // for each unpinned activePiece
                         heroics.forEach(activePiece => {
-                            // if activePiece not a king --> necessary?
+                            // if activePiece is not a king
                             if (activePiece.getAttribute('data-name') !== 'king') {
                                 // if activePiece can take emptyId
                                 if (checkingSpace(activePiece, emptyId)) {
@@ -900,7 +900,9 @@ function lit(activeSide, passiveSide) {
     }
     else { // runs pieceLit(e) for all clicked activeSide pieces
         activeSide.forEach(activePiece => {
-            activePiece.addEventListener('click', pieceLit);
+            if (!pinnedPieces.includes(activePiece)) {
+                activePiece.addEventListener('click', pieceLit);
+            }
         });
     }
 } //================
