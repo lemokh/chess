@@ -530,17 +530,17 @@ function lit(activeSide, passiveSide) {
         activeSide.forEach(activePiece => {
             switch (+activePiece.id[0]) {
                 case (+pieceToMove.id[0] + 1): // if x is one to the right
-                    if (activePiece.id[1] === (+pieceToMove.id[1] + 2)) { block1 = true; break; }
-                    if (activePiece.id[1] === (+pieceToMove.id[1] - 2)) { block2 = true; break; }
+                    if (activePiece.id[1] == (+pieceToMove.id[1] + 2)) { block1 = true; break; }
+                    if (activePiece.id[1] == (+pieceToMove.id[1] - 2)) { block2 = true; break; }
                 case (pieceToMove.id[0] - 1): // if x is one to the left
-                    if (activePiece.id[1] === (+pieceToMove.id[1] + 2)) { block3 = true; break; }
-                    if (activePiece.id[1] === (+pieceToMove.id[1] - 2)) { block4 = true; break; }
+                    if (activePiece.id[1] == (+pieceToMove.id[1] + 2)) { block3 = true; break; }
+                    if (activePiece.id[1] == (+pieceToMove.id[1] - 2)) { block4 = true; break; }
                 case (+pieceToMove.id[0] + 2): // if x is two to the right
-                    if (activePiece.id[1] === (+pieceToMove.id[1] + 1)) { block5 = true; break; }
-                    if (activePiece.id[1] === (+pieceToMove.id[1] - 1)) { block6 = true; break; }
+                    if (activePiece.id[1] == (+pieceToMove.id[1] + 1)) { block5 = true; break; }
+                    if (activePiece.id[1] == (+pieceToMove.id[1] - 1)) { block6 = true; break; }
                 case (pieceToMove.id[0] - 2): // if x is two to the left
-                    if (activePiece.id[1] === (+pieceToMove.id[1] + 1)) { block7 = true; break; }
-                    if (activePiece.id[1] === (+pieceToMove.id[1] - 1)) { block8 = true; break; }
+                    if (activePiece.id[1] == (+pieceToMove.id[1] + 1)) { block7 = true; break; }
+                    if (activePiece.id[1] == (+pieceToMove.id[1] - 1)) { block8 = true; break; }
             }
         });
         // ----------------------------
@@ -892,7 +892,7 @@ function lit(activeSide, passiveSide) {
                 document.getElementById( litDiv ).addEventListener('click', movePiece);
             }); // enters movePiece(e) on litDiv-click, unless castling
         }
-    } // WORKS! 
+    } // WORKS!
     //==============
     if (endOfGame) {
         // endSequence();
