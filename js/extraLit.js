@@ -13,11 +13,11 @@ function lit(activeSide, passiveSide) {
         }
     }
     //=================
-    function isMate() {
+    function isMate() { // since activeKing is in check
         // returns true/false if activeKing is check mated
         // -------------------------------------
-        litDivs = [];  kingAttackers = [];
-        
+        kingAttackers = [];
+        litDivs = [];
         pieceToMove = activeKing;
         kingLit(); // fills litDivs if activeKing can move
         // kingLit() runs checkingSpace()
@@ -100,7 +100,7 @@ function lit(activeSide, passiveSide) {
     //===============================
     // populates kingAttackers array
     passiveSide.forEach(passivePiece => {
-        if (checkingSpace(passivePiece, activeKing.id)) { kingAttackers.push(item); }
+        if (checkingSpace(passivePiece, activeKing.id)) { kingAttackers.push(passivePiece); }
     });// --------------------------------------------------------
     console.log('kingAttackers -->');  console.log(kingAttackers);
     // -----------------------------------------------------------    
