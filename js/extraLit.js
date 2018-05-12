@@ -46,7 +46,11 @@ function lit(activeSide, passiveSide) {
                     // if activePiece can EAT kingAttacker
                     if (checkingSpace(activePiece, kingAttackers[0].id)) {
                         // collects activePiece & kingAttacker's id as an object
-                        heroics.push( {actor: activePiece, acteeId: kingAttackers[0].id} );
+                        // heroics.push( {actor: activePiece, acteeId: kingAttackers[0].id} );
+                        
+                        // grey-lighten & click-listen to activePiece
+                        activePiece.classList.add('greyLit');
+                        activePiece.addEventListener('click', lit1);
                         mate = false; // not check mate
                     } // -----------------------------------
                     // if activePiece can BLOCK kingAttacker
@@ -55,6 +59,8 @@ function lit(activeSide, passiveSide) {
                             // if activePiece can move to pathId
                             if (checkingSpace(activePiece, pathId)) {
                                 // collects activePiece & pathId as an object
+                                // heroics.push( {actor: activePiece.id, acteeId: pathId} );
+
                                 // grey-lighten & click-listen to activePiece
                                 activePiece.classList.add('greyLit');
                                 activePiece.addEventListener('click', lit1);

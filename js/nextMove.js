@@ -11,12 +11,12 @@ litDivs = [];
 pieceToMove = activeKing;
 kingLit();
 
-if (litDivs.length) {
+if (!litDivs.length) { // if king paralyzed
     passiveSide.forEach(passivePiece => {
         if (checkingSpace(passivePiece, activeKing.id)) { return false; }
         else { endOfGame = true; }
     });
-}
+} else {  } // 
 
 // undo kingLit();
 
