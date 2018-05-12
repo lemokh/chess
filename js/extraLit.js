@@ -108,15 +108,16 @@ function lit(activeSide, passiveSide) {
     if (kingAttackers.length) { // provided by kingLit() via its checkingSpace()
         console.log('isMate() -->');  console.log(isMate());
         // -------------------------------------------------
-        if (isMate()) { // if check mate
+        if ( isMate() ) { // if check mate
             endOfGame = true;
             // -----------------------------------------------------------
-            alert(activeKing.getAttribute('data-side') + ' CHECK MATED!');
-            console.log('ACTIVEKING CHECK MATED!');
+            alert(activeKing.getAttribute('data-side') + ' KING CHECKMATE!');
+            console.log(activeKing.getAttribute('data-side') + ' KING CHECKMATE!');
         } // -------------------------------------------------------------
         else { // since activeKing in check, but not check mate
-            alert(activeKing.getAttribute('data-side') + ' king CHECKED!');
-            console.log('ACTIVE KING CHECKED');  console.log('litDivs -->');  console.log(litDivs);
+            alert(activeKing.getAttribute('data-side') + ' king IN CHECK!');
+            console.log(activeKing.getAttribute('data-side') + ' king IN CHECK!');
+            console.log('litDivs -->');  console.log(litDivs);
             // -----------------------------------------------------------
             if (!litDivs.length) { // if activeKing cannot move
                 console.log('ENTERS PreventCheckMate()')
@@ -125,17 +126,22 @@ function lit(activeSide, passiveSide) {
                 if (kingAttackers.length > 1) {
                     endOfGame = true;
                     // -----------------------------------------------------------
-                    alert(activeKing.getAttribute('data-side') + ' CHECK MATED!');
-                    console.log('ACTIVEKING CHECK MATED!');
+                    alert(activeKing.getAttribute('data-side') + ' KING CHECKMATE!');
+                    console.log(activeKing.getAttribute('data-side') + ' KING CHECKMATE!');
                 }
                 else { // heroics = array of unpinned activePieces
                     heroics = activeSide.map(piece => !pinnedPieces.includes(piece));
+                    // --------------------------------------------------------------
+                    console.log('heroics -->');  console.log(heroics);
+                    // --------------------------------------------------------------
+                    console.log('pathOfCheck -->');  console.log(pathOfCheck);
+                    // -------------------------------------------------------
                     // for each id in kingAttacker's pathOfCheck array
                     pathOfCheck.forEach(emptyId => {
                         // for each unpinned activePiece
                         heroics.forEach(activePiece => {
-                            // if activePiece not king
-                            if (activePiece.getAttribute('data-name') === 'king') {
+                            // if activePiece not a king --> necessary?
+                            if (activePiece.getAttribute('data-name') !== 'king') {
                                 // if activePiece can take emptyId
                                 if (checkingSpace(activePiece, emptyId)) {
                                     // grey-lighten & click-listen to activePiece

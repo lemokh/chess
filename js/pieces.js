@@ -198,7 +198,8 @@ function checkingSpace(somePiece, checkSpaceId) {
           // collects that nailed piece into pinnedPieces
           pinnedPieces.push(nails[0]);
           // -------------------------------------------------------------------------------------------
-          alert('NEW PINNED PIECE ADDED');  console.log('pinnedPieces -->');  console.log(pinnedPieces);
+          alert(nails[0].getAttribute('data-side') + ' ' + nails[0].getAttribute('data-name') + ' IS PINNED');
+          console.log('pinnedPieces -->');  console.log(pinnedPieces);
       }
     } // -----------------------------------
     // returns true/false if no pieces block
