@@ -55,7 +55,9 @@ function lit(activeSide, passiveSide) {
                             // if activePiece can move to pathId
                             if (checkingSpace(activePiece, pathId)) {
                                 // collects activePiece & pathId as an object
-                                heroics.push( {actor: activePiece.id, acteeId: pathId} );
+                                // grey-lighten & click-listen to activePiece
+                                activePiece.classList.add('greyLit');
+                                activePiece.addEventListener('click', lit1);
                                 mate = false; // not check mate
                             }
                         });
