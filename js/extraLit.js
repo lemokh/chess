@@ -31,9 +31,9 @@ function lit(activeSide, passiveSide) {
             // ---------------------------------------------
             mate = true;
             // -----------------------------------------------
-            activeSide.forEach(activePiece => {
-                activePiece.removeEventListener('click', pieceLit);
-            });
+            // activeSide.forEach(activePiece => {
+            //     activePiece.removeEventListener('click', pieceLit);
+            // });
                 // -----------------------------------------------
             // can any activePiece EAT kingAttacker or BLOCK its path?
             activeSide.forEach(activePiece => {
@@ -47,24 +47,33 @@ function lit(activeSide, passiveSide) {
                                 // ---------------------------
                                 mate = false; // no check mate
                                 // grey-lighten & click-listen to activePiece
+                                greyLitDivs.push(activePiece);
                                 activePiece.classList.add('greyLit');
                                 activePiece.addEventListener('click', function greyLit() {
                                     //====================================================
                                     // lighten & click-listen to someId div
                                     document.getElementById(someId).classList.add('lit');
-                                    document.getElementById(someId).addEventListener('click', function further(e) {
+                                    document.getElementById(someId).addEventListener('click', movePiece);
+                                    /*
+                                    function further(e) {
                                         //==========================================================================
                                         // un-lighten & stop click-listening to clicked space
+                                        greyLitDivs.forEach(greyLitDiv => {
+                                            greyLitDiv.removeEventListener('click', greyLit);
+                                            greyLitDiv.classList.remove('greyLit');
+                                        }); // ------------------------------------
+                                        // e.target.classList.remove('mainLitDiv');
                                         e.target.classList.remove('lit');
                                         e.target.removeEventListener('click', further);
-                                        // ----------------------------------------------------------------------
+                                        // --------------------------------------------
                                         // move activePiece to clicked space
                                         swapSide(activePiece, e.target);
-                                        // -----------------------------------------------------
+                                        // -----------------------------
                                         // begin next turn
                                         if (activeSide === blues) { lit(oranges, blues); }
                                         else { lit(blues, oranges); }
                                     });
+                                    */
                                 });
                             }
                         }
@@ -144,14 +153,16 @@ function lit(activeSide, passiveSide) {
                     console.log(activeKing.getAttribute('data-side') + ' KING CHECKMATE!');
                 }
                 else { // heroics = array of unpinned activePieces
-                    heroics = activeSide.map(piece => !pinnedPieces.includes(piece));
+                    console.log('ENTERS else statement --> activeKing paralyzed and only one kingAttacker');
+                    // heroics = activeSide.map(piece => !pinnedPieces.includes(piece));
                     // --------------------------------------------------------------
                     // console.log('heroics -->');  console.log(heroics);
                     // --------------------------------------------------------------
                     // console.log('pathOfCheck -->');  console.log(pathOfCheck);
                     // -------------------------------------------------------
                     // for each id in kingAttacker's pathOfCheck array
-                    pathOfCheck.forEach(emptyId => {
+                    /*
+                    checkPath.forEach(emptyId => {
                         // for each unpinned activePiece
                         heroics.forEach(activePiece => {
                             // if activePiece is not a king
@@ -165,6 +176,7 @@ function lit(activeSide, passiveSide) {
                             }
                         });
                     });
+                    */
                 }
                 // ****************************************************
                 // ****************************************************
