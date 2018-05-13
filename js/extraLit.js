@@ -6,16 +6,14 @@ function lit(activeSide, passiveSide) {
     // function toggleClocks() {}
     //===========================
     function isMate() { // since activeKing is in check
-        // returns true/false if activeKing is check mated
-        // -------------------------------------
-        kingAttackers = [];
-        litDivs = [];
-        pieceToMove = activeKing;
-        kingLit(); // fills litDivs if activeKing can move
-        // kingLit() runs checkingSpace()
+        // returns true/false if activeKing checkmated
         // --------------------------------------------------------------------------------
         console.log('ENTERS isMate()');  console.log('litDivs -->');  console.log(litDivs);
         // --------------------------------------------------------------------------------
+        kingLit(); // fills litDivs if activeKing can move
+
+        // kingLit() runs checkingSpace()
+        // ------------------------------------------------------
         if (litDivs.length) { // if king can move, not check mate
             // un-lightens & stops click-listening to litDivs
             litDivs.forEach(litDiv => {
@@ -106,11 +104,10 @@ function lit(activeSide, passiveSide) {
         }
     } // ---------------------------------------------------
     console.log('activeKing -->');  console.log(activeKing);
-    // -----------------------------------------------------
-    // -----------------------------------------------------
-    // populates kingAttackers array
+    // --------------------------------------------------------------------
+    // --------------------------------------------------------------------
+    // populates kingAttackers with any passivePiece that checks activeKing
     passiveSide.forEach(passivePiece => {
-        // with any passivePiece that checks activeKing
         if (checkingSpace(passivePiece, activeKing.id)) {
             kingAttackers.push(passivePiece);
         }
@@ -119,9 +116,7 @@ function lit(activeSide, passiveSide) {
     // -----------------------------------------------------------
     // ----------------------------------------------------------- 
     // if activeKing in check
-    if (kingAttackers.length) { // provided by kingLit() via its checkingSpace()
-        console.log('isMate() -->');  console.log(isMate());
-        // -------------------------------------------------
+    if (kingAttackers.length) { // via checkingSpace() on line 114
         if ( isMate() ) { // if check mate
             endOfGame = true;
             // -----------------------------------------------------------
@@ -129,8 +124,8 @@ function lit(activeSide, passiveSide) {
             console.log(activeKing.getAttribute('data-side') + ' KING CHECKMATE!');
         } // -------------------------------------------------------------
         else { // since activeKing in check, but not check mate
-            alert(activeKing.getAttribute('data-side') + ' king IN CHECK!');
-            console.log(activeKing.getAttribute('data-side') + ' king IN CHECK!');
+            alert(activeKing.getAttribute('data-side') + ' king IN CHECK --> not mate!');
+            console.log(activeKing.getAttribute('data-side') + ' king IN CHECK --> not mate!');
             console.log('litDivs -->');  console.log(litDivs);
             // -----------------------------------------------------------
             if (!litDivs.length) { // if activeKing cannot move
@@ -725,6 +720,8 @@ function lit(activeSide, passiveSide) {
     //==================
     function kingLit() {
         // highlights all possible moves for activeKing
+        console.log('ENTERS kingLit()');
+        // ----------------------------
         kingSpacesUnderAttack = [];
         // ------------------------
         // covers king castling
@@ -828,15 +825,16 @@ function lit(activeSide, passiveSide) {
             openAndOpponentHeldKingSpaces.forEach(checkSpaceId => {
                 // for each oAOHKS & each passivePiece
                 passiveSide.forEach(passivePiece => {
-                    // if passivePiece can check a kingSpace devoid of activePiece
+                    // if passivePiece can check the oAOHKS...(kingSpace devoid of activePiece)
                     if (checkingSpace(passivePiece, checkSpaceId)) {
+                        console.log(passivePiece.getAttribute('data-side') + ' ' + passivePiece.getAttribute('data-name') + ' can attack ' + checkSpaceId);
                         // if that kingSpace is not in litDivs, add to litDivs
                         if (!litDivs.includes(checkSpaceId)) {
                             litDivs.push(checkSpaceId);
                         }
                     }
                 });
-            });
+            });  console.log('litDivs -->');  console.log(litDivs);
         } // WORKS!
     } // WORKS!
     //====================
@@ -917,9 +915,9 @@ function lit(activeSide, passiveSide) {
     }
     else { // runs pieceLit(e) for all clicked activeSide pieces
         activeSide.forEach(activePiece => {
-            if (!pinnedPieces.includes(activePiece)) {
+            // if (!pinnedPieces.includes(activePiece)) {
                 activePiece.addEventListener('click', pieceLit);
-            }
+            // }
         });
     }
 } //================
