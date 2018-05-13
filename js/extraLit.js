@@ -43,6 +43,23 @@ function lit(activeSide, passiveSide) {
             activeSide.forEach(activePiece => {
                 // if activePiece is not pinned
                 if (!pinnedPieces.includes(activePiece)) {
+                    //===============
+                    function lit1() {
+                        // lighten & click-listen to emptyId div
+                        document.getElementById(emptyId).classList.add('lit');
+                        document.getElementById(emptyId).addEventListener('click', lit2);
+                    }
+                    //===============
+                    function lit2() {
+                        // un-lighten & stop click-listening to emptyId div
+                        document.getElementById(emptyId).classList.remove('lit');
+                        document.getElementById(emptyId).removeEventListener('click', lit2);
+                        // move activePiece to emptyId div
+                        swapSide(activePiece, document.getElementById(emptyId));
+                        // start next turn
+                        if (activeSide === blues) { lit(oranges, blues); }
+                        else { lit(blues, oranges); }
+                    } //==================================
                     // if activePiece can EAT kingAttacker
                     if (checkingSpace(activePiece, kingAttackers[0].id)) {
                         // collects activePiece & kingAttacker's id as an object
@@ -87,23 +104,6 @@ function lit(activeSide, passiveSide) {
             preventMatable.classList.add('lit');
             preventMatable.addEventListener('click', movePiece);
         });
-    }
-    //===============
-    function lit1() {
-        // lighten & click-listen to emptyId div
-        document.getElementById(emptyId).classList.add('lit');
-        document.getElementById(emptyId).addEventListener('click', lit2);
-    }
-    //=================================================================
-    function lit2() {
-        // un-lighten & stop click-listening to emptyId div
-        document.getElementById(emptyId).classList.remove('lit');
-        document.getElementById(emptyId).removeEventListener('click', lit2);
-        // move activePiece to emptyId div
-        swapSide(activePiece, document.getElementById(emptyId));
-        // start next turn
-        if (activeSide === blues) { lit(oranges, blues); }
-        else { lit(blues, oranges); }  
     }
     //===============================
     // populates kingAttackers array
@@ -811,11 +811,11 @@ function lit(activeSide, passiveSide) {
             // --------------------------------------------------
             // array of kingSpace ids devoid of activeSide pieces
             openAndOpponentHeldKingSpaces = kingSpaces.filter(kingSpace => {
-                // for each item in arr
+                // for each kingSpace & each activePiece
                 return !activeSide.some(activePiece => {
-                    // for each item in arr2
+                    // adds kingSpace to oAOHKS array if no activePiece there 
                     return (kingSpace === activePiece.id);
-                }); // returns true if not a match
+                });
             }); // WORKS!
             // ----------------------------------------------------
             openAndOpponentHeldKingSpaces.forEach(checkSpaceId => {
