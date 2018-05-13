@@ -244,19 +244,22 @@ function checkingSpace(somePiece, checkSpaceId) {
       }
     } else { return false; } // rook can't checkSpaceId
     // -------------------------------------------------------------------
-    console.log('rookMoves -->');  console.log(rookMoves);
+    // console.log('rookMoves -->');  console.log(rookMoves);
     // populates nails with pieces that block rook's path to checkSpaceId
     pieces.forEach(piece => {
       rookMoves.forEach(rookMove => {
         if (piece.id === rookMove) { nails.push(piece); }
       });
     });
-    console.log('nails -->');  console.log(nails);
+    // console.log('nails -->');  console.log(nails);
     // -------------------------------------------------------------------
     // returns true/false if no piece blocks rook's path to checkSpaceId
     if (!nails.length) { // nails can be both sides
       // pathOfCheck array becomes someRook.id route to checkSpaceId
-      pathOfCheck = rookMoves;
+      if (someRook.getAttribute('data-name') === 'queen') {
+        pathOfCheck = [...pathOfCheck, ...rookMoves];
+      }
+      else { pathOfCheck = rookMoves; }
       return true; // someRook can attack checkSpaceId
     } // ----------------------------------------
     if (nails.length === 1) { // if only one nail
@@ -268,27 +271,7 @@ function checkingSpace(somePiece, checkSpaceId) {
           console.log('pinnedPieces -->');  console.log(pinnedPieces);
       }
     } // -------------------------------------------------
-    return false; // someBishop cannot attack checkSpaceId
-    /*
-    if (nails.length === 1) { // if only one nail
-      // if that nail & someBishop aren't on the same side
-      if (nails[0].getAttribute('data-side') !== someRook.getAttribute('data-side')) {
-          // collects that nailed piece into pinnedPieces
-          pinnedPieces.push(nails[0]);
-          // PINNEDPIECES DOESN'T WORK!
-          alert('NEW PINNED PIECE ADDED');
-          console.log('pinnedPieces -->');
-          console.log(pinnedPieces);
-      }
-    } 
-    // returns true/false if no pieces block
-    else if (!nails.length) {
-      // pathOfCheck array becomes someRook.id route to checkSpaceId
-      pathOfCheck = rookMoves;
-      return true; // someRook checks space
-    }
-    else { return false; } // not a check
-    */
+    return false; // someRook cannot attack checkSpaceId
   }
   // =======================================================
   // returns true/false if the queen can attack checkSpaceId
@@ -327,10 +310,10 @@ function checkingSpace(somePiece, checkSpaceId) {
       default: return false;
     }
   }
-  // ==================================
-  // /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
-  // ==================================
-  // sees if some piece can check space
+  // =================================
+  // /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
+  // =================================
+  // sees if somePiece can check space
   switch (somePiece.getAttribute('data-name')) {
     //------------------------------------------
     case 'pawn':
@@ -341,7 +324,8 @@ function checkingSpace(somePiece, checkSpaceId) {
         // if pawn is blue
         if (somePiece.getAttribute('data-side') === 'blue') {
           return checkSpaceId[1] == (somePiece.id[1] - 1);
-        } else { return checkSpaceId[1] == (+somePiece.id[1] + 1); }
+        }
+        else { return checkSpaceId[1] == (+somePiece.id[1] + 1); }
       } return false;
     //-----------------------------------------------------------
     case 'knight': return knightAttacks(somePiece, checkSpaceId); 

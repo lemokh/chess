@@ -29,7 +29,7 @@ function lit(activeSide, passiveSide) {
             // ---------------------------------------------
             mate = true;
             // ----------------------------------------------
-            // can any activePiece EAT or BLOCK kingAttacker?
+            // can any activePiece EAT kingAttacker or BLOCK its path?
             activeSide.forEach(activePiece => {
                 // if activePiece not pinned
                 if (!pinnedPieces.includes(activePiece)) {
@@ -52,40 +52,43 @@ function lit(activeSide, passiveSide) {
                     }
                     //=====================================================
                     if (activePiece.getAttribute('data-name') !== 'king') {
-                        // if activePiece can EAT kingAttacker
-                        if (checkingSpace(activePiece, kingAttackers[0].id)) {
-                            mate = false; // no check mate
-                            someId = kingAttackers[0].id;
-                            // grey-lighten & click-listen to activePiece
-                            activePiece.classList.add('greyLit');
-                            activePiece.addEventListener('click', lit1);
-                        } // -----------------------------------
-                        // if activePiece can BLOCK kingAttacker
-                        pathOfCheck.forEach(pathId => {
-                            // if activePiece can move to pathId
-                            if (checkingSpace(activePiece, pathId)) {
+                        // sees if somePiece can eat or block someId
+                        function eatOrBlock(somePiece, someId) {
+                            console.log(pathOfCheck);
+                            console.log(checkingSpace(somePiece, someId));
+                            // ------------------------------------
+                            // NO ACTIVEPIECE CAN TAKE SOMEID
+                            if (checkingSpace(somePiece, someId)) {
+                                console.log(somePiece + ' can move to ' + someId);
+                                // ----------------------
+                                console.log(pathOfCheck);
+                                // ---------------------------
                                 mate = false; // no check mate
-                                someId = pathId;
                                 // grey-lighten & click-listen to activePiece
                                 activePiece.classList.add('greyLit');
                                 activePiece.addEventListener('click', lit1);
-                                
-                            }
+                            } // -------------------------------------------
+                        }
+                        // ------------------------------------------
+                        pathOfCheck.forEach(pathId => {
+                            // if activePiece can move to pathId
+                            eatOrBlock(activePiece, pathId);
                         });
+                        eatOrBlock(activePiece, kingAttackers[0].id);
                     }
                 }
             }); // WORKS!
             console.log('mate -->');  console.log(mate);
-            return mate; // discerns whether or not activeKing is checkmated        
-        } // **************************
+            return mate; // discerns if activeKing is checkmated        
+        } // ***************************************************
     }
     //==========================
     function preventMateLit(e) {
         // un-lightens all matePreventers except the clicked piece
         // matePreventers.forEach(unLightenPiece => {
         //     if (unLightenPiece !== e.target) {
-        //         unLightenPiece.classList.remove('preventMateLit');
-        //         unLightenPiece.removeEventListener('click', preventMateLit);
+        //         unLightenPiece.classList.remove('greyLit');
+        //         unLightenPiece.removeEventListener('click', greyLit);
         //     }
         // });
         // on-click, only lightens that piece's preventCheckMate moves
@@ -122,7 +125,10 @@ function lit(activeSide, passiveSide) {
             // -----------------------------------------------------------
             alert(activeKing.getAttribute('data-side') + ' KING CHECKMATE!');
             console.log(activeKing.getAttribute('data-side') + ' KING CHECKMATE!');
-        } // -------------------------------------------------------------
+        } // ----------------------------------------------------------------------
+        // ****************************************************
+        // ****************************************************
+        // ****************************************************
         else { // since activeKing in check, but not check mate
             alert(activeKing.getAttribute('data-side') + ' king IN CHECK --> not mate!');
             console.log(activeKing.getAttribute('data-side') + ' king IN CHECK --> not mate!');
@@ -161,10 +167,13 @@ function lit(activeSide, passiveSide) {
                         });
                     });
                 }
+                // ****************************************************
+                // ****************************************************
+                // ****************************************************
                 /*
                 heroics.forEach(obj => { // heroics is [ {actor:__, acteeId:__}, ... ]
                     // pre-lightens them with grey background
-                    (obj.actor).classList.add('preventMateLit');
+                    (obj.actor).classList.add('greyLit');
                     (obj.actor).addEventListener('click', pieceLit);
                 }); // THEN, once fully moved, resets each heroics.actor to normal
                 
@@ -172,7 +181,7 @@ function lit(activeSide, passiveSide) {
                 
                 heroics.forEach(obj => {
                     // un-lightens & stops click-listening to heroic activePieces 
-                    obj.actor.classList.remove('preventMateLit');
+                    obj.actor.classList.remove('greyLit');
                     obj.actor.removeEventListener('click', pieceLit);
                 });
                 */
