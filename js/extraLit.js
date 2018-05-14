@@ -152,13 +152,10 @@ function lit(activeSide, passiveSide) {
                     alert(activeKing.getAttribute('data-side') + ' KING CHECKMATE!');
                     console.log(activeKing.getAttribute('data-side') + ' KING CHECKMATE!');
                 }
-                else { // heroics = array of unpinned activePieces
+                else { // since king paralyzed and only one kingAttacker
                     console.log('ENTERS else statement --> activeKing paralyzed and only one kingAttacker');
                     // heroics = activeSide.map(piece => !pinnedPieces.includes(piece));
-                    // --------------------------------------------------------------
-                    // console.log('heroics -->');  console.log(heroics);
-                    // --------------------------------------------------------------
-                    // console.log('pathOfCheck -->');  console.log(pathOfCheck);
+                    // heroics is an array of unpinned activePieces
                     // -------------------------------------------------------
                     // for each id in kingAttacker's pathOfCheck array
                     /*
@@ -181,21 +178,6 @@ function lit(activeSide, passiveSide) {
                 // ****************************************************
                 // ****************************************************
                 // ****************************************************
-                /*
-                heroics.forEach(obj => { // heroics is [ {actor:__, acteeId:__}, ... ]
-                    // pre-lightens them with grey background
-                    (obj.actor).classList.add('greyLit');
-                    (obj.actor).addEventListener('click', pieceLit);
-                }); // THEN, once fully moved, resets each heroics.actor to normal
-                
-                console.log('FULLY MOVED HEROIC PIECE!');
-                
-                heroics.forEach(obj => {
-                    // un-lightens & stops click-listening to heroic activePieces 
-                    obj.actor.classList.remove('greyLit');
-                    obj.actor.removeEventListener('click', pieceLit);
-                });
-                */
             }
         }
     } // BE SURE THIS IS CORRECT!
