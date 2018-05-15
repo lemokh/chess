@@ -40,7 +40,7 @@ emptySpaces.forEach( emptySpace => {
 function endGameNow() {
   remove activeSide click listener
   // -------------------------------------------------
-  if (activeSide === blues) { alert("blue resigns"); }
+  if (turn === 'blue') { alert("blue resigns"); }
   else {alert("orange resigns");} 
   // ----------------
   update user profile

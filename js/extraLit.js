@@ -70,7 +70,7 @@ function lit(activeSide, passiveSide) {
                                         swapSide(activePiece, e.target);
                                         // -----------------------------
                                         // begin next turn
-                                        if (activeSide === blues) { lit(oranges, blues); }
+                                        if (turn === 'blue') { lit(oranges, blues); }
                                         else { lit(blues, oranges); }
                                     });
                                     */
@@ -234,7 +234,7 @@ function lit(activeSide, passiveSide) {
         });
         //\\//\\//\\//\\//\\//\\//\\//\\//
         // toggles side & starts next move 
-        if (activeSide === blues) {
+        if (turn === 'blue') {
             // toggleClocks();
             console.log('toggles activeSide to orange');
             lit(oranges, blues);
@@ -301,7 +301,7 @@ function lit(activeSide, passiveSide) {
         console.log('ENTERS eat('+element+')');
         // ---------------------------------------
         // puts element in its proper takenBox
-        if (activeSide === blues) { // if blue side
+        if (turn === 'blue') { // if blue side
             document.getElementById(
                 blueTakenBoxIdCounter.toString()
             ).src = element.src;
@@ -395,7 +395,7 @@ function lit(activeSide, passiveSide) {
                     } 
                 } // --------------------------------------------------
                 // covers bluePawn taking any NON-enPassant empty space
-                if (activeSide === blues) { // if blue's turn
+                if (turn === 'blue') { // if blue's turn
                     // if pawnToMove jumps two spaces
                     if (goToDiv.id === (pieceToMove.id[0] + (pieceToMove.id[1] - 2))) {
                         enPassanting = true;
@@ -437,7 +437,7 @@ function lit(activeSide, passiveSide) {
         // -------------------------------
         // -------------------------------
         // toggles side & starts next move 
-        if (activeSide === blues) {
+        if (turn === 'blue') {
             // toggleClocks();
             console.log('toggles activeSide to orange');
             lit(oranges, blues);
@@ -453,7 +453,7 @@ function lit(activeSide, passiveSide) {
         console.log('enters pawnLit()');
         // -------------------------------------------------
         // highlights all possible moves for blue pawnToMove
-        if (activeSide === blues) { // if blue's turn
+        if (turn === 'blue') { // if blue's turn
             // if enPassant attack is possible
             if (enPassanting) { // same as: if (pawnJumpDiv.length) ?
                 // covers enPassant attack
@@ -924,9 +924,9 @@ function lit(activeSide, passiveSide) {
     }
     else { // runs pieceLit(e) for all clicked activeSide pieces
         activeSide.forEach(activePiece => {
-            // if (!pinnedPieces.includes(activePiece)) {
+            if (!pinnedPieces.includes(activePiece)) {
                 activePiece.addEventListener('click', pieceLit);
-            // }
+            }
         });
     }
 } //================
