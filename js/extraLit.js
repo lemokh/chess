@@ -1,4 +1,5 @@
 function lit(activeSide, passiveSide) {
+    inCheckButNotMate = false; // resets this condition
     litDivs = []; // contains lit ids on which to apply click-listeners
     // kingAttackers = []; // contains all passivePieces that check activeKing
     emptySpaces = openSpaces(boardIds, pieces); // updates emptySpaces
@@ -34,7 +35,7 @@ function lit(activeSide, passiveSide) {
             // activeSide.forEach(activePiece => {
             //     activePiece.removeEventListener('click', pieceLit);
             // });
-                // -----------------------------------------------
+            // -----------------------------------------------
             // can any activePiece EAT kingAttacker or BLOCK its path?
             activeSide.forEach(activePiece => {
                 // if activePiece not pinned
@@ -53,9 +54,7 @@ function lit(activeSide, passiveSide) {
                                     //====================================================
                                     // lighten & click-listen to someId div
                                     document.getElementById(someId).classList.add('lit');
-                                    document.getElementById(someId).addEventListener('click', movePiece);
-                                    /*
-                                    function further(e) {
+                                    document.getElementById(someId).addEventListener('click', function saveKing(e) {
                                         //==========================================================================
                                         // un-lighten & stop click-listening to clicked space
                                         greyLitDivs.forEach(greyLitDiv => {
@@ -64,16 +63,15 @@ function lit(activeSide, passiveSide) {
                                         }); // ------------------------------------
                                         // e.target.classList.remove('mainLitDiv');
                                         e.target.classList.remove('lit');
-                                        e.target.removeEventListener('click', further);
+                                        e.target.removeEventListener('click', saveKing);
                                         // --------------------------------------------
                                         // move activePiece to clicked space
                                         swapSide(activePiece, e.target);
-                                        // -----------------------------
+                                        // --------------------------------
                                         // begin next turn
                                         if (turn === 'blue') { lit(oranges, blues); }
                                         else { lit(blues, oranges); }
                                     });
-                                    */
                                 });
                             }
                         }
@@ -87,6 +85,7 @@ function lit(activeSide, passiveSide) {
                 }
             }); // WORKS!
             console.log('mate -->');  console.log(mate);
+            if (!mate) { inCheckButNotMate = true; }
             return mate; // discerns if activeKing is checkmated        
         } // ***************************************************
     }
@@ -922,7 +921,7 @@ function lit(activeSide, passiveSide) {
         // endSequence();
         alert('END OF GAME');
     }
-    else { // runs pieceLit(e) for all clicked activeSide pieces
+    else if (!inCheckButNotMate) { // runs pieceLit(e) for all clicked activeSide pieces
         activeSide.forEach(activePiece => {
             if (!pinnedPieces.includes(activePiece)) {
                 activePiece.addEventListener('click', pieceLit);
