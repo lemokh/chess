@@ -824,23 +824,17 @@ function lit(activeSide, passiveSide) {
     for (i = 0; i < activeSide.length; i++) {
         if (activeSide[i].getAttribute('data-name') === 'king') {
             activeKing = activeSide[i];
-            break;
-        }
-    } // ---------------------------------------------------
-    console.log('activeKing -->');  console.log(activeKing);
-    // --------------------------------------------------------------------
+            break; // --------------------------------------------
+        } console.log('activeKing -->');  console.log(activeKing);
+    } // ---------------------------------------------------------
     turn = activeKing.getAttribute('data-side');
-    // --------------------------------------------------------------------
     // --------------------------------------------------------------------
     // populates kingAttackers with any passivePiece that checks activeKing
     passiveSide.forEach(passivePiece => {
         if (checkingSpace(passivePiece, activeKing.id)) {
             kingAttackers.push(passivePiece);
-        }
-    }); // -------------------------------------------------------
-    console.log('kingAttackers -->');  console.log(kingAttackers);
-    // -----------------------------------------------------------
-    // ----------------------------------------------------------- 
+        } console.log('kingAttackers -->');  console.log(kingAttackers);
+    }); // -------------------------------------------------------------
     // if activeKing in check
     if (kingAttackers.length) { // via checkingSpace(passivePiece, activeKing.id)
         // console.log();
@@ -916,7 +910,7 @@ function lit(activeSide, passiveSide) {
         });
     }
 }
-//================
+//==================
 lit(blues, oranges);
 //==================
 
