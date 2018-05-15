@@ -115,6 +115,8 @@ function lit(activeSide, passiveSide) {
     } // ---------------------------------------------------
     console.log('activeKing -->');  console.log(activeKing);
     // --------------------------------------------------------------------
+    turn = activeKing.getAttribute('data-side');
+    // --------------------------------------------------------------------
     // --------------------------------------------------------------------
     // populates kingAttackers with any passivePiece that checks activeKing
     passiveSide.forEach(passivePiece => {
@@ -142,43 +144,49 @@ function lit(activeSide, passiveSide) {
             console.log(activeKing.getAttribute('data-side') + ' king IN CHECK --> not mate!');
             console.log('litDivs -->');  console.log(litDivs);
             // -----------------------------------------------------------
-            if (!litDivs.length) { // if activeKing cannot move
-                console.log('ENTERS PreventCheckMate()')
-                // -------------------------------------
-                // grey-lightens & click-listens only to heroic activePieces                
-                if (kingAttackers.length > 1) {
-                    endOfGame = true;
-                    // -----------------------------------------------------------
-                    alert(activeKing.getAttribute('data-side') + ' KING CHECKMATE!');
-                    console.log(activeKing.getAttribute('data-side') + ' KING CHECKMATE!');
-                }
-                else { // since king paralyzed and only one kingAttacker
-                    console.log('ENTERS else statement --> activeKing paralyzed and only one kingAttacker');
-                    // heroics = activeSide.map(piece => !pinnedPieces.includes(piece));
-                    // heroics is an array of unpinned activePieces
-                    // -------------------------------------------------------
-                    // for each id in kingAttacker's pathOfCheck array
-                    /*
-                    checkPath.forEach(emptyId => {
-                        // for each unpinned activePiece
-                        heroics.forEach(activePiece => {
-                            // if activePiece is not a king
-                            if (activePiece.getAttribute('data-name') !== 'king') {
-                                // if activePiece can take emptyId
-                                if (checkingSpace(activePiece, emptyId)) {
-                                    // grey-lighten & click-listen to activePiece
-                                    activePiece.classList.add('greyLit');
-                                    activePiece.addEventListener('click', lit1);
-                                }
-                            }
-                        });
-                    });
-                    */
-                }
-                // ****************************************************
-                // ****************************************************
-                // ****************************************************
-            }
+            
+
+
+
+            // -----------------------------------------------------------
+            // UNNECESSARY --> isMate() already covers this
+            // if (!litDivs.length) { // if activeKing cannot move
+            //     console.log('ENTERS PreventCheckMate()')
+            //     // -------------------------------------
+            //     // grey-lightens & click-listens only to heroic activePieces                
+            //     if (kingAttackers.length > 1) {
+            //         endOfGame = true;
+            //         // -----------------------------------------------------------
+            //         alert(activeKing.getAttribute('data-side') + ' KING CHECKMATE!');
+            //         console.log(activeKing.getAttribute('data-side') + ' KING CHECKMATE!');
+            //     }
+            //     else { // since king paralyzed and only one kingAttacker
+            //         console.log('ENTERS else statement --> activeKing paralyzed and only one kingAttacker');
+            //         // heroics = activeSide.map(piece => !pinnedPieces.includes(piece));
+            //         // heroics is an array of unpinned activePieces
+            //         // -------------------------------------------------------
+            //         // for each id in kingAttacker's pathOfCheck array
+            //         /*
+            //         checkPath.forEach(emptyId => {
+            //             // for each unpinned activePiece
+            //             heroics.forEach(activePiece => {
+            //                 // if activePiece is not a king
+            //                 if (activePiece.getAttribute('data-name') !== 'king') {
+            //                     // if activePiece can take emptyId
+            //                     if (checkingSpace(activePiece, emptyId)) {
+            //                         // grey-lighten & click-listen to activePiece
+            //                         activePiece.classList.add('greyLit');
+            //                         activePiece.addEventListener('click', lit1);
+            //                     }
+            //                 }
+            //             });
+            //         });
+            //         */
+            //     }
+            //     // ****************************************************
+            //     // ****************************************************
+            //     // ****************************************************
+            // }
         }
     } // BE SURE THIS IS CORRECT!
     // -----------------------------------------------------------
@@ -924,3 +932,13 @@ function lit(activeSide, passiveSide) {
 } //================
 lit(blues, oranges);
 //==================
+// while (!endOfGame) {
+//     if (turn === 'blue') {
+//         // startClock1();
+//         lit(oranges, blues);
+//     } else {
+//         // startClock2();
+//         lit(blues, oranges);
+//     }
+// }
+// endSequence();
