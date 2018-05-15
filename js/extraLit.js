@@ -1,7 +1,7 @@
 function lit(activeSide, passiveSide) {
     inCheckButNotMate = false; // resets this condition
     litDivs = []; // contains lit ids on which to apply click-listeners
-    // kingAttackers = []; // contains all passivePieces that check activeKing
+    kingAttackers = []; // contains all passivePieces that check activeKing
     emptySpaces = openSpaces(boardIds, pieces); // updates emptySpaces
     //===========================
     // function toggleClocks() {}
@@ -905,18 +905,23 @@ function lit(activeSide, passiveSide) {
     } // --------------------
     else if (!inCheckButNotMate) { // runs pieceLit(e) for all clicked activeSide pieces
         activeSide.forEach(activePiece => {
-            if (!pinnedPieces.includes(activePiece)) {
-                activePiece.addEventListener('click', pieceLit);
-            }
+            activePiece.addEventListener('click', pieceLit);
         });
     }
 }
-//==================
-lit(blues, oranges);
-//==================
+//=======================================
+lit(blues, oranges); // begins first move
+//=======================================
+
+// ADD PINNEDPIECE MOVEMENT LOGIC -->
+// IF CAN EAT KINGATTACKER,
+//      ADD CLICK-LISTENER TO PINNEDPIECE
+//      THAT ONLY LIGHTENS KINGATTACKER'S DIV ON-CLICK
+// ELSE REMOVE CLICK-LISTENER FROM PINNEDPIECE 
 
 
-
+// -------------
+// DOESN'T WORK!
 // while (!endOfGame) {
 //     if (turn === 'blue') {
 //         // startClock1();
@@ -927,3 +932,4 @@ lit(blues, oranges);
 //     }
 // }
 // endSequence();
+//---------------
