@@ -18,14 +18,13 @@ function lit(activeSide, passiveSide) {
 		kingLit();
 		//=================================
 		function eatOrBlockKingAttacker() {
-			// returns true/false if an activePiece:
-			//   can EAT kingAttacker or BLOCK its path
+			// returns true/false if an activePiece can EAT or BLOCK kingAttackers[0]
 			mate = true;
 			// --------------------------------
 			activeSide.forEach(activePiece => {
 				// if activePiece not pinned
 				if (!pinnedPieces.includes(activePiece)) {
-					// excludes activeKing
+					// and if not activeKing
 					if (activePiece.getAttribute('data-name') !== 'king') {
 						// sees if somePiece can eat or block someId
 						function eatOrBlock(somePiece, someId) {
@@ -82,12 +81,17 @@ function lit(activeSide, passiveSide) {
 								});
 							}
 						}
-						// ------------------------------------------
+						// --------------------------------------------------
+						// grey-lightens pieces that can eat kingAttackers[0]
+						eatOrBlock(activePiece, kingAttackers[0].id);
+						// ------------------------------------------------------------
+						pawnBlocksKingAttacker = true; // prevents pawns from attacking
+						// ------------------------------------------------------------
+						// grey-lightens pieces that can block kingAttackers[0] path
 						checkPath.forEach(pathId => {
 							// if activePiece can move to pathId
 							eatOrBlock(activePiece, pathId);
 						});
-						eatOrBlock(activePiece, kingAttackers[0].id);
 					}
 				} else {
 					if (checkingSpace(pieceToMove, kingAttackers[0].id)) {
@@ -497,6 +501,7 @@ function lit(activeSide, passiveSide) {
 		});
 		// ----------------------------
 		// OMITS OFF-BOARD KNIGHT MOVES
+		// using a switch() here breaks knightLit()
 		if (!block1) {
 			if ((+pieceToMove.id[0] + 1) < 8) {
 				if ((+pieceToMove.id[1] + 2) < 8) {
