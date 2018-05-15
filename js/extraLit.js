@@ -52,7 +52,7 @@ function lit(activeSide, passiveSide) {
                                         swapSide(activePiece, e.target);
                                         // --------------------------------
                                         // begin next turn
-                                        if (turn === 'blue') { lit(oranges, blues); }
+                                        if (activeKing.getAttribute('data-side') === 'blue') { lit(oranges, blues); }
                                         else { lit(blues, oranges); }
                                     });
                                 });
@@ -136,7 +136,7 @@ function lit(activeSide, passiveSide) {
         });
         //\\//\\//\\//\\//\\//\\//\\//\\//
         // toggles side & starts next move 
-        if (turn === 'blue') {
+        if (activeKing.getAttribute('data-side') === 'blue') {
             // toggleClocks();
             console.log('toggles activeSide to orange');
             lit(oranges, blues);
@@ -203,7 +203,7 @@ function lit(activeSide, passiveSide) {
         console.log('ENTERS eat('+element+')');
         // ---------------------------------------
         // puts element in its proper takenBox
-        if (turn === 'blue') { // if blue side
+        if (activeKing.getAttribute('data-side') === 'blue') { // if blue side
             document.getElementById(
                 blueTakenBoxIdCounter.toString()
             ).src = element.src;
@@ -297,7 +297,7 @@ function lit(activeSide, passiveSide) {
                     } 
                 } // --------------------------------------------------
                 // covers bluePawn taking any NON-enPassant empty space
-                if (turn === 'blue') { // if blue's turn
+                if (activeKing.getAttribute('data-side') === 'blue') { // if blue's turn
                     // if pawnToMove jumps two spaces
                     if (goToDiv.id === (pieceToMove.id[0] + (pieceToMove.id[1] - 2))) {
                         enPassanting = true;
@@ -339,7 +339,7 @@ function lit(activeSide, passiveSide) {
         // -------------------------------
         // -------------------------------
         // toggles side & starts next move 
-        if (turn === 'blue') {
+        if (activeKing.getAttribute('data-side') === 'blue') {
             // toggleClocks();
             console.log('toggles activeSide to orange');
             lit(oranges, blues);
@@ -355,7 +355,7 @@ function lit(activeSide, passiveSide) {
         console.log('enters pawnLit()');
         // -------------------------------------------------
         // highlights all possible moves for blue pawnToMove
-        if (turn === 'blue') { // if blue's turn
+        if (activeKing.getAttribute('data-side') === 'blue') { // if blue's turn
             // if enPassant attack is possible
             if (enPassanting) { // same as: if (pawnJumpDiv.length) ?
                 // covers enPassant attack
@@ -804,10 +804,8 @@ function lit(activeSide, passiveSide) {
             }
         } // ------------------------------------
         if (pinnedPieces.includes(pieceToMove)) {
-            if (kingAttackers.length === 1) {
-                if (checkingSpace(pieceToMove, kingAttackers[0])) {
-                    litDivs.push(kingAttackers[0].id);
-                }
+            if (checkingSpace(pieceToMove, kingAttackers[0].id)) {
+                litDivs.push(kingAttackers[0].id);
             }
         } else { possibleMoves(); }
         // -----------------------------------------------------
@@ -826,8 +824,6 @@ function lit(activeSide, passiveSide) {
             activeKing = activeSide[i];  break;
         }
     }  console.log('activeKing -->');  console.log(activeKing);
-    // --------------------------------------------------------
-    turn = activeKing.getAttribute('data-side');
     // --------------------------------------------------------------------
     // populates kingAttackers with any passivePiece that checks activeKing
     passiveSide.forEach(passivePiece => {
@@ -913,17 +909,10 @@ function lit(activeSide, passiveSide) {
 lit(blues, oranges); // begins first move
 //=======================================
 
-// ADD PINNEDPIECE MOVEMENT LOGIC -->
-// IF CAN EAT KINGATTACKER,
-//      ADD CLICK-LISTENER TO PINNEDPIECE
-//      THAT ONLY LIGHTENS KINGATTACKER'S DIV ON-CLICK
-// ELSE REMOVE CLICK-LISTENER FROM PINNEDPIECE 
-
-
 // -------------
 // DOESN'T WORK!
 // while (!endOfGame) {
-//     if (turn === 'blue') {
+//     if (activeKing.getAttribute('data-side') === 'blue') {
 //         // startClock1();
 //         lit(oranges, blues);
 //     } else {
