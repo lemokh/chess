@@ -32,7 +32,7 @@ function lit(activeSide, passiveSide) {
 						// if somePiece checks someId
 						if (checkingSpace(somePiece, someId)) {
 							console.log(somePiece.getAttribute('data-side') + ' ' + somePiece.getAttribute('data-name') + ' at ' + somePiece.id + ' can move to ' + someId);
-							// ---------------------------
+							// ---------------------------------------------------------------------------------------------------------------------------------------------
 							mate = false; // no check mate
 							// --------------------------------------------
 							// grey-lightens & click-listens to activePiece
