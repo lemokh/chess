@@ -12,7 +12,7 @@ function lit(activeSide, passiveSide) {
 		console.log('ENTERS isMate()');  console.log('litDivs -->');  console.log(litDivs);
 		// --------------------------------------------------------------------------------
 		checkPath = pathOfCheck;
-		pieceToMove = ;
+		pieceToMove = activeKing;
 		// -----------------------------------------------------------------
 		// populates litDivs where activeKing can move, runs checkingSpace()
 		kingLit();
@@ -35,30 +35,26 @@ function lit(activeSide, passiveSide) {
 								console.log(somePiece.getAttribute('data-side') + ' ' + somePiece.getAttribute('data-name') + ' at ' + somePiece.id + ' can move to ' + someId);
 								// ---------------------------
 								mate = false; // no check mate
-								// -----------------------------------------------------
-								// resets litDivs on clicking multiple activeSide pieces
-								if (pieceToMove !== undefined) {
-									// un-lightens & stops click-listening to pieceToMove
-									pieceToMove.removeEventListener( 'click', movePiece );
-									pieceToMove.classList.remove( 'mainLit' );
-									// ----------------------------------------------------------
-									// un-lightens, clears out & stops click-listening to litDivs
-									if (litDivs.length) {
-										litDivs.forEach(litDiv => {
-											document.getElementById( litDiv ).classList.remove( 'lit' );
-											// ---------------------------------------------------------
-											document.getElementById( litDiv ).removeEventListener(
-												'click', movePiece
-											);
-										});
-										// ----------
-										litDivs = [];
-									}
-								} // ------------------------------------------
+								// --------------------------------------------
 								// grey-lightens & click-listens to activePiece
 								greyLitDivs.push(activePiece);
 								activePiece.classList.add('greyLit');
 								activePiece.addEventListener('click', function greyLit() {
+									// resets litDivs on clicking multiple activeSide pieces
+									// if (pieceToMove !== undefined) {
+										// un-lightens, clears out & stops click-listening to litDivs
+										if (litDivs.length) {
+											litDivs.forEach(litDiv => {
+												document.getElementById( litDiv ).classList.remove( 'lit' );
+												// ---------------------------------------------------------
+												document.getElementById( litDiv ).removeEventListener(
+													'click', movePiece
+												);
+											});
+											// ----------
+											litDivs = [];
+										}
+									// } // ------------------------------------------
 									//====================================================
 									// lightens & click-listens to someId div
 									document.getElementById(someId).classList.add('lit');
@@ -91,7 +87,7 @@ function lit(activeSide, passiveSide) {
 						// ------------------------------------------------------------
 						// grey-lightens pieces that can block kingAttackers[0] path
 						checkPath.forEach(pathId => {	
-							IdToBlock = pathId;
+							idToBlock = pathId;
 							// if activePiece can move to pathId
 							eatOrBlock(activePiece, pathId);
 						}); // -----------------------------

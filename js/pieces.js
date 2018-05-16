@@ -1,4 +1,4 @@
-var inCheckButNotMate, pawnBlocksKingAttacker, IdToBlock, kingAttackers= [], greyLitDivs = [], defenders = [], pawnDefenders = [], enPassantCell = '', orangeTakenBoxIdCounter = -16, blueTakenBoxIdCounter = -1, enPassanting = false, endOfGame = false,
+var inCheckButNotMate, pawnBlocksKingAttacker, idToBlock, kingAttackers= [], greyLitDivs = [], defenders = [], pawnDefenders = [], enPassantCell = '', orangeTakenBoxIdCounter = -16, blueTakenBoxIdCounter = -1, enPassanting = false, endOfGame = false,
 heroics = [], mate, canCheck, someId, checkPath, emptySpaces, knightLight, bishopPathId, rookPathId, blueKingFirstMove, blueRook1FirstMove, activeKing, blueRook2FirstMove,  orangeKingFirstMove, orangeRook1FirstMove, orangeRook2FirstMove, castleIds = [], noCastle, kingAble, pieceToMove, goToDiv, enPassantDiv, prevGoToDiv, enPassantGoToDiv, pawnJumpDiv, enPassantables2 = [], enPassantedPawn, knightLight, takenOrangeBox, takenBlueBox, pieceLit, gameEnds, tempSide, movedPiece, mainLitDiv, litDivs, unLitDivs, img, index1, index2, tempPiece, moves, takenBox, activeCells, openAndOpponentHeldKingSpaces, kingSpacesUnderAttack, orangeKingSpacesUnderAttack, orangelessKingSpaces, orangelessKingSpaces, blueKingSpaces, bluelessKingSpaces, orangeKingSpacesUnderAttack, block1, block2, block3, block4, block5, block6, block7, block8, vacantKingSpaces, whiteKing, blackKing, knightMoves, bishopMoves, bishopX, bishopY, rookMoves, kingSpaces, kingOpenSpaces, occupiedKingSpaces, defenders, pinnedPieces, pathOfCheck = [], nails, whites, blacks;
 
 //\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
@@ -630,14 +630,14 @@ function checkingSpace(somePiece, checkSpaceId) {
 						// if blue pawnToMove in row 6
 						if (pieceToMove.id[1] === '6') {
 							// if empty cell two ahead of blue pawnToMove
-							if (IdToBlock === pieceToMove.id[0] + (pieceToMove.id[1] - 2)) {
-								// litDivs.push( IdToBlock );
+							if (idToBlock === pieceToMove.id[0] + (pieceToMove.id[1] - 2)) {
+								// litDivs.push( idToBlock );
 								return true;
 							}
 						}
 					}
-					else if (IdToBlock === pieceToMove.id[0] + (pieceToMove.id[1] - 1)) {
-						// litDivs.push( IdToBlock );
+					else if (idToBlock === pieceToMove.id[0] + (pieceToMove.id[1] - 1)) {
+						// litDivs.push( idToBlock );
 						return true;
 					} else { return false; }
 				} // -----------------------
@@ -651,24 +651,17 @@ function checkingSpace(somePiece, checkSpaceId) {
 						// if blue pawnToMove in row 1
 						if (pieceToMove.id[1] === '1') {
 							// if empty cell two ahead of blue pawnToMove
-							if (IdToBlock === pieceToMove.id[0] + (+pieceToMove.id[1] + 2)) {
-								// litDivs.push( IdToBlock );
+							if (idToBlock === pieceToMove.id[0] + (+pieceToMove.id[1] + 2)) {
+								// litDivs.push( idToBlock );
 								return true;
 							}
 						}
 					}
-					else if (IdToBlock === pieceToMove.id[0] + (pieceToMove.id[1] - 1)) {
-						// litDivs.push( IdToBlock );
+					else if (idToBlock === pieceToMove.id[0] + (pieceToMove.id[1] - 1)) {
+						// litDivs.push( idToBlock );
 						return true;
 					} else { return false; }
 				}
-
-
-
-
-
-
-
 			}
 			else { // sees if pawn can eat checkSpaceId
 				if (somePiece.id[0] - 1 == checkSpaceId[0]
