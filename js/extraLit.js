@@ -84,17 +84,18 @@ function lit(activeSide, passiveSide) {
 					// grey-lightens pieces that can eat kingAttackers[0]
 					blockOrEatKingAttacker(activePiece, kingAttackers[0].id);
 					// ------------------------------------------------------------
-					pawnBlocksKingAttacker = true; // prevents pawns from attacking
+					pawnBlocksKingAttacker = true; // disables pawns from attacking
 					// ------------------------------------------------------------
 					// grey-lightens pieces that can block kingAttackers[0] path
 					checkPath.forEach(pathId => {	
 						idToBlock = pathId;
 						// if activePiece can move to pathId
 						blockOrEatKingAttacker(activePiece, pathId);
-					}); // -----------------------------
-					pawnBlocksKingAttacker = false;
+					}); // ---------------------------------------------------
+					pawnBlocksKingAttacker = false; // enables pawns to attack
 				}
-			} else {
+			} else { // since activePiece is pinned
+				////////////////////////////////////////////////////// DO MORE HERE!
 				if (checkingSpace(pieceToMove, kingAttackers[0].id)) {
 					litDivs.push(kingAttackers[0].id);
 				}
