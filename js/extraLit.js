@@ -40,6 +40,7 @@ function lit(activeSide, passiveSide) {
 								greyLitDivs.push(activePiece);
 								activePiece.classList.add('greyLit');
 								activePiece.addEventListener('click', function greyLit() {
+									console.log('ENTERS GREYLIT()');
 									// resets litDivs on clicking multiple activeSide pieces
 									// if (pieceToMove !== undefined) {
 										// un-lightens, clears out & stops click-listening to litDivs
@@ -48,12 +49,13 @@ function lit(activeSide, passiveSide) {
 												document.getElementById( litDiv ).classList.remove( 'lit' );
 												// ---------------------------------------------------------
 												document.getElementById( litDiv ).removeEventListener(
-													'click', movePiece
+													'click', saveKing
 												);
 											});
 											// ----------
 											litDivs = [];
 										}
+										console.log(litDivs);
 									// } // ------------------------------------------
 									//====================================================
 									// lightens & click-listens to someId div
@@ -940,7 +942,9 @@ function lit(activeSide, passiveSide) {
 	} // --------------------
 	else if (!inCheckButNotMate) { // runs pieceLit(e) for all clicked activeSide pieces
 		activeSide.forEach(activePiece => {
-			activePiece.addEventListener('click', pieceLit);
+			// if (!pinnedPieces.includes(activePiece)) {
+				activePiece.addEventListener('click', pieceLit);
+			// }
 		});
     }
 }
