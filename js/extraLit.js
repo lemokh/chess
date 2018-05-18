@@ -849,14 +849,8 @@ function lit(activeSide, passiveSide) {
 				case 'king':   kingLit();    break;
 				default: alert('default ERROR! pieceToMove is empty');
 			}
-        } // ------------------------------------
-		if (pinnedPieces.includes(pieceToMove)) {
-            pinningPieceId = pinnerPieces[ pinnedPieces.indexOf(pieceToMove) ].id;
-            // if the pinned pieceToMove can eat its pinning piece
-            if (checkingSpace(pieceToMove, pinningPieceId)) {
-                litDivs.push(pinningPieceId);
-            }
-        } else { possibleMoves(); }
+        } // -----------
+        possibleMoves();
 		// -----------------------------------------------------
 		// lightens & click-listens all litDivs --> movePiece(e)
 		if (litDivs.length) {
@@ -900,7 +894,7 @@ function lit(activeSide, passiveSide) {
         //     // ---------------------------------------------------------
         //     // grey-lightens & click-listens only to heroic activePieces                
         //     if (kingAttackers.length > 1) { endOfGame(); }
-                // -----------------------------------------------------
+               // -----------------------------------------------------
         //     else { // since king paralyzed and only one kingAttacker
         //         console.log('ENTERS else statement --> activeKing paralyzed and only one kingAttacker');
         //         // heroics = activeSide.map(piece => !pinnedPieces.includes(piece));
@@ -928,8 +922,33 @@ function lit(activeSide, passiveSide) {
         // ****************************************************
 	// -----------------------------------------------------------------------------------
 	else { // since activeKing not in check, runs pieceLit(e) for all clicked activePieces
-		activeSide.forEach(activePiece => {	
-			activePiece.addEventListener('click', pieceLit);
+		activeSide.forEach(activePiece => {
+            if (pinnedPieces.length) {
+                let pinCounter = 0;
+                // ----------------------------------
+                pinnedPieces.forEach(pinnedPiece => {
+                    if (pinnedPiece.id === activePiece.id) { pinCounter += 1; }
+                });
+                // --------------------
+                if (pinCounter === 1) {
+                    pinningPiece = pinnerPieces[ pinnedPieces.indexOf(pieceToMove) ];
+                    // --------------------------------------------------------------
+                    // if the pinnedPiece can eat its pinningPiece
+                    if (checkingSpace(activePiece, pinningPiece.id)) {
+                        activePiece.classList('mainLit');
+                        // ---------------------------------------------------------
+                        activePiece.addEventListener('click', function pinnedLit() {
+                            pinningPiece.classList('lit');
+                            // -----------------------------------------------
+                            pinningPiece.addEventListener('click', function miniMovePiece(e) {
+                                
+                            });
+                        });
+                    }
+                }
+            }
+            // ------------------------------------------------------
+			else { activePiece.addEventListener('click', pieceLit); }
 		});
     }
 }
