@@ -58,17 +58,21 @@ function checkingSpace(somePiece, checkSpaceId) {
     // somePiece is an <img>
 	// checkSpaceId is an id (kingSpace not held by an activeSide piece)
 	pinnedPieces = []; pathOfCheck = []; pinnerPieces = [];
-	//======================================================
+	//==============================
 	function pawnAttacks(somePawn) {
+		// --------------------------
 		if (pawnBlocksKingAttacker) {
 			// sees if pawn can block checkSpaceId
 			if (somePawn.getAttribute('data-side') === 'blue') { // if blue turn
 				// collects empty space one ahead of blue pawnToMove
-				if (document.getElementById(
+				if (idToBlock === somePawn.id[0] + (somePawn.id[1] - 1)) {
+					// litDivs.push( idToBlock );
+					return true;
+				} // -----------------------------------------------
+				// collects empty space two ahead of blue pawnToMove
+				else if (document.getElementById(
 					somePawn.id[0] + (somePawn.id[1] - 1)
 				).dataset.side === 'empty') {
-					//--------------------------------------------------
-					// collects empty space two ahead of blue pawnToMove
 					// if blue pawnToMove in row 6
 					if (somePawn.id[1] === '6') {
 						// if empty cell two ahead of blue pawnToMove
@@ -78,18 +82,18 @@ function checkingSpace(somePiece, checkSpaceId) {
 						}
 					}
 				}
-				else if (idToBlock === somePawn.id[0] + (somePawn.id[1] - 1)) {
-					// litDivs.push( idToBlock );
-					return true;
-				} else { return false; }
+				else { return false; }
 			} // -----------------------
 			else { // since orange turn
 				// collects empty space one ahead of orange pawnToMove
-				if (document.getElementById(
+				if (idToBlock === somePawn.id[0] + (somePawn.id[1] + 1)) {
+					// litDivs.push( idToBlock );
+					return true;
+				} // -----------------------------------------------
+				// collects empty space two ahead of orange pawnToMove
+				else if (document.getElementById(
 					somePawn.id[0] + (+somePawn.id[1] + 1)
 				).dataset.side === 'empty') {
-					//--------------------------------------------------
-					// collects empty space two ahead of blue pawnToMove
 					// if blue pawnToMove in row 1
 					if (pieceToMove.id[1] === '1') {
 						// if empty cell two ahead of blue pawnToMove
@@ -99,10 +103,7 @@ function checkingSpace(somePiece, checkSpaceId) {
 						}
 					}
 				}
-				else if (idToBlock === somePawn.id[0] + (somePawn.id[1] - 1)) {
-					// litDivs.push( idToBlock );
-					return true;
-				} else { return false; }
+				else { return false; }
 			}
 		}
 		else { // sees if pawn can eat checkSpaceId

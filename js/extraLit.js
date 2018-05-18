@@ -93,6 +93,7 @@ function lit(activeSide, passiveSide) {
 									}
 									console.log(litDivs);
 									// --------------------------------------
+									console.log(document.getElementById(someId));
 									// lightens & click-listens to someId div
 									document.getElementById(someId).classList.add('lit');
 									// -----------------------------------------------------------------------------
@@ -113,16 +114,11 @@ function lit(activeSide, passiveSide) {
 										// moves activePiece to clicked space
 										swapSide(activePiece, e.target);
 										// -----------------------------
-
 										// WHAT TO DO HERE?
-
-										// toggleSides();
-										// -----------------------------------------
-										// removes click-listeners from activePieces
-										activeSide.forEach(activePiece => {
-											// ------------------------------------------------
-											activePiece.removeEventListener('click', pieceLit);
-										}); // ------------------------------------------------
+										// ------------------------------------
+										// REMOVE any remaining click-listeners
+										// !!
+										// -------------------------------
 										// toggles side & starts next move 
 										if (activeKing.getAttribute('data-side') === 'blue') {
 											// toggleClocks();
