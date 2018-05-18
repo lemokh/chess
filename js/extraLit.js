@@ -13,6 +13,25 @@ function lit(activeSide, passiveSide) {
         // ---------------------------------------------------------------------
         document.getElementById('board').classList.add('noClick');
     }
+    //======================
+    function toggleSides() {
+        // removes click-listeners from activePieces
+        activeSide.forEach(activePiece => {
+            activePiece.removeEventListener('click', pieceLit);
+        }); // ------------------------------------------------
+        // toggles side & starts next move 
+        if (activeKing.getAttribute('data-side') === 'blue') {
+            // toggleClocks();
+            console.log('toggles activeSide to orange');
+            lit(oranges, blues);
+        } // ------------------- 
+        else {
+            // toggleClocks();
+            console.log('toggles activeSide to blue');
+            lit(blues, oranges);
+        }
+    }
+    //=================
 	function isMate() { // since activeKing is in check
 		// returns true/false if activeKing checkmated
 		// --------------------------------------------------------------------------------
@@ -240,6 +259,8 @@ function lit(activeSide, passiveSide) {
 	} // WORKS!
 	//=====================
 	function eat(element) {
+        // element is the eaten piece
+        // ------------------------------------
 		// eat(goToDiv); --> normal pawn attack
 		// eat(pawnJumpDiv); --> enPassant attack
 		// ---------------------------------------
@@ -266,7 +287,7 @@ function lit(activeSide, passiveSide) {
 		// gets element's passiveSide index
 		index2 = passiveSide.indexOf(element);
 		// ------------------------------------------
-		// removes eaten piece from passiveSide array
+		// removes element from passiveSide array
 		passiveSide.splice(index2, 1);
 		// ---------------------------
 		console.log('passiveSide -->');  console.log(passiveSide);
@@ -369,29 +390,8 @@ function lit(activeSide, passiveSide) {
 		// covers pawnToMove moving one or two empty spaces
 		// ------------------------------------------------
 		swapSide(pieceToMove, goToDiv);
-		// -----------------------------------------
-		// removes click-listeners from activePieces
-		activeSide.forEach(activePiece => {
-			document.getElementById( activePiece.id ).removeEventListener(
-				'click', pieceLit
-			);
-		}); // ---------------------
-		// NECESSARY? --------------
-		// pieceToMove = activeKing;
-		// kingLit();
-		// -------------------------------
-		// -------------------------------
-		// toggles side & starts next move 
-		if (activeKing.getAttribute('data-side') === 'blue') {
-			// toggleClocks();
-			console.log('toggles activeSide to orange');
-			lit(oranges, blues);
-		} // ------------------- 
-		else {
-			// toggleClocks();
-			console.log('toggles activeSide to blue');
-			lit(blues, oranges);
-		}
+        // -----------------------------------------
+        toggleSides();
 	} // WORKS!
 	//==================
 	function pawnLit() {
@@ -925,7 +925,8 @@ function lit(activeSide, passiveSide) {
 		activeSide.forEach(activePiece => {
             if (pinnedPieces.length) {
                 let pinCounter = 0;
-                // ----------------------------------
+                // ------------------------------------------------
+                // counts how many pieces are pinning activePiece
                 pinnedPieces.forEach(pinnedPiece => {
                     if (pinnedPiece.id === activePiece.id) { pinCounter += 1; }
                 });
@@ -935,13 +936,24 @@ function lit(activeSide, passiveSide) {
                     // --------------------------------------------------------------
                     // if the pinnedPiece can eat its pinningPiece
                     if (checkingSpace(activePiece, pinningPiece.id)) {
-                        activePiece.classList('mainLit');
-                        // ---------------------------------------------------------
+
                         activePiece.addEventListener('click', function pinnedLit() {
+                            activePiece.classList('mainLit');
+                            // ------------------------------
                             pinningPiece.classList('lit');
-                            // -----------------------------------------------
+                            // ---------------------------------------------------------------
                             pinningPiece.addEventListener('click', function miniMovePiece(e) {
-                                
+                                activePiece.removeEventListener('click', pinnedLit);
+                                // -------------------------------------------------
+                                activePiece.classList.remove('mainLit');
+                                // -------------------------------------
+                                pinningPiece.classList.remove('lit');
+                                // ----------------------------------
+                                pinningPiece.removeEventListener('click', miniMovePiece);
+                                // ------------------------------------------------------
+                                eat(pinningPiece);
+                                swapSide(activePiece, pinningPiece);
+                                toggleSides();
                             });
                         });
                     }
