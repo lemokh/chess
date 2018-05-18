@@ -57,15 +57,15 @@ function lit(activeSide, passiveSide) {
 					// and if not activeKing
 					if (activePiece.getAttribute('data-name') !== 'king') {
 						// ------------------------------------------------
-						pieceToMove = activePiece;
+						pieceToMove = activePiece; // VERY IMPORTANT!
 						//===========================
 						function eatOrBlock(someId) {
 							// sees if activePiece can eat or block someId
 							// -------------------------------------------
-							// if activePiece checks someId
+							// if activePiece checks or blocks someId
 							if (checkingSpace(activePiece, someId)) {
 								// ---------------------------------------------------------------------------------------------------------------------------------------------
-								console.log(activePiece.getAttribute('data-side') + ' ' + activePiece.getAttribute('data-name') + ' at ' + activePiece.id + ' can move to ' + someId);
+								console.log(activePiece.getAttribute('data-side') + ' ' + activePiece.getAttribute('data-name') + ' at ' + activePiece.id + ' can move to ' + someId.id);
 								// ---------------------------
 								mate = false; // no check mate
 								// ------------------------------------------------
@@ -93,11 +93,11 @@ function lit(activeSide, passiveSide) {
 									}
 									console.log(litDivs);
 									// --------------------------------------
-									console.log(document.getElementById(someId));
+									console.log(someId);
 									// lightens & click-listens to someId div
-									document.getElementById(someId).classList.add('lit');
+									someId.classList.add('lit');
 									// -----------------------------------------------------------------------------
-									document.getElementById(someId).addEventListener('click', function saveKing(e) {
+									someId.addEventListener('click', function saveKing(e) {
 										// ---------------------------------------------------======================
 										// un-lightens & stops click-listening to clicked space
 										greyLitDivs.forEach(greyLitDiv => {
@@ -144,9 +144,9 @@ function lit(activeSide, passiveSide) {
 						// ------------------------------------------------------------
 						// grey-lightens pieces that can block kingAttackers[0] path
 						checkPath.forEach(pathId => {
-							// ----------------------
-							idToBlock = pathId;
-							// ---------------------------------
+							// -------------------------------------------------
+							idToBlock = pathId; // IMPORTANT in checkingSpace();
+							// -------------------------------------------------
 							// if activePiece can move to pathId
 							eatOrBlock(activePiece, pathId);
 						}); // -----------------------------
