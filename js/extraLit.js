@@ -115,11 +115,13 @@ function lit(activeSide, passiveSide) {
 		// -------------------------------
 		// if king can move, no check mate
 		if (litDivs.length) {
-			// ----------------------
-			eatOrBlockKingAttacker();
-			// ------------------------
-			// activeKing escapes check
+            console.log('king can move out of check');
+            // ---------------------------------------
+            // activeKing escapes check
+            activeKing.classList.add('greyLit');
 			activeKing.addEventListener('click', pieceLit);
+			// --------------------------------------------
+			eatOrBlockKingAttacker();
 		} // **********************************************
 		// since activeKing cannot move
 		// checkmate if multiple kingAttackers
