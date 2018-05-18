@@ -1,5 +1,4 @@
 function lit(activeSide, passiveSide) {
-	inCheckButNotMate = false; // resets this condition
 	litDivs = []; // contains lit ids on which to apply click-listeners
 	kingAttackers = []; // contains all passivePieces that check activeKing
 	emptySpaces = openSpaces(boardIds, pieces); // updates emptySpaces
@@ -13,7 +12,6 @@ function lit(activeSide, passiveSide) {
 		console.log(activeKing.getAttribute('data-side') + ' KING CHECKMATED!');
         // ---------------------------------------------------------------------
         document.getElementById('board').classList.add('noClick');
-        return;
     }
 	function isMate() { // since activeKing is in check
 		// returns true/false if activeKing checkmated
@@ -117,25 +115,22 @@ function lit(activeSide, passiveSide) {
 		// -------------------------------
 		// if king can move, no check mate
 		if (litDivs.length) {
-			inCheckButNotMate = true; // WASTE!
 			// ----------------------
 			eatOrBlockKingAttacker();
 			// ------------------------
 			// activeKing escapes check
-			activeKing.addEventListener(click, pieceLit);
-			//-------------------------------------------
-			return false; // no check mate  // WASTE!
-		} // ****************************************************
+			activeKing.addEventListener('click', pieceLit);
+		} // **********************************************
 		// since activeKing cannot move
 		// checkmate if multiple kingAttackers
-		else if (kingAttackers.length > 1) { return true; } // WASTE! --> endOfGame();
+		else if (kingAttackers.length > 1) { endOfGame(); }
 		else { // checkmate if activeSide cannot eat or block the kingAttacker
 			console.log('king unable to move out of check');
 			// ---------------------------------------------
 			litDivs = []; // resets litDivs
 			// ---------------------------------------------------
 			// discerns whether an activePiece can save activeKing
-			return eatOrBlockKingAttacker();  // WASTE return
+			eatOrBlockKingAttacker();  // WASTE return
 		} // *******************************
 	}
 	//====================
@@ -834,7 +829,7 @@ function lit(activeSide, passiveSide) {
 			}
 		}
 		//\/\/\/\/\/\/\/\/\/\//
-		pieceToMove = e.target;
+        pieceToMove = e.target;
 		// ----------------------------------------
 		if (!enPassanting) { goToDiv = undefined; }
 		// ----------------------------------------
@@ -852,12 +847,14 @@ function lit(activeSide, passiveSide) {
 				case 'king':   kingLit();    break;
 				default: alert('default ERROR! pieceToMove is empty');
 			}
-		} // ------------------------------------
+        } // ------------------------------------
 		if (pinnedPieces.includes(pieceToMove)) {
-			if (checkingSpace(pieceToMove, kingAttackers[0].id)) {
-				litDivs.push(kingAttackers[0].id);
-			}
-		} else { possibleMoves(); }
+            pinningPieceId = pinnerPieces[ pinnedPieces.indexOf(pieceToMove) ].id;
+            // if the pinned pieceToMove can eat its pinning piece
+            if (checkingSpace(pieceToMove, pinningPieceId)) {
+                litDivs.push(pinningPieceId);
+            }
+        } else { possibleMoves(); }
 		// -----------------------------------------------------
 		// lightens & click-listens all litDivs --> movePiece(e)
 		if (litDivs.length) {
@@ -886,60 +883,51 @@ function lit(activeSide, passiveSide) {
 	});  console.log('kingAttackers -->');  console.log(kingAttackers);
 	// ----------------------------------------------------------------
 	// if activeKing in check
-	if (kingAttackers.length) { // via checkingSpace(passivePiece, activeKing.id)
-		// console.log();
-        if (isMate()) { endOfGame(); }
-        // ---------------------------
+	if (kingAttackers.length) { isMate(); }
 		// ***************************
 		// ***************************
 		// ***************************
-		else { // since activeKing in check, but not check mate
-			alert(activeKing.getAttribute('data-side') + ' king IN CHECK --> not mate!');
-			console.log(activeKing.getAttribute('data-side') + ' king IN CHECK --> not mate!');
-			console.log('litDivs -->');  console.log(litDivs);
-			// -----------------------------------------------
-			// UNNECESSARY --> isMate() already covers this
-			// if (!litDivs.length) { // if activeKing cannot move
-			//     console.log('ENTERS PreventCheckMate()')
-			//     // ---------------------------------------------------------
-			//     // grey-lightens & click-listens only to heroic activePieces                
-            //     if (kingAttackers.length > 1) { endOfGame(); }
-                   // -----------------------------------------------------
-			//     else { // since king paralyzed and only one kingAttacker
-			//         console.log('ENTERS else statement --> activeKing paralyzed and only one kingAttacker');
-			//         // heroics = activeSide.map(piece => !pinnedPieces.includes(piece));
-			//         // heroics is an array of unpinned activePieces
-			//         // -----------------------------------------------
-			//         // for each id in kingAttacker's pathOfCheck array
-			//         /*
-			//         checkPath.forEach(emptyId => {
-			//             // for each unpinned activePiece
-			//             heroics.forEach(activePiece => {
-			//                 // if activePiece is not a king
-			//                 if (activePiece.getAttribute('data-name') !== 'king') {
-			//                     // if activePiece can take emptyId
-			//                     if (checkingSpace(activePiece, emptyId)) {
-			//                         // grey-lighten & click-listen to activePiece
-			//                         activePiece.classList.add('greyLit');
-			//                         activePiece.addEventListener('click', lit1);
-			//                     }
-			//                 }
-			//             });
-			//         });
-			//         */
-			//     }
-			//     // ****************************************************
-			//     // ****************************************************
-			//     // ****************************************************
-			// }
-		}
-	} // BE SURE THIS IS CORRECT!
-	// ----------------------------------------------------------------------------
-	if (!inCheckButNotMate) { // runs pieceLit(e) for all clicked activeSide pieces
-		activeSide.forEach(activePiece => {
-			// if (!pinnedPieces.includes(activePiece)) {
-				activePiece.addEventListener('click', pieceLit);
-			// }
+		// since activeKing in check, but not check mate
+        // alert(activeKing.getAttribute('data-side') + ' king IN CHECK --> not mate!');
+        // console.log(activeKing.getAttribute('data-side') + ' king IN CHECK --> not mate!');
+        // console.log('litDivs -->');  console.log(litDivs);
+        // // -----------------------------------------------
+        // UNNECESSARY --> isMate() already covers this
+        // if (!litDivs.length) { // if activeKing cannot move
+        //     console.log('ENTERS PreventCheckMate()')
+        //     // ---------------------------------------------------------
+        //     // grey-lightens & click-listens only to heroic activePieces                
+        //     if (kingAttackers.length > 1) { endOfGame(); }
+                // -----------------------------------------------------
+        //     else { // since king paralyzed and only one kingAttacker
+        //         console.log('ENTERS else statement --> activeKing paralyzed and only one kingAttacker');
+        //         // heroics = activeSide.map(piece => !pinnedPieces.includes(piece));
+        //         // heroics is an array of unpinned activePieces
+        //         // -----------------------------------------------
+        //         // for each id in kingAttacker's pathOfCheck array
+        //         checkPath.forEach(emptyId => {
+        //             // for each unpinned activePiece
+        //             heroics.forEach(activePiece => {
+        //                 // if activePiece is not a king
+        //                 if (activePiece.getAttribute('data-name') !== 'king') {
+        //                     // if activePiece can take emptyId
+        //                     if (checkingSpace(activePiece, emptyId)) {
+        //                         // grey-lighten & click-listen to activePiece
+        //                         activePiece.classList.add('greyLit');
+        //                         activePiece.addEventListener('click', lit1);
+        //                     }
+        //                 }
+        //             });
+        //         });
+        //     }
+        // }
+        // ****************************************************
+        // ****************************************************
+        // ****************************************************
+	// -----------------------------------------------------------------------------------
+	else { // since activeKing not in check, runs pieceLit(e) for all clicked activePieces
+		activeSide.forEach(activePiece => {	
+			activePiece.addEventListener('click', pieceLit);
 		});
     }
 }
