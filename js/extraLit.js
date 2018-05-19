@@ -240,7 +240,7 @@ function lit(activeSide, passiveSide) {
 							idToBlock = pathId; // used in checkingSpace();
 							// ---------------------------------------------------------
 							// sees if activePiece can move to pathId
-							eatOrBlock(activePiece, pathId);
+							eatOrBlock(pathId);
 						}); // -----------------------------
 						pawnBlocksKingAttacker = false;
 					}
