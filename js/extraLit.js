@@ -59,10 +59,13 @@ function lit(activeSide, passiveSide) {
 				litDivs = [];
 			}
 			if (pinnedPieces.includes(pieceToMove)) {
+				// if (pinCount === 1) { all this below }
 				// cleans up after last clicking a pinned piece
-				pieceToMove.removeEventListener( 'click', pinnedPieceEats );
+				pieceToMove.removeEventListener( 'click', pinnedLit );
 				// ---------------------------------------------------------
-				kingAttackers[0].classList.remove('lit');
+				pinningPiece.removeEventListener( 'click', pinnedPieceEats );
+				// ---------------------------------------------------------
+				pinningPiece.classList.remove('lit');
 			}
 			// ------------------------------------------------------------
 			// un-lightens, clears out & stops click-listening to castleIds
@@ -101,17 +104,17 @@ function lit(activeSide, passiveSide) {
 				// -----------------------
 				pieceToMove = actPinPiece;
 				// -----------------------------------======================
-				activePiece.addEventListener('click', function pinnedLit() {
+				pieceToMove.addEventListener('click', function pinnedLit() {
 					// -------------------------------======================
-					activePiece.classList('mainLit');
+					pieceToMove.classList('mainLit');
 					// ------------------------------
 					pinningPiece.classList('lit');
 					// ------------------------------------=============================
 					pinningPiece.addEventListener('click', function pinnedPieceEats() {
 						// --------------------------------=============================
-						activePiece.removeEventListener('click', pinnedLit);
+						pieceToMove.removeEventListener('click', pinnedLit);
 						// -------------------------------------------------
-						activePiece.classList.remove('mainLit');
+						pieceToMove.classList.remove('mainLit');
 						// -------------------------------------
 						pinningPiece.classList.remove('lit');
 						// ----------------------------------
@@ -119,7 +122,7 @@ function lit(activeSide, passiveSide) {
 						// --------------------------------------------------------
 						eat(pinningPiece);
 						// ---------------------------------
-						swapSide(activePiece, pinningPiece);
+						swapSide(pieceToMove, pinningPiece);
 						// ---------------------------------
 						toggleSides();
 					});
