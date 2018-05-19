@@ -1119,8 +1119,8 @@ function lit(activeSide, passiveSide) {
         // lightens & click-listens all litDivs --> movePiece(e)
         if (litDivs.length) {
             litDivs.forEach(litDiv => {
-                document.getElementById( litDiv ).classList.add('lit');
-                document.getElementById( litDiv ).addEventListener('click', movePiece);
+                litPiece.classList.add('lit');
+                litPiece.addEventListener('click', movePiece);
             }); // enters movePiece(e) on litDiv-click, unless castling
         }
         // ---------------------------------------------------------

@@ -160,7 +160,6 @@ function lit(activeSide, passiveSide) {
 						litDivs.push(kingAttackers[0].id);
 					}
 				}
-				if (mate) { endOfGame(); }
 			}); // WORKS!
 			console.log('mate -->');  console.log(mate);
         }
@@ -169,16 +168,39 @@ function lit(activeSide, passiveSide) {
 		kingLit(); // WHAT DOES THIS EXACTLY DO?
 		// -------------------------------
 		// if king can move, no check mate
-		if (litDivs.length) {
+		if (litDivs.length) { // escapes check
+			//
             console.log('king can move out of check');
             // ---------------------------------------
-            // activeKing escapes check
 			activeKing.classList.add( 'greyLit' );
-			// -------------------------------------------
+			// -----------------------------------======================
 			activeKing.addEventListener( 'click', function kingFlees() {
+				// -------------------------------======================
+				activeKing.classList.remove( 'mainLit' );
+				// --------------------------------------
 				litDivs.forEach(litDiv => {
+					// ------------------------------------------------------
 					document.getElementById( litDiv ).classList.add( 'lit' );
-					document.getElementById( litDiv ).addEventListener( 'click', miniMovePiece );
+					// ----------------------------------------------------------======================
+					document.getElementById( litDiv ).addEventListener( 'click', function moveKing(e) {
+						// ------------------------------------------------------======================
+						activeKing.classList.remove( 'mainLit' );
+						// --------------------------------------------------
+						activeKing.removeEventListener( 'click', kingFlees );
+						// --------------------------------------------------
+						litDivs.forEach(litDiv => {
+							// ---------------------------------------------------------
+							document.getElementById( litDiv ).classList.remove( 'lit' );
+							// ------------------------------------------------------------------------
+							document.getElementById( litDiv ).removeEventListener( 'click', moveKing );
+						});
+						// -------------------------------------------------------------------
+						if (e.target.getAttribute('data-side') !== 'empty') { eat(e.target); }
+						// -----------------------------
+						swapSide(activePiece, e.target);
+						// -----------------------------
+						toggleSides();
+					});
 				});
 			});
 			// -------------------------------------------------------------
@@ -197,6 +219,7 @@ function lit(activeSide, passiveSide) {
 			// ---------------------------------------------------
 			// discerns whether an activePiece can save activeKing from checkmate
 			blockOrEatKingAttacker();
+			if (mate) { endOfGame(); }
 		} // ************************
 	}
 	//====================
@@ -1018,23 +1041,23 @@ function lit(activeSide, passiveSide) {
 						}
 						//\/\/\/\/\/\/\/\/\/\//
 						pieceToMove = activePiece;
-						// ---------------------------------------------------------
+						// -----------------------------------======================
                         activePiece.addEventListener('click', function pinnedLit() {
-							//======================================================
+							// -------------------------------======================
                             activePiece.classList('mainLit');
                             // ------------------------------
                             pinningPiece.classList('lit');
-                            // ---------------------------------------------------------------
-                            pinningPiece.addEventListener('click', function miniMovePiece(e) {
-								// ===========================================================
+                            // ------------------------------------=============================
+                            pinningPiece.addEventListener('click', function pinnedPieceEats() {
+								// --------------------------------=============================
 								activePiece.removeEventListener('click', pinnedLit);
                                 // -------------------------------------------------
                                 activePiece.classList.remove('mainLit');
                                 // -------------------------------------
                                 pinningPiece.classList.remove('lit');
                                 // ----------------------------------
-                                pinningPiece.removeEventListener('click', miniMovePiece);
-                                // ------------------------------------------------------
+                                pinningPiece.removeEventListener('click', pinnedPieceEats);
+                                // --------------------------------------------------------
 								eat(pinningPiece);
 								// ---------------------------------
 								swapSide(activePiece, pinningPiece);
