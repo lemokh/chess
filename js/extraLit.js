@@ -80,17 +80,17 @@ function lit(activeSide, passiveSide) {
 									// resets litDivs on clicking multiple activeSide pieces
 									// ----------------------------------------------------------
 									// un-lightens, clears out & stops click-listening to litDivs
-									if (litDivs.length) {
-										// ------------------------
-										litDivs.forEach(litDiv => {
-											// ---------------------------------------------------------
-											document.getElementById( litDiv ).classList.remove( 'lit' );
-											// ---------------------------------------------------------------------
-											document.getElementById( litDiv ).removeEventListener('click', greyLit);
-										});
-										// ----------
-										litDivs = [];
-									}
+									// if (litDivs.length) {
+									// 	// ------------------------
+									// 	litDivs.forEach(litDiv => {
+									// 		// ---------------------------------------------------------
+									// 		document.getElementById( litDiv ).classList.remove( 'lit' );
+									// 		// ---------------------------------------------------------------------
+									// 		document.getElementById( litDiv ).removeEventListener('click', greyLit);
+									// 	});
+									// 	// ----------
+									// 	litDivs = [];
+									// }
 									console.log(litDivs);
 									// --------------------------------------
 									console.log(someId);
@@ -173,16 +173,21 @@ function lit(activeSide, passiveSide) {
             console.log('king can move out of check');
             // ---------------------------------------
             // activeKing escapes check
-			activeKing.classList.add('greyLit');
-			// ---------------------------------
-			blockOrEatKingAttacker();
+			activeKing.classList.add( 'greyLit' );
 			// -------------------------------------------
-			activeKing.addEventListener('click', greyLit);
+			activeKing.addEventListener( 'click', function kingFlees() {
+				litDivs.forEach(litDiv => {
+					document.getElementById( litDiv ).classList.add( 'lit' );
+					document.getElementById( litDiv ).addEventListener( 'click', miniMovePiece );
+				});
+			});
+			// -------------------------------------------------------------
+				// grey-lightens activePieces that can eat or block kingAttacker
+				// & click-listens to call a function that will:
+				// lighten only those block or eat spaces ('clearLit' & clearLitDivs)
+				// & click-listens to those clearLitDivs that will: call miniMovePiece()
+				blockOrEatKingAttacker();
 			// -------------------------------------------
-			// INSIDE greyLit() needs:
-			// litDivs.forEach(litDiv => {
-			//     document.getElementById( litDiv ).classList.add( 'lit' );
-			// });
 		} // **********************************************
 		// since activeKing cannot move
 		// checkmate if multiple kingAttackers
