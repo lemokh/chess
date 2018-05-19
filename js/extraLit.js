@@ -59,9 +59,10 @@ function lit(activeSide, passiveSide) {
 				litDivs = [];
 			}
 			if (pinnedPieces.includes(pieceToMove)) {
-				// CLEAN UP AFTER PREVIOUSLY CLICKING A PINNED PIECE
+				// cleans up after last clicking a pinned piece
 				pieceToMove.removeEventListener( 'click', pinnedPieceEats );
-				
+				// ---------------------------------------------------------
+				kingAttackers[0].classList.remove('lit');
 			}
 			// ------------------------------------------------------------
 			// un-lightens, clears out & stops click-listening to castleIds
