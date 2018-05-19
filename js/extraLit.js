@@ -158,7 +158,7 @@ function lit(activeSide, passiveSide) {
 							// if activePiece checks or blocks someId
 							if (checkingSpace(activePiece, someId)) {
 								// ---------------------------------------------------------------------------------------------------------------------------------------------
-								console.log(activePiece.getAttribute('data-side') + ' ' + activePiece.getAttribute('data-name') + ' at ' + activePiece.id + ' can move to ' + someId.id);
+								console.log(activePiece.getAttribute('data-side') + ' ' + activePiece.getAttribute('data-name') + ' at ' + activePiece.id + ' can move to ' + someId);
 								// ---------------------------
 								mate = false; // no check mate
 								// ------------------------------------------------
@@ -185,13 +185,12 @@ function lit(activeSide, passiveSide) {
 									// 	litDivs = [];
 									// }
 									console.log(litDivs);
-									// --------------------------------------
-									console.log(someId);
-									// lightens & click-listens to someId div
-									someId.classList.add('lit');
-									// -----------------------------------------------------------------------------
-									someId.addEventListener('click', function saveKing(e) {
-										// ---------------------------------------------------======================
+									// ----------------------------------
+									// lightens & click-listens to someId
+									document.getElementById( someId ).classList.add('lit');
+									// -------------------------------------------------------------------------------
+									document.getElementById( someId ).addEventListener('click', function saveKing(e) {
+										// -----------------------------------------------------======================
 										// un-lightens & stops click-listening to clicked space
 										greyLitDivs.forEach(greyLitDiv => {
 											// ----------------------------------------------
@@ -231,7 +230,7 @@ function lit(activeSide, passiveSide) {
 						}
 						// --------------------------------------------------
 						// grey-lightens pieces that can eat kingAttackers[0]
-						eatOrBlock(activePiece, kingAttackers[0].id);
+						eatOrBlock(kingAttackers[0].id);
 						// ------------------------------------------------------------
 						pawnBlocksKingAttacker = true; // prevents pawns from attacking
 						// ------------------------------------------------------------
