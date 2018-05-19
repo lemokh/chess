@@ -83,7 +83,7 @@ function lit(activeSide, passiveSide) {
 				castleIds = [];
 			}
 		}
-	}
+	} // NEEDS WORK!
 	//=====================================
 	function pinnedPieceAttack(actPinPiece) {
 		// ----------------
@@ -94,13 +94,14 @@ function lit(activeSide, passiveSide) {
 			// ------------------------------------------------------
 			if (pinnedPiece.id === actPinPiece.id) { pinCounter += 1; }
 		});
+		console.log(pinCounter);
 		// --------------------
 		if (pinCounter === 1) {
 			// --------------------------------------------------------------
 			pinningPiece = pinnerPieces[ pinnedPieces.indexOf(actPinPiece) ];
 			// --------------------------------------------------------------
 			// if the pinnedPiece can eat its pinningPiece
-			if (checkingSpace(somePiece, pinningPiece.id)) {
+			if (checkingSpace(actPinPiece, pinningPiece.id)) {
 				// -----------------------------------------
 				cleanUpAfterFirstClick();
 				// -----------------------
@@ -131,7 +132,7 @@ function lit(activeSide, passiveSide) {
 				});
 			}
 		}
-	}
+	} 
     //=================
 	function isMate() { // since activeKing is in check
 		// --------------------------------------------------------------------------------
@@ -844,6 +845,8 @@ function lit(activeSide, passiveSide) {
 		// highlights all possible moves for activeKing
 		console.log('ENTERS kingLit()');
 		// ----------------------------
+		canCheck = false;
+		// ------------------------
 		kingSpacesUnderAttack = [];
 		// ------------------------
 		// covers king castling
@@ -918,22 +921,30 @@ function lit(activeSide, passiveSide) {
 		} // ----------------------------
 		else { // since king not castling
 			kingSpaces = [
+				// ------------------------------------------------------------
 				(+pieceToMove.id[0] - 1) + (+pieceToMove.id[1] - 1).toString(),
+				// ------------------------------------------------------------
 				(+pieceToMove.id[0] - 1) + pieceToMove.id[1],
+				// ------------------------------------------------------------
 				(+pieceToMove.id[0] - 1) + (+pieceToMove.id[1] + 1).toString(),
+				// ------------------------------------------------------------
 				pieceToMove.id[0] + (+pieceToMove.id[1] - 1),
+				// ------------------------------------------
 				pieceToMove.id[0] + (+pieceToMove.id[1] + 1),
+				// ------------------------------------------------------------
 				(+pieceToMove.id[0] + 1) + (+pieceToMove.id[1] - 1).toString(),
+				// ------------------------------------------------------------
 				(+pieceToMove.id[0] + 1) + pieceToMove.id[1],
+				// -----------------------------------------------------------
 				(+pieceToMove.id[0] + 1) + (+pieceToMove.id[1] + 1).toString()
+				// -----------------------------------------------------------
 			].map(space => { // keeps only on-board kingSpaces
 				if ( (+space[0] >= 0) && (+space[0] <= 7) ) {
-					if ( (+space[1] >= 0) && (+space[1] <= 7) ) {
-						return space;
-					}
+					// ----------------------------------------------------------
+					if ( (+space[1] >= 0) && (+space[1] <= 7) ) { return space; }
 				}
 			}).filter(item => { return item !== undefined; });
-			// --------------------------------------------------
+			// ----------------------------------------------------------
 			// excludes activePiece occupied spaces from kingSpaces array
 			openAndOpponentHeldKingSpaces = kingSpaces.filter(kingSpace => {
 				// for each kingSpace & each activePiece
@@ -949,10 +960,13 @@ function lit(activeSide, passiveSide) {
 				for (let i = 0; i < passiveSide.length; i++) {
 					// if passivePiece can check the oAOHKS...(kingSpace devoid of activePiece)
 					if (checkingSpace(passiveSide[i], checkSpaceId)) {
+						// ------------------------------------------------------------------------------------------------------------------------------------
 						console.log(passiveSide[i].getAttribute('data-side') + ' ' + passiveSide[i].getAttribute('data-name') + ' can attack ' + checkSpaceId);
+						// -------------  ------
 						canCheck = true;  break;
 					}
 				}
+				// -------------------------------------------
 				if (!canCheck) { litDivs.push(checkSpaceId); }
 				// if (!litDivs.includes(checkSpaceId)) { _ }
 			});  console.log('litDivs -->');  console.log(litDivs);
