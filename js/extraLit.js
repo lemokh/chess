@@ -36,7 +36,96 @@ function lit(activeSide, passiveSide) {
 			// ---------------------------------------
             lit(blues, oranges);
         }
-    }
+	}
+	//=================================
+	function cleanUpAfterFirstClick() {
+		// resets litDivs on clicking multiple activeSide pieces
+		if (pieceToMove !== undefined) {
+			// un-lightens & stops click-listening to pieceToMove
+			pieceToMove.removeEventListener( 'click', movePiece );
+			// ---------------------------------------------------
+			pieceToMove.classList.remove( 'mainLit' );
+			// ----------------------------------------------------------
+			// un-lightens, clears out & stops click-listening to litDivs
+			if (litDivs.length) {
+				// ------------------------
+				litDivs.forEach(litDiv => {
+					// ---------------------------------------------------------
+					document.getElementById( litDiv ).classList.remove( 'lit' );
+					// -------------------------------------------------------------------------
+					document.getElementById( litDiv ).removeEventListener( 'click', movePiece );
+				});
+				// ----------
+				litDivs = [];
+			}
+			if (pinnedPieces.includes(pieceToMove)) {
+				// CLEAN UP AFTER PREVIOUSLY CLICKING A PINNED PIECE
+				pieceToMove.removeEventListener( 'click', pinnedPieceEats );
+				
+			}
+			// ------------------------------------------------------------
+			// un-lightens, clears out & stops click-listening to castleIds
+			if (castleIds.length) { // if king ready to castle
+				// ------------------------------------------------
+				castleIds.forEach(id => { // resets castling process
+					// -----------------------------------------------------------
+					document.getElementById( id ).classList.remove( 'castleLit' );
+					// --------------------------------------------------------------------
+					document.getElementById( id ).removeEventListener( 'click', castling );
+				});
+				// ------------
+				castleIds = [];
+			}
+		}
+	}
+	//=====================================
+	function pinnedPieceAttack(actPinPiece) {
+		// ----------------
+		let pinCounter = 0;
+		// ----------------------------------------------
+		// counts how many pieces are pinning activePiece
+		pinnedPieces.forEach(pinnedPiece => {
+			// ------------------------------------------------------
+			if (pinnedPiece.id === actPinPiece.id) { pinCounter += 1; }
+		});
+		// --------------------
+		if (pinCounter === 1) {
+			// --------------------------------------------------------------
+			pinningPiece = pinnerPieces[ pinnedPieces.indexOf(actPinPiece) ];
+			// --------------------------------------------------------------
+			// if the pinnedPiece can eat its pinningPiece
+			if (checkingSpace(somePiece, pinningPiece.id)) {
+				// -----------------------------------------
+				cleanUpAfterFirstClick();
+				// -----------------------
+				pieceToMove = actPinPiece;
+				// -----------------------------------======================
+				activePiece.addEventListener('click', function pinnedLit() {
+					// -------------------------------======================
+					activePiece.classList('mainLit');
+					// ------------------------------
+					pinningPiece.classList('lit');
+					// ------------------------------------=============================
+					pinningPiece.addEventListener('click', function pinnedPieceEats() {
+						// --------------------------------=============================
+						activePiece.removeEventListener('click', pinnedLit);
+						// -------------------------------------------------
+						activePiece.classList.remove('mainLit');
+						// -------------------------------------
+						pinningPiece.classList.remove('lit');
+						// ----------------------------------
+						pinningPiece.removeEventListener('click', pinnedPieceEats);
+						// --------------------------------------------------------
+						eat(pinningPiece);
+						// ---------------------------------
+						swapSide(activePiece, pinningPiece);
+						// ---------------------------------
+						toggleSides();
+					});
+				});
+			}
+		}
+	}
     //=================
 	function isMate() { // since activeKing is in check
 		// --------------------------------------------------------------------------------
@@ -152,7 +241,8 @@ function lit(activeSide, passiveSide) {
 						}); // -----------------------------
 						pawnBlocksKingAttacker = false;
 					}
-				} else { // since activePiece is pinned
+				} 
+				else { // since activePiece is pinned
 					// THIS MIGHT ALREADY BE COVERED
 					// if activePiece can eat kingAttacker
 					if (checkingSpace(activePiece, kingAttackers[0].id)) {
@@ -866,64 +956,34 @@ function lit(activeSide, passiveSide) {
 	//====================
 	function pieceLit(e) {
 		console.log('ENTERS pieceLit(e)');
-		// -----------------------------------------------------
-		// resets litDivs on clicking multiple activeSide pieces
-		if (pieceToMove !== undefined) {
-			// un-lightens & stops click-listening to pieceToMove
-			pieceToMove.removeEventListener( 'click', movePiece );
-			pieceToMove.classList.remove( 'mainLit' );
-			// ----------------------------------------------------------
-			// un-lightens, clears out & stops click-listening to litDivs
-			if (litDivs.length) {
-				litDivs.forEach(litDiv => {
-					document.getElementById( litDiv ).classList.remove( 'lit' );
-					// ---------------------------------------------------------
-					document.getElementById( litDiv ).removeEventListener(
-						'click', movePiece
-					);
-				});
-				// ----------
-				litDivs = [];
-			} // ----------------------------------------------------------
-			// un-lightens, clears out & stops click-listening to castleIds
-			if (castleIds.length) { // if king ready to castle
-				castleIds.forEach(id => { // reset castling process 
-					document.getElementById( id ).classList.remove( 'castleLit' );
-					// -----------------------------------------------------------
-					document.getElementById( id ).removeEventListener(
-						'click', castling
-					);
-				});
-				// ------------
-				castleIds = [];
-			}
-		}
-		//\/\/\/\/\/\/\/\/\/\//
+		// -------------------------------
+		cleanUpAfterFirstClick();
+		// ----------------------
         pieceToMove = e.target;
 		// ----------------------------------------
 		if (!enPassanting) { goToDiv = undefined; }
 		// ----------------------------------------
 		// lightens pieceToMove
 		pieceToMove.classList.add('mainLit');
-		// ----------------------------------
+		// ------------------------------------------------
 		// highlights all of clicked piece's possible moves
-		function possibleMoves() {
-			switch (pieceToMove.getAttribute('data-name')) {
-				case 'pawn':   pawnLit();    break;
-				case 'knight': knightLit();  break;
-				case 'bishop': bishopLit();  break;
-				case 'rook':   rookLit();    break;
-				case 'queen':  bishopLit();  rookLit();  break;
-				case 'king':   kingLit();    break;
-				default: alert('default ERROR! pieceToMove is empty');
-			}
-        } // -----------
-        possibleMoves();
+		switch (pieceToMove.getAttribute('data-name')) {
+			case 'pawn':   pawnLit();    break;
+			case 'knight': knightLit();  break;
+			case 'bishop': bishopLit();  break;
+			case 'rook':   rookLit();    break;
+			case 'queen':  bishopLit();  rookLit();  break;
+			case 'king':   kingLit();    break;
+			default: alert('default ERROR! pieceToMove is empty');
+		}
 		// -----------------------------------------------------
 		// lightens & click-listens all litDivs --> movePiece(e)
 		if (litDivs.length) {
+			// ------------------------
 			litDivs.forEach(litDiv => {
+				// ----------------------------------------------------
 				document.getElementById( litDiv ).classList.add('lit');
+				// --------------------------------------------------------------------
 				document.getElementById( litDiv ).addEventListener('click', movePiece);
 			}); // enters movePiece(e) on litDiv-click, unless castling
 		}
@@ -934,20 +994,25 @@ function lit(activeSide, passiveSide) {
     // ---------------
 	// sets activeKing
 	for (i = 0; i < activeSide.length; i++) {
+		// ------------------------------------------------------
 		if (activeSide[i].getAttribute('data-name') === 'king') {
+			// ------------------------  ------
 			activeKing = activeSide[i];  break;
 		}
 	}  console.log('activeKing -->');  console.log(activeKing);
 	// --------------------------------------------------------------------
 	// populates kingAttackers with any passivePiece that checks activeKing
 	passiveSide.forEach(passivePiece => {
+		// ----------------------------------------------
 		if (checkingSpace(passivePiece, activeKing.id)) {
+			// ------------------------------
 			kingAttackers.push(passivePiece);
 		}
 	});  console.log('kingAttackers -->');  console.log(kingAttackers);
 	// ----------------------------------------------------------------
 	// if activeKing in check
 	if (kingAttackers.length) { isMate(); }
+	
 		// ***************************
 		// ***************************
 		// ***************************
@@ -985,90 +1050,17 @@ function lit(activeSide, passiveSide) {
         //         });
         //     }
         // }
-        // ****************************************************
-        // ****************************************************
-        // ****************************************************
-	// -----------------------------------------------------------------------------------
-	else { // since activeKing not in check, runs pieceLit(e) for all clicked activePieces
+        // ********************************
+        // ********************************
+		// ********************************
+		
+	// ------------------------------------
+	else { // since activeKing not in check
+		// runs pieceLit(e) for all clicked activePieces
 		activeSide.forEach(activePiece => {
-			// ----------------------------
-			if (pinnedPieces.length) {
-				// ----------------
-                let pinCounter = 0;
-                // ----------------------------------------------
-                // counts how many pieces are pinning activePiece
-                pinnedPieces.forEach(pinnedPiece => {
-                    if (pinnedPiece.id === activePiece.id) { pinCounter += 1; }
-                });
-                // --------------------
-                if (pinCounter === 1) {
-					// --------------------------------------------------------------
-                    pinningPiece = pinnerPieces[ pinnedPieces.indexOf(pieceToMove) ];
-                    // --------------------------------------------------------------
-                    // if the pinnedPiece can eat its pinningPiece
-                    if (checkingSpace(activePiece, pinningPiece.id)) {
-						// resets litDivs on clicking multiple activeSide pieces
-						if (pieceToMove !== undefined) {
-							// un-lightens & stops click-listening to pieceToMove
-							pieceToMove.removeEventListener( 'click', movePiece );
-							// ---------------------------------------
-							pieceToMove.classList.remove( 'mainLit' );
-							// ----------------------------------------------------------
-							// un-lightens, clears out & stops click-listening to litDivs
-							if (litDivs.length) {
-								// ------------------------
-								litDivs.forEach(litDiv => {
-									// ---------------------------------------------------------
-									document.getElementById( litDiv ).classList.remove( 'lit' );
-									// -------------------------------------------------------------------------
-									document.getElementById( litDiv ).removeEventListener( 'click', movePiece );
-								});
-								// ----------
-								litDivs = [];
-							} // ----------------------------------------------------------
-							// un-lightens, clears out & stops click-listening to castleIds
-							if (castleIds.length) { // if king ready to castle
-								// ------------------------------------------------
-								castleIds.forEach(id => { // reset castling process
-									// ----------------------------------------------------------- 
-									document.getElementById( id ).classList.remove( 'castleLit' );
-									// --------------------------------------------------------------------
-									document.getElementById( id ).removeEventListener( 'click', castling );
-								});
-								// ------------
-								castleIds = [];
-							}
-						}
-						//\/\/\/\/\/\/\/\/\/\//
-						pieceToMove = activePiece;
-						// -----------------------------------======================
-                        activePiece.addEventListener('click', function pinnedLit() {
-							// -------------------------------======================
-                            activePiece.classList('mainLit');
-                            // ------------------------------
-                            pinningPiece.classList('lit');
-                            // ------------------------------------=============================
-                            pinningPiece.addEventListener('click', function pinnedPieceEats() {
-								// --------------------------------=============================
-								activePiece.removeEventListener('click', pinnedLit);
-                                // -------------------------------------------------
-                                activePiece.classList.remove('mainLit');
-                                // -------------------------------------
-                                pinningPiece.classList.remove('lit');
-                                // ----------------------------------
-                                pinningPiece.removeEventListener('click', pinnedPieceEats);
-                                // --------------------------------------------------------
-								eat(pinningPiece);
-								// ---------------------------------
-								swapSide(activePiece, pinningPiece);
-								// ---------------------------------
-                                toggleSides();
-                            });
-                        });
-                    }
-                }
-            }
-            // ------------------------------------------------------
+			// ---------------------------------------------------------
+			if (pinnedPieces.length) { pinnedPieceAttack(activePiece); }
+            // ---------------------------------------------------------
 			else { activePiece.addEventListener('click', pieceLit); }
 		});
     }
