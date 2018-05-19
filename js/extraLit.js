@@ -57,7 +57,7 @@ function lit(activeSide, passiveSide) {
 					// and if not activeKing
 					if (activePiece.getAttribute('data-name') !== 'king') {
 						// ------------------------------------------------
-						pieceToMove = activePiece; // VERY IMPORTANT!
+						pieceToMove = activePiece; // VERY IMPORTANT!  WHY?
 						//===========================
 						function eatOrBlock(someId) {
 							// sees if activePiece can eat or block someId
@@ -142,21 +142,25 @@ function lit(activeSide, passiveSide) {
 						// ------------------------------------------------------------
 						pawnBlocksKingAttacker = true; // prevents pawns from attacking
 						// ------------------------------------------------------------
-						// grey-lightens pieces that can block kingAttackers[0] path
+						// grey-lightens pieces that can block kingAttackers[0]
 						checkPath.forEach(pathId => {
-							// -------------------------------------------------
-							idToBlock = pathId; // IMPORTANT in checkingSpace();
-							// -------------------------------------------------
-							// if activePiece can move to pathId
+							// ---------------------------------------------------------
+							idToBlock = pathId; // used in checkingSpace();
+							// ---------------------------------------------------------
+							// sees if activePiece can move to pathId
 							eatOrBlock(activePiece, pathId);
 						}); // -----------------------------
 						pawnBlocksKingAttacker = false;
-					} else {
-						if (checkingSpace(pieceToMove, kingAttackers[0].id)) {
-							litDivs.push(kingAttackers[0].id);
-						}
+					}
+				} else { // since activePiece is pinned
+					// THIS MIGHT ALREADY BE COVERED
+					// if activePiece can eat kingAttacker
+					if (checkingSpace(activePiece, kingAttackers[0].id)) {
+						// add kingAttacker's id to litDivs
+						litDivs.push(kingAttackers[0].id);
 					}
 				}
+				if (mate) { endOfGame(); }
 			}); // WORKS!
 			console.log('mate -->');  console.log(mate);
         }
@@ -188,7 +192,6 @@ function lit(activeSide, passiveSide) {
 			// ---------------------------------------------------
 			// discerns whether an activePiece can save activeKing from checkmate
 			blockOrEatKingAttacker();
-			if (mate) { endOfGame(); }
 		} // ************************
 	}
 	//====================
