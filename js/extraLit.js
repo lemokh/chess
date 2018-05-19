@@ -54,6 +54,8 @@ function lit(activeSide, passiveSide) {
 					document.getElementById( litDiv ).classList.remove( 'lit' );
 					// -------------------------------------------------------------------------
 					document.getElementById( litDiv ).removeEventListener( 'click', movePiece );
+					// -------------------------------------------------------------------------------
+					// document.getElementById( litDiv ).removeEventListener( 'click', pinnedPieceEats );
 				});
 				// ----------
 				litDivs = [];
@@ -65,7 +67,7 @@ function lit(activeSide, passiveSide) {
 				// ---------------------------------------------------------
 				pinningPiece.removeEventListener( 'click', pinnedPieceEats );
 				// ---------------------------------------------------------
-				pinningPiece.classList.remove('lit');
+				pinningPiece.classList.remove( 'lit' );
 			}
 			// ------------------------------------------------------------
 			// un-lightens, clears out & stops click-listening to castleIds
@@ -258,7 +260,7 @@ function lit(activeSide, passiveSide) {
         }
         // -----------------------------------------------------------------
 		// populates litDivs where activeKing can move, runs checkingSpace()
-		kingLit(); // WHAT DOES THIS EXACTLY DO?
+		kingLit(); // WHAT DOES THIS DO?
 		// -------------------------------
 		// if king can move, no check mate
 		if (litDivs.length) { // escapes check
@@ -971,12 +973,19 @@ function lit(activeSide, passiveSide) {
 		// ------------------------------------------------
 		// highlights all of clicked piece's possible moves
 		switch (pieceToMove.getAttribute('data-name')) {
-			case 'pawn':   pawnLit();    break;
-			case 'knight': knightLit();  break;
-			case 'bishop': bishopLit();  break;
-			case 'rook':   rookLit();    break;
-			case 'queen':  bishopLit();  rookLit();  break;
-			case 'king':   kingLit();    break;
+			// -----------------------------------------
+			case 'pawn':     pawnLit();     break;
+			// -----------------------------------
+			case 'knight':   knightLit();   break;
+			// -----------------------------------
+			case 'bishop':   bishopLit();   break;
+			// -----------------------------------
+			case 'rook':     rookLit();     break;
+			// ------------------------------------------------
+			case 'queen':    bishopLit();   rookLit();   break;
+			// ------------------------------------------------
+			case 'king':     kingLit();     break;
+			// ---------------------------------------------------
 			default: alert('default ERROR! pieceToMove is empty');
 		}
 		// -----------------------------------------------------
