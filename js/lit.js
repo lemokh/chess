@@ -3,14 +3,11 @@ function lit(activeSide, passiveSide) {
     let noKing = true;
     // --------------------------------
     activeSide.forEach(activePiece => {
-        if (activePiece.getAttribute('data-name') === 'king') {
-            noKing = false;
-        }
+        // ----------------------------------------------------------------------
+        if (activePiece.getAttribute('data-name') === 'king') { noKing = false; }
     });
-    if (noKing) {
-        alert('GAME OVER');
-        return;
-    }
+    //-------------------------------  ---------
+    if (noKing) { alert('GAME OVER');  return; }
     // ----------------------------------------------------------------
     litDivs = []; // contains lit ids on which to apply click-listeners
     // kingAttackers = []; // contains all passivePieces that check activeKing
@@ -18,9 +15,10 @@ function lit(activeSide, passiveSide) {
     // ---------------------------------------------------------------
     // sets activeKing
     for (i = 0; i < activeSide.length; i++) {
+        // ------------------------------------------------------
         if (activeSide[i].getAttribute('data-name') === 'king') {
-            activeKing = activeSide[i];
-            break;
+            // ------------------------  ------------------------
+            activeKing = activeSide[i];  break;
         }
     } console.log(activeKing);
     //===========================
