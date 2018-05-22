@@ -13,7 +13,9 @@ function lit(activeSide, passiveSide) {
         // ---------------------------------------------------------------------
 		console.log(activeKing.getAttribute('data-side') + ' KING CHECKMATED!');
         // ---------------------------------------------------------------------
-        document.getElementById('board').classList.add('noClick');
+		document.getElementById('board').classList.add('noClick');
+		// -------------------------------------------------------
+		console.log('END OF GAME');
     }
     //======================
     function toggleSides() {
