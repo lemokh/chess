@@ -9,7 +9,6 @@ function lit(activeSide, passiveSide) {
 	// function toggleClocks() {}
     //===========================
     function endOfGame() {
-        alert('END OF GAME');
         alert(activeKing.getAttribute('data-side') + ' KING CHECKMATED!');
         // ---------------------------------------------------------------------
 		console.log(activeKing.getAttribute('data-side') + ' KING CHECKMATED!');
