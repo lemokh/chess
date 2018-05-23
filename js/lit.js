@@ -89,21 +89,20 @@ function lit(activeSide, passiveSide) {
         console.log('ENTERS PreventCheckMate()')
         // only click listens to heroic activePieces
         heroics.forEach(obj => {
-            // heroics is [ {actor:__, acteeId:__}, ... ]
+            // heroics = [ {actor:__, acteeId:__}, ... ];
             // pre-lightens them with grey background
             (obj.actor).classList.add('preventMateLit');
             (obj.actor).addEventListener('click', pieceLit);
         });
-        // THEN reset each heroics.actor to normal pieces, once fully moved
+        // THEN resets each heroics.actor to normal pieces, once fully moved
         heroics.forEach(obj => {
-            // heroics is [ {actor:__, acteeId:__}, ... ]
             // pre-lightens them with grey background
             obj.actor.classList.remove('preventMateLit');
             obj.actor.removeEventListener('click', pieceLit);
         });
         // AND toggleSides();
-        // if (activeSide === blues) { lit(oranges, blues); }
-        // else { lit(blues, oranges); }
+        if (activeSide === blues) { lit(oranges, blues); }
+        else { lit(blues, oranges); }
     }
     // -----------------------------
     // populates kingAttackers array
