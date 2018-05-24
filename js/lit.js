@@ -496,98 +496,94 @@ function lit(activeSide, passiveSide) {
     } // WORKS!
     //====================
     function knightLit() {
-        block1 = false;
-        block2 = false;
-        block3 = false;
-        block4 = false;
-        block5 = false;
-        block6 = false;
-        block7 = false;
-        block8 = false;
-
-        // if own piece occupies knight space, no highlight there
-        activeSide.forEach(activePiece => {
-            switch (+activePiece.id[0]) {
-                case (+pieceToMove.id[0] + 1): // if x is one to the right
-                    if (activePiece.id[1] === (+pieceToMove.id[1] + 2)) { block1 = true; break; }
-                    if (activePiece.id[1] === (+pieceToMove.id[1] - 2)) { block2 = true; break; }
-                case (pieceToMove.id[0] - 1): // if x is one to the left
-                    if (activePiece.id[1] === (+pieceToMove.id[1] + 2)) { block3 = true; break; }
-                    if (activePiece.id[1] === (+pieceToMove.id[1] - 2)) { block4 = true; break; }
-                case (+pieceToMove.id[0] + 2): // if x is two to the right
-                    if (activePiece.id[1] === (+pieceToMove.id[1] + 1)) { block5 = true; break; }
-                    if (activePiece.id[1] === (+pieceToMove.id[1] - 1)) { block6 = true; break; }
-                case (pieceToMove.id[0] - 2): // if x is two to the left
-                    if (activePiece.id[1] === (+pieceToMove.id[1] + 1)) { block7 = true; break; }
-                    if (activePiece.id[1] === (+pieceToMove.id[1] - 1)) { block8 = true; break; }
-            }
-        });
-
-        if (!block1) { // OMITS OFF-BOARD KNIGHT MOVES & 
-            if ((+pieceToMove.id[0] + 1) < 8) {
-                if ((+pieceToMove.id[1] + 2) < 8) {
-                    knightLight = (+pieceToMove.id[0] + 1) + (+pieceToMove.id[1] + 2).toString();
-                    litDivs.push( knightLight );
-                }
-            }
-        }
-        if (!block2) {
-            if ((+pieceToMove.id[0] + 1) < 8) {
-                if ((pieceToMove.id[1] - 2) >= 0) {
-                    knightLight = (+pieceToMove.id[0] + 1) + (pieceToMove.id[1] - 2).toString();
-                    litDivs.push( knightLight );
-                }
-            }
-        }
-        if (!block3) {
-            if ((+pieceToMove.id[0] - 1) >= 0) {
-                if ((+pieceToMove.id[1] + 2) < 8) {
-                    knightLight = (pieceToMove.id[0] - 1) + (+pieceToMove.id[1] + 2).toString();
-                    litDivs.push( knightLight );
-                }
-            }
-        }
-        if (!block4) {
-            if ((+pieceToMove.id[0] - 1) >= 0) {
-                if ((+pieceToMove.id[1] - 2) >= 0) {
-                    knightLight = (pieceToMove.id[0] - 1) + (pieceToMove.id[1] - 2).toString();
-                    litDivs.push(knightLight);
-                }
-            }
-        }
-        if (!block5) {
-            if ((+pieceToMove.id[0] + 2) < 8) {
-                if ((+pieceToMove.id[1] + 1) < 8) {
-                    knightLight = (+pieceToMove.id[0] + 2) + (+pieceToMove.id[1] + 1).toString();
-                    litDivs.push( knightLight );
-                }
-            }
-        }
-        if (!block6) {
-            if ((+pieceToMove.id[0] + 2) < 8) {
-                if ((+pieceToMove.id[1] - 1) >= 0) {
-                    knightLight = (+pieceToMove.id[0] + 2) + (pieceToMove.id[1] - 1).toString();
-                    litDivs.push( knightLight );
-                }
-            }
-        }
-        if (!block7) {
-            if ((+pieceToMove.id[0] - 2) >= 0) {
-                if ((+pieceToMove.id[1] + 1) < 8) {
-                    knightLight = (pieceToMove.id[0] - 2) + (+pieceToMove.id[1] + 1).toString();
-                    litDivs.push( knightLight );
-                }
-            }
-        }
-        if (!block8) {
-            if ((+pieceToMove.id[0] - 2) >= 0) {
-                if ((+pieceToMove.id[1] - 1) >= 0) {
-                    knightLight = (pieceToMove.id[0] - 2) + (pieceToMove.id[1] - 1).toString();
-                    litDivs.push( knightLight );
-                }
-            }
-        }
-    } // WORKS!
+		block1 = false;  block2 = false;  block3 = false;  block4 = false;
+		block5 = false;  block6 = false;  block7 = false;  block8 = false;
+		// ---------------------------------------------------------------
+		// if own piece occupies knight space, no highlight there
+		activeSide.forEach(activePiece => {
+			switch (+activePiece.id[0]) {
+				case (+pieceToMove.id[0] + 1): // if x is one to the right
+					if (activePiece.id[1] == (+pieceToMove.id[1] + 2)) { block1 = true; break; }
+					if (activePiece.id[1] == (+pieceToMove.id[1] - 2)) { block2 = true; break; }
+				case (pieceToMove.id[0] - 1): // if x is one to the left
+					if (activePiece.id[1] == (+pieceToMove.id[1] + 2)) { block3 = true; break; }
+					if (activePiece.id[1] == (+pieceToMove.id[1] - 2)) { block4 = true; break; }
+				case (+pieceToMove.id[0] + 2): // if x is two to the right
+					if (activePiece.id[1] == (+pieceToMove.id[1] + 1)) { block5 = true; break; }
+					if (activePiece.id[1] == (+pieceToMove.id[1] - 1)) { block6 = true; break; }
+				case (pieceToMove.id[0] - 2): // if x is two to the left
+					if (activePiece.id[1] == (+pieceToMove.id[1] + 1)) { block7 = true; break; }
+					if (activePiece.id[1] == (+pieceToMove.id[1] - 1)) { block8 = true; break; }
+			}
+		});
+		// ----------------------------
+		// OMITS OFF-BOARD KNIGHT MOVES
+		// using a switch() here breaks knightLit()
+		if (!block1) {
+			if ((+pieceToMove.id[0] + 1) < 8) {
+				if ((+pieceToMove.id[1] + 2) < 8) {
+					knightLight = (+pieceToMove.id[0] + 1) + (+pieceToMove.id[1] + 2).toString();
+					litDivs.push( knightLight );
+				}
+			}
+		}
+		if (!block2) {
+			if ((+pieceToMove.id[0] + 1) < 8) {
+				if ((pieceToMove.id[1] - 2) >= 0) {
+					knightLight = (+pieceToMove.id[0] + 1) + (pieceToMove.id[1] - 2).toString();
+					litDivs.push( knightLight );
+				}
+			}
+		}
+		if (!block3) {
+			if ((+pieceToMove.id[0] - 1) >= 0) {
+				if ((+pieceToMove.id[1] + 2) < 8) {
+					knightLight = (pieceToMove.id[0] - 1) + (+pieceToMove.id[1] + 2).toString();
+					litDivs.push( knightLight );
+				}
+			}
+		}
+		if (!block4) {
+			if ((+pieceToMove.id[0] - 1) >= 0) {
+				if ((+pieceToMove.id[1] - 2) >= 0) {
+					knightLight = (pieceToMove.id[0] - 1) + (pieceToMove.id[1] - 2).toString();
+					litDivs.push(knightLight);
+				}
+			}
+		}
+		if (!block5) {
+			if ((+pieceToMove.id[0] + 2) < 8) {
+				if ((+pieceToMove.id[1] + 1) < 8) {
+					knightLight = (+pieceToMove.id[0] + 2) + (+pieceToMove.id[1] + 1).toString();
+					litDivs.push( knightLight );
+				}
+			}
+		}
+		if (!block6) {
+			if ((+pieceToMove.id[0] + 2) < 8) {
+				if ((+pieceToMove.id[1] - 1) >= 0) {
+					knightLight = (+pieceToMove.id[0] + 2) + (pieceToMove.id[1] - 1).toString();
+					litDivs.push( knightLight );
+				}
+			}
+		}
+		if (!block7) {
+			if ((+pieceToMove.id[0] - 2) >= 0) {
+				if ((+pieceToMove.id[1] + 1) < 8) {
+					knightLight = (pieceToMove.id[0] - 2) + (+pieceToMove.id[1] + 1).toString();
+					litDivs.push( knightLight );
+				}
+			}
+		}
+		if (!block8) {
+			if ((+pieceToMove.id[0] - 2) >= 0) {
+				if ((+pieceToMove.id[1] - 1) >= 0) {
+					knightLight = (pieceToMove.id[0] - 2) + (pieceToMove.id[1] - 1).toString();
+					litDivs.push( knightLight );
+				}
+			}
+		}
+	} // WORKS!
     //====================
     function bishopLit() {
         function quadrant(bishopX, bishopY) {
