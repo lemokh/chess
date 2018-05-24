@@ -1,0 +1,119 @@
+body {
+    background-image: url('images/boardBody.jpg');
+    /*backdrop-filter: contrast(110%);*/
+    filter: brightness(115%);
+    background-color: rgba(240, 255, 255, 0.5);
+    background-blend-mode: luminosity;
+}
+  
+game {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 8rem;
+}
+  player1 {
+    display: grid;
+    grid-template-columns: 10rem;
+    /*background-color: rgba(219, 112, 147, 0.05);*/
+    background-color: black;
+    /*background-blend-mode: luminosity;*/
+    opacity: .2;
+  }
+  
+  player2 {
+    display: grid;
+    grid-template-columns: 10rem;
+    /*background-color: rgba(219, 112, 147, 0.05);*/
+    /*background-blend-mode: screen;*/
+    background-color: black;
+    opacity: .2;
+  }
+  
+  .btn {
+    text-align: center;
+  }
+  
+  #blueTakenBox {
+    display: flex;
+    flex-direction: row;
+  }
+  
+  #orangeTakenBox {
+    display: flex;
+    flex-direction: row;
+  }
+  
+  board {
+    display: grid;
+    grid-template-columns: 1fr;
+   
+    /*   background-color: #865541; */
+    /* filter: drop-shadow(0px 0px 5000px) invert(2%); */
+  }
+  
+  .row {
+    display: flex;
+    /*filter: grayscale(15%);*/
+  }
+  
+  .cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80px;
+    width: 80px;
+    margin: 2px;
+    padding: 0px;
+  }
+  
+  .black {
+    /*background-image: url('images/boardDark.jpg');*/
+    /*background-color: #1A3E51; #F2D5BC; #F5ECE2; */
+    background-color: rgba(32, 178, 170, .25);
+    background-blend-mode: luminosity;
+  }
+  
+  .white {
+    /*background-image: url('images/boardLight.jpg');*/
+    /* background-color: #865541; #A07461; #697B6B; #827276; 
+  https://github.com/lemokh/Photos/blob/master/siennaSquare.jpg?raw=true
+    */
+    background-color: rgba(100, 149, 237, .25);
+    background-blend-mode: luminosity;
+  }
+  
+  .takenBox > * {
+    display: flex;
+    flex-direction: column;
+    width: 80px;
+    height: 80px;
+    opacity: .75;
+  }
+  
+  .mainLit {
+    background-color: rgba(199, 21, 133, .2);
+    /*deep red --> use for check --> 220,20,60*/
+    /*background-blend-mode: luminosity;*/
+  }
+  
+  .lit {
+    /* background:
+      linear-gradient(purple 0%, red 90%), 
+      linear-gradient(to right, purple 0%, yellow 90%); */
+    /* background-blend-mode: screen, difference, lighten; */
+    background-color: rgba(219, 112, 147, .2);
+    /*background-blend-mode: luminosity;*/
+  }
+  
+  .castleLit {
+    background-color: rgba(255, 0, 0, 0.2);
+  }
+  
+  .greyLit {
+    background-color: rgba(224, 168, 226, 0.2);
+  }
+  
+  .noClick {
+    pointer-events: none;
+  }
+  
