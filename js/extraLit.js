@@ -1,7 +1,7 @@
 function lit(activeSide, passiveSide) {
 	// ----------------------------------------------------------------
 	litDivs = []; // contains lit ids on which to apply click-listeners
-	// ----------------------------------------------------------------
+	// --------------------------------------------------------------------
 	kingAttackers = []; // contains all passivePieces that check activeKing
 	// ---------------------------------------------------------------
 	emptySpaces = openSpaces(boardIds, pieces); // updates emptySpaces
@@ -85,7 +85,7 @@ function lit(activeSide, passiveSide) {
 			}
 		}
 	} // NEEDS WORK!
-	//=====================================
+	//=======================================
 	function pinnedPieceAttack(actPinPiece) {
 		// ----------------
 		let pinCounter = 0;
