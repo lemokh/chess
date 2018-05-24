@@ -10,7 +10,9 @@ game {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 8rem;
+    margin-top: 1rem;
 }
+
   player1 {
     display: grid;
     grid-template-columns: 10rem;
@@ -28,6 +30,13 @@ game {
     background-color: black;
     opacity: .2;
   }
+
+  board {
+    display: grid;
+    grid-template-columns: 1fr;
+    /*   background-color: #865541; */
+    /* filter: drop-shadow(0px 0px 5000px) invert(2%); */
+  }
   
   .btn {
     text-align: center;
@@ -43,27 +52,17 @@ game {
     flex-direction: row;
   }
   
-  board {
-    display: grid;
-    grid-template-columns: 1fr;
-   
-    /*   background-color: #865541; */
-    /* filter: drop-shadow(0px 0px 5000px) invert(2%); */
-  }
-  
   .row {
     display: flex;
-    /*filter: grayscale(15%);*/
   }
   
   .cell {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 80px;
-    width: 80px;
+    height: 5rem;
+    width: 5rem;
     margin: 2px;
-    padding: 0px;
   }
   
   .black {
@@ -85,8 +84,8 @@ game {
   .takenBox > * {
     display: flex;
     flex-direction: column;
-    width: 80px;
-    height: 80px;
+    width: 5rem;
+    height: 5rem;
     opacity: .75;
   }
   
