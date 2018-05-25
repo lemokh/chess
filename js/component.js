@@ -126,6 +126,7 @@ function isMate() { // since activeKing is in check
     // -----------------------------------------------------------------
     // populates litDivs where activeKing can move, runs checkingSpace()
     kingLit();
+    console.log(litDivs);
     // --------------------------------
     // if king can move, not check mate
     if (litDivs.length) { // escapes check

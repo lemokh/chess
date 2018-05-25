@@ -267,7 +267,8 @@ function lit(activeSide, passiveSide) {
         }
         // -----------------------------------------------------------------
 		// populates litDivs where activeKing can move, runs checkingSpace()
-		kingLit();
+        kingLit();
+        console.log('litDivs -->');  console.log(litDivs);
 		// --------------------------------
 		// if king can move, not check mate
 		if (litDivs.length) { // escapes check
@@ -297,7 +298,7 @@ function lit(activeSide, passiveSide) {
 						// -------------------------------------------------------------------
 						if (e.target.getAttribute('data-side') !== 'empty') { eat(e.target); }
 						// -----------------------------
-						swapSide(activePiece, e.target);
+						swapSide(activeKing, e.target);
 						// -----------------------------
 						toggleSides();
 					});
@@ -956,22 +957,24 @@ function lit(activeSide, passiveSide) {
 					// adds kingSpace to oAOHKS array if no activePiece there 
 					return (kingSpace === activePiece.id);
 				});
-			}); // WORKS!
-			// ----------------------------------------------------
+            }); // WORKS!
+            console.log('openAndOpponentHeldKingSpaces -->'); console.log(openAndOpponentHeldKingSpaces);
+			// --------------------------------------
 			// populates litDivs with safe kingSpaces
-			openAndOpponentHeldKingSpaces.forEach(checkSpaceId => {
+			openAndOpponentHeldKingSpaces.forEach(id => {
+                canCheck = false;
 				// for each oAOHKS & each passivePiece
 				for (let i = 0; i < passiveSide.length; i++) {
 					// if passivePiece can check the oAOHKS...(kingSpace devoid of activePiece)
-					if (checkingSpace(passiveSide[i], checkSpaceId)) {
+					if (checkingSpace(passiveSide[i], id)) {
 						// ------------------------------------------------------------------------------------------------------------------------------------
-						console.log(passiveSide[i].getAttribute('data-side') + ' ' + passiveSide[i].getAttribute('data-name') + ' can attack ' + checkSpaceId);
+						console.log(passiveSide[i].getAttribute('data-side') + ' ' + passiveSide[i].getAttribute('data-name') + ' can attack ' + id);
 						// -------------  ------
-						canCheck = true;  break;
+                        canCheck = true;  break;
 					}
 				}
 				// -------------------------------------------
-				if (!canCheck) { litDivs.push(checkSpaceId); }
+				if (!canCheck) { litDivs.push(id); }
 				// if (!litDivs.includes(checkSpaceId)) { _ }
 			});  console.log('litDivs -->');  console.log(litDivs);
 		} // WORKS!
