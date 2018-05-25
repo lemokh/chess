@@ -359,45 +359,43 @@ function checkingSpace(somePiece, checkSpaceId) {
 		switch (+checkSpaceId[0]) { // if checkSpaceId's column equals
 			case +someKing.id[0]: // king's column
 			return (
-				( checkSpaceId[1] == (+someKing.id[1] + 1) )
+				( +checkSpaceId[1] === (+someKing.id[1] + 1) )
 				|| 
-				( checkSpaceId[1] == (someKing.id[1] - 1) )
+				( +checkSpaceId[1] === (someKing.id[1] - 1) )
 			);
 			case +someKing.id[0] + 1: // king's column + 1
 			return (
-				( checkSpaceId[1] == someKing.id[1] )
+				( checkSpaceId[1] === someKing.id[1] )
 				||
-				( checkSpaceId[1] == (+someKing.id[1] + 1) )
+				( +checkSpaceId[1] === (+someKing.id[1] + 1) )
 				||
-				( checkSpaceId[1] == (someKing.id[1] - 1) )
+				( +checkSpaceId[1] === (someKing.id[1] - 1) )
 			);
 			case someKing.id[0] - 1: // king's column - 1
 			return (
-				( checkSpaceId[1] == someKing.id[1] )
+				( checkSpaceId[1] === someKing.id[1] )
 				||
-				( checkSpaceId[1] == (+someKing.id[1] + 1) )
+				( +checkSpaceId[1] === (+someKing.id[1] + 1) )
 				||
-				( checkSpaceId[1] == (someKing.id[1] - 1) )
+				( +checkSpaceId[1] === (someKing.id[1] - 1) )
 			);
 			default: return false;
 		}
 	}
 	// =================================
-	// /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
-	// =================================
 	// sees if somePiece can check space
 	switch (somePiece.getAttribute('data-name')) {
-		//----------------------------------------
+		//-----------------------------------------
 		case 'pawn': return pawnAttacks(somePiece);
-		//-----------------------------------------------------------
+		//---------------------------------------------
 		case 'knight': return knightAttacks(somePiece); 
-		//-----------------------------------------------------------
+		//---------------------------------------------
 		case 'bishop': return bishopAttacks(somePiece);
-		//-------------------------------------------------------
+		//---------------------------------------------
 		case 'rook': return rookAttacks(somePiece);
-		//---------------------------------------------------------
+		//-------------------------------------------
 		case 'queen': return queenAttacks(somePiece);
-		//-------------------------------------------------------
+		//-------------------------------------------
 		case 'king': return kingAttacks(somePiece);
 	}
-} // returns true/false if somePiece checks checkSpaceId
+} // returns true/false if somePiece can attack checkSpaceId
