@@ -290,6 +290,7 @@ function checkingSpace(somePiece, checkSpaceId) {
 				// -------------------------------------------------------------------------------------------
 				alert(nails[0].getAttribute('data-side') + ' ' + nails[0].getAttribute('data-name') + ' IS PINNED');
 				console.log('pinnedPieces -->');  console.log(pinnedPieces);
+				console.log('pinnerPieces -->');  console.log(pinnerPieces);
 			}
 		} // -------------------------------------------------
 		return false; // someBishop cannot attack checkSpaceId

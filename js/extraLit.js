@@ -6,6 +6,7 @@ function lit(activeSide, passiveSide) {
 	// --------------------------------------------------------------------
 	emptySpaces = openSpaces(boardIds, pieces); // updates emptySpaces
 	// ---------------------------------------------------------------
+	//\/\/\/\/\/\/\/\/\/\/\/\/\/
 	//==========================
 	// function toggleClocks() {
 
@@ -1017,9 +1018,9 @@ function lit(activeSide, passiveSide) {
 				document.getElementById( litDiv ).addEventListener('click', movePiece);
 			}); // enters movePiece(e) on litDiv-click, unless castling
 		}
-    } // WORKS!
-    // ---------------
-    // ---------------
+	} // WORKS!
+	// ---------------
+	//\/\/\/\/\/\/\/\/
     // ---------------
 	// sets activeKing
 	for (i = 0; i < activeSide.length; i++) {
@@ -1094,7 +1095,8 @@ function lit(activeSide, passiveSide) {
 			else { activePiece.addEventListener('click', pieceLit); }
 		});
 	}
-	else { // since activKing not in check & no pinnedPieces 
+	else { // since activKing not in check & no pinnedPieces
+		// -------------------------------------------------
 		// runs pieceLit(e) for all clicked activePieces
 		// ---------------------------------------------
 		activeSide.forEach(activePiece => {
