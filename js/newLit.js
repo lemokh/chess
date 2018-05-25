@@ -138,7 +138,52 @@ function lit(activeSide, passiveSide) {
 				});
 			}
 		}
-	} 
+    }
+    //===========================
+    function selectGreyPiece(e) {
+        // greylit piece has just been clicked
+        // -----------------------------------
+        console.log('ENTERS selectGreyPiece()');
+        // --------------------
+        pieceToMove = e.target;
+        // --------------------------------
+        // lightens & click-listens to anId
+        document.getElementById( anId ).classList.add('lit');
+        // -----------------------------------------------------------------------------
+        document.getElementById( anId ).addEventListener('click', function saveKing(e) {
+            // ---------------------------------------------------======================
+            // un-lightens & stops click-listening to clicked space
+            greyLitDivs.forEach(greyLitDiv => {
+                // ----------------------------------------------
+                greyLitDiv.removeEventListener('click', selectGreyPiece);
+                // ----------------------------------------------
+                greyLitDiv.classList.remove('greyLit');
+            });
+            // ------------------------------
+            e.target.classList.remove('lit');
+            // ---------------------------------------------
+            e.target.removeEventListener('click', saveKing);
+            // -------------------------------------------------------------------
+            if (e.target.getAttribute('data-side') !== 'empty') { eat(e.target); }
+            // -------------------------------------------------------------------
+            // moves activePiece to clicked space
+            swapSide(pieceToMove, e.target);
+            // -------------------------------
+            // toggles side & starts next move 
+            if (activeKing.getAttribute('data-side') === 'blue') {
+                // toggleClocks();
+                console.log('toggles activeSide to orange');
+                // -----------------------------------------
+                lit(oranges, blues);
+            } // ------------------- 
+            else { // since activeKing is orange
+                // toggleClocks();
+                console.log('toggles activeSide to blue');
+                // ---------------------------------------
+                lit(blues, oranges);
+            }
+        });
+    }
     //=================
 	function isMate() { // since activeKing is in check
 		// --------------------------------------------------------------------------------
@@ -167,74 +212,18 @@ function lit(activeSide, passiveSide) {
 							// if activePiece checks or blocks someId
 							if (checkingSpace(activePiece, someId)) {
 								// ---------------------------------------------------------------------------------------------------------------------------------------------
-								console.log(activePiece.getAttribute('data-side') + ' ' + activePiece.getAttribute('data-name') + ' at ' + activePiece.id + ' can move to ' + someId);
+								console.log(pieceToMove.getAttribute('data-side') + ' ' + activePiece.getAttribute('data-name') + ' at ' + activePiece.id + ' can move to ' + someId);
 								// ---------------------------
 								mate = false; // no check mate
 								// ------------------------------------------------
 								// ::: grey-lightens & click-listens to activePiece
-								greyLitDivs.push(activePiece);
+								greyLitDivs.push(pieceToMove);
 								// ----------------------------------
-								activePiece.classList.add('greyLit');
+                                activePiece.classList.add('greyLit');
+                                // ----------------------------------
+                                anId = someId;
 								// -------------------------------------------------------
-								activePiece.addEventListener('click', function greyLit() {
-									// -------------------------------====================
-									console.log('ENTERS GREYLIT()');
-									// resets litDivs on clicking multiple activeSide pieces
-									// ----------------------------------------------------------
-									// un-lightens, clears out & stops click-listening to litDivs
-									// if (litDivs.length) {
-									// 	// ------------------------
-									// 	litDivs.forEach(litDiv => {
-									// 		// ---------------------------------------------------------
-									// 		document.getElementById( litDiv ).classList.remove( 'lit' );
-									// 		// ---------------------------------------------------------------------
-									// 		document.getElementById( litDiv ).removeEventListener('click', greyLit);
-									// 	});
-									// 	// ----------
-									// 	litDivs = [];
-									// }
-									console.log(litDivs);
-									// ----------------------------------
-									// lightens & click-listens to someId
-									document.getElementById( someId ).classList.add('lit');
-									// -------------------------------------------------------------------------------
-									document.getElementById( someId ).addEventListener('click', function saveKing(e) {
-										// -----------------------------------------------------======================
-										// un-lightens & stops click-listening to clicked space
-										greyLitDivs.forEach(greyLitDiv => {
-											// ----------------------------------------------
-											greyLitDiv.removeEventListener('click', greyLit);
-											// ----------------------------------------------
-											greyLitDiv.classList.remove('greyLit');
-										}); // ------------------------------------
-										// e.target.classList.remove('mainLitDiv');
-										e.target.classList.remove('lit');
-										// ---------------------------------------------
-										e.target.removeEventListener('click', saveKing);
-										// ---------------------------------------------
-										// moves activePiece to clicked space
-										swapSide(activePiece, e.target);
-										// -----------------------------
-										// WHAT TO DO HERE?
-										// ------------------------------------
-										// REMOVE any remaining click-listeners
-										// !!
-										// -------------------------------
-										// toggles side & starts next move 
-										if (activeKing.getAttribute('data-side') === 'blue') {
-											// toggleClocks();
-											console.log('toggles activeSide to orange');
-											// -----------------------------------------
-											lit(oranges, blues);
-										} // ------------------- 
-										else { // since activeKing is orange
-											// toggleClocks();
-											console.log('toggles activeSide to blue');
-											// ---------------------------------------
-											lit(blues, oranges);
-										}
-									});
-								});
+                                pieceToMove.addEventListener('click', selectGreyPiece);
 							}
 						}
 						// --------------------------------------------------
@@ -268,7 +257,6 @@ function lit(activeSide, passiveSide) {
         // -----------------------------------------------------------------
 		// populates litDivs where activeKing can move, runs checkingSpace()
         kingLit();
-        console.log('litDivs -->');  console.log(litDivs);
 		// --------------------------------
 		// if king can move, not check mate
 		if (litDivs.length) { // escapes check
@@ -278,30 +266,40 @@ function lit(activeSide, passiveSide) {
 			activeKing.classList.add( 'greyLit' );
 			// -----------------------------------=======================
 			activeKing.addEventListener( 'click', function selectKing() {
-				// -------------------------------=======================
+                // -------------------------------=======================
 				litDivs.forEach(litDiv => {
+                    // lightens & click-listens to all litDivs
 					// ------------------------------------------------------
 					document.getElementById( litDiv ).classList.add( 'lit' );
 					// ----------------------------------------------------------======================
 					document.getElementById( litDiv ).addEventListener( 'click', function moveKing(e) {
 						// ------------------------------------------------------======================
-						activeKing.classList.remove( 'mainLit' );
-						// --------------------------------------------------
 						activeKing.removeEventListener( 'click', selectKing );
-						// --------------------------------------------------
+                        // ---------------------------------------------------
+                        activeKing.classList.remove('greyLit');
+                        // ------------------------------------
 						litDivs.forEach(litDiv => {
 							// ---------------------------------------------------------
 							document.getElementById( litDiv ).classList.remove( 'lit' );
 							// ------------------------------------------------------------------------
 							document.getElementById( litDiv ).removeEventListener( 'click', moveKing );
 						});
+						// ----------------------------
+						greyLitDivs.forEach(greyDiv =>{
+                            // -----------------------------------
+							greyDiv.classList.remove( 'greyLit' );
+							// ---------------------------------------------
+							greyDiv.removeEventListener( 'click', selectGreyPiece );
+                        });
+                        // -------------------------------------------------------
+                        console.log('greyLitDivs -->');  console.log(greyLitDivs);
 						// -------------------------------------------------------------------
 						if (e.target.getAttribute('data-side') !== 'empty') { eat(e.target); }
 						// -----------------------------
 						swapSide(activeKing, e.target);
 						// -----------------------------
 						toggleSides();
-					});
+                    });
 				});
 			});
 			// -------------------------------------------------------------
@@ -655,7 +653,8 @@ function lit(activeSide, passiveSide) {
 		} // WORKS!
 	} // WORKS!
 	//====================
-	function knightLit() {
+   
+    function knightLit() {
 		block1 = false;  block2 = false;  block3 = false;  block4 = false;
 		block5 = false;  block6 = false;  block7 = false;  block8 = false;
 		// ---------------------------------------------------------------
@@ -663,22 +662,22 @@ function lit(activeSide, passiveSide) {
 		activeSide.forEach(activePiece => {
 			switch (+activePiece.id[0]) {
 				case (+pieceToMove.id[0] + 1): // if x is one to the right
-					if (activePiece.id[1] == (+pieceToMove.id[1] + 2)) { block1 = true; break; }
-					if (activePiece.id[1] == (+pieceToMove.id[1] - 2)) { block2 = true; break; }
-				case (pieceToMove.id[0] - 1): // if x is one to the left
-					if (activePiece.id[1] == (+pieceToMove.id[1] + 2)) { block3 = true; break; }
-					if (activePiece.id[1] == (+pieceToMove.id[1] - 2)) { block4 = true; break; }
+					if (+activePiece.id[1] == (+pieceToMove.id[1] + 2)) { block1 = true; break; }
+					if (+activePiece.id[1] == (+pieceToMove.id[1] - 2)) { block2 = true; break; }
+				case (+pieceToMove.id[0] - 1): // if x is one to the left
+					if (+activePiece.id[1] == (+pieceToMove.id[1] + 2)) { block3 = true; break; }
+					if (+activePiece.id[1] == (+pieceToMove.id[1] - 2)) { block4 = true; break; }
 				case (+pieceToMove.id[0] + 2): // if x is two to the right
-					if (activePiece.id[1] == (+pieceToMove.id[1] + 1)) { block5 = true; break; }
-					if (activePiece.id[1] == (+pieceToMove.id[1] - 1)) { block6 = true; break; }
+					if (+activePiece.id[1] == (+pieceToMove.id[1] + 1)) { block5 = true; break; }
+					if (+activePiece.id[1] == (+pieceToMove.id[1] - 1)) { block6 = true; break; }
 				case (pieceToMove.id[0] - 2): // if x is two to the left
-					if (activePiece.id[1] == (+pieceToMove.id[1] + 1)) { block7 = true; break; }
-					if (activePiece.id[1] == (+pieceToMove.id[1] - 1)) { block8 = true; break; }
+					if (+activePiece.id[1] == (+pieceToMove.id[1] + 1)) { block7 = true; break; }
+					if (+activePiece.id[1] == (+pieceToMove.id[1] - 1)) { block8 = true; break; }
 			}
 		});
 		// ----------------------------
 		// OMITS OFF-BOARD KNIGHT MOVES
-		// using a switch() here breaks knightLit()
+		// note: using a switch() here breaks knightLit()
 		if (!block1) {
 			if ((+pieceToMove.id[0] + 1) < 8) {
 				if ((+pieceToMove.id[1] + 2) < 8) {
@@ -744,7 +743,7 @@ function lit(activeSide, passiveSide) {
 			}
 		}
 	} // WORKS!
-	//====================
+    //====================
 	function bishopLit() {
 		//===================================
 		function quadrant(bishopX, bishopY) {

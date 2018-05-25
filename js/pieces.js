@@ -1,5 +1,5 @@
 var pinnerPieces = [], pinningPiece, pawnBlocksKingAttacker, idToBlock, kingAttackers= [], greyLitDivs = [], defenders = [], pawnDefenders = [], enPassantCell = '', orangeTakenBoxIdCounter = -16, blueTakenBoxIdCounter = -1, enPassanting = false, endOfGame = false,
-heroics = [], mate, canCheck, gameOver, kingSlayer, checkPath, emptySpaces, knightLight, bishopPathId, rookPathId, blueKingFirstMove, blueRook1FirstMove, activeKing, blueRook2FirstMove,  orangeKingFirstMove, orangeRook1FirstMove, orangeRook2FirstMove, castleIds = [], noCastle, kingAble, pieceToMove, goToDiv, enPassantDiv, prevGoToDiv, enPassantGoToDiv, pawnJumpDiv, enPassantables2 = [], enPassantedPawn, knightLight, takenOrangeBox, takenBlueBox, pieceLit, gameEnds, tempSide, movedPiece, mainLitDiv, litDivs, unLitDivs, img, index1, index2, tempPiece, moves, takenBox, activeCells, openAndOpponentHeldKingSpaces, kingSpacesUnderAttack, orangeKingSpacesUnderAttack, orangelessKingSpaces, orangelessKingSpaces, blueKingSpaces, bluelessKingSpaces, orangeKingSpacesUnderAttack, block1, block2, block3, block4, block5, block6, block7, block8, vacantKingSpaces, whiteKing, blackKing, knightMoves, bishopMoves, bishopX, bishopY, rookMoves, kingSpaces, kingOpenSpaces, occupiedKingSpaces, defenders, pinnedPieces, pathOfCheck = [], nails, whites, blacks;
+heroics = [], anId, mate, canCheck, gameOver, kingSlayer, checkPath, emptySpaces, knightLight, bishopPathId, rookPathId, blueKingFirstMove, blueRook1FirstMove, activeKing, blueRook2FirstMove,  orangeKingFirstMove, orangeRook1FirstMove, orangeRook2FirstMove, castleIds = [], noCastle, kingAble, pieceToMove, goToDiv, enPassantDiv, prevGoToDiv, enPassantGoToDiv, pawnJumpDiv, enPassantables2 = [], enPassantedPawn, knightLight, takenOrangeBox, takenBlueBox, pieceLit, gameEnds, tempSide, movedPiece, mainLitDiv, litDivs, unLitDivs, img, index1, index2, tempPiece, moves, takenBox, activeCells, openAndOpponentHeldKingSpaces, kingSpacesUnderAttack, orangeKingSpacesUnderAttack, orangelessKingSpaces, orangelessKingSpaces, blueKingSpaces, bluelessKingSpaces, orangeKingSpacesUnderAttack, block1, block2, block3, block4, block5, block6, block7, block8, vacantKingSpaces, whiteKing, blackKing, knightMoves, bishopMoves, bishopX, bishopY, rookMoves, kingSpaces, kingOpenSpaces, occupiedKingSpaces, defenders, pinnedPieces, pathOfCheck = [], nails, whites, blacks;
 
 // ---------------
 const boardIds = [
@@ -263,13 +263,13 @@ function checkingSpace(somePiece, checkSpaceId) {
 		}  console.log('bishopMoves -->');  console.log(bishopMoves);
 		// --------------------------------------------------------------------
 		// populates nails with pieces that block bishop's path to checkSpaceId
-		pieces.forEach(piece => {
-			// --------------------------------
-			bishopMoves.forEach(bishopMove => {
-				// ------------------------------------------------
-				if (piece.id === bishopMove) { nails.push(piece); }
-			});
-		});  console.log('nails -->');  console.log(nails);
+		// --------------------------------
+		bishopMoves.forEach(bishopMove => {
+			// -------------------------------------------------------------------------
+			if (bishopMove.getAttribute('data-side') !== 'empty') { nails.push(piece); }
+		});
+		// -------------------------------------------
+		console.log('nails -->');  console.log(nails);
 		// -------------------------------------------------------------------
 		// returns true/false if no piece blocks bishop's path to checkSpaceId
 		if (!nails.length) { // note: nails may contain pieces from both sides
@@ -348,12 +348,10 @@ function checkingSpace(somePiece, checkSpaceId) {
 		// ------------------------------------------------------
 		// console.log('rookMoves -->');  console.log(rookMoves);
 		// populates nails with pieces that block rook's path to checkSpaceId
-		pieces.forEach(piece => {
-			// ----------------------------
-			rookMoves.forEach(rookMove => {
-				// ----------------------------------------------
-				if (piece.id === rookMove) { nails.push(piece); }
-			});
+		// ----------------------------
+		rookMoves.forEach(rookMove => {
+			// -----------------------------------------------------------------------
+			if (rookMove.getAttribute('data-side') !== 'empty') { nails.push(piece); }
 		});
 		// console.log('nails -->');  console.log(nails);
 		// -----------------------------------------------------------------
