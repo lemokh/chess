@@ -197,6 +197,7 @@ function checkingSpace(somePiece, checkSpaceId) {
 				=== (checkSpaceId[1] - someBishop.id[1]) ) {
 					// collects bishop's attack path to checkSpaceId
 					while ( bishopX < (checkSpaceId[0] - 1) ) {
+						// ----------
 						bishopX += 1;
 						// ----------
 						bishopY += 1;
@@ -212,6 +213,7 @@ function checkingSpace(somePiece, checkSpaceId) {
 				=== (someBishop.id[1] - checkSpaceId[1]) ) {
 					// collects bishop's attack path to checkSpaceId
 					while ( (bishopX < checkSpaceId[0] - 1) ) {
+						// ----------
 						bishopX += 1;
 						// ---------
 						bishopY -= 1;
@@ -231,6 +233,7 @@ function checkingSpace(somePiece, checkSpaceId) {
 				=== (checkSpaceId[1] - someBishop.id[1]) ) {
 					// collects bishop's attack path to checkSpaceId
 					while ( bishopX > (checkSpaceId[0] + 1) ) {
+						// ----------
 						bishopX -= 1;
 						// ----------
 						bishopY += 1;
@@ -247,6 +250,7 @@ function checkingSpace(somePiece, checkSpaceId) {
 				=== (someBishop.id[1] - checkSpaceId[1]) ) {
 					// collects bishop's attack path to checkSpaceId
 					while ( bishopX > (checkSpaceId[0] + 1) ) {
+						// ----------
 						bishopX -= 1;
 						// ----------
 						bishopY -= 1;
@@ -261,8 +265,10 @@ function checkingSpace(somePiece, checkSpaceId) {
 		// --------------------------------------------------------------------
 		// populates nails with pieces that block bishop's path to checkSpaceId
 		pieces.forEach(piece => {
+			// --------------------------------
 			bishopMoves.forEach(bishopMove => {
-			if (piece.id === bishopMove) { nails.push(piece); }
+				// ------------------------------------------------
+				if (piece.id === bishopMove) { nails.push(piece); }
 			});
 		});  console.log('nails -->');  console.log(nails);
 		// -------------------------------------------------------------------
@@ -270,13 +276,17 @@ function checkingSpace(somePiece, checkSpaceId) {
 		if (!nails.length) { // nails can be both sides
 			// pathOfCheck array becomes someBishop's id route to checkSpaceId
 			pathOfCheck = bishopMoves;
+			// -------------------------------------------------------
 			console.log('pathOfCheck -->');  console.log(pathOfCheck);
+			// -------------------------------------------------------
 			return true; // someBishop can attack checkSpaceId
 		} // -----------------------------------------------
 		if (nails.length === 1) { // if only one nail
 			// if that nail & someBishop aren't on the same side
 			if (nails[0].getAttribute('data-side') !== someBishop.getAttribute('data-side')) {
+				// -------------------------
 				pinnedPieces.push(nails[0]);
+				// ---------------------------
 				pinnerPieces.push(someBishop);
 				// -------------------------------------------------------------------------------------------
 				alert(nails[0].getAttribute('data-side') + ' ' + nails[0].getAttribute('data-name') + ' IS PINNED');
