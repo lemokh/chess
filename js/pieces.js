@@ -31,29 +31,23 @@ var blues = Array.from(blueNodes);
 // ---------------------------------
 var pieces = [...oranges, ...blues];
 // ---------------------------------
+
 /*
-////////////////////////////////////
-emptySpaces.forEach( emptySpace => {
-	document.getElementById( emptySpace ).getAttribute('data-side') === 'empty';
-});
-///////////////////////
 function endGameNow() {
 	remove activeSide click listener
 	// -------------------------------------------------
 	if (activeKing.getAttribute('data-side') === 'blue') { alert("blue resigns"); }
+	// ----------------------------------------------------------------------------
 	else {alert("orange resigns");} 
 	// ----------------
 	update user profile
 }
 */
-//==============================================
-//==============================================
-//==============================================
-//==============================================
-//==============================================
-//==============================================
 
-// returns true/false if some-piece checks-space
+//========================================================
+//========================================================
+
+// returns true/false if somePiece can attack checkSpaceId
 function checkingSpace(somePiece, checkSpaceId) {
     // somePiece is an <img>
 	// checkSpaceId is a kingSpace id that is either empty or has a passivePiece

@@ -5,9 +5,12 @@ function lit(activeSide, passiveSide) {
 	kingAttackers = []; // contains all passivePieces that check activeKing
 	// --------------------------------------------------------------------
 	emptySpaces = openSpaces(boardIds, pieces); // updates emptySpaces
+	// ---------------------------------------------------------------
 	//==========================
-	// function toggleClocks() {}
-    //==========================
+	// function toggleClocks() {
+
+	// }
+    //====================
     function endOfGame() {
         alert(activeKing.getAttribute('data-side') + ' KING CHECKMATED!');
         // ---------------------------------------------------------------------
@@ -87,12 +90,12 @@ function lit(activeSide, passiveSide) {
 	} // NEEDS WORK!
 	//=======================================
 	function pinnedPieceAttack(actPinPiece) {
-		// ----------------
+		// ----------------------------------
 		let pinCounter = 0;
 		// ----------------------------------------------
 		// counts how many pieces are pinning activePiece
 		pinnedPieces.forEach(pinnedPiece => {
-			// ------------------------------------------------------
+			// --------------------------------------------------------
 			if (pinnedPiece.id === actPinPiece.id) { pinCounter += 1; }
 		});
 		console.log(pinCounter);
@@ -103,7 +106,7 @@ function lit(activeSide, passiveSide) {
 			// --------------------------------------------------------------
 			// if the pinnedPiece can eat its pinningPiece
 			if (checkingSpace(actPinPiece, pinningPiece.id)) {
-				// -----------------------------------------
+				// -------------------------------------------
 				cleanUpAfterFirstClick();
 				// -----------------------
 				pieceToMove = actPinPiece;
@@ -1018,7 +1021,6 @@ function lit(activeSide, passiveSide) {
     // ---------------
     // ---------------
     // ---------------
-    // ---------------
 	// sets activeKing
 	for (i = 0; i < activeSide.length; i++) {
 		// ------------------------------------------------------
@@ -1081,21 +1083,26 @@ function lit(activeSide, passiveSide) {
         // ********************************
 		// ********************************
 		
-	// ------------------------------------
-	else { // since activeKing not in check
-		// runs pieceLit(e) for all clicked activePieces
+	// --------------------------------------------------
+	// since activeKing not in check, if any pinnedPieces
+	else if (pinnedPieces.length) {
+		// --------------------------------
 		activeSide.forEach(activePiece => {
-			// ---------------------------------------------------------
-			if (pinnedPieces.length) { pinnedPieceAttack(activePiece); }
-            // ---------------------------------------------------------
+			// ------------------------------------------------------------------------
+			if (pinnedPieces.includes(activePiece)) { pinnedPieceAttack(activePiece); }
+			// ------------------------------------------------------
 			else { activePiece.addEventListener('click', pieceLit); }
 		});
-    }
+	}
+	else { // since activKing not in check & no pinnedPieces 
+		// runs pieceLit(e) for all clicked activePieces
+		// ---------------------------------------------
+		activeSide.forEach(activePiece => {
+			// ---------------------------------------------
+			activePiece.addEventListener('click', pieceLit);
+		});
+	}
 }
 //=======================================
 lit(blues, oranges); // begins first move
 //=======================================
-
-//==============================================
-//==============================================
-//==============================================
