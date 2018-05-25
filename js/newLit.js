@@ -207,21 +207,21 @@ function lit(activeSide, passiveSide) {
 						pieceToMove = activePiece; // VERY IMPORTANT!  WHY?
 						//===========================
 						function eatOrBlock(someId) {
-							// sees if activePiece can eat or block someId
-							// -------------------------------------------
+                            // sees if activePiece can eat or block someId
+                            // -------------------------------------------
+                            anId = someId;
+							// --------------------------------------
 							// if activePiece checks or blocks someId
 							if (checkingSpace(activePiece, someId)) {
-								// ---------------------------------------------------------------------------------------------------------------------------------------------
-								console.log(pieceToMove.getAttribute('data-side') + ' ' + activePiece.getAttribute('data-name') + ' at ' + activePiece.id + ' can move to ' + someId);
-								// ---------------------------
+								// ---------------------------------------------------------------------------------------------------------------------------------------------------
+								console.log(activePiece.getAttribute('data-side') + ' ' + activePiece.getAttribute('data-name') + ' at ' + activePiece.id + ' can move to ' + someId);
+								// ---------------------------------------------------------------------------------------------------------------------------------------------------
 								mate = false; // no check mate
 								// ------------------------------------------------
 								// ::: grey-lightens & click-listens to activePiece
-								greyLitDivs.push(pieceToMove);
+								greyLitDivs.push(activePiece);
 								// ----------------------------------
                                 activePiece.classList.add('greyLit');
-                                // ----------------------------------
-                                anId = someId;
 								// -------------------------------------------------------
                                 pieceToMove.addEventListener('click', selectGreyPiece);
 							}
