@@ -132,6 +132,7 @@ function checkingSpace(somePiece, checkSpaceId) {
 		if (someKnight.id[0] < checkSpaceId[0]) {
 			// and if someKnight is above checkSpaceId
 			if (someKnight.id[1] < checkSpaceId[1]) {
+				// ----------------------------------
 				knightMoves.push(
 					(+someKnight.id[0] + 1) +
 					(+someKnight.id[1] + 2).toString()
@@ -142,28 +143,32 @@ function checkingSpace(somePiece, checkSpaceId) {
 				);
 			} // -----------------------------------------------------
 			else { // since someKnight is left of & below checkSpaceId
+				// ---------------------------------------------------
 				knightMoves.push(
 					(+someKnight.id[0] + 1) +
 					(someKnight.id[1] - 2).toString()
 				); // -----------------------------
 				knightMoves.push(
-				(+someKnight.id[0] + 2) +
-				(someKnight.id[1] - 1).toString()
+					(+someKnight.id[0] + 2) +
+					(someKnight.id[1] - 1).toString()
 				);
 			}
 		} // ------------------------------------------------------
 		else { // since someKnight is right of & above checkSpaceId
+			// ----------------------------------------------------
 			if (someKnight.id[1] < checkSpaceId[1]) {
+				// ----------------------------------
 				knightMoves.push(
 					(someKnight.id[0] - 1) +
 					(+someKnight.id[1] + 2).toString()
-				); // ------------------------------
+				); // --------------------------------
 				knightMoves.push(
 					(someKnight.id[0] - 2) +
 					(+someKnight.id[1] + 1).toString()
 				);
 			} // ------------------------------------------------------
 			else { // since someKnight is right of & below checkSpaceId
+				// ----------------------------------------------------
 				knightMoves.push(
 					(someKnight.id[0] - 1) +
 					(someKnight.id[1] - 2).toString()
