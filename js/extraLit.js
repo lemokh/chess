@@ -3,11 +3,11 @@ function lit(activeSide, passiveSide) {
 	litDivs = []; // contains lit ids on which to apply click-listeners
 	// --------------------------------------------------------------------
 	kingAttackers = []; // contains all passivePieces that check activeKing
-	// ---------------------------------------------------------------
+	// --------------------------------------------------------------------
 	emptySpaces = openSpaces(boardIds, pieces); // updates emptySpaces
-	//===========================
+	//==========================
 	// function toggleClocks() {}
-    //===========================
+    //==========================
     function endOfGame() {
         alert(activeKing.getAttribute('data-side') + ' KING CHECKMATED!');
         // ---------------------------------------------------------------------
