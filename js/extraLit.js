@@ -65,9 +65,10 @@ function lit(activeSide, passiveSide) {
 				// ----------
 				litDivs = [];
 			}
+			// --------------------------------------------
+			// cleans up after last clicking a pinned piece
 			if (pinnedPieces.includes(pieceToMove)) {
 				// if (pinCount === 1) { all this below }
-				// cleans up after last clicking a pinned piece
 				pieceToMove.removeEventListener( 'click', pinnedLit );
 				// ---------------------------------------------------------
 				pinningPiece.removeEventListener( 'click', pinnedPieceEats );
@@ -89,28 +90,28 @@ function lit(activeSide, passiveSide) {
 			}
 		}
 	} // NEEDS WORK!
-	//=======================================
-	function pinnedPieceAttack(actPinPiece) {
-		// ----------------------------------
+	//===========================================
+	function pinnedPieceAttack(somePinnedPiece) {
+		// --------------------------------------
 		let pinCounter = 0;
 		// ----------------------------------------------
 		// counts how many pieces are pinning activePiece
 		pinnedPieces.forEach(pinnedPiece => {
-			// --------------------------------------------------------
-			if (pinnedPiece.id === actPinPiece.id) { pinCounter += 1; }
+			// ------------------------------------------------------------
+			if (pinnedPiece.id === somePinnedPiece.id) { pinCounter += 1; }
 		});
 		console.log(pinCounter);
-		// --------------------
+		// ---------------------
 		if (pinCounter === 1) {
-			// --------------------------------------------------------------
-			pinningPiece = pinnerPieces[ pinnedPieces.indexOf(actPinPiece) ];
-			// --------------------------------------------------------------
-			// if the pinnedPiece can eat its pinningPiece
-			if (checkingSpace(actPinPiece, pinningPiece.id)) {
-				// -------------------------------------------
+			// ------------------------------------------------------------------
+			pinningPiece = pinnerPieces[ pinnedPieces.indexOf(somePinnedPiece) ];
+			// ------------------------------------------------------------------
+			// if somePinnedPiece can eat its pinningPiece
+			if (checkingSpace(somePinnedPiece, pinningPiece.id)) {
+				// -----------------------------------------------
 				cleanUpAfterFirstClick();
-				// -----------------------
-				pieceToMove = actPinPiece;
+				// ---------------------------
+				pieceToMove = somePinnedPiece;
 				// -----------------------------------======================
 				pieceToMove.addEventListener('click', function pinnedLit() {
 					// -------------------------------======================

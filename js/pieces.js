@@ -272,7 +272,8 @@ function checkingSpace(somePiece, checkSpaceId) {
 		});  console.log('nails -->');  console.log(nails);
 		// -------------------------------------------------------------------
 		// returns true/false if no piece blocks bishop's path to checkSpaceId
-		if (!nails.length) { // nails can be both sides
+		if (!nails.length) { // note: nails may contain pieces from both sides
+			// ---------------------------------------------------------------
 			// pathOfCheck array becomes someBishop's id route to checkSpaceId
 			pathOfCheck = bishopMoves;
 			// -------------------------------------------------------
@@ -281,9 +282,10 @@ function checkingSpace(somePiece, checkSpaceId) {
 			return true; // someBishop can attack checkSpaceId
 		} // -----------------------------------------------
 		if (nails.length === 1) { // if only one nail
+			// -------------------------------------------------
 			// if that nail & someBishop aren't on the same side
 			if (nails[0].getAttribute('data-side') !== someBishop.getAttribute('data-side')) {
-				// -------------------------
+				// ---------------------------------------------------------------------------
 				pinnedPieces.push(nails[0]);
 				// ---------------------------
 				pinnerPieces.push(someBishop);
