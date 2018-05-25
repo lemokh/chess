@@ -316,7 +316,7 @@ function lit(activeSide, passiveSide) {
 		else if (kingAttackers.length > 1) { endOfGame(); }
 		else { // checkmate if activeSide cannot eat or block the kingAttacker
 			console.log('king unable to move out of check');
-			// ---------------------------------------------------
+			// ------------------------------------------------------------------
 			// discerns whether an activePiece can save activeKing from checkmate
 			blockOrEatKingAttacker();
 			if (mate) { endOfGame(); }
