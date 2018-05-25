@@ -192,61 +192,70 @@ function checkingSpace(somePiece, checkSpaceId) {
 		if (someBishop.id[0] < checkSpaceId[0]) {
 			// (FIRST QUADRANT) and if someBishop is above checkSpaceId
 			if (someBishop.id[1] < checkSpaceId[1]) {
-			// if someBishop's path aligns with checkSpaceId
-			if ( checkSpaceId[0] - someBishop.id[0] 
-			=== checkSpaceId[1] - someBishop.id[1] ) {
-				// collects bishop's attack path to checkSpaceId
-				while (bishopX < checkSpaceId[0] - 1) {
-				bishopX += 1;
-				bishopY += 1;
-				bishopMoves.push( bishopX + bishopY.toString() );
-				}
-			} // ----------------------------------------------
-			else { return false; } // bishop can't checkSpaceId
+				// if someBishop's path aligns with checkSpaceId
+				if ( (checkSpaceId[0] - someBishop.id[0]) 
+				=== (checkSpaceId[1] - someBishop.id[1]) ) {
+					// collects bishop's attack path to checkSpaceId
+					while ( bishopX < (checkSpaceId[0] - 1) ) {
+						bishopX += 1;
+						// ----------
+						bishopY += 1;
+						// ----------------------------------------------
+						bishopMoves.push( bishopX + bishopY.toString() );
+					}
+				} // ----------------------------------------------
+				else { return false; } // bishop can't checkSpaceId
 			} // ------------------------------------------------------------
 			else { // (THIRD QUADRANT) bishop is left of & below checkSpaceId
-			// if someBishop aligns with checkSpaceId
-			if ( checkSpaceId[0] - someBishop.id[0]
-			=== someBishop.id[1] - checkSpaceId[1] ) {
-				// collects bishop's attack path to checkSpaceId
-				while (bishopX < checkSpaceId[0] - 1) {
-				bishopX += 1;
-				bishopY -= 1;
-				bishopMoves.push( bishopX + bishopY.toString() );
-				}
-			} // -----------------------------------------------
-			else { return false; } // bishop cannot checkSpaceId
+				// if someBishop aligns with checkSpaceId
+				if ( (checkSpaceId[0] - someBishop.id[0])
+				=== (someBishop.id[1] - checkSpaceId[1]) ) {
+					// collects bishop's attack path to checkSpaceId
+					while ( (bishopX < checkSpaceId[0] - 1) ) {
+						bishopX += 1;
+						// ---------
+						bishopY -= 1;
+						// ----------------------------------------------
+						bishopMoves.push( bishopX + bishopY.toString() );
+					}
+				} // -----------------------------------------------
+				else { return false; } // bishop cannot checkSpaceId
 			}
 		} // -------------------------------------------------------------
 		else { // (RIGHT BOARD SIDE) since bishop is right of checkSpaceId
-			// (SECOND QUADRANT) and since someBishop is above checkSpaceId
+			// -----------------------------------------------------------
+			// (SECOND QUADRANT) & since someBishop is above checkSpaceId
 			if (someBishop.id[1] < checkSpaceId[1]) {
-			// if bishop aligns with checkSpaceId
-			if ( someBishop.id[0] - checkSpaceId[0]
-			=== checkSpaceId[1] - someBishop.id[1] ) {
-				// collects bishop's attack path to checkSpaceId
-				while (bishopX > checkSpaceId[0] + 1) {
-				bishopX -= 1;
-				bishopY += 1;
-				bishopMoves.push( bishopX + bishopY.toString() );
+				// if bishop aligns with checkSpaceId
+				if ( (someBishop.id[0] - checkSpaceId[0])
+				=== (checkSpaceId[1] - someBishop.id[1]) ) {
+					// collects bishop's attack path to checkSpaceId
+					while ( bishopX > (checkSpaceId[0] + 1) ) {
+						bishopX -= 1;
+						// ----------
+						bishopY += 1;
+						// ----------------------------------------------
+						bishopMoves.push( bishopX + bishopY.toString() );
+					}
 				}
-			}
-			else { return false; } // bishop can't checkSpaceId  
+				else { return false; } // bishop can't checkSpaceId
 			} // ----------------------
 			else { // (FOURTH QUADRANT)
-			// since bishop is right of & below checkSpaceId
-			// if someBishop aligns with checkSpaceId
-			if ( someBishop.id[0] - checkSpaceId[0] 
-				=== someBishop.id[1] - checkSpaceId[1] ) {
-				// collects bishop's attack path to checkSpaceId
-				while (bishopX > checkSpaceId[0] + 1) {
-				bishopX -= 1;
-				bishopY -= 1;
-				bishopMoves.push( bishopX + bishopY.toString() );
-				}
-			} // ----------------------
-			// bishop can't attack king
-			else { return false; }
+				// since bishop is right of & below checkSpaceId
+				// if someBishop aligns with checkSpaceId
+				if ( (someBishop.id[0] - checkSpaceId[0])
+				=== (someBishop.id[1] - checkSpaceId[1]) ) {
+					// collects bishop's attack path to checkSpaceId
+					while ( bishopX > (checkSpaceId[0] + 1) ) {
+						bishopX -= 1;
+						// ----------
+						bishopY -= 1;
+						// ----------------------------------------------
+						bishopMoves.push( bishopX + bishopY.toString() );
+					}
+				} // ----------------------
+				// bishop can't attack king
+				else { return false; }
 			}
 		}  console.log('bishopMoves -->');  console.log(bishopMoves);
 		// --------------------------------------------------------------------
@@ -356,7 +365,7 @@ function checkingSpace(somePiece, checkSpaceId) {
 	// ================================================
 	// returns true if the king can attack checkSpaceId
 	function kingAttacks(someKing) {
-		switch (+checkSpaceId[0]) { // if checkSpaceId's column equals
+		switch (+checkSpaceId[0]) { // if checkSpaceId's column equals...
 			case +someKing.id[0]: // king's column
 			return (
 				( +checkSpaceId[1] === (+someKing.id[1] + 1) )
@@ -381,7 +390,7 @@ function checkingSpace(somePiece, checkSpaceId) {
 			);
 			default: return false;
 		}
-	}
+	} // 
 	// =================================
 	// sees if somePiece can check space
 	switch (somePiece.getAttribute('data-name')) {
