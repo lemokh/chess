@@ -140,12 +140,13 @@ function lit(activeSide, passiveSide) {
 		}
     }
     //===========================
+    /*
     function selectGreyPiece(e) {
         // greylit piece has just been clicked
         // -----------------------------------
         console.log('ENTERS selectGreyPiece()');
         // --------------------
-        pieceToMove = e.target;
+        greyPieceToMove = e.target;
         // --------------------------------
         // lightens & click-listens to anId
         document.getElementById( anId ).classList.add('lit');
@@ -184,6 +185,7 @@ function lit(activeSide, passiveSide) {
             }
         });
     }
+    */
     //=================
 	function isMate() { // since activeKing is in check
 		// --------------------------------------------------------------------------------
@@ -340,8 +342,6 @@ function lit(activeSide, passiveSide) {
         kingLit();
 		// --------------------------------
         // if king can move, not check mate
-        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        // WORK ON THIS!
 		if (litDivs.length) { // escapes check
 			// ---------------------------------------
             console.log('king can move out of check');
@@ -352,6 +352,7 @@ function lit(activeSide, passiveSide) {
                 }
             });
             // -----------------------------------
+            
             /*
 			activeKing.classList.add( 'greyLit' );
 			// -----------------------------------=======================
@@ -739,27 +740,51 @@ function lit(activeSide, passiveSide) {
 			}
 		} // WORKS!
 	} // WORKS!
-	//====================
-   
+    //====================
     function knightLit() {
+        console.log('ENTERS knightLit()');
+        // ---------------------------------------------------------------
 		block1 = false;  block2 = false;  block3 = false;  block4 = false;
 		block5 = false;  block6 = false;  block7 = false;  block8 = false;
 		// ---------------------------------------------------------------
-		// if own piece occupies knight space, no highlight there
+		// if own piece occupies a knight space, no highlight there
 		activeSide.forEach(activePiece => {
-			switch (+activePiece.id[0]) {
-				case (+pieceToMove.id[0] + 1): // if x is one to the right
-					if (+activePiece.id[1] == (+pieceToMove.id[1] + 2)) { block1 = true; break; }
-					if (+activePiece.id[1] == (+pieceToMove.id[1] - 2)) { block2 = true; break; }
-				case (+pieceToMove.id[0] - 1): // if x is one to the left
-					if (+activePiece.id[1] == (+pieceToMove.id[1] + 2)) { block3 = true; break; }
-					if (+activePiece.id[1] == (+pieceToMove.id[1] - 2)) { block4 = true; break; }
-				case (+pieceToMove.id[0] + 2): // if x is two to the right
-					if (+activePiece.id[1] == (+pieceToMove.id[1] + 1)) { block5 = true; break; }
-					if (+activePiece.id[1] == (+pieceToMove.id[1] - 1)) { block6 = true; break; }
-				case (pieceToMove.id[0] - 2): // if x is two to the left
-					if (+activePiece.id[1] == (+pieceToMove.id[1] + 1)) { block7 = true; break; }
-					if (+activePiece.id[1] == (+pieceToMove.id[1] - 1)) { block8 = true; break; }
+
+            switch (+activePiece.id[0]) {
+
+                case (+pieceToMove.id[0] + 1): // if x is one to the right
+					if (activePiece.id[1] == (+pieceToMove.id[1] + 2)) { 
+                        console.log('block1 = true'); block1 = true; break; }
+					if (activePiece.id[1] == (pieceToMove.id[1] - 2)) { 
+                        console.log('block2 = true'); block2 = true; break; }
+                
+                case (pieceToMove.id[0] - 1): // if x is one to the left
+					if (activePiece.id[1] == (+pieceToMove.id[1] + 2)) { 
+                        console.log('block3 = true'); block3 = true; break; }
+					if (activePiece.id[1] == (pieceToMove.id[1] - 2)) { 
+                        console.log('block4 = true'); block4 = true; break; }
+        
+                case (+pieceToMove.id[0] + 2): // if x is two to the right
+					if (activePiece.id[1] == (+pieceToMove.id[1] + 1)) { 
+                        console.log('block5 = true'); block5 = true; break; }
+                    
+                    if (activePiece.id[1] == (pieceToMove.id[1] - 1)) { 
+                        
+                        console.log(activePiece);
+                        console.log(activePiece.id[1]);
+                        
+                        console.log(pieceToMove);
+                        console.log(pieceToMove.id[1] - 1);
+                        
+                        console.log(activePiece.id[1] == (pieceToMove.id[1] - 1));
+
+                        console.log('block6 = true'); block6 = true; break; }
+                
+                case (pieceToMove.id[0] - 2): // if x is two to the left
+					if (activePiece.id[1] == (+pieceToMove.id[1] + 1)) { 
+                        console.log('block7 = true'); block7 = true; break; }
+					if (activePiece.id[1] == (pieceToMove.id[1] - 1)) { 
+                        console.log('block8 = true'); block8 = true; break; }
 			}
 		});
 		// ----------------------------
@@ -775,7 +800,7 @@ function lit(activeSide, passiveSide) {
 		}
 		if (!block2) {
 			if ((+pieceToMove.id[0] + 1) < 8) {
-				if ((pieceToMove.id[1] - 2) >= 0) {
+				if ((+pieceToMove.id[1] - 2) >= 0) {
 					knightLight = (+pieceToMove.id[0] + 1) + (pieceToMove.id[1] - 2).toString();
 					litDivs.push( knightLight );
 				}

@@ -1,4 +1,10 @@
 // POPULATE: canEatKingAttacker & canBlockPathOfCheck
+
+
+
+
+
+
 //================================
 function interceptKingAttacker() {
     // ------------------------------------
