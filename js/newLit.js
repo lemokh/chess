@@ -5,8 +5,7 @@ function lit(activeSide, passiveSide) {
 	kingAttackers = []; // contains all passivePieces that check activeKing
 	// --------------------------------------------------------------------
 	emptySpaces = openSpaces(boardIds, pieces); // updates emptySpaces
-	// ---------------------------------------------------------------
-	//\/\/\/\/\/\/\/\/\/\/\/\/\/
+
 	//==========================
 	// function toggleClocks() {
 
@@ -1054,9 +1053,8 @@ function lit(activeSide, passiveSide) {
 				document.getElementById( litDiv ).addEventListener('click', movePiece);
 			}); // enters movePiece(e) on litDiv-click, unless castling
 		}
-	} // WORKS!
-	// ---------------
-	//\/\/\/\/\/\/\/\/
+    } // WORKS!
+    
     // ---------------
 	// sets activeKing
 	for (i = 0; i < activeSide.length; i++) {
