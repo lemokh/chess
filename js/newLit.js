@@ -193,7 +193,7 @@ function lit(activeSide, passiveSide) {
 		// ----------------------
 		pieceToMove = activeKing;
 		//=================================
-		function blockOrEatKingAttacker() {
+		function interceptKingAttacker() {
 			// sees if an activePiece can EAT or BLOCK kingAttackers[0]
 			// --------------------------------------------------------
 			mate = true;
@@ -204,7 +204,8 @@ function lit(activeSide, passiveSide) {
 					// and if not activeKing
 					if (activePiece.getAttribute('data-name') !== 'king') {
 						// ------------------------------------------------
-						pieceToMove = activePiece; // VERY IMPORTANT!  WHY?
+                        pieceToMove = activePiece; // VERY IMPORTANT!  WHY?
+                        // WHERE IS pieceToMove being called outside of this scope?
 						//===========================
 						function eatOrBlock(someId) {
                             // sees if activePiece can eat or block someId
@@ -223,7 +224,7 @@ function lit(activeSide, passiveSide) {
 								// ----------------------------------
                                 activePiece.classList.add('greyLit');
 								// -------------------------------------------------------
-                                pieceToMove.addEventListener('click', selectGreyPiece);
+                                activePiece.addEventListener('click', selectGreyPiece);
 							}
 						}
 						// --------------------------------------------------
@@ -258,7 +259,9 @@ function lit(activeSide, passiveSide) {
 		// populates litDivs where activeKing can move, runs checkingSpace()
         kingLit();
 		// --------------------------------
-		// if king can move, not check mate
+        // if king can move, not check mate
+        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        // WORK ON THIS!
 		if (litDivs.length) { // escapes check
 			// ---------------------------------------
             console.log('king can move out of check');
@@ -303,11 +306,11 @@ function lit(activeSide, passiveSide) {
 				});
 			});
 			// -------------------------------------------------------------
-				// grey-lightens activePieces that can eat or block kingAttacker
-				// & click-listens to call a function that will:
-				// lighten only those block or eat spaces ('clearLit' & clearLitDivs)
-				// & click-listens to those clearLitDivs that will: call miniMovePiece()
-				blockOrEatKingAttacker();
+            // grey-lightens activePieces that can eat or block kingAttacker
+            // & click-listens to call a function that will:
+            // lighten only those block or eat spaces ('clearLit' & clearLitDivs)
+            // & click-listens to those clearLitDivs that will: call miniMovePiece()
+            interceptKingAttacker();
 			// -------------------------------------------
 		} // **********************************************
 		// since activeKing cannot move
@@ -317,7 +320,7 @@ function lit(activeSide, passiveSide) {
 			console.log('king unable to move out of check');
 			// ------------------------------------------------------------------
 			// discerns whether an activePiece can save activeKing from checkmate
-			blockOrEatKingAttacker();
+			interceptKingAttacker();
 			if (mate) { endOfGame(); }
 		} // ************************
 	}
