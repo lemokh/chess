@@ -259,16 +259,16 @@ function lit(activeSide, passiveSide) {
         }*/
         //================================
         function interceptKingAttacker() {
-            // ------------------------------------
+            // -----------------------------------------------------------
+            greyLitDivs = [...canEatKingAttacker, ...canBlockPathOfCheck];
+            // -----------------------------------------------------------
             kingAttackers.forEach(kingAttacker => {
-                // -----------------------------------------------------------
-                greyLitDivs = [...canEatKingAttacker, ...canBlockPathOfCheck];
-                // -----------------------------------------------------------
-                greyLitDivs.forEach(piece => {
+                // --------------------------------
+                greyLitDivs.forEach(greyLitDiv => {
                     // ----------------------------
-                    piece.classList.add('greyLit');
+                    greyLitDiv.classList.add('greyLit');
                     // ----------------------------------------------------------
-                    piece.addEventListener('click', function selectGreyPiece(e) {
+                    greyLitDiv.addEventListener('click', function selectGreyPiece(e) {
                         // ------------------------------------------------------
                         greyPieceToMove = e.target;
                         if (canEatKingAttacker.includes(e.target)) {
