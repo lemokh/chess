@@ -261,15 +261,9 @@ function lit(activeSide, passiveSide) {
         function interceptKingAttacker() {
             // ------------------------------------
             kingAttackers.forEach(kingAttacker => {
-                // ---------------------------------------------------------
-                canEatKingAttacker.forEach(piece => { // includes activeKing
-                    greyLitDivs.push(piece);
-                });
-                // ----------------------------------------------------------
-                canBlockPathOfCheck.forEach(piece => { // excludes activeKing
-                    greyLitDivs.push(piece);
-                });
-                // ---------------------------
+                // -----------------------------------------------------------
+                greyLitDivs = [...canEatKingAttacker, ...canBlockPathOfCheck];
+                // -----------------------------------------------------------
                 greyLitDivs.forEach(piece => {
                     // ----------------------------
                     piece.classList.add('greyLit');
