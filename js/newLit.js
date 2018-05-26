@@ -271,7 +271,9 @@ function lit(activeSide, passiveSide) {
                     greyLitDiv.addEventListener('click', function selectGreyPiece(e) {
                         // ------------------------------------------------------
                         greyPieceToMove = e.target;
+                        // -----------------------------------------
                         if (canEatKingAttacker.includes(e.target)) {
+                            // -------------------------------------
                             litDivs.push(kingAttacker);
                         }
                         // ---------------------------------------------------
@@ -280,6 +282,7 @@ function lit(activeSide, passiveSide) {
                             if (canBlockPathOfCheck[i].piece === e.target) {
                                 // ---------------------------------------------------
                                 canBlockPathOfCheck[i].emptyDivs.forEach(emptyDiv => {
+                                    // -----------------------------------------------
                                     litDivs.push(emptyDiv);
                                 });
                             } break;
@@ -288,11 +291,12 @@ function lit(activeSide, passiveSide) {
                         litDivs.forEach(litDiv => {
                             // -------------------------
                             litDiv.classList.add('lit');
-                            // ---------------------------------------------------------
+                            // ------------------------------===========================
                             litDiv.addEventListener('click', function moveGreyPiece(e) {
-                                // -----------------------------------------------------
+                                // --------------------------===========================
                                 // clears greyLitDiv pieces
                                 greyLitDivs.forEach(greyLitDiv => {
+                                    // ------------------------------------------------------
                                     greyLitDiv.removeEventListener('click', selectGreyPiece);
                                     // ------------------------------------------------------
                                     greyLitDiv.classList.remove('greyLit');
@@ -301,6 +305,7 @@ function lit(activeSide, passiveSide) {
                                 // --------------------
                                 // clears litDiv pieces
                                 litDivs.forEach(litDiv => {
+                                    // ------------------------------------------------
                                     litDiv.removeEventListener('click', moveGreyPiece);
                                     // ------------------------------------------------
                                     litDiv.classList.remove('lit');
@@ -340,6 +345,7 @@ function lit(activeSide, passiveSide) {
             console.log('king can move out of check');
             // ---------------------------------------
             kingAttackers.forEach(kingAttacker => {
+                // ----------------------------------
                 if (litDivs.includes(kingAttacker)) {
                     canEatKingAttacker.push(activeKing);
                 }
