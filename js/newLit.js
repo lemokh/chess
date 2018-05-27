@@ -262,96 +262,103 @@ function lit(activeSide, passiveSide) {
             // -----------------------------------------------------------
             greyLitDivs = [...canEatKingAttacker, ...canBlockPathOfCheck];
             // -----------------------------------------------------------
-            kingAttackers.forEach(kingAttacker => {
-                // --------------------------------
-                greyLitDivs.forEach(greyLitDiv => {
-                    // ----------------------------
-                    greyLitDiv.classList.add('greyLit');
-                    // ----------------------------------------------------------
-                    greyLitDiv.addEventListener('click', function selectGreyPiece(e) {
-                        // ------------------------------------------------------
-                        greyPieceToMove = e.target;
-                        // -----------------------------------------
-                        if (canEatKingAttacker.includes(e.target)) {
-                            // -------------------------------------
-                            litDivs.push(kingAttacker);
-                        }
-                        // ---------------------------------------------------
-                        for (let i = 0; i < canBlockPathOfCheck.length; i++) {
-                            // -----------------------------------------------
-                            if (canBlockPathOfCheck[i].piece === e.target) {
-                                // ---------------------------------------------------
-                                canBlockPathOfCheck[i].emptyDivs.forEach(emptyDiv => {
-                                    // -----------------------------------------------
-                                    litDivs.push(emptyDiv);
+            if (!greyLitDivs.length) { endOfGame(); }
+            // --------------------------------------
+            else { // since able to prevent check mate
+                // ------------------------------------
+                kingAttackers.forEach(kingAttacker => {
+                    // -------------------------------------------
+                    // lightens & click-listens to each greyLitDiv
+                    greyLitDivs.forEach(greyLitDiv => {
+                        // ---------------------------------
+                        greyLitDiv.classList.add('greyLit');
+                        // ----------------------------------=============================
+                        greyLitDiv.addEventListener('click', function selectGreyPiece(e) {
+                            // ------------------------------=============================
+                            greyPieceToMove = e.target;
+                            // -----------------------------------------
+                            if (canEatKingAttacker.includes(e.target)) {
+                                // -------------------------------------
+                                litDivs.push(kingAttacker);
+                            }
+                            // ---------------------------------------------------
+                            for (let i = 0; i < canBlockPathOfCheck.length; i++) {
+                                // -----------------------------------------------
+                                if (canBlockPathOfCheck[i].piece === e.target) {
+                                    // ---------------------------------------------------
+                                    canBlockPathOfCheck[i].emptyDivs.forEach(emptyDiv => {
+                                        // -----------------------------------------------
+                                        litDivs.push(emptyDiv);
+                                    });
+                                } break;
+                            }
+                            // ------------------------
+                            litDivs.forEach(litDiv => {
+                                // -------------------------
+                                litDiv.classList.add('lit');
+                                // ------------------------------===========================
+                                litDiv.addEventListener('click', function moveGreyPiece(e) {
+                                    // --------------------------===========================
+                                    // clears greyLitDiv pieces
+                                    greyLitDivs.forEach(greyLitDiv => {
+                                        // ------------------------------------------------------
+                                        greyLitDiv.removeEventListener('click', selectGreyPiece);
+                                        // ------------------------------------------------------
+                                        greyLitDiv.classList.remove('greyLit');
+                                    });
+                                    greyLitDivs = [];
+                                    // --------------------
+                                    // clears litDiv pieces
+                                    litDivs.forEach(litDiv => {
+                                        // ------------------------------------------------
+                                        litDiv.removeEventListener('click', moveGreyPiece);
+                                        // ------------------------------------------------
+                                        litDiv.classList.remove('lit');
+                                    });
+                                    litDivs = [];
+                                    // -------------------------------------------------------------------
+                                    if (e.target.getAttribute('data-side') !== 'empty') { eat(e.target); }
+                                    // -------------------------------------------------------------------
+                                    swapSide(greyPieceToMove, e.target);
+                                    // ---------------------------------
+                                    // toggles side & starts next move 
+                                    if (activeKing.getAttribute('data-side') === 'blue') {
+                                        // toggleClocks();
+                                        console.log('toggles activeSide to orange');
+                                        // -----------------------------------------
+                                        lit(oranges, blues);
+                                    } // ------------------- 
+                                    else { // since activeKing is orange
+                                        // toggleClocks();
+                                        console.log('toggles activeSide to blue');
+                                        // ---------------------------------------
+                                        lit(blues, oranges);
+                                    }
                                 });
-                            } break;
-                        }
-                        // ------------------------
-                        litDivs.forEach(litDiv => {
-                            // -------------------------
-                            litDiv.classList.add('lit');
-                            // ------------------------------===========================
-                            litDiv.addEventListener('click', function moveGreyPiece(e) {
-                                // --------------------------===========================
-                                // clears greyLitDiv pieces
-                                greyLitDivs.forEach(greyLitDiv => {
-                                    // ------------------------------------------------------
-                                    greyLitDiv.removeEventListener('click', selectGreyPiece);
-                                    // ------------------------------------------------------
-                                    greyLitDiv.classList.remove('greyLit');
-                                });
-                                greyLitDivs = [];
-                                // --------------------
-                                // clears litDiv pieces
-                                litDivs.forEach(litDiv => {
-                                    // ------------------------------------------------
-                                    litDiv.removeEventListener('click', moveGreyPiece);
-                                    // ------------------------------------------------
-                                    litDiv.classList.remove('lit');
-                                });
-                                litDivs = [];
-                                // -------------------------------------------------------------------
-                                if (e.target.getAttribute('data-side') !== 'empty') { eat(e.target); }
-                                // -------------------------------------------------------------------
-                                swapSide(greyPieceToMove, e.target);
-                                // ---------------------------------
-                                // toggles side & starts next move 
-                                if (activeKing.getAttribute('data-side') === 'blue') {
-                                    // toggleClocks();
-                                    console.log('toggles activeSide to orange');
-                                    // -----------------------------------------
-                                    lit(oranges, blues);
-                                } // ------------------- 
-                                else { // since activeKing is orange
-                                    // toggleClocks();
-                                    console.log('toggles activeSide to blue');
-                                    // ---------------------------------------
-                                    lit(blues, oranges);
-                                }
                             });
                         });
                     });
                 });
-            });
+            }
         }
         // -----------------------------------------------------------------
 		// populates litDivs where activeKing can move, runs checkingSpace()
         kingLit();
 		// --------------------------------
-        // if king can move, not check mate
-		if (litDivs.length) { // escapes check
+        // if king can move, then not check mate
+		if (litDivs.length) { // king escapes check
 			// ---------------------------------------
             console.log('king can move out of check');
             // ---------------------------------------
             kingAttackers.forEach(kingAttacker => {
                 // ----------------------------------
                 if (litDivs.includes(kingAttacker)) {
+                    // ---------------------------------
                     canEatKingAttacker.push(activeKing);
                 }
-            });
-            // -----------------------------------
-            
+            }); // -----------------
+            interceptKingAttacker();
+            // ---------------------
             /*
 			activeKing.classList.add( 'greyLit' );
 			// -----------------------------------=======================
@@ -393,11 +400,8 @@ function lit(activeSide, passiveSide) {
 				});
             });
             */
-			// ---------------------
-            interceptKingAttacker();
-			// ------------------------
-		} // **************************
-		// since activeKing cannot move
+		}
+		// since activeKing cannot move...
 		// checkmate if multiple kingAttackers
 		else if (kingAttackers.length > 1) { endOfGame(); }
 		else { // checkmate if activeSide cannot eat or block the kingAttacker
@@ -405,7 +409,6 @@ function lit(activeSide, passiveSide) {
 			// ------------------------------------------------------------------
 			// discerns whether an activePiece can save activeKing from checkmate
 			interceptKingAttacker();
-			if (mate) { endOfGame(); }
 		} // ************************
 	}
 	//====================
