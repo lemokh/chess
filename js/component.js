@@ -126,7 +126,7 @@ ERRORS:
     
     2. sometimes greyLit pieces have no click-listener
     
-    3. the move after a piece is pinned, will run pieceLit() if still pinned;
+    3. the move after a piece is pinned, it will run pieceLit() if still pinned;
         that piece doesn't register as pinned, although alert declares it as pinned
     
     4. game explodes after sometimes able to move greyLit piece 
