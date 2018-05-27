@@ -117,3 +117,9 @@ function interceptKingAttacker() {
         });
     });
 }
+
+
+
+/*
+ERRORS:
+    no pawns are added to canBlockPathOfCheck
