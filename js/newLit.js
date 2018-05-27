@@ -401,16 +401,17 @@ function lit(activeSide, passiveSide) {
             });
             */
 		}
-		// since activeKing cannot move...
+        // since activeKing cannot move...
+        // -----------------------------------
 		// checkmate if multiple kingAttackers
         else if (kingAttackers.length > 1) { endOfGame(); }
-        // -------------------------------------------------------------------
-		else { // checkmate if activeSide cannot eat or block the kingAttacker
+        // -----------------------------------------------------------------
+		else { // checkmate if activeSide cannot eat or block a kingAttacker
 			console.log('king unable to move out of check');
-			// ------------------------------------------------------------------
-			// discerns whether an activePiece can save activeKing from checkmate
+			// -----------------------------------------------------
+			// discerns whether an activePiece can prevent checkmate
 			interceptKingAttacker();
-		} // ************************
+		}
 	}
 	//====================
 	function castling(e) {
@@ -1058,8 +1059,11 @@ function lit(activeSide, passiveSide) {
 			}); // enters movePiece(e) on litDiv-click, unless castling
 		}
     } // WORKS!
-    
-    // ---------------
+
+    // ***************
+    // ***************
+    // ***************
+
 	// sets activeKing
 	for (i = 0; i < activeSide.length; i++) {
 		// ------------------------------------------------------
@@ -1067,7 +1071,7 @@ function lit(activeSide, passiveSide) {
 			// ------------------------  ------
 			activeKing = activeSide[i];  break;
 		}
-	}  console.log('activeKing -->');  console.log(activeKing);
+    }  console.log('activeKing -->');  console.log(activeKing);
 	// --------------------------------------------------------------------
 	// populates kingAttackers with any passivePiece that checks activeKing
 	passiveSide.forEach(passivePiece => {
@@ -1080,8 +1084,8 @@ function lit(activeSide, passiveSide) {
 	// ----------------------------------------------------------------
 	// if activeKing in check
 	if (kingAttackers.length) { isMate(); }	
-	// --------------------------------------------------
-	// since activeKing not in check, if any pinnedPieces
+	// ------------------------------------------------------
+	// since activeKing not in check & there are pinnedPieces
 	else if (pinnedPieces.length) {
 		// --------------------------------
 		activeSide.forEach(activePiece => {
@@ -1090,11 +1094,10 @@ function lit(activeSide, passiveSide) {
 			// ------------------------------------------------------
 			else { activePiece.addEventListener('click', pieceLit); }
 		});
-	}
+    }
+    // -----------------------------------------------------
 	else { // since activKing not in check & no pinnedPieces
 		// -------------------------------------------------
-		// runs pieceLit(e) for all clicked activePieces
-		// ---------------------------------------------
 		activeSide.forEach(activePiece => {
 			// ---------------------------------------------
 			activePiece.addEventListener('click', pieceLit);
