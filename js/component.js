@@ -1,4 +1,4 @@
-// -----------------------------------------------------------------------
+// ------------------------------------------------------------------------
 // populates canEatKingAttacker & canBlockPathOfCheck, excluding activeKing
  activeSide.forEach(activePiece => {
     // if activePiece not pinned
@@ -122,4 +122,22 @@ function interceptKingAttacker() {
 
 /*
 ERRORS:
-    no pawns are added to canBlockPathOfCheck
+    1. no pawns are added to canBlockPathOfCheck array of objects
+    
+    2. sometimes greyLit pieces have no click-listener
+    
+    3. the move after a piece is pinned, will run pieceLit() if still pinned;
+        that piece doesn't register as pinned, although alert declares it as pinned
+    
+    4. game explodes after sometimes able to move greyLit piece 
+
+
+BUILD:
+    1. pawn evolution --> queen or knight
+    
+    2. add two clocks --> choose the game duration
+
+    3. add resign button
+
+    4.
+*/
