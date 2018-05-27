@@ -193,71 +193,7 @@ function lit(activeSide, passiveSide) {
 		checkPath = pathOfCheck;
 		// ----------------------
 		pieceToMove = activeKing;
-		//=================================
-        /*
-        function interceptKingAttacker() {
-			// sees if an activePiece can EAT or BLOCK kingAttackers[0]
-			// --------------------------------------------------------
-			mate = true;
-			// --------------------------------
-			activeSide.forEach(activePiece => {
-				// if activePiece not pinned
-				if (!pinnedPieces.includes(activePiece)) {
-					// and if not activeKing
-					if (activePiece.getAttribute('data-name') !== 'king') {
-						// ------------------------------------------------
-                        pieceToMove = activePiece; // VERY IMPORTANT!  WHY?
-                        // WHERE IS pieceToMove being called outside of this scope?
-						//===========================
-						function eatOrBlock(someId) {
-                            // sees if activePiece can eat or block someId
-                            // -------------------------------------------
-                            anId = someId;
-							// --------------------------------------
-							// if activePiece checks or blocks someId
-							if (checkingSpace(activePiece, someId)) {
-								// ---------------------------------------------------------------------------------------------------------------------------------------------------
-								console.log(activePiece.getAttribute('data-side') + ' ' + activePiece.getAttribute('data-name') + ' at ' + activePiece.id + ' can move to ' + someId);
-								// ---------------------------------------------------------------------------------------------------------------------------------------------------
-								mate = false; // no check mate
-								// ------------------------------------------------
-								// ::: grey-lightens & click-listens to activePiece
-								greyLitDivs.push(activePiece);
-								// ----------------------------------
-                                activePiece.classList.add('greyLit');
-								// -------------------------------------------------------
-                                activePiece.addEventListener('click', selectGreyPiece);
-							}
-						}
-						// --------------------------------------------------
-						// grey-lightens pieces that can eat kingAttackers[0]
-						eatOrBlock(kingAttackers[0].id);
-						// ------------------------------------------------------------
-						pawnBlocksKingAttacker = true; // prevents pawns from attacking
-						// ------------------------------------------------------------
-						// grey-lightens pieces that can block kingAttackers[0]
-						checkPath.forEach(pathId => {
-							// ---------------------------------------------------------
-							idToBlock = pathId; // used in checkingSpace();
-							// ---------------------------------------------------------
-							// sees if activePiece can move to pathId
-							eatOrBlock(pathId);
-						}); // -----------------------------
-						pawnBlocksKingAttacker = false;
-					}
-				} 
-				else { // since activePiece is pinned
-					// THIS MIGHT ALREADY BE COVERED
-					// if activePiece can eat kingAttacker
-					if (checkingSpace(activePiece, kingAttackers[0].id)) {
-						// add kingAttacker's id to litDivs
-						litDivs.push(kingAttackers[0].id);
-					}
-				}
-			}); // WORKS!
-			console.log('mate -->');  console.log(mate);
-        }*/
-        //================================
+		//================================
         function interceptKingAttacker() {
             // -----------------------------------------------------------
             greyLitDivs = [...canEatKingAttacker, ...canBlockPathOfCheck];
@@ -341,10 +277,73 @@ function lit(activeSide, passiveSide) {
                 });
             }
         }
+        /*
+        function interceptKingAttacker() {
+			// sees if an activePiece can EAT or BLOCK kingAttackers[0]
+			// --------------------------------------------------------
+			mate = true;
+			// --------------------------------
+			activeSide.forEach(activePiece => {
+				// if activePiece not pinned
+				if (!pinnedPieces.includes(activePiece)) {
+					// and if not activeKing
+					if (activePiece.getAttribute('data-name') !== 'king') {
+						// ------------------------------------------------
+                        pieceToMove = activePiece; // VERY IMPORTANT!  WHY?
+                        // WHERE IS pieceToMove being called outside of this scope?
+						//===========================
+						function eatOrBlock(someId) {
+                            // sees if activePiece can eat or block someId
+                            // -------------------------------------------
+                            anId = someId;
+							// --------------------------------------
+							// if activePiece checks or blocks someId
+							if (checkingSpace(activePiece, someId)) {
+								// ---------------------------------------------------------------------------------------------------------------------------------------------------
+								console.log(activePiece.getAttribute('data-side') + ' ' + activePiece.getAttribute('data-name') + ' at ' + activePiece.id + ' can move to ' + someId);
+								// ---------------------------------------------------------------------------------------------------------------------------------------------------
+								mate = false; // no check mate
+								// ------------------------------------------------
+								// ::: grey-lightens & click-listens to activePiece
+								greyLitDivs.push(activePiece);
+								// ----------------------------------
+                                activePiece.classList.add('greyLit');
+								// -------------------------------------------------------
+                                activePiece.addEventListener('click', selectGreyPiece);
+							}
+						}
+						// --------------------------------------------------
+						// grey-lightens pieces that can eat kingAttackers[0]
+						eatOrBlock(kingAttackers[0].id);
+						// ------------------------------------------------------------
+						pawnBlocksKingAttacker = true; // prevents pawns from attacking
+						// ------------------------------------------------------------
+						// grey-lightens pieces that can block kingAttackers[0]
+						checkPath.forEach(pathId => {
+							// ---------------------------------------------------------
+							idToBlock = pathId; // used in checkingSpace();
+							// ---------------------------------------------------------
+							// sees if activePiece can move to pathId
+							eatOrBlock(pathId);
+						}); // -----------------------------
+						pawnBlocksKingAttacker = false;
+					}
+				} 
+				else { // since activePiece is pinned
+					// THIS MIGHT ALREADY BE COVERED
+					// if activePiece can eat kingAttacker
+					if (checkingSpace(activePiece, kingAttackers[0].id)) {
+						// add kingAttacker's id to litDivs
+						litDivs.push(kingAttackers[0].id);
+					}
+				}
+			}); // WORKS!
+			console.log('mate -->');  console.log(mate);
+        }*/
         // -----------------------------------------------------------------
 		// populates litDivs where activeKing can move, runs checkingSpace()
         kingLit();
-		// --------------------------------
+		// -------------------------------------
         // if king can move, then not check mate
 		if (litDivs.length) { // king escapes check
 			// ---------------------------------------
@@ -355,8 +354,9 @@ function lit(activeSide, passiveSide) {
                 if (litDivs.includes(kingAttacker)) {
                     // ---------------------------------
                     canEatKingAttacker.push(activeKing);
-                }
-            }); // -----------------
+                } // -----------------------------------
+            });
+            // ---------------------
             interceptKingAttacker();
             // ---------------------
             /*
@@ -403,7 +403,8 @@ function lit(activeSide, passiveSide) {
 		}
 		// since activeKing cannot move...
 		// checkmate if multiple kingAttackers
-		else if (kingAttackers.length > 1) { endOfGame(); }
+        else if (kingAttackers.length > 1) { endOfGame(); }
+        // -------------------------------------------------------------------
 		else { // checkmate if activeSide cannot eat or block the kingAttacker
 			console.log('king unable to move out of check');
 			// ------------------------------------------------------------------
@@ -1078,49 +1079,7 @@ function lit(activeSide, passiveSide) {
 	});  console.log('kingAttackers -->');  console.log(kingAttackers);
 	// ----------------------------------------------------------------
 	// if activeKing in check
-	if (kingAttackers.length) { isMate(); }
-	
-		// ***************************
-		// ***************************
-		// ***************************
-		// since activeKing in check, but not check mate
-        // alert(activeKing.getAttribute('data-side') + ' king IN CHECK --> not mate!');
-        // console.log(activeKing.getAttribute('data-side') + ' king IN CHECK --> not mate!');
-        // console.log('litDivs -->');  console.log(litDivs);
-        // // -----------------------------------------------
-        // UNNECESSARY --> isMate() already covers this
-        // if (!litDivs.length) { // if activeKing cannot move
-        //     console.log('ENTERS PreventCheckMate()')
-        //     // ---------------------------------------------------------
-        //     // grey-lightens & click-listens only to heroic activePieces                
-        //     if (kingAttackers.length > 1) { endOfGame(); }
-               // -----------------------------------------------------
-        //     else { // since king paralyzed and only one kingAttacker
-        //         console.log('ENTERS else statement --> activeKing paralyzed and only one kingAttacker');
-        //         // heroics = activeSide.map(piece => !pinnedPieces.includes(piece));
-        //         // heroics is an array of unpinned activePieces
-        //         // -----------------------------------------------
-        //         // for each id in kingAttacker's pathOfCheck array
-        //         checkPath.forEach(emptyId => {
-        //             // for each unpinned activePiece
-        //             heroics.forEach(activePiece => {
-        //                 // if activePiece is not a king
-        //                 if (activePiece.getAttribute('data-name') !== 'king') {
-        //                     // if activePiece can take emptyId
-        //                     if (checkingSpace(activePiece, emptyId)) {
-        //                         // grey-lighten & click-listen to activePiece
-        //                         activePiece.classList.add('greyLit');
-        //                         activePiece.addEventListener('click', lit1);
-        //                     }
-        //                 }
-        //             });
-        //         });
-        //     }
-        // }
-        // ********************************
-        // ********************************
-		// ********************************
-		
+	if (kingAttackers.length) { isMate(); }	
 	// --------------------------------------------------
 	// since activeKing not in check, if any pinnedPieces
 	else if (pinnedPieces.length) {
