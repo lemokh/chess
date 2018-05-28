@@ -90,7 +90,7 @@ function lit(activeSide, passiveSide) {
 				castleIds = [];
 			}
 		}
-	} // NEEDS WORK!
+	}
 	//===========================================
 	function pinnedPieceAttack(somePinnedPiece) {
 		// --------------------------------------
@@ -116,9 +116,9 @@ function lit(activeSide, passiveSide) {
 				// -----------------------------------======================
 				pieceToMove.addEventListener('click', function pinnedLit() {
 					// -------------------------------======================
-					pieceToMove.classList('mainLit');
+					pieceToMove.classList.add('mainLit');
 					// ------------------------------
-					pinningPiece.classList('lit');
+					pinningPiece.classList.add('lit');
 					// ------------------------------------=============================
 					pinningPiece.addEventListener('click', function pinnedPieceEats() {
 						// --------------------------------=============================
@@ -186,8 +186,9 @@ function lit(activeSide, passiveSide) {
 	function moveGreyPiece(e) {
 		// clears greyLitDiv pieces
 		greyLitPieces.forEach(greyLitPiece => {
+			// --------------------------------------------------------
 			greyLitPiece.removeEventListener('click', selectGreyPiece);
-			// ------------------------------------------------------
+			// --------------------------------------------------------
 			greyLitPiece.classList.remove('greyLit');
 		});
 		greyLitPieces = [];
@@ -196,9 +197,9 @@ function lit(activeSide, passiveSide) {
 		litDivs.forEach(litDiv => {
 			// ------------------------------------------
 			litSpace = document.getElementById( litDiv );
-			// ------------------------------------------------
+			// --------------------------------------------------
 			litSpace.removeEventListener('click', moveGreyPiece);
-			// ------------------------------------------------
+			// --------------------------------------------------
 			litSpace.classList.remove('lit');
 		});
 		litDivs = [];
