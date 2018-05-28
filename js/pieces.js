@@ -1,5 +1,5 @@
-var pinnerPieces = [], knightCells, pinningPiece, pawnBlocksKingAttacker, idToBlock, kingAttackers= [], greyLitDivs = [], defenders = [], pawnDefenders = [], enPassantCell = '', orangeTakenBoxIdCounter = -16, blueTakenBoxIdCounter = -1, enPassanting = false, endOfGame = false,
-heroics = [], anId, greyPieceToMove, litPiece, blocker, mate, canCheck, canEatKingAttacker = [], canBlockPathOfCheck = [], gameOver, kingSlayer, checkPath, emptySpaces, knightLight, bishopPathId, rookPathId, blueKingFirstMove, blueRook1FirstMove, activeKing, blueRook2FirstMove,  orangeKingFirstMove, orangeRook1FirstMove, orangeRook2FirstMove, castleIds = [], noCastle, kingAble, pieceToMove, goToDiv, enPassantDiv, prevGoToDiv, enPassantGoToDiv, pawnJumpDiv, enPassantables2 = [], enPassantedPawn, knightLight, takenOrangeBox, takenBlueBox, pieceLit, gameEnds, tempSide, movedPiece, mainLitDiv, litDivs, unLitDivs, img, index1, index2, tempPiece, moves, takenBox, activeCells, openAndOpponentHeldKingSpaces, kingSpacesUnderAttack, orangeKingSpacesUnderAttack, orangelessKingSpaces, orangelessKingSpaces, blueKingSpaces, bluelessKingSpaces, orangeKingSpacesUnderAttack, vacantKingSpaces, whiteKing, blackKing, knightMoves, bishopMoves, bishopX, bishopY, rookMoves, kingSpaces, kingOpenSpaces, occupiedKingSpaces, defenders, pinnedPieces, pathOfCheck = [], nails, whites, blacks;
+var pinnerPieces = [], knightCells, pinningPiece, pawnBlocksKingAttacker, pathToCheck, idToBlock, kingAttackers= [], greyLitDivs = [], defenders = [], pawnDefenders = [], enPassantCell = '', orangeTakenBoxIdCounter = -16, blueTakenBoxIdCounter = -1, enPassanting = false, endOfGame = false,
+heroics = [], anId, greyPieceToMove, greyLitPiece, litPiece, blocker, mate, canCheck, canEatKingAttacker = [], canBlockPathOfCheck = [], gameOver, kingSlayer, checkPath, emptySpaces, knightLight, bishopPathId, rookPathId, blueKingFirstMove, blueRook1FirstMove, activeKing, blueRook2FirstMove,  orangeKingFirstMove, orangeRook1FirstMove, orangeRook2FirstMove, castleIds = [], noCastle, kingAble, pieceToMove, goToDiv, enPassantDiv, prevGoToDiv, enPassantGoToDiv, pawnJumpDiv, enPassantables2 = [], enPassantedPawn, knightLight, takenOrangeBox, takenBlueBox, pieceLit, gameEnds, tempSide, movedPiece, mainLitDiv, litDivs, unLitDivs, img, index1, index2, tempPiece, moves, takenBox, activeCells, openAndOpponentHeldKingSpaces, kingSpacesUnderAttack, orangeKingSpacesUnderAttack, orangelessKingSpaces, orangelessKingSpaces, blueKingSpaces, bluelessKingSpaces, orangeKingSpacesUnderAttack, vacantKingSpaces, whiteKing, blackKing, knightMoves, bishopMoves, bishopX, bishopY, rookMoves, kingSpaces, kingOpenSpaces, occupiedKingSpaces, defenders, pinnedPieces, pathOfCheck = [], nails, whites, blacks;
 
 // ---------------
 const boardIds = [
@@ -82,11 +82,10 @@ function checkingSpace(somePiece, checkSpaceId) {
 			} // -----------------------
 			else { // since orange turn
 				// collects empty space one ahead of orange pawnToMove
-				if (idToBlock === somePawn.id[0] + (somePawn.id[1] + 1)) {
+				if (idToBlock === somePawn.id[0] + (+somePawn.id[1] + 1)) {
 					// if idToBlock is one ahead of blue pawnToMove
-					// litDivs.push( idToBlock );
 					return true;
-				} // -----------------------------------------------
+				} // -------------------------------------------------
 				// collects empty space two ahead of orange pawnToMove
 				else if (document.getElementById(
 					somePawn.id[0] + (+somePawn.id[1] + 1)
@@ -96,7 +95,6 @@ function checkingSpace(somePiece, checkSpaceId) {
 						// if orange pawnToMove in row 1
 						if (idToBlock === somePawn.id[0] + (+somePawn.id[1] + 2)) {
 							// if idToBlock is two ahead of orange pawnToMove
-							// litDivs.push( idToBlock );
 							return true;
 						}
 					}
@@ -119,7 +117,6 @@ function checkingSpace(somePiece, checkSpaceId) {
 	//=========================================================
 	// returns true/false if the knight can attack checkSpaceId
 	function knightAttacks(someKnight) {
-		console.log('ENTERS knightAttacks()');
 		// to hold two spaces where knight might checkSpaceId
 		knightMoves = [];
 		// -------------------------------------

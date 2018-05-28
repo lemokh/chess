@@ -244,7 +244,7 @@ function lit(activeSide, passiveSide) {
             // -----------------------------------
             canBlockPathOfCheck.forEach(obj => {
                 // -------------------------------
-                greyLitDivs.push(obj.pathBlocker);
+                greyLitDivs.push(obj.emptyDivId);
             });
             // --------------------------------------
             if (!greyLitDivs.length) { endOfGame(); }
@@ -255,10 +255,12 @@ function lit(activeSide, passiveSide) {
                     // -------------------------------------------
                     // lightens & click-listens to each greyLitDiv
                     greyLitDivs.forEach(greyLitDiv => {
-                        // ---------------------------------
-                        greyLitDiv.classList.add('greyLit');
+						// ------------------------------------------------
+						greyLitPiece = document.getElementById(greyLitDiv);
+                        // ------------------------------------------------
+                        greyLitPiece.classList.add('greyLit');
                         // ----------------------------------=============================
-                        greyLitDiv.addEventListener('click', function selectGreyPiece(e) {
+                        greyLitPiece.addEventListener('click', function selectGreyPiece(e) {
                             // ------------------------------=============================
                             greyPieceToMove = e.target;
                             // -----------------------------------------
@@ -288,10 +290,11 @@ function lit(activeSide, passiveSide) {
                                     // -----------------------------------------------------===========================
                                     // clears greyLitDiv pieces
                                     greyLitDivs.forEach(greyLitDiv => {
+										greyLitPiece = document.getElementById(greyLitDiv);
                                         // ------------------------------------------------------
-                                        greyLitDiv.removeEventListener('click', selectGreyPiece);
+                                        greyLitPiece.removeEventListener('click', selectGreyPiece);
                                         // ------------------------------------------------------
-                                        greyLitDiv.classList.remove('greyLit');
+                                        greyLitPiece.classList.remove('greyLit');
                                     });
                                     greyLitDivs = [];
                                     // --------------------
@@ -408,20 +411,20 @@ function lit(activeSide, passiveSide) {
                 if (litDivs.includes(kingAttacker)) {
                     // ---------------------------------
                     canEatKingAttacker.push(activeKing);
-                }
-
-
-                // ------------------------------------------------------------------------
-                // populates canEatKingAttacker & canBlockPathOfCheck, excluding activeKing
+				}
+				// ---------------------
+				// pathToCheck = checkPath;
+                // ---------------------------------------------------------------------------------
+                // populates canEatKingAttacker & canBlockPathOfCheck for activeSide, excluding king
                 activeSide.forEach(activePiece => {
                     // if activePiece not pinned
                     if (!pinnedPieces.includes(activePiece)) {
                         // and if not activeKing
                         if (activePiece.getAttribute('data-name') !== 'king') {
                             // ------------------------------------------------
-                            pieceToMove = activePiece; // IMPORTANT!
-                            // --------------------------------------
-                            // if activePiece checks or blocks someId
+                            pieceToMove = activePiece; // IMPORTANT! WHY?
+                            // ------------------------------------------
+                            // if activePiece can eat kingAttacker
                             if (checkingSpace(activePiece, kingAttacker.id)) {
                                 // -------------------------------------------
                                 canEatKingAttacker.push(activePiece);
@@ -432,10 +435,15 @@ function lit(activeSide, passiveSide) {
                             // --------------------------------------
                             // sees if activePiece can move to pathId
                             checkPath.forEach(pathId => {
+								// ---------------
+								idToBlock = pathId;
                                 // --------------------------------------
                                 if (checkingSpace(activePiece, pathId)) {
-                                    // ----------------------------------------------------------------
-                                    canBlockPathOfCheck.push( {pathBlocker: activePiece, emptyDivId: pathId} );
+                                    // ----------------------------------
+                                    canBlockPathOfCheck.push(
+										// ---------------------------------------------
+										{ emptyDivId: activePiece, emptyDivId: pathId }
+									);
                                 }
                             });
                             // ----------------------------
@@ -450,12 +458,9 @@ function lit(activeSide, passiveSide) {
                         }
                     }
                 });
-
-
             });
             // ---------------------
             interceptKingAttacker();
-            // ---------------------
 		}
         // since activeKing cannot move...
         // -----------------------------------
@@ -464,8 +469,6 @@ function lit(activeSide, passiveSide) {
         // -----------------------------------------------------------------
 		else { // checkmate if activeSide cannot eat or block a kingAttacker
             console.log('king unable to move out of check');
-
-
             // ------------------------------------------------------------------------
             // populates canEatKingAttacker & canBlockPathOfCheck, excluding activeKing
             activeSide.forEach(activePiece => {
@@ -476,7 +479,7 @@ function lit(activeSide, passiveSide) {
                         // ------------------------------------------------
                         pieceToMove = activePiece; // IMPORTANT!
                         // --------------------------------------
-                        // if activePiece checks or blocks someId
+                        // if activePiece checks someId
                         if (checkingSpace(activePiece, kingAttackers[0].id)) {
                             // -----------------------------------------------
                             canEatKingAttacker.push(activePiece);
@@ -490,7 +493,7 @@ function lit(activeSide, passiveSide) {
                             // --------------------------------------
                             if (checkingSpace(activePiece, pathId)) {
                                 // ----------------------------------------------------------------
-                                canBlockPathOfCheck.push( {pathBlocker: activePiece, emptyDivId: pathId} );
+                                canBlockPathOfCheck.push( {emptyDivId: activePiece, emptyDivId: pathId} );
                             }
                         });
                         // ----------------------------
@@ -505,8 +508,6 @@ function lit(activeSide, passiveSide) {
                     }
                 }
             });
-
-
 			// -----------------------------------------------------
 			// discerns whether an activePiece can prevent checkmate
 			interceptKingAttacker();
