@@ -237,6 +237,46 @@ function lit(activeSide, passiveSide) {
 		checkPath = pathOfCheck;
 		// ----------------------
 		pieceToMove = activeKing;
+		//===================================
+		function eatOrBlock(kingAttackerId) {
+			activeSide.forEach(activePiece => {
+				// if activePiece not pinned
+				if (!pinnedPieces.includes(activePiece)) {
+					// and if not activeKing
+					if (activePiece.getAttribute('data-name') !== 'king') {
+						// ------------------------------------------------
+						pieceToMove = activePiece; // IMPORTANT!
+						// --------------------------------------
+						// if activePiece checks someId
+						if (checkingSpace(activePiece, kingAttackerId)) {
+							// -----------------------------------------------
+							canEatKingAttacker.push(activePiece);
+						}
+						// -----------------------------
+						// prevents pawns from attacking
+						pawnBlocksKingAttacker = true;
+						// --------------------------------------
+						// sees if activePiece can move to pathId
+						checkPath.forEach(pathId => {
+							// --------------------------------------
+							if (checkingSpace(activePiece, pathId)) {
+								// ----------------------------------------------------------------
+								canBlockPathOfCheck.push( {emptyDivId: activePiece, emptyDivId: pathId} );
+							}
+						});
+						// ----------------------------
+						pawnBlocksKingAttacker = false;
+					}
+				}
+				else { // since activePiece is pinned
+					// if activePiece can eat kingAttacker
+					if (checkingSpace(activePiece, kingAttackers[0].id)) {
+						// add kingAttacker's id to litDivs
+						canEatKingAttacker.push(activePiece);
+					}
+				}
+			});
+		}
 		//================================
         function interceptKingAttacker() {
             // -----------------------------------
@@ -416,102 +456,29 @@ function lit(activeSide, passiveSide) {
 				// pathToCheck = checkPath;
                 // ---------------------------------------------------------------------------------
                 // populates canEatKingAttacker & canBlockPathOfCheck for activeSide, excluding king
-                activeSide.forEach(activePiece => {
-                    // if activePiece not pinned
-                    if (!pinnedPieces.includes(activePiece)) {
-                        // and if not activeKing
-                        if (activePiece.getAttribute('data-name') !== 'king') {
-                            // ------------------------------------------------
-                            pieceToMove = activePiece; // IMPORTANT! WHY?
-                            // ------------------------------------------
-                            // if activePiece can eat kingAttacker
-                            if (checkingSpace(activePiece, kingAttacker.id)) {
-                                // -------------------------------------------
-                                canEatKingAttacker.push(activePiece);
-                            }
-                            // -----------------------------
-                            // prevents pawns from attacking
-                            pawnBlocksKingAttacker = true;
-                            // --------------------------------------
-                            // sees if activePiece can move to pathId
-                            checkPath.forEach(pathId => {
-								// ---------------
-								idToBlock = pathId;
-                                // --------------------------------------
-                                if (checkingSpace(activePiece, pathId)) {
-                                    // ----------------------------------
-                                    canBlockPathOfCheck.push(
-										// ---------------------------------------------
-										{ emptyDivId: activePiece, emptyDivId: pathId }
-									);
-                                }
-                            });
-                            // ----------------------------
-                            pawnBlocksKingAttacker = false;
-                        }
-                    }
-                    else { // since activePiece is pinned
-                        // if activePiece can eat kingAttacker
-                        if (checkingSpace(activePiece, kingAttackers[0].id)) {
-                            // add kingAttacker's id to litDivs
-                            canEatKingAttacker.push(activePiece);
-                        }
-                    }
-                });
+                eatOrBlock(kingAttacker.id);
             });
             // ---------------------
             interceptKingAttacker();
 		}
-        // since activeKing cannot move...
-        // -----------------------------------
-		// checkmate if multiple kingAttackers
-        else if (kingAttackers.length > 1) { endOfGame(); }
-        // -----------------------------------------------------------------
-		else { // checkmate if activeSide cannot eat or block a kingAttacker
-            console.log('king unable to move out of check');
-            // ------------------------------------------------------------------------
-            // populates canEatKingAttacker & canBlockPathOfCheck, excluding activeKing
-            activeSide.forEach(activePiece => {
-                // if activePiece not pinned
-                if (!pinnedPieces.includes(activePiece)) {
-                    // and if not activeKing
-                    if (activePiece.getAttribute('data-name') !== 'king') {
-                        // ------------------------------------------------
-                        pieceToMove = activePiece; // IMPORTANT!
-                        // --------------------------------------
-                        // if activePiece checks someId
-                        if (checkingSpace(activePiece, kingAttackers[0].id)) {
-                            // -----------------------------------------------
-                            canEatKingAttacker.push(activePiece);
-                        }
-                        // -----------------------------
-                        // prevents pawns from attacking
-                        pawnBlocksKingAttacker = true;
-                        // --------------------------------------
-                        // sees if activePiece can move to pathId
-                        checkPath.forEach(pathId => {
-                            // --------------------------------------
-                            if (checkingSpace(activePiece, pathId)) {
-                                // ----------------------------------------------------------------
-                                canBlockPathOfCheck.push( {emptyDivId: activePiece, emptyDivId: pathId} );
-                            }
-                        });
-                        // ----------------------------
-                        pawnBlocksKingAttacker = false;
-                    }
-                }
-                else { // since activePiece is pinned
-                    // if activePiece can eat kingAttacker
-                    if (checkingSpace(activePiece, kingAttackers[0].id)) {
-                        // add kingAttacker's id to litDivs
-                        canEatKingAttacker.push(activePiece);
-                    }
-                }
-            });
+		// ----------------------------------------------------------
+		// since activeKing cannot move, if only one kingAttacker...
+		// checkmate if activeSide cannot eat or block a kingAttacker
+        // ----------------------------------------------------------
+        else if (kingAttackers.length === 1) {
+			// ---------------------------------------------
+			console.log('king unable to move out of check');
+			// -----------------------------
+			eatOrBlock(kingAttackers[0].id);
 			// -----------------------------------------------------
 			// discerns whether an activePiece can prevent checkmate
+			mate = true;
 			interceptKingAttacker();
+			if (mate) { endOfGame(); }
 		}
+		// ---------------------------------------------------------------------
+		// checkmate since king cannot move and there are multiple kingAttackers
+        else { endOfGame(); }
 	}
 	//====================
 	function castling(e) {
