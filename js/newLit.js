@@ -248,10 +248,10 @@ function lit(activeSide, passiveSide) {
 					if (activePiece.getAttribute('data-name') !== 'king') {
 						// ------------------------------------------------
 						pieceToMove = activePiece; // IMPORTANT!
-						// --------------------------------------
+						// -------------------------------------
 						// if activePiece checks kingAttacker
 						if (checkingSpace(activePiece, kingAttackerId)) {
-							// -----------------------------------------------
+							// ------------------------------------------
 							canEatKingAttacker.push(activePiece);
 						}
 						// -----------------------------
@@ -262,8 +262,11 @@ function lit(activeSide, passiveSide) {
 						checkPath.forEach(pathId => {
 							// --------------------------------------
 							if (checkingSpace(activePiece, pathId)) {
-								// ----------------------------------------------------------------
-								canBlockPathOfCheck.push( {emptyDivId: activePiece, emptyDivId: pathId} );
+								// ----------------------------------
+								canBlockPathOfCheck.push(
+									// ---------------------------------------------
+									{ pathBlocker: activePiece, emptyDivId: pathId }
+								);
 							}
 						});
 						// ----------------------------
@@ -286,7 +289,7 @@ function lit(activeSide, passiveSide) {
             // -----------------------------------
             canBlockPathOfCheck.forEach(obj => {
                 // -------------------------------
-                greyLitDivs.push(obj.emptyDivId);
+                greyLitDivs.push(obj.pathBlocker.id);
             });
             // --------------------------------------
             if (!greyLitDivs.length) { endOfGame(); }
@@ -455,9 +458,8 @@ function lit(activeSide, passiveSide) {
                     canEatKingAttacker.push(activeKing);
 				}
 				// ------------------------
-				pathToCheck = checkPath;
-                // ---------------------------------------------------------------------------------
-                // populates canEatKingAttacker & canBlockPathOfCheck for activeSide, excluding king
+				// pathToCheck = checkPath;
+                // -------------------------
                 eatOrBlock(kingAttacker.id);
             });
             // ---------------------
@@ -474,14 +476,14 @@ function lit(activeSide, passiveSide) {
 			eatOrBlock(kingAttackers[0].id);
 			// -----------------------------------------------------
 			// discerns whether an activePiece can prevent checkmate
-			mate = true;
+			// mate = true;
 			// ---------------------
 			interceptKingAttacker();
 			// -----------------------
-			if (mate) { endOfGame(); }
+			// if (mate) { endOfGame(); }
 		}
-		// ---------------------------------------------------------------------
-		// checkmate since king cannot move and there are multiple kingAttackers
+		// -----------------------------------------------------------
+		// checkmate since multiple kingAttackers and king cannot move
         else { endOfGame(); }
 	}
 	//====================
