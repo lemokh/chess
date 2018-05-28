@@ -57,7 +57,7 @@ function interceptKingAttacker() {
             // ----------------------------------------------------------
             piece.addEventListener('click', function selectGreyPiece(e) {
                 // ------------------------------------------------------
-                greyPieceToMove = e.target;
+                 = e.target;
                 if (canEatKingAttacker.includes(e.target)) {
                     litDivs.push(kingAttacker);
                 }
@@ -96,7 +96,7 @@ function interceptKingAttacker() {
                         // -------------------------------------------------------------------
                         if (e.target.getAttribute('data-side') !== 'empty') { eat(e.target); }
                         // -------------------------------------------------------------------
-                        swapSide(greyPieceToMove, e.target);
+                        swapSide(, e.target);
                         // ---------------------------------
                         // toggles side & starts next move 
                         if (activeKing.getAttribute('data-side') === 'blue') {

@@ -5,6 +5,8 @@ function lit(activeSide, passiveSide) {
 	kingAttackers = []; // contains all passivePieces that check activeKing
 	// --------------------------------------------------------------------
 	emptySpaces = openSpaces(boardIds, pieces); // updates emptySpaces
+	// ---------------------------------------------------------------
+	greyPieceToMove = undefined;
 
 	//==========================
 	// function toggleClocks() {
@@ -284,51 +286,64 @@ function lit(activeSide, passiveSide) {
 		}
 		//================================
         function interceptKingAttacker() {
-            // -----------------------------------
+            // -------------------------------------
             greyLitPieces = [...canEatKingAttacker];
-            // -----------------------------------
+            // -------------------------------------
             canBlockPathOfCheck.forEach(obj => {
-                // -------------------------------
+                // ---------------------------------
                 greyLitPieces.push(obj.pathBlocker);
-            });
-            // --------------------------------------
+			});
+			// ----------------------------------------
             if (!greyLitPieces.length) { endOfGame(); }
-            // --------------------------------------
+            // ----------------------------------------
             else { // since able to prevent check mate
                 // ------------------------------------
                 kingAttackers.forEach(kingAttacker => {
-                    // -------------------------------------------
-                    // lightens & click-listens to each greyLitDiv
+                    // ---------------------------------------------
+                    // lightens & click-listens to each greyLitPiece
                     greyLitPieces.forEach(greyLitPiece => {
+						// -----------------------------------
                         greyLitPiece.classList.add('greyLit');
-                        // ----------------------------------=============================
+                        // ------------------------------------=============================
                         greyLitPiece.addEventListener('click', function selectGreyPiece(e) {
-                            // ------------------------------=============================
-                            greyPieceToMove = e.target;
+                            // --------------------------------=============================
+							if (greyPieceToMove !== undefined) {
+								// resets each litSpace
+								// -----------------------------
+								litDivs.forEach(litDiv => {
+									// ----------------------------------------
+									litSpace = document.getElementById(litDiv);
+									// --------------------------------------------------
+									litSpace.removeEventListener('click', moveGreyPiece);
+									// ------------------------------
+									litSpace.classList.remove('lit');
+								});
+								// ----------
+								litDivs = [];
+							}
+							// ------------------------
+							greyPieceToMove = e.target;
                             // -----------------------------------------
                             if (canEatKingAttacker.includes(e.target)) {
                                 // -------------------------------------
                                 litDivs.push(kingAttacker.id);
                             }
-                            // ---------------------------------------------------
-                            for (let i = 0; i < canBlockPathOfCheck.length; i++) {
-                                // -----------------------------------------------
-                                if (canBlockPathOfCheck[i].piece === e.target) {
-                                    // ---------------------------------------------------
-                                    canBlockPathOfCheck[i].emptyDivs.forEach(emptyDivId => {
-                                        // -----------------------------------------------
-                                        litDivs.push(emptyDivId);
-                                    });
-                                } break;
-                            }
+                            // ---------------------------------
+							canBlockPathOfCheck.forEach(obj => {
+                                // --------------------------------
+                                if (obj.pathBlocker === e.target) {
+                                    // ----------------------------
+                                    litDivs.push(obj.emptyDivId);
+                                }
+                            });
                             // ------------------------
                             litDivs.forEach(litDiv => {
                                 // ------------------------------------------
-                                litPiece = document.getElementById( litDiv );
+                                litSpace = document.getElementById( litDiv );
                                 // ------------------------------------------
-                                litPiece.classList.add('lit');
+                                litSpace.classList.add('lit');
                                 // ---------------------------------------------------------===========================
-                                litPiece.addEventListener('click', function moveGreyPiece(e) {
+                                litSpace.addEventListener('click', function moveGreyPiece(e) {
                                     // -----------------------------------------------------===========================
                                     // clears greyLitDiv pieces
                                     greyLitPieces.forEach(greyLitPiece => {
@@ -341,11 +356,11 @@ function lit(activeSide, passiveSide) {
                                     // clears litDiv pieces
                                     litDivs.forEach(litDiv => {
                                         // ------------------------------------------
-                                        litPiece = document.getElementById( litDiv );
+                                        litSpace = document.getElementById( litDiv );
                                         // ------------------------------------------------
-                                        litPiece.removeEventListener('click', moveGreyPiece);
+                                        litSpace.removeEventListener('click', moveGreyPiece);
                                         // ------------------------------------------------
-                                        litPiece.classList.remove('lit');
+                                        litSpace.classList.remove('lit');
                                     });
                                     litDivs = [];
                                     // -------------------------------------------------------------------
