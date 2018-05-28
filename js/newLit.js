@@ -285,24 +285,21 @@ function lit(activeSide, passiveSide) {
 		//================================
         function interceptKingAttacker() {
             // -----------------------------------
-            greyLitDivs = [...canEatKingAttacker];
+            greyLitPieces = [...canEatKingAttacker];
             // -----------------------------------
             canBlockPathOfCheck.forEach(obj => {
                 // -------------------------------
-                greyLitDivs.push(obj.pathBlocker.id);
+                greyLitPieces.push(obj.pathBlocker);
             });
             // --------------------------------------
-            if (!greyLitDivs.length) { endOfGame(); }
+            if (!greyLitPieces.length) { endOfGame(); }
             // --------------------------------------
             else { // since able to prevent check mate
                 // ------------------------------------
                 kingAttackers.forEach(kingAttacker => {
                     // -------------------------------------------
                     // lightens & click-listens to each greyLitDiv
-                    greyLitDivs.forEach(greyLitDiv => {
-						// ------------------------------------------------
-						greyLitPiece = document.getElementById(greyLitDiv);
-                        // ------------------------------------------------
+                    greyLitPieces.forEach(greyLitPiece => {
                         greyLitPiece.classList.add('greyLit');
                         // ----------------------------------=============================
                         greyLitPiece.addEventListener('click', function selectGreyPiece(e) {
@@ -334,14 +331,12 @@ function lit(activeSide, passiveSide) {
                                 litPiece.addEventListener('click', function moveGreyPiece(e) {
                                     // -----------------------------------------------------===========================
                                     // clears greyLitDiv pieces
-                                    greyLitDivs.forEach(greyLitDiv => {
-										greyLitPiece = document.getElementById(greyLitDiv);
-                                        // ------------------------------------------------------
+                                    greyLitPieces.forEach(greyLitPiece => {
                                         greyLitPiece.removeEventListener('click', selectGreyPiece);
                                         // ------------------------------------------------------
                                         greyLitPiece.classList.remove('greyLit');
                                     });
-                                    greyLitDivs = [];
+                                    greyLitPieces = [];
                                     // --------------------
                                     // clears litDiv pieces
                                     litDivs.forEach(litDiv => {
