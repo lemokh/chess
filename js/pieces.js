@@ -60,9 +60,8 @@ function checkingSpace(somePiece, checkSpaceId) {
 			// sees if pawn can block checkSpaceId
 			if (somePawn.getAttribute('data-side') === 'blue') {
 				// if blue turn
-				if (idToBlock === somePawn.id[0] + (somePawn.id[1] - 1)) {
-					// if idToBlock is one ahead of blue pawnToMove
-					// litDivs.push( idToBlock );
+				if (checkSpaceId === somePawn.id[0] + (somePawn.id[1] - 1)) {
+					// if checkSpaceId is one ahead of blue pawnToMove
 					return true;
 				} // ----------------------------
 				else if (document.getElementById(
@@ -71,9 +70,8 @@ function checkingSpace(somePiece, checkSpaceId) {
 					// if empty cell one ahead of bluePawn
 					if (somePawn.id[1] === '6') {
 						// if blue pawnToMove in row 6
-						if (idToBlock === somePawn.id[0] + (somePawn.id[1] - 2)) {
-							// if idToBlock is two ahead of blue pawnToMove
-							// litDivs.push( idToBlock );
+						if (checkSpaceId === somePawn.id[0] + (somePawn.id[1] - 2)) {
+							// if checkSpaceId is two ahead of blue pawnToMove
 							return true;
 						}
 					}
@@ -82,8 +80,8 @@ function checkingSpace(somePiece, checkSpaceId) {
 			} // -----------------------
 			else { // since orange turn
 				// collects empty space one ahead of orange pawnToMove
-				if (idToBlock === somePawn.id[0] + (+somePawn.id[1] + 1)) {
-					// if idToBlock is one ahead of blue pawnToMove
+				if (checkSpaceId === somePawn.id[0] + (+somePawn.id[1] + 1)) {
+					// if checkSpaceId is one ahead of blue pawnToMove
 					return true;
 				} // -------------------------------------------------
 				// collects empty space two ahead of orange pawnToMove
@@ -93,8 +91,8 @@ function checkingSpace(somePiece, checkSpaceId) {
 					// if empty cell one ahead of orangePawn
 					if (pieceToMove.id[1] === '1') {
 						// if orange pawnToMove in row 1
-						if (idToBlock === somePawn.id[0] + (+somePawn.id[1] + 2)) {
-							// if idToBlock is two ahead of orange pawnToMove
+						if (checkSpaceId === somePawn.id[0] + (+somePawn.id[1] + 2)) {
+							// if checkSpaceId is two ahead of orange pawnToMove
 							return true;
 						}
 					}

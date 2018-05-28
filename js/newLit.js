@@ -239,6 +239,8 @@ function lit(activeSide, passiveSide) {
 		pieceToMove = activeKing;
 		//===================================
 		function eatOrBlock(kingAttackerId) {
+			// populates canEatKingAttacker & canBlockPathOfCheck, excluding activeKing
+			// ------------------------------------------------------------------------
 			activeSide.forEach(activePiece => {
 				// if activePiece not pinned
 				if (!pinnedPieces.includes(activePiece)) {
@@ -247,7 +249,7 @@ function lit(activeSide, passiveSide) {
 						// ------------------------------------------------
 						pieceToMove = activePiece; // IMPORTANT!
 						// --------------------------------------
-						// if activePiece checks someId
+						// if activePiece checks kingAttacker
 						if (checkingSpace(activePiece, kingAttackerId)) {
 							// -----------------------------------------------
 							canEatKingAttacker.push(activePiece);
@@ -452,8 +454,8 @@ function lit(activeSide, passiveSide) {
                     // ---------------------------------
                     canEatKingAttacker.push(activeKing);
 				}
-				// ---------------------
-				// pathToCheck = checkPath;
+				// ------------------------
+				pathToCheck = checkPath;
                 // ---------------------------------------------------------------------------------
                 // populates canEatKingAttacker & canBlockPathOfCheck for activeSide, excluding king
                 eatOrBlock(kingAttacker.id);
@@ -473,7 +475,9 @@ function lit(activeSide, passiveSide) {
 			// -----------------------------------------------------
 			// discerns whether an activePiece can prevent checkmate
 			mate = true;
+			// ---------------------
 			interceptKingAttacker();
+			// -----------------------
 			if (mate) { endOfGame(); }
 		}
 		// ---------------------------------------------------------------------
