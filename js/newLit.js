@@ -21,7 +21,7 @@ function lit(activeSide, passiveSide) {
 		document.getElementById('board').classList.add('noClick');
 		// -------------------------------------------------------
 		console.log('END OF GAME');
-    }
+	}
     //======================
     function toggleSides() {
         // removes click-listeners from activePieces
@@ -91,6 +91,7 @@ function lit(activeSide, passiveSide) {
 			}
 		}
 	}
+	/*
 	//===========================================
 	function pinnedPieceAttack(somePinnedPiece) {
 		// --------------------------------------
@@ -140,6 +141,7 @@ function lit(activeSide, passiveSide) {
 			}
 		}
 	}
+	*/
 	//===========================
 	function selectGreyPiece(e) {
 		// ---------------------------------
@@ -191,7 +193,7 @@ function lit(activeSide, passiveSide) {
 		// resets greyPieceToMove
 		// -----------------------------------------
 		greyPieceToMove.classList.remove('mainLit');
-		
+
 		// -----------------------------------------
 		// clears greyLitDiv pieces
 		greyLitPieces.forEach(greyLitPiece => {
@@ -1069,7 +1071,7 @@ function lit(activeSide, passiveSide) {
 	});  console.log('kingAttackers -->');  console.log(kingAttackers);
 	// ----------------------------------------------------------------
 	// if activeKing in check
-	if (kingAttackers.length) { isMate(); }	
+	if (kingAttackers.length) { isMate(); }
 	// ------------------------------------------------------
 	// since activeKing not in check & there are pinnedPieces
 	else if (pinnedPieces.length) {
