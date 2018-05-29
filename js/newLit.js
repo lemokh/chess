@@ -982,6 +982,47 @@ function lit(activeSide, passiveSide) {
 			// ---------------------------------------------------
 			default: alert('default ERROR! pieceToMove is empty');
 		}
+		// -----------------------------------------------------------
+		// sees if any pinned pieces match pieceToMove
+		if (pinnedPieces.includes(pieceToMove)) {
+			// finds the id path from pieceToMove TO AND INCLUDING its pinnerPiece
+			//   and excludes any ids from litDivs that are not in that path
+			
+			let idPath = []; // include obj.pinner.id
+			// POPULATE idPath with divs between pieceToMove aand its pinner piece
+			
+			// pinnedPieces[?].pinner.getAttribute('data-name');
+
+			// interceptPinnedPiece()?
+
+			// checkingSpace(pinnedPieces[?].pinner, pieceToMove.id);
+
+			// pinnedPieces should be an array of { pinned: piece, pinner: piece }
+
+			////////////////////////////////////////////////////////////////////////////////
+			// if pieceToMove can capture an idPath space, pushes pieceToMove to tempLitDivs
+			idPath.forEach(id => {
+				// ----------------------------------
+				if (checkingSpace(pieceToMove, id)) {
+					// ------------------------------
+					tempLitDivs.push(pieceToMove);
+				};
+			}); // do this instead of switch... or else remove it
+
+			////////////////////////////////////////////////////////
+			// creates a new array of litDivs that are on the idPath
+			tempLitDivs = litDivs.map(litDiv => {
+				// ------------------------------
+				if (idPath.includes(litDiv)) {
+					// -----------------------
+					return litDiv;
+				}	
+			});
+
+			//////////////////////
+			// -------------------
+			litDivs = tempLitDivs;
+		}
 		// -----------------------------------------------------
 		// lightens & click-listens all litDivs --> movePiece(e)
 		if (litDivs.length) {
@@ -1021,6 +1062,7 @@ function lit(activeSide, passiveSide) {
 	if (kingAttackers.length) { isMate(); }	
 	// ------------------------------------------------------
 	// since activeKing not in check & there are pinnedPieces
+	/*
 	else if (pinnedPieces.length) {
 		// --------------------------------
 		activeSide.forEach(activePiece => {
@@ -1029,9 +1071,10 @@ function lit(activeSide, passiveSide) {
 			// ------------------------------------------------------
 			else { activePiece.addEventListener('click', pieceLit); }
 		});
-    }
+	}
+	*/
     // -----------------------------------------------------
-	else { // since activKing not in check & no pinnedPieces
+	else { // since activeKing not in check & no pinnedPieces
 		// -------------------------------------------------
 		activeSide.forEach(activePiece => {
 			// ---------------------------------------------
