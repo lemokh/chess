@@ -144,21 +144,25 @@ function lit(activeSide, passiveSide) {
 	function selectGreyPiece(e) {
 		// ---------------------------------
 		if (greyPieceToMove !== undefined) {
-			// resets each litSpace
-			// -----------------------------
-			litDivs.forEach(litDiv => {
-				// ----------------------------------------
-				litSpace = document.getElementById(litDiv);
-				// --------------------------------------------------
-				litSpace.removeEventListener('click', moveGreyPiece);
-				// ------------------------------
-				litSpace.classList.remove('lit');
-			});
-			// ----------
-			litDivs = [];
+			// -----------------------------------------
+			greyPieceToMove.classList.remove('mainLit');
 		}
+		// resets each litDiv
+		// ------------------------
+		litDivs.forEach(litDiv => {
+			// ----------------------------------------
+			litSpace = document.getElementById(litDiv);
+			// --------------------------------------------------
+			litSpace.removeEventListener('click', moveGreyPiece);
+			// --------------------------------------------------
+			litSpace.classList.remove('lit');
+		});
+		// ----------
+		litDivs = [];
 		// ------------------------
 		greyPieceToMove = e.target;
+		// --------------------------------------
+		greyPieceToMove.classList.add('mainLit');
 		// -----------------------------------------
 		if (canEatKingAttacker.includes(e.target)) {
 			// -------------------------------------
@@ -184,6 +188,11 @@ function lit(activeSide, passiveSide) {
 	}
 	//=========================
 	function moveGreyPiece(e) {
+		// resets greyPieceToMove
+		// -----------------------------------------
+		greyPieceToMove.classList.remove('mainLit');
+		
+		// -----------------------------------------
 		// clears greyLitDiv pieces
 		greyLitPieces.forEach(greyLitPiece => {
 			// --------------------------------------------------------
@@ -193,7 +202,7 @@ function lit(activeSide, passiveSide) {
 		});
 		greyLitPieces = [];
 		// --------------------
-		// clears litDiv pieces
+		// clears litDiv spaces
 		litDivs.forEach(litDiv => {
 			// ------------------------------------------
 			litSpace = document.getElementById( litDiv );
@@ -214,7 +223,7 @@ function lit(activeSide, passiveSide) {
 			console.log('toggles activeSide to orange');
 			// -----------------------------------------
 			lit(oranges, blues);
-		} // ------------------- 
+		} // -------------------
 		else { // since activeKing is orange
 			// toggleClocks();
 			console.log('toggles activeSide to blue');
@@ -275,10 +284,9 @@ function lit(activeSide, passiveSide) {
 					}
 				}
 			});
-		}
+		} // this doesn't apply to activeKing
 		//================================
-        function interceptKingAttacker() {
-			
+        function interceptKingAttacker() {	
             // -------------------------------------
             greyLitPieces = [...canEatKingAttacker];
             // -------------------------------------
@@ -305,7 +313,7 @@ function lit(activeSide, passiveSide) {
         }
         // ---------------------------------------------------------------
 		// populates litDivs where activeKing can move via checkingSpace()
-        kingLit();
+		kingLit();
 		// -------------------------------
         // if king can move, no check mate
 		if (litDivs.length) {
@@ -319,10 +327,9 @@ function lit(activeSide, passiveSide) {
                     // ---------------------------------
                     canEatKingAttacker.push(activeKing);
 				}
-				// ------------------------
-				// pathToCheck = checkPath;
                 // -------------------------
-                eatOrBlock(kingAttacker.id);
+				eatOrBlock(kingAttacker.id);
+				// THIS DOES NOT WORK HERE, WRITE SOMETHING NEW
             });
             // ---------------------
             interceptKingAttacker();
@@ -954,6 +961,7 @@ function lit(activeSide, passiveSide) {
 	} // WORKS!
 	//====================
 	function pieceLit(e) {
+		// -------------------------------
 		console.log('ENTERS pieceLit(e)');
 		// -------------------------------
 		cleanUpAfterFirstClick();
@@ -982,6 +990,7 @@ function lit(activeSide, passiveSide) {
 			// ---------------------------------------------------
 			default: alert('default ERROR! pieceToMove is empty');
 		}
+		/*
 		// -----------------------------------------------------------
 		// sees if any pinned pieces match pieceToMove
 		if (pinnedPieces.includes(pieceToMove)) {
@@ -1023,6 +1032,7 @@ function lit(activeSide, passiveSide) {
 			// -------------------
 			litDivs = tempLitDivs;
 		}
+		*/
 		// -----------------------------------------------------
 		// lightens & click-listens all litDivs --> movePiece(e)
 		if (litDivs.length) {
@@ -1036,9 +1046,9 @@ function lit(activeSide, passiveSide) {
 		}
     } // WORKS!
 
-    // ***************
-    // game meta-logic
-    // ***************
+    // ****************
+    // chess meta-logic
+    // ****************
 
 	// sets activeKing
 	for (i = 0; i < activeSide.length; i++) {
@@ -1062,7 +1072,6 @@ function lit(activeSide, passiveSide) {
 	if (kingAttackers.length) { isMate(); }	
 	// ------------------------------------------------------
 	// since activeKing not in check & there are pinnedPieces
-	/*
 	else if (pinnedPieces.length) {
 		// --------------------------------
 		activeSide.forEach(activePiece => {
@@ -1072,7 +1081,6 @@ function lit(activeSide, passiveSide) {
 			else { activePiece.addEventListener('click', pieceLit); }
 		});
 	}
-	*/
     // -----------------------------------------------------
 	else { // since activeKing not in check & no pinnedPieces
 		// -------------------------------------------------

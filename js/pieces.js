@@ -32,6 +32,7 @@ var blues = Array.from(blueNodes);
 var pieces = [...oranges, ...blues];
 // ---------------------------------
 
+
 /*
 function endGameNow() {
 	remove activeSide click listener
@@ -127,13 +128,14 @@ function checkingSpace(somePiece, checkSpaceId) {
 					(+someKnight.id[0] + 1) +
 					(+someKnight.id[1] + 2).toString()
 				); // ------------------------------
-				console.log('knightMoves -->'); console.log(knightMoves);
-				// ------------------------------------------------------
+				// console.log('knightMoves -->'); console.log(knightMoves);
+				// ---------------------------------------------------------
 				knightMoves.push(
 					(+someKnight.id[0] + 2) +
 					(+someKnight.id[1] + 1).toString()
-				); console.log('knightMoves -->'); console.log(knightMoves);
-			} // -----------------------------------------------------
+				); 
+				// console.log('knightMoves -->'); console.log(knightMoves);
+			} // -----------------------------------------------------------
 			else { // since someKnight is left of & below checkSpaceId
 				// ---------------------------------------------------
 				knightMoves.push(
