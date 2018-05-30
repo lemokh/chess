@@ -8,68 +8,66 @@ function lit(activeSide, passiveSide) {
 	emptySpaces = openSpaces(boardIds, pieces); // updates emptySpaces
 	// ---------------------------------------------------------------
 	greyPieceToMove = undefined;
+	// -------------------------
+	canBlockPathOfCheck = [];
+	// ----------------------
+	canEatKingAttacker = [];
 
 	//==========================
 	// function toggleClocks() {
 
 	// }
-	//==================================
-	// USE THIS ONLY IN PIECELIT() --> if (pinnedPieces.length) {...}
-	function pinnedPieceLit(somePiece) {
+	//==============================
+	function pinnedEatsPinner(obj) {
+	// ----------------------------------------
+		obj.pinned.classList.remove('mainLit');
+		// ------------------------------------
+		obj.pinner.classList.remove('lit');
+		// -------------------------------------------------------
+		obj.pinner.removeEventListener('click', pinnedEatsPinner);
+		// -------------------------------------------------------
+		eat(obj.pinner);
+		// -----------------------------
+		swapSide(pieceToMove, obj.pinner);
+		// -----------------------------
+		toggleSides();
+	}
+	//============================
+	function pinnedPieceLit(obj) {
 		// -------------------------------------------
-		if (checkingSpace(somePiece, obj.pinner.id)) {
+		if (checkingSpace(pieceToMove, obj.pinner.id)) {
 			// if pinned piece can eat pinner piece
 			// ------------------------------------
 			obj.pinner.classList.add('lit');
-			// -------------------------------------------====================
-			obj.pinner.addEventListener('click', function pinnedEatsPinner() {
-			// -------------------------------------------====================
-				obj.pinned.classList.remove('mainLit');
-				// ------------------------------------
-				obj.pinner.classList.remove('lit');
-				// -------------------------------------------------------
-				obj.pinner.removeEventListener('click', pinnedEatsPinner);
-				// -------------------------------------------------------
-				eat(obj.pinner);
-				// -----------------------------
-				swapSide(somePiece, obj.pinner);
-				// -----------------------------
-				toggleSides();
-			});
+			// ----------------------------------------------------
+			obj.pinner.addEventListener('click', pinnedEatsPinner);
 		}
 		// ---------------------------
 		pawnBlocksKingAttacker = true;
 		// --------------------------------------------------
 		// provides id path from pinner piece to pinned piece
-		checkingSpace(obj.pinner, somePiece.id);
+		checkingSpace(obj.pinner, pieceToMove.id);
 		// -------------------------------------
 		pathOfCheck.forEach(id => {
 			// ---------------------------------------
 			pathPiece = document.getElementById( id );
 			// ---------------------------------------
-			if (checkingSpace(somePiece, id)) {
-				// ----------------------------
+			if (checkingSpace(pieceToMove, id)) {
+				// ------------------------------
 				pathPiece.classList.add('lit');
-				// ----------------------------
-				// canBlockPathOfCheck.push(
-				// 	// ---------------------------------------
-				// 	{ pathBlocker: somePiece, emptyDivId: id }
-				// );
 				// ------------------------------------------===================
 				pathPiece.addEventListener('click', function movePinnedPiece() {
-				// ------------------------------------------===================
-				obj.pinned.classList.remove('mainLit');
-				// ------------------------------------
-				obj.pinner.classList.remove('lit');
-				// -------------------------------------------------------
-				obj.pinner.removeEventListener('click', pinnedEatsPinner);
-				// -------------------------------------------------------
-				swapSide(somePiece, obj.pinner);
-				// -----------------------------
-				toggleSides();
+					// --------------------------------------===================
+					obj.pinned.classList.remove('mainLit');
+					// ------------------------------------
+					obj.pinner.classList.remove('lit');
+					// -------------------------------------------------------
+					obj.pinner.removeEventListener('click', pinnedEatsPinner);
+					// -------------------------------------------------------
+					swapSide(pieceToMove, obj.pinner);
+					// -------------------------------
+					toggleSides();
 				});
-				// --------------------------------------
-				
 			}
 		});
 		// ----------------------------
@@ -254,6 +252,7 @@ function lit(activeSide, passiveSide) {
 	//=========================
 	function moveGreyPiece(e) {
 		// resets greyPieceToMove
+		console.log('ENTERS moveGreyPiece()');
 		// -----------------------------------------
 		greyPieceToMove.classList.remove('mainLit');
 		// -----------------------------------------
@@ -1072,7 +1071,7 @@ function lit(activeSide, passiveSide) {
 			// --------------------------
 			pinnedPieces.forEach(obj => {
 				// -------------------------------------------------------------
-				if (obj.pinned === pieceToMove) { pinnedPieceLit(pieceToMove); }
+				if (obj.pinned === pieceToMove) { pinnedPieceLit(obj); }
 				// -------------------------------------------------------------
 				else { possibleMoves(); }
 			});
@@ -1127,6 +1126,3 @@ function lit(activeSide, passiveSide) {
 		});
 	}
 }
-//=======================================
-lit(blues, oranges); // begins first move
-//=======================================
