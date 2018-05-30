@@ -16,56 +16,64 @@ function lit(activeSide, passiveSide) {
 	//==================================
 	// USE THIS ONLY IN PIECELIT() --> if (pinnedPieces.length) {...}
 	function pinnedPieceLit(somePiece) {
-		// -----------------------------
-		pinnedPieces.forEach(obj => {
-			// ----------------------------
-			if (obj.pinned === somePiece) {
-				// -------------------------------------------
-				if (checkingSpace(somePiece, obj.pinner.id)) {
-					// if pinned piece can eat pinner piece
-					// ------------------------------------
-					obj.pinner.classList.add('lit');
-					// -------------------------------------------====================
-					obj.pinner.addEventListener('click', function pinnedEatsPinner() {
-					// -------------------------------------------====================
-						obj.pinned.classList.remove('mainLit');
-						// ------------------------------------
-						obj.pinner.classList.remove('lit');
-						// -------------------------------------------------------
-						obj.pinner.removeEventListener('click', pinnedEatsPinner);
-						// -------------------------------------------------------
-						eat(obj.pinner);
-						// -----------------------------
-						swapSide(somePiece, obj.pinner);
-						// -----------------------------
-						toggleSides();
-					});
-				}
-				// ---------------------------
-				pawnBlocksKingAttacker = true;
-				// --------------------------------------------------
-				// provides id path from pinner piece to pinned piece
-				checkingSpace(obj.pinner, somePiece.id);
-				// -------------------------------------
-				checkPath.forEach(id => {
-					pathPiece = document.getElementById( id );
-					if (checkingSpace(somePiece, id)) {
-						pathPiece.classList.add('lit');
-						pathPiece.addEventListener('click', function );
-						// --------------------------------------
-						if (checkingSpace(activePiece, pathId)) {
-							// ----------------------------------
-							canBlockPathOfCheck.push(
-								// ---------------------------------------------
-								{ pathBlocker: activePiece, emptyDivId: pathId }
-							);
-						}
-					}
+		// -------------------------------------------
+		if (checkingSpace(somePiece, obj.pinner.id)) {
+			// if pinned piece can eat pinner piece
+			// ------------------------------------
+			obj.pinner.classList.add('lit');
+			// -------------------------------------------====================
+			obj.pinner.addEventListener('click', function pinnedEatsPinner() {
+			// -------------------------------------------====================
+				obj.pinned.classList.remove('mainLit');
+				// ------------------------------------
+				obj.pinner.classList.remove('lit');
+				// -------------------------------------------------------
+				obj.pinner.removeEventListener('click', pinnedEatsPinner);
+				// -------------------------------------------------------
+				eat(obj.pinner);
+				// -----------------------------
+				swapSide(somePiece, obj.pinner);
+				// -----------------------------
+				toggleSides();
+			});
+		}
+		// ---------------------------
+		pawnBlocksKingAttacker = true;
+		// --------------------------------------------------
+		// provides id path from pinner piece to pinned piece
+		checkingSpace(obj.pinner, somePiece.id);
+		// -------------------------------------
+		pathOfCheck.forEach(id => {
+			// ---------------------------------------
+			pathPiece = document.getElementById( id );
+			// ---------------------------------------
+			if (checkingSpace(somePiece, id)) {
+				// ----------------------------
+				pathPiece.classList.add('lit');
+				// ----------------------------
+				// canBlockPathOfCheck.push(
+				// 	// ---------------------------------------
+				// 	{ pathBlocker: somePiece, emptyDivId: id }
+				// );
+				// ------------------------------------------===================
+				pathPiece.addEventListener('click', function movePinnedPiece() {
+				// ------------------------------------------===================
+				obj.pinned.classList.remove('mainLit');
+				// ------------------------------------
+				obj.pinner.classList.remove('lit');
+				// -------------------------------------------------------
+				obj.pinner.removeEventListener('click', pinnedEatsPinner);
+				// -------------------------------------------------------
+				swapSide(somePiece, obj.pinner);
+				// -----------------------------
+				toggleSides();
 				});
-				// ---------------------------
-				pawnBlocksKingAttacker = false;
+				// --------------------------------------
+				
 			}
 		});
+		// ----------------------------
+		pawnBlocksKingAttacker = false;
 	}
     //====================
     function endOfGame() {
@@ -1015,21 +1023,9 @@ function lit(activeSide, passiveSide) {
 			});  console.log('litDivs -->');  console.log(litDivs);
 		} // WORKS!
 	} // WORKS!
-	//====================
-	function pieceLit(e) {
-		// -------------------------------
-		console.log('ENTERS pieceLit(e)');
-		// -------------------------------
-		cleanUpAfterFirstClick();
-		// ----------------------
-        pieceToMove = e.target;
-		// ----------------------------------------
-		if (!enPassanting) { goToDiv = undefined; }
-		// ----------------------------------------
-		// lightens pieceToMove
-		pieceToMove.classList.add('mainLit');
-		// ------------------------------------------------
-		// highlights all of clicked piece's possible moves
+	//========================
+	function possibleMoves() {
+		// highlights clicked piece's possible moves
 		switch (pieceToMove.getAttribute('data-name')) {
 			// -----------------------------------------
 			case 'pawn':     pawnLit();     break;
@@ -1046,51 +1042,8 @@ function lit(activeSide, passiveSide) {
 			// ---------------------------------------------------
 			default: alert('default ERROR! pieceToMove is empty');
 		}
-		/*
-		// -----------------------------------------------------------
-		// sees if any pinned pieces match pieceToMove
-		if (pinnedPieces.includes(pieceToMove)) {
-			// finds the id path from pieceToMove TO AND INCLUDING its pinnerPiece
-			//   and excludes any ids from litDivs that are not in that path
-			
-			let idPath = []; // include obj.pinner.id
-			// POPULATE idPath with divs between pieceToMove aand its pinner piece
-			
-			// pinnedPieces[?].pinner.getAttribute('data-name');
-
-			// interceptPinnedPiece()?
-
-			// checkingSpace(pinnedPieces[?].pinner, pieceToMove.id);
-
-			// pinnedPieces should be an array of { pinned: piece, pinner: piece }
-
-			////////////////////////////////////////////////////////////////////////////////
-			// if pieceToMove can capture an idPath space, pushes pieceToMove to tempLitDivs
-			idPath.forEach(id => {
-				// ----------------------------------
-				if (checkingSpace(pieceToMove, id)) {
-					// ------------------------------
-					tempLitDivs.push(pieceToMove);
-				};
-			}); // do this instead of switch... or else remove it
-
-			////////////////////////////////////////////////////////
-			// creates a new array of litDivs that are on the idPath
-			tempLitDivs = litDivs.map(litDiv => {
-				// ------------------------------
-				if (idPath.includes(litDiv)) {
-					// -----------------------
-					return litDiv;
-				}	
-			});
-
-			//////////////////////
-			// -------------------
-			litDivs = tempLitDivs;
-		}
-		*/
 		// -----------------------------------------------------
-		// lightens & click-listens all litDivs --> movePiece(e)
+		// lightens & click-listens all litDivs to run movePiece(e)
 		if (litDivs.length) {
 			// ------------------------
 			litDivs.forEach(litDiv => {
@@ -1100,6 +1053,32 @@ function lit(activeSide, passiveSide) {
 				document.getElementById( litDiv ).addEventListener('click', movePiece);
 			}); // enters movePiece(e) on litDiv-click, unless castling
 		}
+	} // WORKS!
+	//====================
+	function pieceLit(e) {
+		// -------------------------------
+		console.log('ENTERS pieceLit(e)');
+		// -------------------------------
+		cleanUpAfterFirstClick();
+		// ----------------------
+        pieceToMove = e.target;
+		// ----------------------------------------
+		if (!enPassanting) { goToDiv = undefined; }
+		// ----------------------------------------
+		// lightens pieceToMove
+		pieceToMove.classList.add('mainLit');
+		// ----------------------------------
+		if (pinnedPieces.length) {
+			// --------------------------
+			pinnedPieces.forEach(obj => {
+				// -------------------------------------------------------------
+				if (obj.pinned === pieceToMove) { pinnedPieceLit(pieceToMove); }
+				// -------------------------------------------------------------
+				else { possibleMoves(); }
+			});
+		}
+		// since no pinnedPieces
+		else { possibleMoves(); }
     } // WORKS!
 
     // ****************
