@@ -1,3 +1,4 @@
+//=====================================
 function lit(activeSide, passiveSide) {
 	// ----------------------------------------------------------------
 	litDivs = []; // contains lit ids on which to apply click-listeners
@@ -12,6 +13,33 @@ function lit(activeSide, passiveSide) {
 	// function toggleClocks() {
 
 	// }
+	//==================================
+	// USE THIS ONLY IN PIECELIT() --> if (pinnedPieces.length) {...}
+	function pinnedPieceLit(somePiece) {
+		// -----------------------------
+		pinnedPieces.forEach(obj => {
+			// ----------------------------
+			if (obj.pinned === somePiece) {
+				// -------------------------------------------
+				if (checkingSpace(somePiece, obj.pinner.id)) {
+					// ---------------------------------------
+					obj.pinner.classList.add('lit');
+					// -------------------------------------------=====================
+					obj.pinner.addEventListener('click', function pinnedEatsPinner(e) {
+					// -------------------------------------------=====================
+						eat(obj.pinner);
+						// -----------------------------
+						swapSide(somePiece, obj.pinner);
+					});
+				}
+			}
+			// ---------------------------
+			pawnBlocksKingAttacker = true;
+			// ---------------------------
+		});
+		// ----------------------------
+		pawnBlocksKingAttacker = false;
+	}
     //====================
     function endOfGame() {
         alert(activeKing.getAttribute('data-side') + ' KING CHECKMATED!');
@@ -730,6 +758,7 @@ function lit(activeSide, passiveSide) {
 	function bishopLit() {
 		//===================================
 		function quadrant(bishopX, bishopY) {
+			// ---------------------------------------------
 			let bishopPathId = bishopX.toString() + bishopY;
 			// ---------------------------------------------
 			// while bishop path empty, highlight space
@@ -738,20 +767,19 @@ function lit(activeSide, passiveSide) {
 				litDivs.push( bishopPathId );
 				// --------------------------
 				// increment bishopX
-				if (bishopX > +pieceToMove.id[0]) {
-					bishopX += 1;
-				} else { bishopX -= 1; }
-				// ---------------------
+				if (bishopX > +pieceToMove.id[0]) { bishopX += 1; }
+				else { bishopX -= 1; }
+				// -------------------
 				// increment bishopY
-				if (bishopY > +pieceToMove.id[1]) {
-					bishopY += 1;
-				} else { bishopY -= 1; }
-				// ---------------------
+				if (bishopY > +pieceToMove.id[1]) { bishopY += 1; }
+				else { bishopY -= 1; }
+				// -------------------
 				// updates bishopPathId
 				bishopPathId = bishopX.toString() + bishopY;
 			} // -------------------------------------------
 			// highlights attackable pieces in bishop's path
 			for (let i = 0; i < passiveSide.length; i++) {
+				// ---------------------------------------
 				if (passiveSide[i].id === bishopPathId) {
 					litDivs.push( bishopPathId );
 				}

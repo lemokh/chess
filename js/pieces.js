@@ -372,12 +372,14 @@ function checkingSpace(somePiece, checkSpaceId) {
 		if (nails.length === 1) { // if only one nail
 			// if that nail & someRook aren't on the same side
 			if (nails[0].getAttribute('data-side') !== someRook.getAttribute('data-side')) {
-				// -------------------------
-				pinnedPieces.push(nails[0]);
-				// -------------------------
-				pinnerPieces.push(someRook);
+				// -------------------------------------------------------------------------
+				pinnedPieces.push(
+					// -----------------------------------
+					{ pinner: someRook, pinned: nails[0] }
+				);
 				// -------------------------------------------------------------------------------------------------
 				alert(nails[0].getAttribute('data-side') + ' ' + nails[0].getAttribute('data-name') + ' IS PINNED');
+				// -------------------------------------------------------------------------------------------------
 				console.log('pinnedPieces -->');  console.log(pinnedPieces);
 			}
 		}
