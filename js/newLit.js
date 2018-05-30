@@ -22,23 +22,50 @@ function lit(activeSide, passiveSide) {
 			if (obj.pinned === somePiece) {
 				// -------------------------------------------
 				if (checkingSpace(somePiece, obj.pinner.id)) {
-					// ---------------------------------------
+					// if pinned piece can eat pinner piece
+					// ------------------------------------
 					obj.pinner.classList.add('lit');
-					// -------------------------------------------=====================
-					obj.pinner.addEventListener('click', function pinnedEatsPinner(e) {
-					// -------------------------------------------=====================
+					// -------------------------------------------====================
+					obj.pinner.addEventListener('click', function pinnedEatsPinner() {
+					// -------------------------------------------====================
+						obj.pinned.classList.remove('mainLit');
+						// ------------------------------------
+						obj.pinner.classList.remove('lit');
+						// -------------------------------------------------------
+						obj.pinner.removeEventListener('click', pinnedEatsPinner);
+						// -------------------------------------------------------
 						eat(obj.pinner);
 						// -----------------------------
 						swapSide(somePiece, obj.pinner);
+						// -----------------------------
+						toggleSides();
 					});
 				}
+				// ---------------------------
+				pawnBlocksKingAttacker = true;
+				// --------------------------------------------------
+				// provides id path from pinner piece to pinned piece
+				checkingSpace(obj.pinner, somePiece.id);
+				// -------------------------------------
+				checkPath.forEach(id => {
+					pathPiece = document.getElementById( id );
+					if (checkingSpace(somePiece, id)) {
+						pathPiece.classList.add('lit');
+						pathPiece.addEventListener('click', function );
+						// --------------------------------------
+						if (checkingSpace(activePiece, pathId)) {
+							// ----------------------------------
+							canBlockPathOfCheck.push(
+								// ---------------------------------------------
+								{ pathBlocker: activePiece, emptyDivId: pathId }
+							);
+						}
+					}
+				});
+				// ---------------------------
+				pawnBlocksKingAttacker = false;
 			}
-			// ---------------------------
-			pawnBlocksKingAttacker = true;
-			// ---------------------------
 		});
-		// ----------------------------
-		pawnBlocksKingAttacker = false;
 	}
     //====================
     function endOfGame() {
@@ -221,7 +248,6 @@ function lit(activeSide, passiveSide) {
 		// resets greyPieceToMove
 		// -----------------------------------------
 		greyPieceToMove.classList.remove('mainLit');
-
 		// -----------------------------------------
 		// clears greyLitDiv pieces
 		greyLitPieces.forEach(greyLitPiece => {
@@ -309,7 +335,7 @@ function lit(activeSide, passiveSide) {
 				else { // since activePiece is pinned
 					// if activePiece can eat kingAttacker
 					if (checkingSpace(activePiece, kingAttackers[0].id)) {
-						// add kingAttacker's id to litDivs
+						// -----------------------------------------------
 						canEatKingAttacker.push(activePiece);
 					}
 				}
