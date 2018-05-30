@@ -1073,6 +1073,7 @@ function lit(activeSide, passiveSide) {
 	// if activeKing in check
 	if (kingAttackers.length) { isMate(); }
 	// ------------------------------------------------------
+	/*
 	// since activeKing not in check & there are pinnedPieces
 	else if (pinnedPieces.length) {
 		// --------------------------------
@@ -1083,6 +1084,7 @@ function lit(activeSide, passiveSide) {
 			else { activePiece.addEventListener('click', pieceLit); }
 		});
 	}
+	*/
     // -----------------------------------------------------
 	else { // since activeKing not in check & no pinnedPieces
 		// -------------------------------------------------
