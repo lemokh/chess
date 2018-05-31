@@ -1087,17 +1087,30 @@ function lit(activeSide, passiveSide) {
 	function pieceLit(e) {
 		// -------------------------------
 		console.log('ENTERS pieceLit(e)');
-		// -------------------------------
-		if (newPieceClicked === undefined) {
+		// ---------------------------------------------------------------
+		console.log('newPieceClicked -->');  console.log(newPieceClicked);
+		// ---------------------------------------------------------------
+		if (newPieceClicked === undefined) { // if first click of the turn
+			/// ----------------------------------------------------------
+			newPieceClicked = e.target;
+			// ---------------------------------------------------------------
+			console.log('newPieceClicked -->');  console.log(newPieceClicked);
 			// ---------------------------------------------
 			e.target.removeEventListener('click', pieceLit);
-			// -------------------------------------------------
-			newPieceClicked.addEventListener('click', pieceLit);
+			// stops click-listening to e.target
 		}
-		else { // since first click
+		else { // since not first click of the turn,
+			// but since first click of that button this turn
+			// ---------------------------------------------------------------
+			console.log('newPieceClicked -->');  console.log(newPieceClicked);
+			// ---------------------------------------------------------------
+			newPieceClicked.addEventListener('click', pieceLit);
+			/// starts click-listening to newPieceClicked
+			// ------------------------------------------
 			newPieceClicked = e.target;
 			// ---------------------------------------------
 			e.target.removeEventListener('click', pieceLit);
+			// stops click-listening to e.target
 		}
 		// ----------------------
 		cleanUpAfterFirstClick();
