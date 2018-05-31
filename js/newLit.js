@@ -405,7 +405,7 @@ function lit(activeSide, passiveSide) {
         // ---------------------------------------------------------------
 		// populates litDivs where activeKing can move via checkingSpace()
 		kingLit();
-		// -------------------------------
+		// --------------------------
         // if king can move, not mate
 		if (litDivs.length) {
 			// ---------------------------------------
@@ -1096,11 +1096,12 @@ function lit(activeSide, passiveSide) {
 		pieceToMove.classList.add('mainLit');
 		// ----------------------------------
 		if (pinnedPieces.length) {
+			tempPins = pinnedPieces;
 			// --------------------------
 			pinnedPieces.forEach(obj => {
-				// -------------------------------------------------------------
+				// -----------------------------------------------------
 				if (obj.pinned === pieceToMove) { pinnedPieceLit(obj); }
-				// -------------------------------------------------------------
+				// -----------------------------------------------------
 				else { possibleMoves(); }
 			});
 		}
@@ -1132,7 +1133,7 @@ function lit(activeSide, passiveSide) {
 	// ----------------------------------------------------------------
 	// if activeKing in check
 	if (kingAttackers.length) { isMate(); }
-	// ------------------------------------------------------
+	// ------------------------------------
 	/*
 	// since activeKing not in check & there are pinnedPieces
 	else if (pinnedPieces.length) {
