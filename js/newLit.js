@@ -144,13 +144,18 @@ function lit(activeSide, passiveSide) {
 			}
 			// --------------------------------------------
 			// cleans up after last clicking a pinned piece
-			if (pinnedPieces.includes(pieceToMove)) {
-				// ---------------------------------------------------
-				pieceToMove.removeEventListener( 'click', pinnedLit );
-				// ---------------------------------------------------------
-				pinningPiece.removeEventListener( 'click', pinnedPieceEats );
-				// ---------------------------------------------------------
-				pinningPiece.classList.remove( 'lit' );
+			for (let i = 0; i < pinnedPieces.length; i++) {
+				// ----------------------------------------
+				if (pinnedPieces[i].pinned === pieceToMove) {
+					// ---------------------------------------------------
+					pieceToMove.removeEventListener( 'click', pinnedLit );
+					// ---------------------------------------------------------
+					pinningPiece.removeEventListener( 'click', pinnedPieceEats );
+					// ---------------------------------------------------------
+					pinningPiece.classList.remove( 'lit' );
+					// ------------------------------------
+					break;
+				}
 			}
 			// ------------------------------------------------------------
 			// un-lightens, clears out & stops click-listening to castleIds
@@ -321,10 +326,18 @@ function lit(activeSide, passiveSide) {
 		//===================================
 		function eatOrBlock(kingAttackerId) {
 			// populates canEatKingAttacker & canBlockPathOfCheck, excluding activeKing
+			activePieceIsPinned = false;
 			// ------------------------------------------------------------------------
 			activeSide.forEach(activePiece => {
 				// if activePiece not pinned
-				if (!pinnedPieces.includes(activePiece)) {
+				for (let i = 0; i < pinnedPieces.length; i++) {
+					// ------------------------------------------
+					if (pinnedPieces[i].pinned === activePiece) {
+						// --------------------------------------
+						activePieceIsPinned = true;  break;
+					}
+				}
+				if (!activePieceIsPinned) {
 					// and if not activeKing
 					if (activePiece.getAttribute('data-name') !== 'king') {
 						// ------------------------------------------------

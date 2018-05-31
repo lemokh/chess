@@ -1,5 +1,5 @@
-var pinnerPieces = [], knightCells, pinningPiece, pawnBlocksKingAttacker, pathToCheck, idToBlock, kingAttackers= [], greyLitPieces = [], defenders = [], pawnDefenders = [], enPassantCell = '', orangeTakenBoxIdCounter = -16, blueTakenBoxIdCounter = -1, enPassanting = false,
-heroics = [], anId, greyPieceToMove, pathPiece, litSpace, blocker, mate, canCheck, canEatKingAttacker = [], canBlockPathOfCheck = [], gameOver, kingSlayer, checkPath, emptySpaces, knightLight, bishopPathId, rookPathId, blueKingFirstMove, blueRook1FirstMove, activeKing, blueRook2FirstMove,  orangeKingFirstMove, orangeRook1FirstMove, orangeRook2FirstMove, castleIds = [], noCastle, kingAble, pieceToMove, goToDiv, enPassantDiv, prevGoToDiv, enPassantGoToDiv, pawnJumpDiv, enPassantables2 = [], enPassantedPawn, knightLight, takenOrangeBox, takenBlueBox, gameEnds, tempSide, movedPiece, mainLitDiv, litDivs, unLitDivs, img, index1, index2, tempPiece, moves, takenBox, activeCells, openAndOpponentHeldKingSpaces, kingSpacesUnderAttack, orangeKingSpacesUnderAttack, orangelessKingSpaces, orangelessKingSpaces, blueKingSpaces, bluelessKingSpaces, orangeKingSpacesUnderAttack, vacantKingSpaces, whiteKing, blackKing, knightMoves, bishopMoves, bishopX, bishopY, rookMoves, kingSpaces, kingOpenSpaces, occupiedKingSpaces, defenders, pinnedPieces, pathOfCheck = [], nails, whites, blacks;
+var knightCells, pinningPiece, pawnBlocksKingAttacker, pathToCheck, idToBlock, kingAttackers= [], greyLitPieces = [], defenders = [], pawnDefenders = [], enPassantCell = '', orangeTakenBoxIdCounter = -16, blueTakenBoxIdCounter = -1, enPassanting = false,
+heroics = [], anId, greyPieceToMove, pathPiece, activePieceIsPinned, litSpace, blocker, mate, canCheck, canEatKingAttacker = [], canBlockPathOfCheck = [], gameOver, kingSlayer, checkPath, emptySpaces, knightLight, bishopPathId, rookPathId, blueKingFirstMove, blueRook1FirstMove, activeKing, blueRook2FirstMove,  orangeKingFirstMove, orangeRook1FirstMove, orangeRook2FirstMove, castleIds = [], noCastle, kingAble, pieceToMove, goToDiv, enPassantDiv, prevGoToDiv, enPassantGoToDiv, pawnJumpDiv, enPassantables2 = [], enPassantedPawn, knightLight, takenOrangeBox, takenBlueBox, gameEnds, tempSide, movedPiece, mainLitDiv, litDivs, unLitDivs, img, index1, index2, tempPiece, moves, takenBox, activeCells, openAndOpponentHeldKingSpaces, kingSpacesUnderAttack, orangeKingSpacesUnderAttack, orangelessKingSpaces, orangelessKingSpaces, blueKingSpaces, bluelessKingSpaces, orangeKingSpacesUnderAttack, vacantKingSpaces, whiteKing, blackKing, knightMoves, bishopMoves, bishopX, bishopY, rookMoves, kingSpaces, kingOpenSpaces, occupiedKingSpaces, defenders, pinnedPieces, pathOfCheck = [], nails, whites, blacks;
 
 // ---------------
 const boardIds = [
@@ -52,7 +52,7 @@ function endGameNow() {
 function checkingSpace(somePiece, checkSpaceId) {
     // somePiece is an <img>
 	// checkSpaceId is a kingSpace id that is either empty or has a passivePiece
-	pinnedPieces = []; pathOfCheck = []; pinnerPieces = [];
+	pinnedPieces = []; pathOfCheck = [];
 	//==============================
 	function pawnAttacks(somePawn) {
 		// --------------------------
@@ -288,13 +288,15 @@ function checkingSpace(somePiece, checkSpaceId) {
 			// if that nail & someBishop aren't on the same side
 			if (nails[0].getAttribute('data-side') !== someBishop.getAttribute('data-side')) {
 				// ---------------------------------------------------------------------------
-				pinnedPieces.push(nails[0]);
-				// ---------------------------
-				pinnerPieces.push(someBishop);
+				pinnedPieces.push(
+					{ pinner: someBishop, pinned: nails[0] }
+				);
+				// ------------------------------
+				// pinnerPieces.push(someBishop);
 				// -------------------------------------------------------------------------------------------
 				alert(nails[0].getAttribute('data-side') + ' ' + nails[0].getAttribute('data-name') + ' IS PINNED');
 				console.log('pinnedPieces -->');  console.log(pinnedPieces);
-				console.log('pinnerPieces -->');  console.log(pinnerPieces);
+				// console.log('pinnerPieces -->');  console.log(pinnerPieces);
 			}
 		} // -------------------------------------------------
 		return false; // someBishop cannot attack checkSpaceId

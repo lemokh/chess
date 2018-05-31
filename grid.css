@@ -1,7 +1,7 @@
 body {
     background-image: url('images/boardBody.jpg');
     /*backdrop-filter: contrast(110%);*/
-    filter: brightness(115%);
+    filter: brightness(1.2);
     background-color: rgba(240, 255, 255, 0.5);
     background-blend-mode: luminosity;
 }
