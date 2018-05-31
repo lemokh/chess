@@ -14,6 +14,8 @@ function lit(activeSide, passiveSide) {
 	canEatKingAttacker = [];
 	// ----------------------------
 	pawnBlocksKingAttacker = false;
+	// ----------------------------
+	newPieceClicked = undefined;
 
 	//==========================
 	// function toggleClocks() {
@@ -1086,6 +1088,18 @@ function lit(activeSide, passiveSide) {
 		// -------------------------------
 		console.log('ENTERS pieceLit(e)');
 		// -------------------------------
+		if (newPieceClicked === undefined) {
+			// ---------------------------------------------
+			e.target.removeEventListener('click', pieceLit);
+			// -------------------------------------------------
+			newPieceClicked.addEventListener('click', pieceLit);
+		}
+		else { // since first click
+			newPieceClicked = e.target;
+			// ---------------------------------------------
+			e.target.removeEventListener('click', pieceLit);
+		}
+		// ----------------------
 		cleanUpAfterFirstClick();
 		// ----------------------
         pieceToMove = e.target;
@@ -1096,7 +1110,6 @@ function lit(activeSide, passiveSide) {
 		pieceToMove.classList.add('mainLit');
 		// ----------------------------------
 		if (pinnedPieces.length) {
-			tempPins = pinnedPieces;
 			// --------------------------
 			pinnedPieces.forEach(obj => {
 				// -----------------------------------------------------
