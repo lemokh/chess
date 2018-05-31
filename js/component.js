@@ -1,16 +1,16 @@
 /*
 ERRORS:
 
-    1.  pinned piece doesn't register as pinned after first time,
-            although alert declares it as pinned each move that it is pinned...
-
-        -- checkingSpace() clears pinnedPieces
+    1.  pinnedPiece no longer moves between its path to king and its path to its pinner 
     
     2.  in check, king does not turn grey and move if able...
 
     3.  if (pinnedPiece no longer pinned) { 
             pinnedPiece.setAttribute('data-pinned', 'true');
         }
+
+
+METHOD:  walk through lit() step by step with the scenario in mind --> find mis-alignments
 
 
 BUILD:

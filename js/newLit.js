@@ -94,6 +94,23 @@ function lit(activeSide, passiveSide) {
 		});
 		// ----------------------------
 		pawnBlocksKingAttacker = false;
+		// -------------------------------------------------
+		// provides id path for pinned piece to its own king
+		checkingSpace(pieceToMove, activeKing.id);
+		// ---------------------------------------
+		pathOfCheck.forEach(id => {
+			// ---------------------------------------
+			pathPiece = document.getElementById( id );
+			// ---------------------------------------
+			if (checkingSpace(pieceToMove, id)) {
+				// ------------------------------
+				pathPiece.classList.add('lit');
+				// ----------------------------
+				litDivs.push(id);
+				// --------------------------------------------------
+				pathPiece.addEventListener('click', movePinnedPiece);
+			}
+		});
 	}
     //====================
     function endOfGame() {
