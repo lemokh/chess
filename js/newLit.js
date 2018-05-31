@@ -40,10 +40,12 @@ function lit(activeSide, passiveSide) {
 	}
 	//============================
 	function pinnedPieceLit() {
+		// ------------------------------------
+		console.log('ENTERS pinnedPieceLit()');
 		//==========================
 		function movePinnedPiece(e) {
 			// ------------------------------------
-			obj.pinned.classList.remove('mainLit');
+			pieceToMove.classList.remove('mainLit');
 			// ------------------------------------
 			litDivs.forEach(litDiv => {
 				// ------------------------------------------
@@ -60,21 +62,22 @@ function lit(activeSide, passiveSide) {
 			// -----------------------------
 			toggleSides();
 		}
-		// ---------------------------------------------
-		if (checkingSpace(pieceToMove)) {
+		// ---------------------------------------------------
+		pinnerPiece = pieceToMove.getAttribute('data-pinner');
+		// ---------------------------------------------------
+		if (checkingSpace(pieceToMove, pinnerPiece.id)) {
 			// if pinned piece can eat pinner piece
-			// ------------------------------------
-			obj.pinner.classList.add('lit');
-			// -----------------------------
-			litDivs.push(obj.pinner.id);
+			pinnerPiece.classList.add('lit');
+			// ------------------------------
+			litDivs.push(pinnerPiece.id);
 			// ---------------------------------------------------
-			obj.pinner.addEventListener('click', movePinnedPiece);
+			pinnerPiece.addEventListener('click', movePinnedPiece);
 		}
 		// ---------------------------
 		pawnBlocksKingAttacker = true;
 		// --------------------------------------------------
 		// provides id path from pinner piece to pinned piece
-		checkingSpace(obj.pinner, pieceToMove.id);
+		checkingSpace(pinnerPiece, pieceToMove.id);
 		// ---------------------------------------
 		pathOfCheck.forEach(id => {
 			// ---------------------------------------
@@ -145,21 +148,6 @@ function lit(activeSide, passiveSide) {
 				});
 				// ----------
 				litDivs = [];
-			}
-			// --------------------------------------------
-			// cleans up after last clicking a pinned piece
-			for (let i = 0; i < pinnedPieces.length; i++) {
-				// ----------------------------------------
-				if (pinnedPieces[i].pinned === pieceToMove) {
-					// ---------------------------------------------------
-					pieceToMove.removeEventListener( 'click', pinnedLit );
-					// ---------------------------------------------------------
-					pinningPiece.removeEventListener( 'click', pinnedPieceEats );
-					// ---------------------------------------------------------
-					pinningPiece.classList.remove( 'lit' );
-					// ------------------------------------
-					break;
-				}
 			}
 			// ------------------------------------------------------------
 			// un-lightens, clears out & stops click-listening to castleIds
@@ -1056,6 +1044,8 @@ function lit(activeSide, passiveSide) {
 	} // WORKS!
 	//========================
 	function possibleMoves() {
+		// -----------------------------------
+		console.log('ENTERS possibleMoves()');
 		// highlights clicked piece's possible moves
 		switch (pieceToMove.getAttribute('data-name')) {
 			// -----------------------------------------
@@ -1117,9 +1107,15 @@ function lit(activeSide, passiveSide) {
 		// ----------------------------------------
 		// lightens pieceToMove
 		pieceToMove.classList.add('mainLit');
-		// ---------------------------------------------------------------
-		if (e.target.getAttribute('data-pinned')) { pinnedPieceLit(); }
-		// ---------------------------------------------------------------
+		// ----------------------------------
+		console.log(pieceToMove.getAttribute('data-pinned'));
+		// ----------------------------------------------------
+		if (pieceToMove.getAttribute('data-pinned') === 'true') { 
+			alert('that clicked pieceToMove is pinned!');
+			// ----------------
+			pinnedPieceLit();
+		}
+		// ------------------------------------------------------------------------
 		else { possibleMoves(); }
     } // WORKS!
 

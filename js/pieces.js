@@ -1,5 +1,5 @@
 var knightCells, pinningPiece, pawnBlocksKingAttacker, pathToCheck, idToBlock, kingAttackers= [], greyLitPieces = [], defenders = [], pawnDefenders = [], enPassantCell = '', orangeTakenBoxIdCounter = -16, blueTakenBoxIdCounter = -1, enPassanting = false,
-heroics = [], anId, newPieceClicked, tempPinnedPieces, greyPieceToMove, pathPiece, activePieceIsPinned, litSpace, blocker, mate, canCheck, canEatKingAttacker = [], canBlockPathOfCheck = [], gameOver, kingSlayer, checkPath, emptySpaces, knightLight, bishopPathId, rookPathId, blueKingFirstMove, blueRook1FirstMove, activeKing, blueRook2FirstMove,  orangeKingFirstMove, orangeRook1FirstMove, orangeRook2FirstMove, castleIds = [], noCastle, kingAble, pieceToMove, goToDiv, enPassantDiv, prevGoToDiv, enPassantGoToDiv, pawnJumpDiv, enPassantables2 = [], enPassantedPawn, knightLight, takenOrangeBox, takenBlueBox, gameEnds, tempSide, movedPiece, mainLitDiv, litDivs, unLitDivs, img, index1, index2, tempPiece, moves, takenBox, activeCells, openAndOpponentHeldKingSpaces, kingSpacesUnderAttack, orangeKingSpacesUnderAttack, orangelessKingSpaces, orangelessKingSpaces, blueKingSpaces, bluelessKingSpaces, orangeKingSpacesUnderAttack, vacantKingSpaces, whiteKing, blackKing, knightMoves, bishopMoves, bishopX, bishopY, rookMoves, kingSpaces, kingOpenSpaces, occupiedKingSpaces, defenders, pinnedPieces, pathOfCheck = [], nails, whites, blacks;
+heroics = [], anId, newPieceClicked, pinnerPiece, tempPinnedPieces, greyPieceToMove, pathPiece, activePieceIsPinned, litSpace, blocker, mate, canCheck, canEatKingAttacker = [], canBlockPathOfCheck = [], gameOver, kingSlayer, checkPath, emptySpaces, knightLight, bishopPathId, rookPathId, blueKingFirstMove, blueRook1FirstMove, activeKing, blueRook2FirstMove,  orangeKingFirstMove, orangeRook1FirstMove, orangeRook2FirstMove, castleIds = [], noCastle, kingAble, pieceToMove, goToDiv, enPassantDiv, prevGoToDiv, enPassantGoToDiv, pawnJumpDiv, enPassantables2 = [], enPassantedPawn, knightLight, takenOrangeBox, takenBlueBox, gameEnds, tempSide, movedPiece, mainLitDiv, litDivs, unLitDivs, img, index1, index2, tempPiece, moves, takenBox, activeCells, openAndOpponentHeldKingSpaces, kingSpacesUnderAttack, orangeKingSpacesUnderAttack, orangelessKingSpaces, orangelessKingSpaces, blueKingSpaces, bluelessKingSpaces, orangeKingSpacesUnderAttack, vacantKingSpaces, whiteKing, blackKing, knightMoves, bishopMoves, bishopX, bishopY, rookMoves, kingSpaces, kingOpenSpaces, occupiedKingSpaces, defenders, pinnedPieces, pathOfCheck = [], nails, whites, blacks;
 
 // ---------------
 const boardIds = [
@@ -294,12 +294,13 @@ function checkingSpace(somePiece, checkSpaceId) {
 				tempPinnedPieces.push(
 					{ pinner: someBishop, pinned: nails[0] }
 				);
-				// -------------------------------------------
-				nails[0].setAttribute('data-pinned') === true;
+				// ----------------------------------------
+				nails[0].setAttribute('data-pinned', true);
+				// ----------------------------------------------
+				nails[0].setAttribute('data-pinner', someBishop);
 				// -------------------------------------------------------------------------------------------
 				alert(nails[0].getAttribute('data-side') + ' ' + nails[0].getAttribute('data-name') + ' IS PINNED');
 				console.log('pinnedPieces -->');  console.log(pinnedPieces);
-				// console.log('pinnerPieces -->');  console.log(pinnerPieces);
 			}
 		} // -------------------------------------------------
 		return false; // someBishop cannot attack checkSpaceId
@@ -387,7 +388,9 @@ function checkingSpace(somePiece, checkSpaceId) {
 					{ pinner: someRook, pinned: nails[0] }
 				);
 				// -------------------------------------------
-				nails[0].setAttribute('data-pinned') === true;
+				nails[0].setAttribute('data-pinned', true);
+				// -----------------------------------------------
+				nails[0].setAttribute('data-pinner', someRook);
 				// -------------------------------------------------------------------------------------------------
 				alert(nails[0].getAttribute('data-side') + ' ' + nails[0].getAttribute('data-name') + ' IS PINNED');
 				// -------------------------------------------------------------------------------------------------
