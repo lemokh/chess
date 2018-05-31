@@ -1,4 +1,5 @@
-const lit = (activeSide, passiveSide) => {
+//=====================================
+function lit(activeSide, passiveSide) {
 	// ----------------------------------------------------------------
 	litDivs = []; // contains lit ids on which to apply click-listeners
 	// --------------------------------------------------------------------
@@ -11,6 +12,8 @@ const lit = (activeSide, passiveSide) => {
 	canBlockPathOfCheck = [];
 	// ----------------------
 	canEatKingAttacker = [];
+	// ----------------------------
+	pawnBlocksKingAttacker = false;
 
 	//==========================
 	// function toggleClocks() {
@@ -18,7 +21,7 @@ const lit = (activeSide, passiveSide) => {
 	// }
 	//==============================
 	function pinnedEatsPinner(obj) {
-	// ----------------------------------------
+		// ------------------------------------
 		obj.pinned.classList.remove('mainLit');
 		// ------------------------------------
 		obj.pinner.classList.remove('lit');
@@ -33,20 +36,42 @@ const lit = (activeSide, passiveSide) => {
 	}
 	//============================
 	function pinnedPieceLit(obj) {
-		// -------------------------------------------
+		//==========================
+		function movePinnedPiece(e) {
+			// ------------------------------------
+			obj.pinned.classList.remove('mainLit');
+			// ------------------------------------
+			litDivs.forEach(litDiv => {
+				// ------------------------------------------
+				litPiece = document.getElementById( litDiv );
+				// ------------------------------------------
+				litPiece.classList.remove('lit');
+				// ----------------------------------------------------
+				litPiece.removeEventListener('click', movePinnedPiece);
+				// ----------------------------------------------------
+			});
+			litDivs = [];
+			// -----------------------------
+			swapSide(pieceToMove, e.target);
+			// -----------------------------
+			toggleSides();
+		}
+		// ---------------------------------------------
 		if (checkingSpace(pieceToMove, obj.pinner.id)) {
 			// if pinned piece can eat pinner piece
 			// ------------------------------------
 			obj.pinner.classList.add('lit');
-			// ----------------------------------------------------
-			obj.pinner.addEventListener('click', pinnedEatsPinner);
+			// -----------------------------
+			litDivs.push(obj.pinner.id);
+			// ---------------------------------------------------
+			obj.pinner.addEventListener('click', movePinnedPiece);
 		}
 		// ---------------------------
 		pawnBlocksKingAttacker = true;
 		// --------------------------------------------------
 		// provides id path from pinner piece to pinned piece
 		checkingSpace(obj.pinner, pieceToMove.id);
-		// -------------------------------------
+		// ---------------------------------------
 		pathOfCheck.forEach(id => {
 			// ---------------------------------------
 			pathPiece = document.getElementById( id );
@@ -54,19 +79,10 @@ const lit = (activeSide, passiveSide) => {
 			if (checkingSpace(pieceToMove, id)) {
 				// ------------------------------
 				pathPiece.classList.add('lit');
-				// ------------------------------------------===================
-				pathPiece.addEventListener('click', function movePinnedPiece() {
-					// --------------------------------------===================
-					obj.pinned.classList.remove('mainLit');
-					// ------------------------------------
-					obj.pinner.classList.remove('lit');
-					// -------------------------------------------------------
-					obj.pinner.removeEventListener('click', pinnedEatsPinner);
-					// -------------------------------------------------------
-					swapSide(pieceToMove, obj.pinner);
-					// -------------------------------
-					toggleSides();
-				});
+				// ----------------------------
+				litDivs.push(id);
+				// --------------------------------------------------
+				pathPiece.addEventListener('click', movePinnedPiece);
 			}
 		});
 		// ----------------------------
@@ -129,7 +145,7 @@ const lit = (activeSide, passiveSide) => {
 			// --------------------------------------------
 			// cleans up after last clicking a pinned piece
 			if (pinnedPieces.includes(pieceToMove)) {
-				// if (pinCount === 1) { all this below }
+				// ---------------------------------------------------
 				pieceToMove.removeEventListener( 'click', pinnedLit );
 				// ---------------------------------------------------------
 				pinningPiece.removeEventListener( 'click', pinnedPieceEats );
@@ -228,7 +244,7 @@ const lit = (activeSide, passiveSide) => {
 		// -----------------------------------------
 		if (canEatKingAttacker.includes(e.target)) {
 			// -------------------------------------
-			litDivs.push(kingAttacker.id);
+			litDivs.push(kingAttackers[0].id);
 		}
 		// ---------------------------------
 		canBlockPathOfCheck.forEach(obj => {
@@ -377,7 +393,7 @@ const lit = (activeSide, passiveSide) => {
 		// populates litDivs where activeKing can move via checkingSpace()
 		kingLit();
 		// -------------------------------
-        // if king can move, no check mate
+        // if king can move, not mate
 		if (litDivs.length) {
 			// ---------------------------------------
             console.log('king can move out of check');
@@ -1125,3 +1141,4 @@ const lit = (activeSide, passiveSide) => {
 		});
 	}
 }
+
