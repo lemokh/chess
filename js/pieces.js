@@ -290,8 +290,12 @@ function checkingSpace(somePiece, checkSpaceId) {
 				pinnedPieces.push(
 					{ pinner: someBishop, pinned: nails[0] }
 				);
-				// ------------------------------
-				// pinnerPieces.push(someBishop);
+				// -------------------
+				tempPinnedPieces.push(
+					{ pinner: someBishop, pinned: nails[0] }
+				);
+				// -------------------------------------------
+				nails[0].setAttribute('data-pinned') === true;
 				// -------------------------------------------------------------------------------------------
 				alert(nails[0].getAttribute('data-side') + ' ' + nails[0].getAttribute('data-name') + ' IS PINNED');
 				console.log('pinnedPieces -->');  console.log(pinnedPieces);
@@ -378,6 +382,12 @@ function checkingSpace(somePiece, checkSpaceId) {
 					// -----------------------------------
 					{ pinner: someRook, pinned: nails[0] }
 				);
+				// -------------------
+				tempPinnedPieces.push(
+					{ pinner: someRook, pinned: nails[0] }
+				);
+				// -------------------------------------------
+				nails[0].setAttribute('data-pinned') === true;
 				// -------------------------------------------------------------------------------------------------
 				alert(nails[0].getAttribute('data-side') + ' ' + nails[0].getAttribute('data-name') + ' IS PINNED');
 				// -------------------------------------------------------------------------------------------------

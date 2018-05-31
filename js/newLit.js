@@ -16,6 +16,8 @@ function lit(activeSide, passiveSide) {
 	pawnBlocksKingAttacker = false;
 	// ----------------------------
 	newPieceClicked = undefined;
+	// -------------------------
+	tempPinnedPieces = [];
 
 	//==========================
 	// function toggleClocks() {
@@ -37,7 +39,7 @@ function lit(activeSide, passiveSide) {
 		toggleSides();
 	}
 	//============================
-	function pinnedPieceLit(obj) {
+	function pinnedPieceLit() {
 		//==========================
 		function movePinnedPiece(e) {
 			// ------------------------------------
@@ -59,7 +61,7 @@ function lit(activeSide, passiveSide) {
 			toggleSides();
 		}
 		// ---------------------------------------------
-		if (checkingSpace(pieceToMove, obj.pinner.id)) {
+		if (checkingSpace(pieceToMove)) {
 			// if pinned piece can eat pinner piece
 			// ------------------------------------
 			obj.pinner.classList.add('lit');
@@ -1088,22 +1090,16 @@ function lit(activeSide, passiveSide) {
 		// -------------------------------
 		console.log('ENTERS pieceLit(e)');
 		// ---------------------------------------------------------------
-		console.log('newPieceClicked -->');  console.log(newPieceClicked);
-		// ---------------------------------------------------------------
 		if (newPieceClicked === undefined) { // if first click of the turn
 			/// ----------------------------------------------------------
 			newPieceClicked = e.target;
-			// ---------------------------------------------------------------
-			console.log('newPieceClicked -->');  console.log(newPieceClicked);
 			// ---------------------------------------------
 			e.target.removeEventListener('click', pieceLit);
 			// stops click-listening to e.target
 		}
 		else { // since not first click of the turn,
 			// but since first click of that button this turn
-			// ---------------------------------------------------------------
-			console.log('newPieceClicked -->');  console.log(newPieceClicked);
-			// ---------------------------------------------------------------
+			// -------------------------------------------------
 			newPieceClicked.addEventListener('click', pieceLit);
 			/// starts click-listening to newPieceClicked
 			// ------------------------------------------
@@ -1121,17 +1117,9 @@ function lit(activeSide, passiveSide) {
 		// ----------------------------------------
 		// lightens pieceToMove
 		pieceToMove.classList.add('mainLit');
-		// ----------------------------------
-		if (pinnedPieces.length) {
-			// --------------------------
-			pinnedPieces.forEach(obj => {
-				// -----------------------------------------------------
-				if (obj.pinned === pieceToMove) { pinnedPieceLit(obj); }
-				// -----------------------------------------------------
-				else { possibleMoves(); }
-			});
-		}
-		// since no pinnedPieces
+		// ---------------------------------------------------------------
+		if (e.target.getAttribute('data-pinned')) { pinnedPieceLit(); }
+		// ---------------------------------------------------------------
 		else { possibleMoves(); }
     } // WORKS!
 
