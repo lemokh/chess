@@ -10,7 +10,7 @@ ERRORS:
         }
 
 
-METHOD:  walk through lit() step by step with the scenario in mind --> find mis-alignments
+METHOD:  walk through lit() step by step with each scenario in mind to find mis-alignments
 
 
 BUILD:
