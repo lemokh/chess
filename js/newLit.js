@@ -20,10 +20,34 @@ function lit(activeSide, passiveSide) {
 	tempPinnedPieces = [];
 
 	//==========================
-	// function toggleClocks() {
-
-	// }
-	//==============================
+	// function toggleClocks() {}
+	//===================================
+	function addLitDivHandler(funcName) {
+		// ------------------------------
+		litDivs.forEach( litDiv => {
+			// ------------------------------------------
+			litPiece = document.getElementById( litDiv );
+			// ------------------------------------------
+			litPiece.classList.add( 'lit' );
+			// --------------------------------------------
+			litPiece.addEventListener( 'click', funcName );
+		});
+	}
+	//======================================
+	function removeLitDivHandler(funcName) {
+		// -----------------------------------
+		litDivs.forEach( litDiv => {
+			// ------------------------------------------
+			litPiece = document.getElementById( litDiv );
+			// ------------------------------------------
+			litPiece.classList.remove( 'lit' );
+			// -----------------------------------------------
+			litPiece.removeEventListener( 'click', funcName );
+		});
+		// ----------
+		litDivs = [];
+	}
+	//================================
 	function pinnedEatsPinner(obj) {
 		// ------------------------------------
 		obj.pinned.classList.remove('mainLit');
@@ -38,26 +62,17 @@ function lit(activeSide, passiveSide) {
 		// -----------------------------
 		toggleSides();
 	}
-	//============================
+	//=========================
 	function pinnedPieceLit() {
 		// ------------------------------------
 		console.log('ENTERS pinnedPieceLit()');
-		//==========================
+		//===========================
 		function movePinnedPiece(e) {
-			// ------------------------------------
+			// -------------------------------------
 			pieceToMove.classList.remove('mainLit');
-			// ------------------------------------
-			litDivs.forEach(litDiv => {
-				// ------------------------------------------
-				litPiece = document.getElementById( litDiv );
-				// ------------------------------------------
-				litPiece.classList.remove('lit');
-				// ----------------------------------------------------
-				litPiece.removeEventListener('click', movePinnedPiece);
-				// ----------------------------------------------------
-			});
-			litDivs = [];
-			// -----------------------------
+			// -------------------------------------
+			removeLitDivHandler(movePinnedPiece);
+			// ----------------------------------
 			swapSide(pieceToMove, e.target);
 			// -----------------------------
 			toggleSides();
@@ -154,17 +169,8 @@ function lit(activeSide, passiveSide) {
 			// ----------------------------------------------------------
 			// un-lightens, clears out & stops click-listening to litDivs
 			if (litDivs.length) {
-				// ------------------------
-				litDivs.forEach(litDiv => {
-					// ---------------------------------------------------------
-					document.getElementById( litDiv ).classList.remove( 'lit' );
-					// -------------------------------------------------------------------------
-					document.getElementById( litDiv ).removeEventListener( 'click', movePiece );
-					// -------------------------------------------------------------------------------
-					// document.getElementById( litDiv ).removeEventListener( 'click', pinnedPieceEats );
-				});
-				// ----------
-				litDivs = [];
+				// ------------------------------
+				removeLitDivHandler(removePiece);
 			}
 			// ------------------------------------------------------------
 			// un-lightens, clears out & stops click-listening to castleIds
@@ -240,18 +246,8 @@ function lit(activeSide, passiveSide) {
 			greyPieceToMove.classList.remove('mainLit');
 		}
 		// resets each litDiv
-		// ------------------------
-		litDivs.forEach(litDiv => {
-			// ----------------------------------------
-			litSpace = document.getElementById(litDiv);
-			// --------------------------------------------------
-			litSpace.removeEventListener('click', moveGreyPiece);
-			// --------------------------------------------------
-			litSpace.classList.remove('lit');
-		});
-		// ----------
-		litDivs = [];
-		// ------------------------
+		removeLitDivHandler(moveGreyPiece);
+		// --------------------------------
 		greyPieceToMove = e.target;
 		// --------------------------------------
 		greyPieceToMove.classList.add('mainLit');
@@ -268,15 +264,8 @@ function lit(activeSide, passiveSide) {
 				litDivs.push(obj.emptyDivId);
 			}
 		});
-		// ------------------------
-		litDivs.forEach(litDiv => {
-			// ------------------------------------------
-			litSpace = document.getElementById( litDiv );
-			// ------------------------------------------
-			litSpace.classList.add('lit');
-			// -----------------------------------------------
-			litSpace.addEventListener('click', moveGreyPiece);
-		});
+		// -----------------------------
+		addLitDivHandler(moveGreyPiece);
 	}
 	//=========================
 	function moveGreyPiece(e) {
@@ -293,17 +282,8 @@ function lit(activeSide, passiveSide) {
 			greyLitPiece.classList.remove('greyLit');
 		});
 		greyLitPieces = [];
-		// --------------------
-		// clears litDiv spaces
-		litDivs.forEach(litDiv => {
-			// ------------------------------------------
-			litSpace = document.getElementById( litDiv );
-			// --------------------------------------------------
-			litSpace.removeEventListener('click', moveGreyPiece);
-			// --------------------------------------------------
-			litSpace.classList.remove('lit');
-		});
-		litDivs = [];
+		// --------------------------------
+		removeLitDivHandler(moveGreyPiece);
 		// -------------------------------------------------------------------
 		if (e.target.getAttribute('data-side') !== 'empty') { eat(e.target); }
 		// -------------------------------------------------------------------
@@ -602,16 +582,13 @@ function lit(activeSide, passiveSide) {
 		console.log('removes click-listener from litDivs & pieceToMove');
 		// --------------------------------------------------------------
 		// removes click-listeners from pieceToMove
-		document.getElementById(
-			pieceToMove.id
-		).removeEventListener('click', pieceLit);
-		// -------------------------------------
-		// removes click-listeners from litDivs
-		litDivs.forEach(litDiv => {
-			document.getElementById( litDiv ).removeEventListener(
-				'click', movePiece
-			);
-		 }); // -------------------------------------
+		document.getElementById( pieceToMove.id ).removeEventListener( 'click', pieceLit );
+		// --------------------------------------------------------------------------------
+		// un-lightens mainDiv
+		document.getElementById( pieceToMove.id ).classList.remove( 'mainLit' );
+		// ---------------------------------------------------------------------
+		removeLitDivHandler(movePiece);
+		// -----------------------------------------
 		// prevents castling after king's first move
 		if (pieceToMove.getAttribute('data-name') === 'king') {
 			if (pieceToMove.getAttribute('data-side') === 'blue') {
@@ -632,14 +609,6 @@ function lit(activeSide, passiveSide) {
 		} // ----------------------------------------
 		console.log('un-lightens mainDiv & litDivs');
 		// ------------------------------------------
-		// un-lightens mainDiv
-		document.getElementById( pieceToMove.id ).classList.remove('mainLit');
-		// -------------------------------------------------------------------
-		// un-lightens litDivs
-		litDivs.forEach(litDiv => {
-			document.getElementById( litDiv ).classList.remove('lit');
-		}); 
-		// ----------------
 		goToDiv = e.target;
 		// -------------------------------------------------------
 		console.log('pieceToMove -->');  console.log(pieceToMove);
@@ -686,6 +655,7 @@ function lit(activeSide, passiveSide) {
 		} // ------------------------------------------------------
 		else { // SINCE goToDiv NOT EMPTY, pieceToMove eats goToDiv
 			console.log('goToDiv NOT empty');
+			// ------------------------------
 			eat(goToDiv);
 		}
 		// covers pawnToMove moving one or two empty spaces
@@ -1084,12 +1054,8 @@ function lit(activeSide, passiveSide) {
 		// lightens & click-listens all litDivs to run movePiece(e)
 		if (litDivs.length) {
 			// ------------------------
-			litDivs.forEach(litDiv => {
-				// ----------------------------------------------------
-				document.getElementById( litDiv ).classList.add('lit');
-				// --------------------------------------------------------------------
-				document.getElementById( litDiv ).addEventListener('click', movePiece);
-			}); // enters movePiece(e) on litDiv-click, unless castling
+			addLitDivHandler(movePiece); 
+			// enters movePiece(e) on litDiv-click, unless castling
 		}
 	} // WORKS!
 	//====================
@@ -1173,9 +1139,9 @@ function lit(activeSide, passiveSide) {
 		});
 	}
 	*/
-    // -----------------------------------------------------
+    // ------------------------------------------------------
 	else { // since activeKing not in check & no pinnedPieces
-		// -------------------------------------------------
+		// --------------------------------------------------
 		activeSide.forEach(activePiece => {
 			// ---------------------------------------------
 			activePiece.addEventListener('click', pieceLit);

@@ -1,3 +1,46 @@
+pinnedPieces.forEach(pinnedPiece => {
+    // --------------------------------------------------------------------
+    checkingSpace(pinnedPiece, pinnedPiece.getAttribute('data-pinner').id);
+    possiblePinnedMoves = pathOfCheck;
+    // ---------------------------------------
+    checkingSpace(pinnedPiece, activeKing.id);
+    possiblePinnedMoves = [...pathOfCheck];
+});
+
+
+if (pieceToMove.getAttribute('data-pinned') === 'true') {
+    // --------------------------------------------------
+    possiblePinnedMoves.forEach(id => {
+        // ------------------------------------------------------
+        if (checkingSpace(pieceToMove, id)) { litDivs.push(id); }
+    });
+}
+
+function addLitDivHandler( funcName ) {
+    // --------------------------------
+    litDivs.forEach( litDiv => {
+        // ------------------------------------------
+        litPiece = document.getElementById( litDiv );
+        // ------------------------------------------
+        litPiece.classList.add( 'lit' );
+        // --------------------------------------------
+        litPiece.addEventListener( 'click', funcName );
+    });
+}
+
+function removeLitDivHandler( funcName ) {
+    // -----------------------------------
+    litDivs.forEach( litDiv => {
+        // ------------------------------------------
+        litPiece = document.getElementById( litDiv );
+        // ------------------------------------------
+        litPiece.classList.remove( 'lit' );
+        // -----------------------------------------------
+        litPiece.removeEventListener( 'click', funcName );
+    });
+}
+
+
 /*
 ERRORS:
 
