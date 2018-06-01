@@ -16,30 +16,8 @@ if (pieceToMove.getAttribute('data-pinned') === 'true') {
     });
 }
 
-function addLitDivHandler( funcName ) {
-    // --------------------------------
-    litDivs.forEach( litDiv => {
-        // ------------------------------------------
-        litPiece = document.getElementById( litDiv );
-        // ------------------------------------------
-        litPiece.classList.add( 'lit' );
-        // --------------------------------------------
-        litPiece.addEventListener( 'click', funcName );
-    });
-}
-
-function removeLitDivHandler( funcName ) {
-    // -----------------------------------
-    litDivs.forEach( litDiv => {
-        // ------------------------------------------
-        litPiece = document.getElementById( litDiv );
-        // ------------------------------------------
-        litPiece.classList.remove( 'lit' );
-        // -----------------------------------------------
-        litPiece.removeEventListener( 'click', funcName );
-    });
-}
-
+addLitDivHandler(pinn);
+ 
 
 /*
 ERRORS:

@@ -170,7 +170,7 @@ function lit(activeSide, passiveSide) {
 			// un-lightens, clears out & stops click-listening to litDivs
 			if (litDivs.length) {
 				// ------------------------------
-				removeLitDivHandler(removePiece);
+				removeLitDivHandler(movePiece);
 			}
 			// ------------------------------------------------------------
 			// un-lightens, clears out & stops click-listening to castleIds
