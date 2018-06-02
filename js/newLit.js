@@ -303,6 +303,12 @@ function lit(activeSide, passiveSide) {
 			lit(blues, oranges);
 		}
 	}
+
+
+
+
+
+
     //=================
 	function isMate() { 
         // since activeKing is in check...
@@ -400,8 +406,14 @@ function lit(activeSide, passiveSide) {
 		if (litDivs.length) {
 			// ---------------------------------------
             console.log('king can move out of check');
-            // ---------------------------------------
-            kingAttackers.forEach(kingAttacker => {
+			// ---------------------------------------
+			mate = false;
+			// ---------------------------------
+			activeKing.classList.add('greyLit');
+			// addLitDivHandler(movePiece);
+			// ---------------------------------------
+			
+			kingAttackers.forEach(kingAttacker => {
                 // if king can eat its attacker, collect king
                 // ------------------------------------------
                 if (litDivs.includes(kingAttacker)) {
@@ -411,7 +423,8 @@ function lit(activeSide, passiveSide) {
                 // -------------------------
 				eatOrBlock(kingAttacker.id);
 				// THIS DOES NOT WORK HERE, WRITE SOMETHING NEW
-            });
+			});
+			
             // ---------------------
             interceptKingAttacker();
 		}
@@ -436,6 +449,14 @@ function lit(activeSide, passiveSide) {
 		// checkmate since multiple kingAttackers and king cannot move
         else { endOfGame(); }
 	}
+
+
+
+
+
+
+
+	
 	//====================
 	function castling(e) {
 		console.log('enters castling(e)')
@@ -1012,8 +1033,10 @@ function lit(activeSide, passiveSide) {
 					return (kingSpace === activePiece.id);
 				});
             }); // WORKS!
-            console.log('openAndOpponentHeldKingSpaces -->'); console.log(openAndOpponentHeldKingSpaces);
-			// --------------------------------------
+			// ----------------------------------------------
+			console.log('openAndOpponentHeldKingSpaces -->');
+			console.log(openAndOpponentHeldKingSpaces);
+			// ----------------------------------------
 			// populates litDivs with safe kingSpaces
 			openAndOpponentHeldKingSpaces.forEach(id => {
                 canCheck = false;
@@ -1027,10 +1050,8 @@ function lit(activeSide, passiveSide) {
 						canCheck = true;
 						break;
 					}
-				}
-				// -------------------------------------------
+				} // -------------------------------
 				if (!canCheck) { litDivs.push(id); }
-				// if (!litDivs.includes(checkSpaceId)) { _ }
 			});  console.log('litDivs -->');  console.log(litDivs);
 		} // WORKS!
 	} // WORKS!
@@ -1107,6 +1128,12 @@ function lit(activeSide, passiveSide) {
 		else { possibleMoves(); }
     } // WORKS!
 
+
+
+
+
+
+
     // ****************
     // chess meta-logic
     // ****************
@@ -1134,8 +1161,7 @@ function lit(activeSide, passiveSide) {
 	if (kingAttackers.length) { isMate(); }
 	// ------------------------------------
 	/*
-	// since activeKing not in check & there are pinnedPieces
-	else if (pinnedPieces.length) {
+	if (pinnedPieces.length) {
 		// --------------------------------
 		activeSide.forEach(activePiece => {
 			// ------------------------------------------------------------------------
@@ -1145,9 +1171,9 @@ function lit(activeSide, passiveSide) {
 		});
 	}
 	*/
-    // ------------------------------------------------------
-	else { // since activeKing not in check & no pinnedPieces
-		// --------------------------------------------------
+    // ------------------------------------
+	else { // since activeKing not in check
+		// --------------------------------
 		activeSide.forEach(activePiece => {
 			// ---------------------------------------------
 			activePiece.addEventListener('click', pieceLit);
