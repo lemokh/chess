@@ -1,4 +1,3 @@
-//=====================================
 function lit(activeSide, passiveSide) {
 	// ----------------------------------------------------------------
 	litDivs = []; // contains lit ids on which to apply click-listeners
@@ -8,125 +7,11 @@ function lit(activeSide, passiveSide) {
 	emptySpaces = openSpaces(boardIds, pieces); // updates emptySpaces
 	// ---------------------------------------------------------------
 	greyPieceToMove = undefined;
-	// -------------------------
-	canBlockPathOfCheck = [];
-	// ----------------------
-	canEatKingAttacker = [];
-	// ----------------------------
-	pawnBlocksKingAttacker = false;
-	// ----------------------------
-	newPieceClicked = undefined;
-	// -------------------------
-	tempPinnedPieces = [];
 
 	//==========================
-	// function toggleClocks() {}
-	//===================================
-	function addLitDivHandler(funcName) {
-		// ------------------------------
-		litDivs.forEach( litDiv => {
-			// ------------------------------------------
-			litPiece = document.getElementById( litDiv );
-			// ------------------------------------------
-			litPiece.classList.add( 'lit' );
-			// --------------------------------------------
-			litPiece.addEventListener( 'click', funcName );
-		});
-	}
-	//======================================
-	function removeLitDivHandler(funcName) {
-		// -----------------------------------
-		litDivs.forEach( litDiv => {
-			// ------------------------------------------
-			litPiece = document.getElementById( litDiv );
-			// ------------------------------------------
-			litPiece.classList.remove( 'lit' );
-			// -----------------------------------------------
-			litPiece.removeEventListener( 'click', funcName );
-		});
-		// ----------
-		litDivs = [];
-	}
-	//================================
-	function pinnedEatsPinner(obj) {
-		// ------------------------------------
-		obj.pinned.classList.remove('mainLit');
-		// ------------------------------------
-		obj.pinner.classList.remove('lit');
-		// -------------------------------------------------------
-		obj.pinner.removeEventListener('click', pinnedEatsPinner);
-		// -------------------------------------------------------
-		eat(obj.pinner);
-		// -----------------------------
-		swapSide(pieceToMove, obj.pinner);
-		// -----------------------------
-		toggleSides();
-	}
-	//=========================
-	function pinnedPieceLit() {
-		// ------------------------------------
-		console.log('ENTERS pinnedPieceLit()');
-		//===========================
-		function movePinnedPiece(e) {
-			// -------------------------------------
-			pieceToMove.classList.remove('mainLit');
-			// -------------------------------------
-			removeLitDivHandler(movePinnedPiece);
-			// ----------------------------------
-			swapSide(pieceToMove, e.target);
-			// -----------------------------
-			toggleSides();
-		}
-		// ---------------------------------------------------
-		pinnerPiece = pieceToMove.getAttribute('data-pinner');
-		// ---------------------------------------------------
-		if (checkingSpace(pieceToMove, pinnerPiece.id)) {
-			// if pinned piece can eat pinner piece
-			pinnerPiece.classList.add('lit');
-			// ------------------------------
-			litDivs.push(pinnerPiece.id);
-			// ---------------------------------------------------
-			pinnerPiece.addEventListener('click', movePinnedPiece);
-		}
-		// ---------------------------
-		pawnBlocksKingAttacker = true;
-		// --------------------------------------------------
-		// provides id path from pinner piece to pinned piece
-		checkingSpace(pinnerPiece, pieceToMove.id);
-		// ---------------------------------------
-		pathOfCheck.forEach(id => {
-			// ---------------------------------------
-			pathPiece = document.getElementById( id );
-			// ---------------------------------------
-			if (checkingSpace(pieceToMove, id)) {
-				// ------------------------------
-				pathPiece.classList.add('lit');
-				// ----------------------------
-				litDivs.push(id);
-				// --------------------------------------------------
-				pathPiece.addEventListener('click', movePinnedPiece);
-			}
-		});
-		// ----------------------------
-		pawnBlocksKingAttacker = false;
-		// -------------------------------------------------
-		// provides id path for pinned piece to its own king
-		checkingSpace(pieceToMove, activeKing.id);
-		// ---------------------------------------
-		pathOfCheck.forEach(id => {
-			// ---------------------------------------
-			pathPiece = document.getElementById( id );
-			// ---------------------------------------
-			if (checkingSpace(pieceToMove, id)) {
-				// ------------------------------
-				pathPiece.classList.add('lit');
-				// ----------------------------
-				litDivs.push(id);
-				// --------------------------------------------------
-				pathPiece.addEventListener('click', movePinnedPiece);
-			}
-		});
-	}
+	// function toggleClocks() {
+
+	// }
     //====================
     function endOfGame() {
         alert(activeKing.getAttribute('data-side') + ' KING CHECKMATED!');
@@ -169,8 +54,27 @@ function lit(activeSide, passiveSide) {
 			// ----------------------------------------------------------
 			// un-lightens, clears out & stops click-listening to litDivs
 			if (litDivs.length) {
-				// ------------------------------
-				removeLitDivHandler(movePiece);
+				// ------------------------
+				litDivs.forEach(litDiv => {
+					// ---------------------------------------------------------
+					document.getElementById( litDiv ).classList.remove( 'lit' );
+					// -------------------------------------------------------------------------
+					document.getElementById( litDiv ).removeEventListener( 'click', movePiece );
+					// -------------------------------------------------------------------------------
+					// document.getElementById( litDiv ).removeEventListener( 'click', pinnedPieceEats );
+				});
+				// ----------
+				litDivs = [];
+			}
+			// --------------------------------------------
+			// cleans up after last clicking a pinned piece
+			if (pinnedPieces.includes(pieceToMove)) {
+				// if (pinCount === 1) { all this below }
+				pieceToMove.removeEventListener( 'click', pinnedLit );
+				// ---------------------------------------------------------
+				pinningPiece.removeEventListener( 'click', pinnedPieceEats );
+				// ---------------------------------------------------------
+				pinningPiece.classList.remove( 'lit' );
 			}
 			// ------------------------------------------------------------
 			// un-lightens, clears out & stops click-listening to castleIds
@@ -246,15 +150,25 @@ function lit(activeSide, passiveSide) {
 			greyPieceToMove.classList.remove('mainLit');
 		}
 		// resets each litDiv
-		removeLitDivHandler(moveGreyPiece);
-		// --------------------------------
+		// ------------------------
+		litDivs.forEach(litDiv => {
+			// ----------------------------------------
+			litSpace = document.getElementById(litDiv);
+			// --------------------------------------------------
+			litSpace.removeEventListener('click', moveGreyPiece);
+			// --------------------------------------------------
+			litSpace.classList.remove('lit');
+		});
+		// ----------
+		litDivs = [];
+		// ------------------------
 		greyPieceToMove = e.target;
 		// --------------------------------------
 		greyPieceToMove.classList.add('mainLit');
 		// -----------------------------------------
 		if (canEatKingAttacker.includes(e.target)) {
 			// -------------------------------------
-			litDivs.push(kingAttackers[0].id);
+			litDivs.push(kingAttacker.id);
 		}
 		// ---------------------------------
 		canBlockPathOfCheck.forEach(obj => {
@@ -264,15 +178,22 @@ function lit(activeSide, passiveSide) {
 				litDivs.push(obj.emptyDivId);
 			}
 		});
-		// -----------------------------
-		addLitDivHandler(moveGreyPiece);
+		// ------------------------
+		litDivs.forEach(litDiv => {
+			// ------------------------------------------
+			litSpace = document.getElementById( litDiv );
+			// ------------------------------------------
+			litSpace.classList.add('lit');
+			// -----------------------------------------------
+			litSpace.addEventListener('click', moveGreyPiece);
+		});
 	}
 	//=========================
 	function moveGreyPiece(e) {
 		// resets greyPieceToMove
-		console.log('ENTERS moveGreyPiece()');
 		// -----------------------------------------
 		greyPieceToMove.classList.remove('mainLit');
+
 		// -----------------------------------------
 		// clears greyLitDiv pieces
 		greyLitPieces.forEach(greyLitPiece => {
@@ -282,8 +203,17 @@ function lit(activeSide, passiveSide) {
 			greyLitPiece.classList.remove('greyLit');
 		});
 		greyLitPieces = [];
-		// --------------------------------
-		removeLitDivHandler(moveGreyPiece);
+		// --------------------
+		// clears litDiv spaces
+		litDivs.forEach(litDiv => {
+			// ------------------------------------------
+			litSpace = document.getElementById( litDiv );
+			// --------------------------------------------------
+			litSpace.removeEventListener('click', moveGreyPiece);
+			// --------------------------------------------------
+			litSpace.classList.remove('lit');
+		});
+		litDivs = [];
 		// -------------------------------------------------------------------
 		if (e.target.getAttribute('data-side') !== 'empty') { eat(e.target); }
 		// -------------------------------------------------------------------
@@ -315,19 +245,10 @@ function lit(activeSide, passiveSide) {
 		//===================================
 		function eatOrBlock(kingAttackerId) {
 			// populates canEatKingAttacker & canBlockPathOfCheck, excluding activeKing
-			activePieceIsPinned = false;
 			// ------------------------------------------------------------------------
 			activeSide.forEach(activePiece => {
 				// if activePiece not pinned
-				for (let i = 0; i < pinnedPieces.length; i++) {
-					// ------------------------------------------
-					if (pinnedPieces[i].pinned === activePiece) {
-						// --------------------------------------
-						activePieceIsPinned = true;
-						break;
-					}
-				}
-				if (!activePieceIsPinned) {
+				if (!pinnedPieces.includes(activePiece)) {
 					// and if not activeKing
 					if (activePiece.getAttribute('data-name') !== 'king') {
 						// ------------------------------------------------
@@ -360,7 +281,7 @@ function lit(activeSide, passiveSide) {
 				else { // since activePiece is pinned
 					// if activePiece can eat kingAttacker
 					if (checkingSpace(activePiece, kingAttackers[0].id)) {
-						// -----------------------------------------------
+						// add kingAttacker's id to litDivs
 						canEatKingAttacker.push(activePiece);
 					}
 				}
@@ -395,8 +316,8 @@ function lit(activeSide, passiveSide) {
         // ---------------------------------------------------------------
 		// populates litDivs where activeKing can move via checkingSpace()
 		kingLit();
-		// --------------------------
-        // if king can move, not mate
+		// -------------------------------
+        // if king can move, no check mate
 		if (litDivs.length) {
 			// ---------------------------------------
             console.log('king can move out of check');
@@ -464,7 +385,7 @@ function lit(activeSide, passiveSide) {
 				swapSide( document.getElementById('00'), document.getElementById('30') );
 				orangeKingFirstMove = true;
 				break;
-			case '60':
+			case '60': // DOESN'T WORK!!
 				swapSide( document.getElementById('70'), document.getElementById('50') );
 				orangeKingFirstMove = true;
 				break;
@@ -583,13 +504,16 @@ function lit(activeSide, passiveSide) {
 		console.log('removes click-listener from litDivs & pieceToMove');
 		// --------------------------------------------------------------
 		// removes click-listeners from pieceToMove
-		document.getElementById( pieceToMove.id ).removeEventListener( 'click', pieceLit );
-		// --------------------------------------------------------------------------------
-		// un-lightens mainDiv
-		document.getElementById( pieceToMove.id ).classList.remove( 'mainLit' );
-		// ---------------------------------------------------------------------
-		removeLitDivHandler(movePiece);
-		// -----------------------------------------
+		document.getElementById(
+			pieceToMove.id
+		).removeEventListener('click', pieceLit);
+		// -------------------------------------
+		// removes click-listeners from litDivs
+		litDivs.forEach(litDiv => {
+			document.getElementById( litDiv ).removeEventListener(
+				'click', movePiece
+			);
+		 }); // -------------------------------------
 		// prevents castling after king's first move
 		if (pieceToMove.getAttribute('data-name') === 'king') {
 			if (pieceToMove.getAttribute('data-side') === 'blue') {
@@ -610,6 +534,14 @@ function lit(activeSide, passiveSide) {
 		} // ----------------------------------------
 		console.log('un-lightens mainDiv & litDivs');
 		// ------------------------------------------
+		// un-lightens mainDiv
+		document.getElementById( pieceToMove.id ).classList.remove('mainLit');
+		// -------------------------------------------------------------------
+		// un-lightens litDivs
+		litDivs.forEach(litDiv => {
+			document.getElementById( litDiv ).classList.remove('lit');
+		}); 
+		// ----------------
 		goToDiv = e.target;
 		// -------------------------------------------------------
 		console.log('pieceToMove -->');  console.log(pieceToMove);
@@ -656,7 +588,6 @@ function lit(activeSide, passiveSide) {
 		} // ------------------------------------------------------
 		else { // SINCE goToDiv NOT EMPTY, pieceToMove eats goToDiv
 			console.log('goToDiv NOT empty');
-			// ------------------------------
 			eat(goToDiv);
 		}
 		// covers pawnToMove moving one or two empty spaces
@@ -799,7 +730,6 @@ function lit(activeSide, passiveSide) {
 	function bishopLit() {
 		//===================================
 		function quadrant(bishopX, bishopY) {
-			// ---------------------------------------------
 			let bishopPathId = bishopX.toString() + bishopY;
 			// ---------------------------------------------
 			// while bishop path empty, highlight space
@@ -808,19 +738,20 @@ function lit(activeSide, passiveSide) {
 				litDivs.push( bishopPathId );
 				// --------------------------
 				// increment bishopX
-				if (bishopX > +pieceToMove.id[0]) { bishopX += 1; }
-				else { bishopX -= 1; }
-				// -------------------
+				if (bishopX > +pieceToMove.id[0]) {
+					bishopX += 1;
+				} else { bishopX -= 1; }
+				// ---------------------
 				// increment bishopY
-				if (bishopY > +pieceToMove.id[1]) { bishopY += 1; }
-				else { bishopY -= 1; }
-				// -------------------
+				if (bishopY > +pieceToMove.id[1]) {
+					bishopY += 1;
+				} else { bishopY -= 1; }
+				// ---------------------
 				// updates bishopPathId
 				bishopPathId = bishopX.toString() + bishopY;
 			} // -------------------------------------------
 			// highlights attackable pieces in bishop's path
 			for (let i = 0; i < passiveSide.length; i++) {
-				// ---------------------------------------
 				if (passiveSide[i].id === bishopPathId) {
 					litDivs.push( bishopPathId );
 				}
@@ -961,7 +892,7 @@ function lit(activeSide, passiveSide) {
 									if (checkingSpace(passiveSide[k], ['50', '60'][i])) {
 										noCastle = true;
 									}
-								}
+								} // ----------------------------------
 							}  if (!noCastle) { castleIds.push('60'); }
 						}
 					}
@@ -970,14 +901,11 @@ function lit(activeSide, passiveSide) {
 		} // ------------------------------------
 		// lightens & click-listens all castleIds
 		if (castleIds.length) { // if king is castling
-			// ---------------------------------------
 			castleIds.forEach(id => {
-				// ----------------------------------------------------
 				document.getElementById(id).classList.add('castleLit');
-				// -------------------------------------------------------------
 				document.getElementById(id).addEventListener('click', castling);
 			});
-		}
+		} // ----------------------------
 		else { // since king not castling
 			kingSpaces = [
 				// ------------------------------------------------------------
@@ -1021,11 +949,10 @@ function lit(activeSide, passiveSide) {
 				for (let i = 0; i < passiveSide.length; i++) {
 					// if passivePiece can check the oAOHKS...(kingSpace devoid of activePiece)
 					if (checkingSpace(passiveSide[i], id)) {
-						// --------------------------------------------------------------------------------------------------------------------------
+						// ------------------------------------------------------------------------------------------------------------------------------------
 						console.log(passiveSide[i].getAttribute('data-side') + ' ' + passiveSide[i].getAttribute('data-name') + ' can attack ' + id);
-						// --------------------------------------------------------------------------------------------------------------------------
-						canCheck = true;
-						break;
+						// -------------  ------
+                        canCheck = true;  break;
 					}
 				}
 				// -------------------------------------------
@@ -1034,59 +961,11 @@ function lit(activeSide, passiveSide) {
 			});  console.log('litDivs -->');  console.log(litDivs);
 		} // WORKS!
 	} // WORKS!
-	//========================
-	function possibleMoves() {
-		// -----------------------------------
-		console.log('ENTERS possibleMoves()');
-		// highlights clicked piece's possible moves
-		switch (pieceToMove.getAttribute('data-name')) {
-			// -----------------------------------------
-			case 'pawn': pawnLit(); break;
-			// -------------------------------
-			case 'knight': knightLit(); break;
-			// -------------------------------
-			case 'bishop': bishopLit(); break;
-			// -------------------------------
-			case 'rook': rookLit(); break;
-			// -----------------------------------------
-			case 'queen': bishopLit(); rookLit(); break;
-			// -----------------------------------------
-			case 'king': kingLit(); break;
-			// ---------------------------------------------------
-			default: alert('default ERROR! pieceToMove is empty');
-		}
-		// -----------------------------------------------------
-		// lightens & click-listens all litDivs to run movePiece(e)
-		if (litDivs.length) {
-			// ------------------------
-			addLitDivHandler(movePiece); 
-			// enters movePiece(e) on litDiv-click, unless castling
-		}
-	} // WORKS!
 	//====================
 	function pieceLit(e) {
 		// -------------------------------
 		console.log('ENTERS pieceLit(e)');
-		// ---------------------------------------------------------------
-		if (newPieceClicked === undefined) { // if first click of the turn
-			/// ----------------------------------------------------------
-			newPieceClicked = e.target;
-			// ---------------------------------------------
-			e.target.removeEventListener('click', pieceLit);
-			// stops click-listening to e.target
-		}
-		else { // since not first click of the turn,
-			// but since first click of that button this turn
-			// -------------------------------------------------
-			newPieceClicked.addEventListener('click', pieceLit);
-			/// starts click-listening to newPieceClicked
-			// ------------------------------------------
-			newPieceClicked = e.target;
-			// ---------------------------------------------
-			e.target.removeEventListener('click', pieceLit);
-			// stops click-listening to e.target
-		}
-		// ----------------------
+		// -------------------------------
 		cleanUpAfterFirstClick();
 		// ----------------------
         pieceToMove = e.target;
@@ -1095,16 +974,78 @@ function lit(activeSide, passiveSide) {
 		// ----------------------------------------
 		// lightens pieceToMove
 		pieceToMove.classList.add('mainLit');
-		// ----------------------------------
-		console.log(pieceToMove.getAttribute('data-pinned'));
-		// ----------------------------------------------------
-		if (pieceToMove.getAttribute('data-pinned') === 'true') { 
-			alert('that clicked pieceToMove is pinned!');
-			// ----------------
-			pinnedPieceLit();
+		// ------------------------------------------------
+		// highlights all of clicked piece's possible moves
+		switch (pieceToMove.getAttribute('data-name')) {
+			// -----------------------------------------
+			case 'pawn':     pawnLit();     break;
+			// -----------------------------------
+			case 'knight':   knightLit();   break;
+			// -----------------------------------
+			case 'bishop':   bishopLit();   break;
+			// -----------------------------------
+			case 'rook':     rookLit();     break;
+			// ------------------------------------------------
+			case 'queen':    bishopLit();   rookLit();   break;
+			// ------------------------------------------------
+			case 'king':     kingLit();     break;
+			// ---------------------------------------------------
+			default: alert('default ERROR! pieceToMove is empty');
 		}
-		// ------------------------------------------------------------------------
-		else { possibleMoves(); }
+		/*
+		// -----------------------------------------------------------
+		// sees if any pinned pieces match pieceToMove
+		if (pinnedPieces.includes(pieceToMove)) {
+			// finds the id path from pieceToMove TO AND INCLUDING its pinnerPiece
+			//   and excludes any ids from litDivs that are not in that path
+			
+			let idPath = []; // include obj.pinner.id
+			// POPULATE idPath with divs between pieceToMove aand its pinner piece
+			
+			// pinnedPieces[?].pinner.getAttribute('data-name');
+
+			// interceptPinnedPiece()?
+
+			// checkingSpace(pinnedPieces[?].pinner, pieceToMove.id);
+
+			// pinnedPieces should be an array of { pinned: piece, pinner: piece }
+
+			////////////////////////////////////////////////////////////////////////////////
+			// if pieceToMove can capture an idPath space, pushes pieceToMove to tempLitDivs
+			idPath.forEach(id => {
+				// ----------------------------------
+				if (checkingSpace(pieceToMove, id)) {
+					// ------------------------------
+					tempLitDivs.push(pieceToMove);
+				};
+			}); // do this instead of switch... or else remove it
+
+			////////////////////////////////////////////////////////
+			// creates a new array of litDivs that are on the idPath
+			tempLitDivs = litDivs.map(litDiv => {
+				// ------------------------------
+				if (idPath.includes(litDiv)) {
+					// -----------------------
+					return litDiv;
+				}	
+			});
+
+			//////////////////////
+			// -------------------
+			litDivs = tempLitDivs;
+		}
+		*/
+		// -----------------------------------------------------
+		// lightens & click-listens all litDivs --> movePiece(e)
+		if (litDivs.length) {
+			// ------------------------
+			litDivs.forEach(litDiv => {
+				// ----------------------------------------------------
+				document.getElementById( litDiv ).classList.add('lit');
+				// --------------------------------------------------------------------
+				document.getElementById( litDiv ).addEventListener('click', movePiece);
+			}); // enters movePiece(e) on litDiv-click, unless castling
+		}
     } // WORKS!
 
     // ****************
@@ -1115,9 +1056,8 @@ function lit(activeSide, passiveSide) {
 	for (i = 0; i < activeSide.length; i++) {
 		// ------------------------------------------------------
 		if (activeSide[i].getAttribute('data-name') === 'king') {
-			// --------------------------------------------------
-			activeKing = activeSide[i];
-			break;
+			// ------------------------  ------
+			activeKing = activeSide[i];  break;
 		}
     }  console.log('activeKing -->');  console.log(activeKing);
 	// --------------------------------------------------------------------
@@ -1132,8 +1072,7 @@ function lit(activeSide, passiveSide) {
 	// ----------------------------------------------------------------
 	// if activeKing in check
 	if (kingAttackers.length) { isMate(); }
-	// ------------------------------------
-	/*
+	// ------------------------------------------------------
 	// since activeKing not in check & there are pinnedPieces
 	else if (pinnedPieces.length) {
 		// --------------------------------
@@ -1144,14 +1083,15 @@ function lit(activeSide, passiveSide) {
 			else { activePiece.addEventListener('click', pieceLit); }
 		});
 	}
-	*/
-    // ------------------------------------------------------
+    // -----------------------------------------------------
 	else { // since activeKing not in check & no pinnedPieces
-		// --------------------------------------------------
+		// -------------------------------------------------
 		activeSide.forEach(activePiece => {
 			// ---------------------------------------------
 			activePiece.addEventListener('click', pieceLit);
 		});
 	}
 }
-
+//=======================================
+lit(blues, oranges); // begins first move
+//=======================================

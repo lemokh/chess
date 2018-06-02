@@ -1,7 +1,7 @@
 body {
     background-image: url('images/boardBody.jpg');
     /*backdrop-filter: contrast(110%);*/
-    filter: brightness(115%);
+    filter: brightness(1.2);
     background-color: rgba(240, 255, 255, 0.5);
     background-blend-mode: luminosity;
 }
@@ -9,7 +9,7 @@ body {
 game {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-gap: 8rem;
+    grid-gap: 15rem;
     margin-top: 1rem;
 }
 
@@ -90,7 +90,7 @@ game {
   }
   
   .mainLit {
-    background-color: rgba(199, 21, 133, .2);
+    background-color: rgba(199, 21, 133, .2) !important;
     /*deep red --> use for check --> 220,20,60*/
     /*background-blend-mode: luminosity;*/
   }

@@ -1,5 +1,5 @@
-var pinnerPieces = [], knightCells, pinningPiece, pawnBlocksKingAttacker, idToBlock, kingAttackers= [], greyLitDivs = [], defenders = [], pawnDefenders = [], enPassantCell = '', orangeTakenBoxIdCounter = -16, blueTakenBoxIdCounter = -1, enPassanting = false, endOfGame = false,
-heroics = [], anId, greyPieceToMove, litPiece, blocker, mate, canCheck, canEatKingAttacker = [], canBlockPathOfCheck = [], gameOver, kingSlayer, checkPath, emptySpaces, knightLight, bishopPathId, rookPathId, blueKingFirstMove, blueRook1FirstMove, activeKing, blueRook2FirstMove,  orangeKingFirstMove, orangeRook1FirstMove, orangeRook2FirstMove, castleIds = [], noCastle, kingAble, pieceToMove, goToDiv, enPassantDiv, prevGoToDiv, enPassantGoToDiv, pawnJumpDiv, enPassantables2 = [], enPassantedPawn, knightLight, takenOrangeBox, takenBlueBox, pieceLit, gameEnds, tempSide, movedPiece, mainLitDiv, litDivs, unLitDivs, img, index1, index2, tempPiece, moves, takenBox, activeCells, openAndOpponentHeldKingSpaces, kingSpacesUnderAttack, orangeKingSpacesUnderAttack, orangelessKingSpaces, orangelessKingSpaces, blueKingSpaces, bluelessKingSpaces, orangeKingSpacesUnderAttack, vacantKingSpaces, whiteKing, blackKing, knightMoves, bishopMoves, bishopX, bishopY, rookMoves, kingSpaces, kingOpenSpaces, occupiedKingSpaces, defenders, pinnedPieces, pathOfCheck = [], nails, whites, blacks;
+var knightCells, pinningPiece, pawnBlocksKingAttacker, pathToCheck, idToBlock, kingAttackers= [], greyLitPieces = [], defenders = [], pawnDefenders = [], enPassantCell = '', orangeTakenBoxIdCounter = -16, blueTakenBoxIdCounter = -1, enPassanting = false,
+heroics = [], anId, possiblePinnedMoves, newPieceClicked, pinnerPiece, tempPinnedPieces, greyPieceToMove, pathPiece, activePieceIsPinned, litSpace, blocker, mate, canCheck, canEatKingAttacker = [], canBlockPathOfCheck = [], gameOver, kingSlayer, checkPath, emptySpaces, knightLight, bishopPathId, rookPathId, blueKingFirstMove, blueRook1FirstMove, activeKing, blueRook2FirstMove,  orangeKingFirstMove, orangeRook1FirstMove, orangeRook2FirstMove, castleIds = [], noCastle, kingAble, pieceToMove, goToDiv, enPassantDiv, prevGoToDiv, enPassantGoToDiv, pawnJumpDiv, enPassantables2 = [], enPassantedPawn, knightLight, takenOrangeBox, takenBlueBox, gameEnds, tempSide, movedPiece, mainLitDiv, litDivs, unLitDivs, img, index1, index2, tempPiece, moves, takenBox, activeCells, openAndOpponentHeldKingSpaces, kingSpacesUnderAttack, orangeKingSpacesUnderAttack, orangelessKingSpaces, orangelessKingSpaces, blueKingSpaces, bluelessKingSpaces, orangeKingSpacesUnderAttack, vacantKingSpaces, whiteKing, blackKing, knightMoves, bishopMoves, bishopX, bishopY, rookMoves, kingSpaces, kingOpenSpaces, occupiedKingSpaces, defenders, pinnedPieces, pathOfCheck = [], nails, whites, blacks;
 
 // ---------------
 const boardIds = [
@@ -51,7 +51,7 @@ function endGameNow() {
 function checkingSpace(somePiece, checkSpaceId) {
     // somePiece is an <img>
 	// checkSpaceId is a kingSpace id that is either empty or has a passivePiece
-	pinnedPieces = []; pathOfCheck = []; pinnerPieces = [];
+	pinnedPieces = []; pathOfCheck = [];
 	//==============================
 	function pawnAttacks(somePawn) {
 		// --------------------------
@@ -60,9 +60,8 @@ function checkingSpace(somePiece, checkSpaceId) {
 			// sees if pawn can block checkSpaceId
 			if (somePawn.getAttribute('data-side') === 'blue') {
 				// if blue turn
-				if (idToBlock === somePawn.id[0] + (somePawn.id[1] - 1)) {
-					// if idToBlock is one ahead of blue pawnToMove
-					// litDivs.push( idToBlock );
+				if (checkSpaceId === somePawn.id[0] + (somePawn.id[1] - 1)) {
+					// if checkSpaceId is one ahead of blue pawnToMove
 					return true;
 				} // ----------------------------
 				else if (document.getElementById(
@@ -71,9 +70,8 @@ function checkingSpace(somePiece, checkSpaceId) {
 					// if empty cell one ahead of bluePawn
 					if (somePawn.id[1] === '6') {
 						// if blue pawnToMove in row 6
-						if (idToBlock === somePawn.id[0] + (somePawn.id[1] - 2)) {
-							// if idToBlock is two ahead of blue pawnToMove
-							// litDivs.push( idToBlock );
+						if (checkSpaceId === somePawn.id[0] + (somePawn.id[1] - 2)) {
+							// if checkSpaceId is two ahead of blue pawnToMove
 							return true;
 						}
 					}
@@ -82,11 +80,10 @@ function checkingSpace(somePiece, checkSpaceId) {
 			} // -----------------------
 			else { // since orange turn
 				// collects empty space one ahead of orange pawnToMove
-				if (idToBlock === somePawn.id[0] + (somePawn.id[1] + 1)) {
-					// if idToBlock is one ahead of blue pawnToMove
-					// litDivs.push( idToBlock );
+				if (checkSpaceId === somePawn.id[0] + (+somePawn.id[1] + 1)) {
+					// if checkSpaceId is one ahead of blue pawnToMove
 					return true;
-				} // -----------------------------------------------
+				} // -------------------------------------------------
 				// collects empty space two ahead of orange pawnToMove
 				else if (document.getElementById(
 					somePawn.id[0] + (+somePawn.id[1] + 1)
@@ -94,9 +91,8 @@ function checkingSpace(somePiece, checkSpaceId) {
 					// if empty cell one ahead of orangePawn
 					if (pieceToMove.id[1] === '1') {
 						// if orange pawnToMove in row 1
-						if (idToBlock === somePawn.id[0] + (+somePawn.id[1] + 2)) {
-							// if idToBlock is two ahead of orange pawnToMove
-							// litDivs.push( idToBlock );
+						if (checkSpaceId === somePawn.id[0] + (+somePawn.id[1] + 2)) {
+							// if checkSpaceId is two ahead of orange pawnToMove
 							return true;
 						}
 					}
@@ -119,7 +115,6 @@ function checkingSpace(somePiece, checkSpaceId) {
 	//=========================================================
 	// returns true/false if the knight can attack checkSpaceId
 	function knightAttacks(someKnight) {
-		console.log('ENTERS knightAttacks()');
 		// to hold two spaces where knight might checkSpaceId
 		knightMoves = [];
 		// -------------------------------------
@@ -132,13 +127,14 @@ function checkingSpace(somePiece, checkSpaceId) {
 					(+someKnight.id[0] + 1) +
 					(+someKnight.id[1] + 2).toString()
 				); // ------------------------------
-				console.log('knightMoves -->'); console.log(knightMoves);
-				// ------------------------------------------------------
+				// console.log('knightMoves -->'); console.log(knightMoves);
+				// ---------------------------------------------------------
 				knightMoves.push(
 					(+someKnight.id[0] + 2) +
 					(+someKnight.id[1] + 1).toString()
-				); console.log('knightMoves -->'); console.log(knightMoves);
-			} // -----------------------------------------------------
+				); 
+				// console.log('knightMoves -->'); console.log(knightMoves);
+			} // -----------------------------------------------------------
 			else { // since someKnight is left of & below checkSpaceId
 				// ---------------------------------------------------
 				knightMoves.push(
@@ -291,13 +287,20 @@ function checkingSpace(somePiece, checkSpaceId) {
 			// if that nail & someBishop aren't on the same side
 			if (nails[0].getAttribute('data-side') !== someBishop.getAttribute('data-side')) {
 				// ---------------------------------------------------------------------------
-				pinnedPieces.push(nails[0]);
-				// ---------------------------
-				pinnerPieces.push(someBishop);
+				pinnedPieces.push(
+					{ pinner: someBishop, pinned: nails[0] }
+				);
+				// -------------------
+				tempPinnedPieces.push(
+					{ pinner: someBishop, pinned: nails[0] }
+				);
+				// ----------------------------------------
+				nails[0].setAttribute('data-pinned', true);
+				// ----------------------------------------------
+				nails[0].setAttribute('data-pinner', someBishop);
 				// -------------------------------------------------------------------------------------------
 				alert(nails[0].getAttribute('data-side') + ' ' + nails[0].getAttribute('data-name') + ' IS PINNED');
 				console.log('pinnedPieces -->');  console.log(pinnedPieces);
-				console.log('pinnerPieces -->');  console.log(pinnerPieces);
 			}
 		} // -------------------------------------------------
 		return false; // someBishop cannot attack checkSpaceId
@@ -375,12 +378,22 @@ function checkingSpace(somePiece, checkSpaceId) {
 		if (nails.length === 1) { // if only one nail
 			// if that nail & someRook aren't on the same side
 			if (nails[0].getAttribute('data-side') !== someRook.getAttribute('data-side')) {
-				// -------------------------
-				pinnedPieces.push(nails[0]);
-				// -------------------------
-				pinnerPieces.push(someRook);
+				// -------------------------------------------------------------------------
+				pinnedPieces.push(
+					// -----------------------------------
+					{ pinner: someRook, pinned: nails[0] }
+				);
+				// -------------------
+				tempPinnedPieces.push(
+					{ pinner: someRook, pinned: nails[0] }
+				);
+				// -------------------------------------------
+				nails[0].setAttribute('data-pinned', true);
+				// -----------------------------------------------
+				nails[0].setAttribute('data-pinner', someRook);
 				// -------------------------------------------------------------------------------------------------
 				alert(nails[0].getAttribute('data-side') + ' ' + nails[0].getAttribute('data-name') + ' IS PINNED');
+				// -------------------------------------------------------------------------------------------------
 				console.log('pinnedPieces -->');  console.log(pinnedPieces);
 			}
 		}
