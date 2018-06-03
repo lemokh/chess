@@ -326,12 +326,12 @@ function lit(activeSide, passiveSide) {
             if (greyLitDivs.length) {
                 for (let i =0; i < greyLitDivs.length; i++) {
                     if (greyLitDivs[i].piece === somePiece) {
-                        greyLitDivs[i].moveAbleIds.push(...litDivs);
+                        greyLitDivs[i].checkPathIds.push(...litDivs);
                         break;
                     }
                     else {
                         greyLitDivs.push(
-                            { piece: somePiece, moveAbleIds: litDivs }
+                            { piece: somePiece, moveToIds: litDivs }
                         );
                     }
                 }
@@ -395,16 +395,16 @@ function lit(activeSide, passiveSide) {
 		//================================
         function interceptKingAttacker() {	
             // -------------------------------------
-            greyLitPieces = [...canEatKingAttacker];
+            // greyLitPieces = [...canEatKingAttacker];
             // -------------------------------------
-            canBlockPathOfCheck.forEach(obj => {
+            // canBlockPathOfCheck.forEach(obj => {
                 // ---------------------------------
-                greyLitPieces.push(obj.pathBlocker);
-			});
+                // greyLitPieces.push(obj.pathBlocker);
+			// });
 			// ----------------------------------------
-            if (!greyLitPieces.length) { endOfGame(); }
+            // if (!greyLitPieces.length) { return endOfGame(); }
             // ----------------------------------------
-            else { // since able to prevent check mate
+            // else { // since able to prevent check mate
                 // ------------------------------------
                 kingAttackers.forEach(kingAttacker => {
                     // ---------------------------------------------
@@ -416,7 +416,7 @@ function lit(activeSide, passiveSide) {
                         greyLitPiece.addEventListener('click', selectGreyPiece);
                     });
                 });
-            }
+            // }
         }
         // ---------------------------------------------------------------
 		// populates litDivs where activeKing can move via checkingSpace()
