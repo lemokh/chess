@@ -35,15 +35,11 @@ addLitDivHandler(pieceToMove, movePiece);
 
 
 /*
-ERRORS:
-
-    0. somewhere this is happening:  checkingSpace(undefined, someId); 
+ERRORS: 
 
     1.  pinnedPiece no longer moves between its path to king and its path to its pinner 
-    
-    2.  in check, king is not clickable to move, if able to move...
 
-    3.  TO BEGIN EACH TURN:
+    2.  TO BEGIN EACH TURN:
             if (pinnedPiece no longer pinned) { 
                 pinnedPiece.setAttribute('data-pinned', 'true');
             }
@@ -52,9 +48,12 @@ ERRORS:
 METHOD:  walk through lit() step by step with each scenario in mind to find mis-alignments
 
 SCENARIOS:
+    
     pinnedPiece clicked --> move where able
+
     in check king able to move --> click and move
-    pinnedPiece from previous move no longer pinned --> click and move
+    
+    pinnedPiece from previous turn no longer pinned --> click and move
 
 
 
