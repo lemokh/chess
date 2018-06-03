@@ -393,30 +393,25 @@ function lit(activeSide, passiveSide) {
 			});
 		} // this doesn't apply to activeKing
 		//================================
-        function interceptKingAttacker() {	
-            // -------------------------------------
-            // greyLitPieces = [...canEatKingAttacker];
-            // -------------------------------------
-            // canBlockPathOfCheck.forEach(obj => {
-                // ---------------------------------
-                // greyLitPieces.push(obj.pathBlocker);
-			// });
-			// ----------------------------------------
-            // if (!greyLitPieces.length) { return endOfGame(); }
-            // ----------------------------------------
-            // else { // since able to prevent check mate
-                // ------------------------------------
-                kingAttackers.forEach(kingAttacker => {
-                    // ---------------------------------------------
-                    // lightens & click-listens to each greyLitPiece
-                    greyLitPieces.forEach(greyLitPiece => {
-						// -----------------------------------
-                        greyLitPiece.classList.add('greyLit');
-                        // -----------------------------------------------------
-                        greyLitPiece.addEventListener('click', selectGreyPiece);
+        function interceptKingAttacker() {
+            kingAttackers.forEach(kingAttacker => {
+                kingAttacker.checkPathIds.forEach(id => {
+                    activeSide.forEach(activePiece => {
+                        if (activePiece.getAttribute('data-name') !== 'king') {
+                            if (activePiece.getAttribute('data-pinned') === 'false') {
+                                pawnBlocksKingAttacker = true;
+                                if (checkingSpace(activePiece, id)) {
+                                    greyLighten(activePiece);
+                                }
+                            }
+                        }
+                        pawnBlocksKingAttacker = false;
+                        if (checkingSpace(activePiece, kingAttacker.id)) {
+                            greyLighten(activePiece);
+                        }
                     });
                 });
-            // }
+			});
         }
         // ---------------------------------------------------------------
 		// populates litDivs where activeKing can move via checkingSpace()
@@ -430,19 +425,6 @@ function lit(activeSide, passiveSide) {
             mate = false;
             // ---------------------
             greyLighten(activeKing);
-			// ------------------------------------
-			kingAttackers.forEach(kingAttacker => {
-                // if king can eat its attacker, collect king
-                // ------------------------------------------
-                if (litDivs.includes(kingAttacker)) {
-                    // ---------------------------------
-                    canEatKingAttacker.push(activeKing);
-				}
-                // -------------------------
-				eatOrBlock(kingAttacker.id);
-				// THIS DOES NOT WORK HERE, WRITE SOMETHING NEW
-			});
-			
             // ---------------------
             interceptKingAttacker();
 		}
