@@ -250,8 +250,6 @@ function lit(activeSide, passiveSide) {
 		removeLitDivHandler(moveGreyPiece);
 		// --------------------------------
         greyPieceToMove = e.target;
-        // --------------------------------------
-		// greyPieceToMove.classList.remove('greyLit');
 		// --------------------------------------
         greyPieceToMove.classList.add('mainLit');
         // --------------------------------------
@@ -282,11 +280,14 @@ function lit(activeSide, passiveSide) {
 	//=========================
 	function moveGreyPiece(e) {
 		// resets greyPieceToMove
-		console.log('ENTERS moveGreyPiece()');
+        console.log('ENTERS moveGreyPiece()');
+        // -----------------------------------------
+		greyPieceToMove.classList.remove('greyLit');
 		// -----------------------------------------
 		greyPieceToMove.classList.remove('mainLit');
 		// -----------------------------------------
-		// clears greyLitDiv pieces
+        
+        // clears greyLitDiv pieces
 		greyLitPieces.forEach(greyLitPiece => {
 			// --------------------------------------------------------
 			greyLitPiece.removeEventListener('click', selectGreyPiece);
@@ -294,10 +295,14 @@ function lit(activeSide, passiveSide) {
 			greyLitPiece.classList.remove('greyLit');
 		});
 		greyLitPieces = [];
-		// --------------------------------
-		removeLitDivHandler(moveGreyPiece);
+        
+        // --------------------------------
+        removeLitDivHandler(moveGreyPiece);
+        
 		// -------------------------------------------------------------------
-		if (e.target.getAttribute('data-side') !== 'empty') { eat(e.target); }
+		if (e.target.getAttribute('data-side') !== 'empty') {
+            eat(e.target);
+        }
 		// -------------------------------------------------------------------
 		swapSide(greyPieceToMove, e.target);
 		// ---------------------------------
@@ -306,13 +311,13 @@ function lit(activeSide, passiveSide) {
 			// toggleClocks();
 			console.log('toggles activeSide to orange');
 			// -----------------------------------------
-			lit(oranges, blues);
+			return lit(oranges, blues);
 		} // -------------------
 		else { // since activeKing is orange
 			// toggleClocks();
 			console.log('toggles activeSide to blue');
 			// ---------------------------------------
-			lit(blues, oranges);
+			return lit(blues, oranges);
 		}
 	}
 
@@ -349,6 +354,8 @@ function lit(activeSide, passiveSide) {
             }
             
         }
+       
+        /*
 		//===================================
 		function eatOrBlock(kingAttackerId) {
 			// populates canEatKingAttacker & canBlockPathOfCheck, excluding activeKing
@@ -403,7 +410,9 @@ function lit(activeSide, passiveSide) {
 				}
 			});
 		} // this doesn't apply to activeKing
-		//================================
+        */
+
+        //================================
         function interceptKingAttacker() {
             kingAttackers.forEach(kingAttacker => {
                 kingAttacker.checkPathIds.forEach(id => {
@@ -447,7 +456,7 @@ function lit(activeSide, passiveSide) {
 			// ---------------------------------------------
 			console.log('king unable to move out of check');
 			// -----------------------------
-			eatOrBlock(kingAttackers[0].id);
+			// eatOrBlock(kingAttackers[0].id);
 			// -----------------------------------------------------
 			// discerns whether an activePiece can prevent checkmate
 			// mate = true;
