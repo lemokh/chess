@@ -40,7 +40,7 @@ function lit(activeSide, passiveSide) {
                     // --------------------------------------
                     if (greyLitDivs[i].piece === somePiece) {
                         // ------------------------------------------
-                        greyLitDivs[i].checkPathIds.push(...litDivs);
+                        greyLitDivs[i].moveToIds.push(...litDivs);
                         break;
                     }
                     else {
@@ -211,6 +211,7 @@ function lit(activeSide, passiveSide) {
 		// ----------
 		litDivs = [];
     }
+
     //====================
     function endOfGame() {
         alert(activeKing.getAttribute('data-side') + ' KING CHECKMATED!');
