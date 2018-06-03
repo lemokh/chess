@@ -27,16 +27,21 @@ if (pieceToMove.getAttribute('data-pinned') === 'true') {
 
 /*  now that litDivs contains all ids where pinned pieceToMove can go...
         simply add click-handler to pieceToMove run movePiece(e)    */
-        
+
 addLitDivHandler(pieceToMove, movePiece);
+
+
+
 
 
 /*
 ERRORS:
 
+    0. somewhere this is happening:  checkingSpace(undefined, someId); 
+
     1.  pinnedPiece no longer moves between its path to king and its path to its pinner 
     
-    2.  in check, king is not clickable to move, if able...
+    2.  in check, king is not clickable to move, if able to move...
 
     3.  TO BEGIN EACH TURN:
             if (pinnedPiece no longer pinned) { 
