@@ -36,7 +36,7 @@ METHOD:  walk through lit() step by step with each scenario in mind to find mis-
 
 SCENARIOS:
     pinnedPiece clicked --> move where able
-    king able to move --> click and move
+    in check king able to move --> click and move
     pinnedPiece from previous move no longer pinned --> click and move
 
 

@@ -186,7 +186,8 @@ function lit(activeSide, passiveSide) {
 				castleIds = [];
 			}
 		}
-	}
+    }
+    
 	/*
 	//===========================================
 	function pinnedPieceAttack(somePinnedPiece) {
@@ -1116,10 +1117,12 @@ function lit(activeSide, passiveSide) {
 		// ----------------------------------------
 		// lightens pieceToMove
 		pieceToMove.classList.add('mainLit');
-		// ------------------------------------------------------
+		// ----------------------------------
+		console.log(pieceToMove.getAttribute('data-pinned'));
+		// ----------------------------------------------------
 		if (pieceToMove.getAttribute('data-pinned') === 'true') { 
 			alert('that clicked pieceToMove is pinned!');
-			// ------------------------------------------
+			// ----------------
 			pinnedPieceLit();
 		}
 		// ------------------------------------------------------------------------
@@ -1148,17 +1151,18 @@ function lit(activeSide, passiveSide) {
 	// --------------------------------------------------------------------
 	// populates kingAttackers with any passivePiece that checks activeKing
 	passiveSide.forEach(passivePiece => {
-		// ----------------------------------------------
-		if (checkingSpace(passivePiece, activeKing.id)) {
-			console.log('pathOfCheck -->');  console.log(pathOfCheck);
-			// ------------------------------------------
-			kingAttackers.push(passivePiece);
+		// ------------------------------------------------
+		if ( checkingSpace(passivePiece, activeKing.id) ) {
+			// ---------------------------------------------------
+			kingAttackers.push(
+                { piece: passivePiece, checkPathIds: pathOfCheck }
+            );
 		}
 	});  console.log('kingAttackers -->');  console.log(kingAttackers);
 	// ----------------------------------------------------------------
 	// if activeKing in check
-	if (kingAttackers.length) { isMate(); }
-	// ------------------------------------
+	if (kingAttackers.length) { return isMate(); }
+	// -------------------------------------------
 	/*
 	if (pinnedPieces.length) {
 		// --------------------------------
