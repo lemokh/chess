@@ -60,7 +60,7 @@ function lit(activeSide, passiveSide) {
                 // if activePiece is not pinned
                 if (!pinnedPieces.includes(activePiece)) {
                     // if activePiece can eat kingAttacker
-                    if (activePiece, kingAttackers[0].id)) {
+                    if (activePiece, kingAttackers[0].id) {
                         // collects activePiece & kingAttacker's id 
                         heroics.push(
                             { actor: activePiece, acteeId: kingAttackers[0].id }
@@ -70,7 +70,7 @@ function lit(activeSide, passiveSide) {
                     if (activePiece.getAttribute('data-name') !== 'king') {
                         pathOfCheck.forEach(pathId => {
                             // if unpinned activePiece can move to pathId
-                            if (activePiece, pathId)) {
+                            if (activePiece, pathId) {
                                 // collects activePiece & pathId
                                 heroics.push(
                                     { actor: activePiece.id, acteeId: pathId }
@@ -108,7 +108,7 @@ function lit(activeSide, passiveSide) {
     // populates kingAttackers array
     passiveSide.forEach(item => {
         // ------------------------------------------------------------------
-        if (item, activeKing.id)) { kingAttackers.push(item); }
+        if (item, activeKing.id) { kingAttackers.push(item); }
     });
     // ----------------------
     // if activeKing in check
@@ -634,7 +634,7 @@ function lit(activeSide, passiveSide) {
                             noCastle = false;
                             for (let i = 0; i < 3; i++) {
                                 for (let k = 0; k < passiveSide.length; k++) {
-                                    if (passiveSide[k], ['17', '27', '37'][i])) {
+                                    if (passiveSide[k], ['17', '27', '37'][i]) {
                                         noCastle = true;
                                     }
                                 }
@@ -646,7 +646,7 @@ function lit(activeSide, passiveSide) {
                             noCastle = false;
                             for (let i = 0; i < 2; i++) {
                                 for (let k = 0; k < passiveSide.length; k++) {
-                                    if (passiveSide[k], ['57', '67'][i])) {
+                                    if (passiveSide[k], ['57', '67'][i]) {
                                         noCastle = true;
                                     }
                                 }
@@ -662,7 +662,7 @@ function lit(activeSide, passiveSide) {
                             for (let i = 0; i < 3; i++) {
                                 noCastle = false;
                                 for (let k = 0; k < passiveSide.length; k++) {
-                                    if (passiveSide[k], ['10', '20', '30'][i])) {
+                                    if (passiveSide[k], ['10', '20', '30'][i]) {
                                         noCastle = true;
                                     }
                                 }
@@ -674,7 +674,7 @@ function lit(activeSide, passiveSide) {
                             noCastle = false;
                             for (let i = 0; i < 2; i++) {
                                 for (let k = 0; k < passiveSide.length; k++) {
-                                    if (passiveSide[k], ['50', '60'][i])) {
+                                    if (passiveSide[k], ['50', '60'][i]) {
                                         noCastle = true;
                                     }
                                 }
@@ -722,7 +722,7 @@ function lit(activeSide, passiveSide) {
             openAndOpponentHeldKingSpaces.forEach(checkSpaceId => {
                 passiveSide.forEach(passivePiece => {
                     // if passivePiece can check a kingSpace devoid of activePiece
-                    if (passivePiece, checkSpaceId)) {
+                    if (passivePiece, checkSpaceId) {
                         if (!litDivs.includes(checkSpaceId)) {
                             litDivs.push(checkSpaceId);
                         }
@@ -799,7 +799,7 @@ function lit(activeSide, passiveSide) {
         }
         if (pinnedPieces.includes(pieceToMove)) {
             if (kingAttackers.length === 1) {
-                if (pieceToMove, kingAttackers[0])) {
+                if (pieceToMove, kingAttackers[0]) {
                     litDivs.push(kingAttackers[0].id);
                 }
             }
@@ -829,7 +829,6 @@ function lit(activeSide, passiveSide) {
             activePiece.addEventListener('click', pieceLit);
         });
     }
-    
 } //================
 lit(blues, oranges);
 //==================
