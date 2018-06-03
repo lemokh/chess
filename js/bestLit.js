@@ -69,13 +69,13 @@ function lit(activeSide, passiveSide) {
             // toggleClocks();
             console.log('toggles activeSide to orange');
             // -----------------------------------------
-            lit(oranges, blues);
+            return lit(oranges, blues);
         } // ------------------- 
         else { // since activeKing is orange
             // toggleClocks();
             console.log('toggles activeSide to blue');
             // ---------------------------------------
-            lit(blues, oranges);
+            return lit(blues, oranges);
         }
     }
     //=================================
