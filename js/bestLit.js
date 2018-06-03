@@ -318,7 +318,26 @@ function lit(activeSide, passiveSide) {
 		// --------------------------------------------------------------------------------
 		checkPath = pathOfCheck;
 		// ----------------------
-		pieceToMove = activeKing;
+        pieceToMove = activeKing;
+        //===============================
+        function greyLighten(somePiece) {
+            somePiece.addEventListener('click', selectGreyPiece);
+            somePiece.classList.add('greyLit');
+            if (greyLitDivs.length) {
+                for (let i =0; i < greyLitDivs.length; i++) {
+                    if (greyLitDivs[i].piece === somePiece) {
+                        greyLitDivs[i].moveAbleIds.push(...litDivs);
+                        break;
+                    }
+                    else {
+                        greyLitDivs.push(
+                            { piece: somePiece, moveAbleIds: litDivs }
+                        );
+                    }
+                }
+            }
+            
+        }
 		//===================================
 		function eatOrBlock(kingAttackerId) {
 			// populates canEatKingAttacker & canBlockPathOfCheck, excluding activeKing
@@ -408,12 +427,10 @@ function lit(activeSide, passiveSide) {
 			// ---------------------------------------
             console.log('king can move out of check');
 			// ---------------------------------------
-			mate = false;
-			// ---------------------------------
-			activeKing.classList.add('greyLit');
-			// addLitDivHandler(movePiece);
-			// ---------------------------------------
-			
+            mate = false;
+            // ---------------------
+            greyLighten(activeKing);
+			// ------------------------------------
 			kingAttackers.forEach(kingAttacker => {
                 // if king can eat its attacker, collect king
                 // ------------------------------------------
@@ -448,7 +465,7 @@ function lit(activeSide, passiveSide) {
 		}
 		// -----------------------------------------------------------
 		// checkmate since multiple kingAttackers and king cannot move
-        else { endOfGame(); }
+        else { return endOfGame(); }
 	}
 
 
@@ -1165,12 +1182,12 @@ function lit(activeSide, passiveSide) {
 	// -------------------------------------------
 	/*
 	if (pinnedPieces.length) {
-		// --------------------------------
+
 		activeSide.forEach(activePiece => {
-			// ------------------------------------------------------------------------
-			if (pinnedPieces.includes(activePiece)) { pinnedPieceAttack(activePiece); }
-			// ------------------------------------------------------
-			else { activePiece.addEventListener('click', pieceLit); }
+
+            if (pinnedPieces.includes(activePiece)) { pinnedPieceAttack(activePiece); }
+
+            else { activePiece.addEventListener('click', pieceLit); }
 		});
 	}
 	*/
