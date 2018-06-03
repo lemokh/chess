@@ -249,9 +249,19 @@ function lit(activeSide, passiveSide) {
 		// resets each litDiv
 		removeLitDivHandler(moveGreyPiece);
 		// --------------------------------
-		greyPieceToMove = e.target;
+        greyPieceToMove = e.target;
+        // --------------------------------------
+		// greyPieceToMove.classList.remove('greyLit');
 		// --------------------------------------
-		greyPieceToMove.classList.add('mainLit');
+        greyPieceToMove.classList.add('mainLit');
+        // --------------------------------------
+        for (let i = 0; i < greyLitDivs.length; i++) {
+            if (greyLitDivs[i].piece === e.target) {
+                moveGreyPiece();
+                break;
+            }
+        }
+        /*
 		// -----------------------------------------
 		if (canEatKingAttacker.includes(e.target)) {
 			// -------------------------------------
@@ -264,9 +274,10 @@ function lit(activeSide, passiveSide) {
 				// ----------------------------
 				litDivs.push(obj.emptyDivId);
 			}
-		});
+        });
+        */
 		// -----------------------------
-		addLitDivHandler(moveGreyPiece);
+		// addLitDivHandler(moveGreyPiece);
 	}
 	//=========================
 	function moveGreyPiece(e) {
