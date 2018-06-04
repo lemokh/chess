@@ -1151,7 +1151,7 @@ function lit(activeSide, passiveSide) {
 		// ----------------------------------------------
 		if (checkingSpace(passivePiece, activeKing.id)) {
 			console.log('pathOfCheck -->');  console.log(pathOfCheck);
-			// ------------------------------------------
+			// -------------------------------------------------------
 			kingAttackers.push(passivePiece);
 		}
 	});  console.log('kingAttackers -->');  console.log(kingAttackers);

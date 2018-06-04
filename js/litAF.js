@@ -29,14 +29,19 @@ function lit(activeSide, passiveSide) {
 
         //===============================
         function greyLighten(somePiece) {
+            // --------------------------------
+            somePiece.classList.add('greyLit');
             // --------------------------------------------------
             somePiece.addEventListener('click', selectGreyPiece);
-            // --------------------------------------------------
-            somePiece.classList.add('greyLit');
-            // --------------------------------
+            // ----------------------------------------------------------
+            greyLitDivs.push( { piece: somePiece, moveToIds: litDivs } );
+            // ----------------------------------------------------------
+            console.log(greyLitDivs);
+            // ----------------------
+            /*
             if (greyLitDivs.length) {
                 // ------------------------------------------
-                for (let i =0; i < greyLitDivs.length; i++) {
+                for (let i = 0; i < greyLitDivs.length; i++) {
                     // --------------------------------------
                     if (greyLitDivs[i].piece === somePiece) {
                         // ------------------------------------------
@@ -50,13 +55,16 @@ function lit(activeSide, passiveSide) {
                     }
                 }
             }
-            
+            */
         }
 
         //================================
         function interceptKingAttacker() {
             // ------------------------------------
             kingAttackers.forEach(obj => {
+
+                console.log('obj.checkPathIds -->');
+                console.log(obj.checkPathIds);
                 // --------------------------------------
                 obj.checkPathIds.forEach(id => {
                     // ----------------------------------
@@ -93,6 +101,7 @@ function lit(activeSide, passiveSide) {
         // --------------------------
         // if king can move, not mate
 		if (litDivs.length) {
+            console.log('litDivs -->');  console.log(litDivs);
 			// ---------------------------------------
             console.log('king can move out of check');
 			// ---------------------------------------
@@ -150,15 +159,14 @@ function lit(activeSide, passiveSide) {
 		// -----------------------------------------
 		greyPieceToMove.classList.remove('mainLit');
 		// -----------------------------------------
-        
         // clears greyLitDiv pieces
-		greyLitPieces.forEach(greyLitPiece => {
+		greyLitDivs.forEach(obj => {
 			// --------------------------------------------------------
-			greyLitPiece.removeEventListener('click', selectGreyPiece);
+			obj.piece.removeEventListener('click', selectGreyPiece);
 			// --------------------------------------------------------
-			greyLitPiece.classList.remove('greyLit');
+			obj.piece.classList.remove('greyLit');
 		});
-		greyLitPieces = [];
+		greyLitDivs = [];
         
         // --------------------------------
         removeLitDivHandler(moveGreyPiece);
