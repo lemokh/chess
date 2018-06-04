@@ -407,7 +407,7 @@ function lit(activeSide, passiveSide) {
 			// ---------------------------------------
             console.log('king can move out of check');
 			// ---------------------------------------
-			mate = false;
+			// mate = false;
 			// ---------------------------------
 			activeKing.classList.add('greyLit');
 			// addLitDivHandler(movePiece);
@@ -1076,28 +1076,25 @@ function lit(activeSide, passiveSide) {
 			// ---------------------------------------------------
 			default: alert('default ERROR! pieceToMove is empty');
 		}
-		// -----------------------------------------------------
+		// --------------------------------------------------------
 		// lightens & click-listens all litDivs to run movePiece(e)
-		if (litDivs.length) {
-			// ------------------------
-			addLitDivHandler(movePiece); 
-			// enters movePiece(e) on litDiv-click, unless castling
-		}
+		if (litDivs.length) { addLitDivHandler(movePiece); }
 	} // WORKS!
 	//====================
 	function pieceLit(e) {
 		// -------------------------------
 		console.log('ENTERS pieceLit(e)');
 		// ---------------------------------------------------------------
-		if (newPieceClicked === undefined) { // if first click of the turn
-			/// ----------------------------------------------------------
+		if (newPieceClicked === undefined) {
+			// if first click of this turn
+			/// --------------------------
 			newPieceClicked = e.target;
 			// ---------------------------------------------
 			e.target.removeEventListener('click', pieceLit);
 			// stops click-listening to e.target
 		}
-		else { // since not first click of the turn,
-			// but since first click of that button this turn
+		else { // since not first click of this turn,
+			// but since first click of that piece this turn
 			// -------------------------------------------------
 			newPieceClicked.addEventListener('click', pieceLit);
 			/// starts click-listening to newPieceClicked
