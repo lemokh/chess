@@ -24,6 +24,7 @@ KING IN CHECK:
     --------------------------------------------------
     kingAttackers = [passivePiece, passivePiece, ...];
     --------------------------------------------------
+    
     greyLitPieces = [activePiece, activePiece, ...];
     -----------------------------------------------------
     canEatKingAttacker = [activePiece, activePiece, ...];
@@ -51,19 +52,19 @@ KING IN CHECK:
                 pieceToMove = activePiece;
                 
                 if activePiece checks kAId,
-                    pushes activePiece to canEatKingAttacker array
+                    pushes activePiece to canEatKingAttacker array;
 
                 pawnBlocksKingAttacker = true;
 
                 for each id in checkPath,
                     if activePiece checks that id,
                         | pushes {pathBlocker: activePiece, emptyDiv: id} 
-                        | to canBlockPathOfCheck array
+                        | to canBlockPathOfCheck array;
 
             pawnBlocksKingAttacker = false;
 
         else if activePiece checks kingAttackers[0].id,
-            pushes activePiece to canEatKingAttacker array
+            pushes activePiece to canEatKingAttacker array;
     }
 
     ------------------------------------------------------
@@ -73,12 +74,61 @@ KING IN CHECK:
         greyLitPieces = [...canEatKingAttacker];
 
         for each obj in canBlockPathOfCheck,
-            pushes obj.pathBlocker to greyLitPieces
+            pushes obj.pathBlocker to greyLitPieces;
 
         if greyLitPieces is empty,
             endOfGame();
 
         else for each kingAttacker,
-            grey-lightens & click-listens each greyLitPiece 
+            grey-lightens & click-listens each greyLitPiece, 
                 --> selectGreyPiece();
+    }
+
+    ----------------------------------------------------------
+
+    function selectGreyPiece(e) {
+
+        un-grey-lightens greyPieceToMove if not undefined;
+        removeLitDivHandler(moveGreyPiece);
+        
+        greyPieceToMove = e.target;
+        mainLit-lightens greyPieceToMove;
+
+        if canEatKingAttacker includes greyPieceToMove,
+            pushes kingAttackers[0].id to litDivs;
+        
+        for each obj in canBlockPathOfCheck,
+            if obj.pathBlocker === greyPieceToMove,
+                pushes obj.emptyDivId to litDivs;
+            
+        addLitDivHandler(moveGreyPiece);
+    }
+
+    ------------------------------------------------------
+
+    function moveGreyPiece(e) {
+
+        un-mainLit-lighens greyPieceToMove;
+        
+        un-greyLit-lightens & un-click-listens each greyLitPiece,
+            --> selectGreyPiece();
+        
+        greyLitPieces = [];
+
+        removeLitDivHandler(moveGreyPiece);
+
+        if e.target is not empty, 
+            eat(e.target);
+        
+        swapSide(greyPieceToMove, e.target);
+
+        toggleSides();
+    }
+
+    --------------------------------------------
+    
+    function add/removeLitDivHandler(funcName) {
+        
+        for each litDiv,
+            adds/removes 'lit' & click-listener --> funcName;
     }
