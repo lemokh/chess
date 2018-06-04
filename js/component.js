@@ -30,7 +30,7 @@ if (pieceToMove.getAttribute('data-pinned') === 'true') {
 
 addLitDivHandler(pieceToMove, movePiece);
 
-
+// on-clicking pieceToMove, lighten & click-listen to each litDiv
 
 
 
@@ -45,7 +45,9 @@ ERRORS:
             }
 
 
-METHOD:  walk through lit() step by step with each scenario in mind to find mis-alignments
+METHOD: walk through lit() step by step with each scenario in mind to find mis-steps
+        ... open the flood gates    
+
 
 SCENARIOS:
     

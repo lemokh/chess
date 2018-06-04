@@ -319,11 +319,11 @@ function lit(activeSide, passiveSide) {
 		if (activeKing.getAttribute('data-side') === 'blue') {
 			// toggleClocks();
 			console.log('toggles activeSide to orange');
-			lit(oranges, blues);
+			return lit(oranges, blues);
 		} else {
 			// toggleClocks();
 			console.log('toggles activeSide to blue');
-			lit(blues, oranges);
+			return lit(blues, oranges);
 		} //\\//\\//\\//\\//\\//\\//\\//\\//
 	} // WORKS!
 	//=========================
