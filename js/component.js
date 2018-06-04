@@ -51,11 +51,9 @@ METHOD: walk through lit() step by step with each scenario in mind to find mis-s
 
 SCENARIOS:
     
-    pinnedPiece clicked --> move where able
-
-    in check king able to move --> click and move
+   1.  pinnedPiece clicked --> move where able
     
-    pinnedPiece from previous turn no longer pinned --> click and move
+    2. pinnedPiece from previous turn no longer pinned --> click and move
 
 
 

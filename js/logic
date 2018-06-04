@@ -1,10 +1,13 @@
 KING IN CHECK:
 
+function isMate() {
+
     checkPath = pathOfCheck;
     pieceToMove = activeKing;
     kingLit();
-    ///////////////////////////////////////
-    if litDivs not empty, {{king can move}}
+    
+    /////////////////////   {{king can move}}
+    if litDivs not empty,
         grey lightens activeKing;
 
         !CLICK LISTEN TO ACTIVEKING --> SELECTGREYPIECE();
@@ -13,16 +16,18 @@ KING IN CHECK:
             if litDivs includes kingAttacker,
                 pushes activeKing to canEatKingAttacker array;
             
-            *** eatOrBlock(kingAttacker.id);
+            eatOrBlock(kingAttacker.id);
 
-        *** interceptKingAttacker();
-    /////////////////////////////////////////////
-    else if only one kingAttacker, {{king stuck}}
-        *** eatOrBlock(kingAttackers[0].id);
-    //////////////////////////////////////
-    else endOfGame(); {{king check mated}}
+        interceptKingAttacker();
 
-    
+    //////////////////////////////  {{king stuck}}
+    else if only one kingAttacker,
+        eatOrBlock(kingAttackers[0].id);
+
+    //////////////////////////////////////  {{king check mated}}
+    else endOfGame();
+}
+
     --------------------------------------------------
     kingAttackers = [passivePiece, passivePiece, ...];
     --------------------------------------------------
@@ -34,7 +39,6 @@ KING IN CHECK:
     ------------------------------------------------------------
     pinnedPieces = [ { pinner: __ , pinned: __ } ];
     -----------------------------------------------
-
 
     function eatOrBlock(kAId) {
         
@@ -74,10 +78,10 @@ KING IN CHECK:
 
         for each obj in canBlockPathOfCheck,
             pushes obj.pathBlocker to greyLitPieces;
-
+        ///////////////////////////
         if greyLitPieces is empty,
             endOfGame();
-
+        ///////////////////////////
         else for each kingAttacker,
             grey-lightens & click-listens each greyLitPiece, 
                 --> selectGreyPiece();
@@ -127,7 +131,7 @@ KING IN CHECK:
     --------------------------------------------
     
     function add/removeLitDivHandler(funcName) {
-        
+
         for each litDiv,
             adds/removes 'lit' & click-listener --> funcName;
     }
