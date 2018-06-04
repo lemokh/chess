@@ -3,34 +3,33 @@ KING IN CHECK:
     checkPath = pathOfCheck;
     pieceToMove = activeKing;
     kingLit();
-    
-    if litDivs not empty,
+    ///////////////////////////////////////
+    if litDivs not empty, {{king can move}}
         grey lightens activeKing;
-        
+
+        !CLICK LISTEN TO ACTIVEKING --> SELECTGREYPIECE();
+
         for each kingAttacker,
-            if litDivs includes it,
+            if litDivs includes kingAttacker,
                 pushes activeKing to canEatKingAttacker array;
             
-            eatOrBlock(kingAttacker.id);
+            *** eatOrBlock(kingAttacker.id);
 
-        interceptKingAttacker();
-    
-    else if only one kingAttacker,
-        eatOrBlock(kingAttackers[0].id);
-
-    else endOfGame();
+        *** interceptKingAttacker();
+    /////////////////////////////////////////////
+    else if only one kingAttacker, {{king stuck}}
+        *** eatOrBlock(kingAttackers[0].id);
+    //////////////////////////////////////
+    else endOfGame(); {{king check mated}}
 
     
     --------------------------------------------------
     kingAttackers = [passivePiece, passivePiece, ...];
     --------------------------------------------------
-    
     greyLitPieces = [activePiece, activePiece, ...];
     -----------------------------------------------------
     canEatKingAttacker = [activePiece, activePiece, ...];
-
     ------------------------------------------------------------
-
     canBlockPathOfCheck = [ { pathBlocker: __ , emptyiv: __ } ];
     ------------------------------------------------------------
     pinnedPieces = [ { pinner: __ , pinned: __ } ];
@@ -46,7 +45,7 @@ KING IN CHECK:
                 if activePiece is pinned,
                     activePieceIsPinned = true;
                     break;
-        
+        ////////////////////////
         if !activePieceIsPinned,
             if activePiece is not king,
                 pieceToMove = activePiece;
@@ -62,7 +61,7 @@ KING IN CHECK:
                         | to canBlockPathOfCheck array;
 
             pawnBlocksKingAttacker = false;
-
+        ///////////////////////////////////////////////
         else if activePiece checks kingAttackers[0].id,
             pushes activePiece to canEatKingAttacker array;
     }

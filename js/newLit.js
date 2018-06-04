@@ -226,7 +226,7 @@ function lit(activeSide, passiveSide) {
 		}
 	}
 	*/
-	
+
 	/*
 	//================================
 	function pinnedEatsPinner(obj) {
@@ -415,7 +415,7 @@ function lit(activeSide, passiveSide) {
 			// ---------------------------------
 			activeKing.classList.add('greyLit');
 			// addLitDivHandler(movePiece);
-			// ---------------------------------------
+			// ------------------------------------
 			
 			kingAttackers.forEach(kingAttacker => {
                 // if king can eat its attacker, collect king
