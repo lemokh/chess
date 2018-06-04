@@ -1,0 +1,84 @@
+KING IN CHECK:
+
+    checkPath = pathOfCheck;
+    pieceToMove = activeKing;
+    kingLit();
+    
+    if litDivs not empty,
+        grey lightens activeKing;
+        
+        for each kingAttacker,
+            if litDivs includes it,
+                pushes activeKing to canEatKingAttacker array;
+            
+            eatOrBlock(kingAttacker.id);
+
+        interceptKingAttacker();
+    
+    else if only one kingAttacker,
+        eatOrBlock(kingAttackers[0].id);
+
+    else endOfGame();
+
+    
+    --------------------------------------------------
+    kingAttackers = [passivePiece, passivePiece, ...];
+    --------------------------------------------------
+    greyLitPieces = [activePiece, activePiece, ...];
+    -----------------------------------------------------
+    canEatKingAttacker = [activePiece, activePiece, ...];
+
+    ------------------------------------------------------------
+
+    canBlockPathOfCheck = [ { pathBlocker: __ , emptyiv: __ } ];
+    ------------------------------------------------------------
+    pinnedPieces = [ { pinner: __ , pinned: __ } ];
+    -----------------------------------------------
+
+
+    function eatOrBlock(kAId) {
+        
+        activePieceIsPinned = false;
+        
+        for each activePiece,
+            loop through pinnedPieces,
+                if activePiece is pinned,
+                    activePieceIsPinned = true;
+                    break;
+        
+        if !activePieceIsPinned,
+            if activePiece is not king,
+                pieceToMove = activePiece;
+                
+                if activePiece checks kAId,
+                    pushes activePiece to canEatKingAttacker array
+
+                pawnBlocksKingAttacker = true;
+
+                for each id in checkPath,
+                    if activePiece checks that id,
+                        | pushes {pathBlocker: activePiece, emptyDiv: id} 
+                        | to canBlockPathOfCheck array
+
+            pawnBlocksKingAttacker = false;
+
+        else if activePiece checks kingAttackers[0].id,
+            pushes activePiece to canEatKingAttacker array
+    }
+
+    ------------------------------------------------------
+
+    function interceptKingAttacker() {
+
+        greyLitPieces = [...canEatKingAttacker];
+
+        for each obj in canBlockPathOfCheck,
+            pushes obj.pathBlocker to greyLitPieces
+
+        if greyLitPieces is empty,
+            endOfGame();
+
+        else for each kingAttacker,
+            grey-lightens & click-listens each greyLitPiece 
+                --> selectGreyPiece();
+    }
