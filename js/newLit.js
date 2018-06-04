@@ -47,21 +47,7 @@ function lit(activeSide, passiveSide) {
 		// ----------
 		litDivs = [];
 	}
-	//================================
-	function pinnedEatsPinner(obj) {
-		// ------------------------------------
-		obj.pinned.classList.remove('mainLit');
-		// ------------------------------------
-		obj.pinner.classList.remove('lit');
-		// -------------------------------------------------------
-		obj.pinner.removeEventListener('click', pinnedEatsPinner);
-		// -------------------------------------------------------
-		eat(obj.pinner);
-		// -----------------------------
-		swapSide(pieceToMove, obj.pinner);
-		// -----------------------------
-		toggleSides();
-	}
+
 	//=========================
 	function pinnedPieceLit() {
 		// ------------------------------------
@@ -127,6 +113,7 @@ function lit(activeSide, passiveSide) {
 			}
 		});
 	}
+
     //====================
     function endOfGame() {
         alert(activeKing.getAttribute('data-side') + ' KING CHECKMATED!');
@@ -187,6 +174,7 @@ function lit(activeSide, passiveSide) {
 			}
 		}
 	}
+
 	/*
 	//===========================================
 	function pinnedPieceAttack(somePinnedPiece) {
@@ -238,6 +226,25 @@ function lit(activeSide, passiveSide) {
 		}
 	}
 	*/
+	
+	/*
+	//================================
+	function pinnedEatsPinner(obj) {
+		// ------------------------------------
+		obj.pinned.classList.remove('mainLit');
+		// ------------------------------------
+		obj.pinner.classList.remove('lit');
+		// -------------------------------------------------------
+		obj.pinner.removeEventListener('click', pinnedEatsPinner);
+		// -------------------------------------------------------
+		eat(obj.pinner);
+		// -----------------------------
+		swapSide(pieceToMove, obj.pinner);
+		// -----------------------------
+		toggleSides();
+	}
+	*/
+
 	//===========================
 	function selectGreyPiece(e) {
 		// ---------------------------------
@@ -304,11 +311,6 @@ function lit(activeSide, passiveSide) {
 		}
 	}
 
-
-
-
-
-
     //=================
 	function isMate() { 
         // since activeKing is in check...
@@ -318,6 +320,7 @@ function lit(activeSide, passiveSide) {
 		checkPath = pathOfCheck;
 		// ----------------------
 		pieceToMove = activeKing;
+		
 		//===================================
 		function eatOrBlock(kingAttackerId) {
 			// populates canEatKingAttacker & canBlockPathOfCheck, excluding activeKing
@@ -372,6 +375,7 @@ function lit(activeSide, passiveSide) {
 				}
 			});
 		} // this doesn't apply to activeKing
+
 		//================================
         function interceptKingAttacker() {	
             // -------------------------------------
@@ -449,13 +453,6 @@ function lit(activeSide, passiveSide) {
 		// checkmate since multiple kingAttackers and king cannot move
         else { endOfGame(); }
 	}
-
-
-
-
-
-
-
 	
 	//====================
 	function castling(e) {
