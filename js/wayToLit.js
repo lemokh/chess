@@ -12,6 +12,7 @@ const endOfGame = () => {
 	// -------------------------------------------------------
 	console.log('END OF GAME');
 }
+//=================================
 const pinnedEatsPinner = (obj) => {
 	// ------------------------------------
 	obj.pinned.classList.remove('mainLit');
@@ -955,7 +956,7 @@ const kingLit = () => {
 		});  console.log('litDivs -->');  console.log(litDivs);
 	} // WORKS!
 } // WORKS!
-//========================
+//======================================
 const possibleMoves = (passiveSide) => {
 	// highlights clicked piece's possible moves
 	switch (pieceToMove.getAttribute('data-name')) {
@@ -986,7 +987,7 @@ const possibleMoves = (passiveSide) => {
 		}); // enters movePiece(e) on litDiv-click, unless castling
 	}
 } // WORKS!
-//====================
+//====================================
 const pieceLit = (e, passiveSide) => {
 	// -------------------------------
 	console.log('ENTERS pieceLit(e)');
@@ -1095,6 +1096,7 @@ const lit = (activeSide, passiveSide) => {
 		}
     }  console.log('activeKing -->');  console.log(activeKing);
 	// --------------------------------------------------------------------
+	
 	// populates kingAttackers with any passivePiece that checks activeKing
 	passiveSide.forEach(passivePiece => {
 		// ----------------------------------------------
@@ -1104,9 +1106,11 @@ const lit = (activeSide, passiveSide) => {
 		}
 	});  console.log('kingAttackers -->');  console.log(kingAttackers);
 	// ----------------------------------------------------------------
+	
 	// if activeKing in check
 	if (kingAttackers.length) { isMate(); }
 	// ------------------------------------------------------
+	
 	/*
 	// since activeKing not in check & there are pinnedPieces
 	else if (pinnedPieces.length) {
@@ -1119,6 +1123,7 @@ const lit = (activeSide, passiveSide) => {
 		});
 	}
 	*/
+	
     // -----------------------------------------------------
 	else { // since activeKing not in check & no pinnedPieces
 		// -------------------------------------------------

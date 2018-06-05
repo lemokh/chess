@@ -383,6 +383,8 @@ function lit(activeSide, passiveSide) {
 						// if activePiece checks kingAttacker
 						if (checkingSpace(activePiece, kingAttackerId)) {
 							// ------------------------------------------
+							mate = false;
+							// ----------------------------------
 							canEatKingAttacker.push(activePiece);
 						}
 						// -----------------------------
@@ -394,6 +396,8 @@ function lit(activeSide, passiveSide) {
 							// --------------------------------------
 							if (checkingSpace(activePiece, pathId)) {
 								// ----------------------------------
+								mate = false;
+								// ----------------------
 								canBlockPathOfCheck.push(
 									// ---------------------------------------------
 									{ pathBlocker: activePiece, emptyDivId: pathId }
@@ -424,10 +428,17 @@ function lit(activeSide, passiveSide) {
                 greyLitPieces.push(obj.pathBlocker);
 			});
 			// ----------------------------------------
-            if (!greyLitPieces.length) { endOfGame(); }
+            if (!greyLitPieces.length) {
+				if (!kingMovesOutOfCheck.length) {
+					console.log('line 432 --> endOfGame');
+					endOfGame();
+				}
+			}
             // ----------------------------------------
             else { // since able to prevent check mate
-                // ------------------------------------
+				// ------------------------------------
+				mate = false;
+				// ------------------------------------
                 kingAttackers.forEach(kingAttacker => {
                     // ---------------------------------------------
                     // lightens & click-listens to each greyLitPiece
@@ -460,7 +471,8 @@ function lit(activeSide, passiveSide) {
 			kingAttackers.forEach(kingAttacker => {
                 // --------------------------------
 				eatOrBlock(kingAttacker.id);
-				// THIS DOES NOT WORK HERE, WRITE SOMETHING NEW
+				// THIS DOES NOT WORK HERE?
+				// WRITE SOMETHING NEW?
 			});
 			
             // ---------------------
@@ -482,7 +494,7 @@ function lit(activeSide, passiveSide) {
 			interceptKingAttacker();
 			// -----------------------
 			if (mate) {
-				console.log('line 489 --> endOfGame');
+				console.log('line 496 --> endOfGame');
 				endOfGame();
 			}
 		}
@@ -1161,11 +1173,6 @@ function lit(activeSide, passiveSide) {
     } // WORKS!
 
 
-
-
-
-
-
     // ****************
     // chess meta-logic
     // ****************
@@ -1193,6 +1200,7 @@ function lit(activeSide, passiveSide) {
 	// if activeKing in check
 	if (kingAttackers.length) { isMate(); }
 	// ------------------------------------
+
 	/*
 	if (pinnedPieces.length) {
 		// --------------------------------
@@ -1204,7 +1212,8 @@ function lit(activeSide, passiveSide) {
 		});
 	}
 	*/
-    // ------------------------------------
+	
+	// ------------------------------------
 	else { // since activeKing not in check
 		// --------------------------------
 		activeSide.forEach(activePiece => {

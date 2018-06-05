@@ -1092,6 +1092,3 @@ function lit(activeSide, passiveSide) {
 		});
 	}
 }
-//=======================================
-lit(blues, oranges); // begins first move
-//=======================================
