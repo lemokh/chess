@@ -446,6 +446,8 @@ function lit(activeSide, passiveSide) {
 		// --------------------------
         // if king can move, not mate
 		if (litDivs.length) {
+			// --------------
+			mate = false;
 			// ---------------------------------------
             console.log('king can move out of check');
 			// ---------------------------------------
@@ -456,13 +458,7 @@ function lit(activeSide, passiveSide) {
 			// ---------------------------------------------------
 			
 			kingAttackers.forEach(kingAttacker => {
-                // if king can eat its attacker, collect king
-                // ------------------------------------------
-                if (litDivs.includes(kingAttacker)) {
-                    // ---------------------------------
-                    canEatKingAttacker.push(activeKing);
-				}
-                // -------------------------
+                // --------------------------------
 				eatOrBlock(kingAttacker.id);
 				// THIS DOES NOT WORK HERE, WRITE SOMETHING NEW
 			});
@@ -481,15 +477,21 @@ function lit(activeSide, passiveSide) {
 			eatOrBlock(kingAttackers[0].id);
 			// -----------------------------------------------------
 			// discerns whether an activePiece can prevent checkmate
-			// mate = true;
+			mate = true;
 			// ---------------------
 			interceptKingAttacker();
 			// -----------------------
-			// if (mate) { endOfGame(); }
+			if (mate) {
+				console.log('line 489 --> endOfGame');
+				endOfGame();
+			}
 		}
 		// -----------------------------------------------------------
 		// checkmate since multiple kingAttackers and king cannot move
-        else { endOfGame(); }
+        else {
+			console.log('line 493 --> endOfGame');
+			endOfGame();
+		}
 	}
 	
 	//====================

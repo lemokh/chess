@@ -10,12 +10,9 @@ function isMate() {
     if litDivs not empty,
         grey lightens activeKing;
 
-        !CLICK LISTEN TO ACTIVEKING --> SELECTGREYPIECE();
+        CLICK LISTENS TO ACTIVEKING --> SELECTGREYPIECE();
 
         for each kingAttacker,
-            if litDivs includes kingAttacker,
-                pushes activeKing to canEatKingAttacker array;
-            
             eatOrBlock(kingAttacker.id);
 
         interceptKingAttacker();

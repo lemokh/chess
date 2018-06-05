@@ -44,17 +44,18 @@ ERRORS:
                 pinnedPiece.setAttribute('data-pinned', 'true');
             }
 
+    3. correctly alert check mate
 
-METHOD: walk through lit() step by step with each scenario in mind to find mis-steps
+
+METHOD: step through lit() for each scenario to find mistakes
         ... open the flood gates    
 
 
 SCENARIOS:
     
-   1.  pinnedPiece clicked --> move where able
+    1.  pinnedPiece clicked --> move where able
     
     2. pinnedPiece from previous turn no longer pinned --> click and move
-
 
 
 BUILD:
