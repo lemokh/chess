@@ -10,6 +10,7 @@ function isMate() {
 	
 	//===================================
 	function eatOrBlock(kingAttackerId) {
+		console.log('ENTERS eatOrBlock()');
 		// populates canEatKingAttacker & canBlockPathOfCheck, excluding activeKing
 		activePieceIsPinned = false;
 		// ------------------------------------------------------------------------
@@ -24,7 +25,7 @@ function isMate() {
 				}
 			}
 			if (!activePieceIsPinned) {
-				// and if not activeKing
+				// and if activePiece is not activeKing
 				if (activePiece.getAttribute('data-name') !== 'king') {
 					// ------------------------------------------------
 					pieceToMove = activePiece; // IMPORTANT!
@@ -32,7 +33,8 @@ function isMate() {
 					// if activePiece checks kingAttacker
 					if (checkingSpace(activePiece, kingAttackerId)) {
 						// ------------------------------------------
-						mate = false;
+						mate = false;  
+						console.log(activePiece.id+' can eat '+kingAttacker.id);
 						// ----------------------------------
 						canEatKingAttacker.push(activePiece);
 					}
@@ -46,6 +48,7 @@ function isMate() {
 						if (checkingSpace(activePiece, pathId)) {
 							// ----------------------------------
 							mate = false;
+							console.log(activePiece.id+' can block at '+pathId);
 							// ----------------------
 							canBlockPathOfCheck.push(
 								// ---------------------------------------------
@@ -58,28 +61,36 @@ function isMate() {
 				}
 			}
 			else { // since activePiece is pinned
+				console.log(activePiece.id+' is pinned');
 				// if activePiece can eat kingAttacker
 				if (checkingSpace(activePiece, kingAttackers[0].id)) {
 					// -----------------------------------------------
 					canEatKingAttacker.push(activePiece);
+					console.log(activePiece.id+' can eat '+kingAttackers[0].id);
 				}
 			}
 		});
-	} // this doesn't apply to activeKing
+	} // doesn't apply to activeKing
 
 	//================================
-	function interceptKingAttacker() {	
+	function interceptKingAttacker() {
+		console.log('ENTERS interceptKingAttacker()');
 		// -------------------------------------
 		greyLitPieces = [...canEatKingAttacker];
+		
+		console.log(greyLitPieces);
 		// -------------------------------------
 		canBlockPathOfCheck.forEach(obj => {
 			// ---------------------------------
 			greyLitPieces.push(obj.pathBlocker);
 		});
+
+		console.log(greyLitPieces);
 		// ----------------------------------------
 		if (!greyLitPieces.length) {
 			if (!kingMovesOutOfCheck.length) {
-				console.log('line 432 --> endOfGame');
+				console.log('since no greyLitPieces and king stuck...');
+				console.log('endOfGame 1');
 				endOfGame();
 			}
 		}
@@ -87,6 +98,7 @@ function isMate() {
 		else { // since able to prevent check mate
 			// ------------------------------------
 			mate = false;
+			console.log('since there are greyLitPieces, no check mate');
 			// ------------------------------------
 			kingAttackers.forEach(kingAttacker => {
 				// ---------------------------------------------
@@ -109,7 +121,7 @@ function isMate() {
 		// --------------
 		mate = false;
 		// ---------------------------------------
-		console.log('king can move out of check');
+		console.log('king can move, no check mate');
 		// ---------------------------------------
 		kingMovesOutOfCheck = litDivs;
 		// ---------------------------------
@@ -143,14 +155,14 @@ function isMate() {
 		interceptKingAttacker();
 		// -----------------------
 		if (mate) {
-			console.log('line 496 --> endOfGame');
+			console.log('since only one kingAttacker and king stuck --> endOfGame 2');
 			endOfGame();
 		}
 	}
 	// -----------------------------------------------------------
 	// checkmate since multiple kingAttackers and king cannot move
 	else {
-		console.log('line 493 --> endOfGame');
+		console.log('since multiple kingAttackers & king stuck --> endOfGame 3');
 		endOfGame();
 	}
 }
