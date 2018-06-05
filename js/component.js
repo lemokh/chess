@@ -36,7 +36,8 @@ addLitDivHandler(pieceToMove, movePiece);
 
 /*
 ERRORS:
-
+    -2. orange king is pinned when in check sometimes...
+    
     -1. after castling, toggleSides repeats turn for castling side
         line 699... logic is too loose there for castling(e) scenario
 
