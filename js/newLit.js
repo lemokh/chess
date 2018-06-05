@@ -534,15 +534,17 @@ function lit(activeSide, passiveSide) {
 		}
 		// ----------------------------------
 		else { // since only one kingAttacker
-
+			//==========================
 			function kingInCheckMove() {
 				// COMPLETE THIS LOGIC
+				alert('ENTERS kingInCheckMove');
 			}
-
-			// ---------------------------------------
+			// -------------------------------------------
+			// if king can move, handles moving activeKing
 			if (litDivs.length) { kingInCheckMove(); }
-			// since king can move, handles moving activeKing
+			// ---------------------------------------
 			else { kingStuck = true; }
+			
 			/////////////////////////////////////////////////////
 			// populates canEatKingAttacker & canBlockPathOfCheck
 			// excludes activeKing
@@ -566,9 +568,9 @@ function lit(activeSide, passiveSide) {
 						// -------------------------------------
 						// if activePiece checks kingAttacker
 						if (checkingSpace(activePiece, kingAttackers[0].id)) {
-							// -----------------------------------------------------
-							console.log(activePiece.id+' can eat '+kingAttacker.id);
-							// -----------------------------------------------------
+							// ---------------------------------------------------------
+							console.log(activePiece.id+' can eat '+kingAttackers[0].id);
+							// ---------------------------------------------------------
 							canEatKingAttacker.push(activePiece);
 						}
 						// -----------------------------
@@ -602,16 +604,14 @@ function lit(activeSide, passiveSide) {
 						console.log(activePiece.id+' can eat '+kingAttackers[0].id);
 					}
 				}
-			});
-		 	// doesn't apply to activeKing
+			}); // doesn't apply to activeKing
+			///////////////////////////////////////
 
 			// begins interceptKingAttacker() logic
 			// -------------------------------------
-			
 			greyLitPieces = [...canEatKingAttacker];
 			
 			console.log('greyLitPieces');  console.log(greyLitPieces);
-			
 			// -------------------------------------------------------
 			
 			canBlockPathOfCheck.forEach(obj => {
@@ -619,8 +619,8 @@ function lit(activeSide, passiveSide) {
 			});
 			
 			console.log('greyLitPieces');  console.log(greyLitPieces);
-			
 			// -------------------------------------------------------
+			
 			if (!greyLitPieces.length) {
 				// if (!kingMovesOutOfCheck.length) {
 				if (kingStuck) {
