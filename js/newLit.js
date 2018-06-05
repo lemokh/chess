@@ -518,50 +518,41 @@ function lit(activeSide, passiveSide) {
 		checkPath = pathOfCheck;
 		// ----------------------
 		pieceToMove = activeKing;
-		// -------------------------------------------
+
 		// populates litDivs where activeKing can move
 		kingLit();
-		// -------------------------
+
 		// if multiple kingAttackers
 		if (kingAttackers.length > 1) {	
-			// -----------------------------------------
 			// since only king can prevent checkmate...
+			
 			// if king stuck, then checkmate
 			if (!litDivs.length) { return endOfGame(); }
-			// -----------------------------------------------
+
 			// else click greyPiece to selectGreyPiece()
 			else { return addLitDivHandler(selectGreyPiece); }
 		}
-		// ----------------------------------
 		else { // since only one kingAttacker
-			//==========================
-			function kingInCheckMove() {
-				// COMPLETE THIS LOGIC
-				alert('ENTERS kingInCheckMove');
-			}
-			// -------------------------------------------
 			// if king can move, handles moving activeKing
-			if (litDivs.length) { kingInCheckMove(); }
-			// ---------------------------------------
+			if (litDivs.length) {
+				// ---------------------------
+				kingMovesOutOfCheck = litDivs;
+				// ----------------------------
+				greyLitPieces.push(activeKing);
+				// ---------------------------------
+				activeKing.classList.add('greyLit');
+				// ---------------------------------------------------
+				activeKing.addEventListener('click', selectGreyPiece);
+			}
 			else { kingStuck = true; }
 			
 			/////////////////////////////////////////////////////
 			// populates canEatKingAttacker & canBlockPathOfCheck
 			// excludes activeKing
-			activePieceIsPinned = false;
-			// --------------------------------
 			activeSide.forEach(activePiece => {
-				// if activePiece not pinned
-				for (let i = 0; i < pinnedPieces.length; i++) {
-					// ------------------------------------------
-					if (pinnedPieces[i].pinned === activePiece) {
-						// --------------------------------------
-						activePieceIsPinned = true;
-						break;
-					}
-				}
-				if (!activePieceIsPinned) {
-					// and if activePiece is not activeKing
+				// for each activePiece, if not pinned
+				if (activePiece.getAttribute('data-pinned') === 'false') {
+					// if not activeKing
 					if (activePiece.getAttribute('data-name') !== 'king') {
 						// ------------------------------------------------
 						pieceToMove = activePiece; // IMPORTANT!
@@ -573,18 +564,16 @@ function lit(activeSide, passiveSide) {
 							// ---------------------------------------------------------
 							canEatKingAttacker.push(activePiece);
 						}
-						// -----------------------------
 						// prevents pawns from attacking
 						pawnBlocksKingAttacker = true;
-						// --------------------------------------
-						// sees if activePiece can move to pathId
+						// ----------------------------------------------------
+						// sees if activePiece can block kingAttacker at pathId
 						checkPath.forEach(pathId => {
 							// --------------------------------------
 							if (checkingSpace(activePiece, pathId)) {
 								// ----------------------------------
-								mate = false;  console.log('mate = false');
 								console.log(activePiece.id+' can block at '+pathId);
-								// ----------------------
+								// -------------------------------------------------
 								canBlockPathOfCheck.push(
 									// ---------------------------------------------
 									{ pathBlocker: activePiece, emptyDivId: pathId }
@@ -607,6 +596,7 @@ function lit(activeSide, passiveSide) {
 			}); // doesn't apply to activeKing
 			///////////////////////////////////////
 
+			// ------------------------------------
 			// begins interceptKingAttacker() logic
 			// -------------------------------------
 			greyLitPieces = [...canEatKingAttacker];
@@ -642,7 +632,6 @@ function lit(activeSide, passiveSide) {
 						greyLitPiece.addEventListener('click', selectGreyPiece);
 					});
 			}
-			// else if (!greyLitDivs.length) { return endOfGame; }
 		}
 	}
 

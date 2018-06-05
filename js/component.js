@@ -40,7 +40,7 @@ ERRORS:
     -1. after castling, toggleSides repeats turn for castling side
         line 699... logic is too loose there for castling(e) scenario
 
-    0.  obj.pathBlocker doesn't work after first check
+    0.  obj.pathBlocker doesn't work on left side
 
     1.  pinnedPiece no longer moves between its path to king and its path to its pinner 
 
