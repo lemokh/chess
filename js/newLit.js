@@ -519,7 +519,7 @@ function lit(activeSide, passiveSide) {
 		// -------------------------------------------
 		// populates litDivs where activeKing can move
 		kingLit();
-		// --------------------------
+		// -------------------------
 		// if multiple kingAttackers
 		if (kingAttackers.length > 1) {	
 			// -----------------------------------------
@@ -529,78 +529,78 @@ function lit(activeSide, passiveSide) {
 			// -----------------------------------------------
 			// else click greyPiece to selectGreyPiece()
 			else { return addLitDivHandler(selectGreyPiece); }
-		} // -------------------------------------------------
-		// else since only one kingAttacker
-		else {
+		}
+		// ----------------------------------
+		else { // since only one kingAttacker
+
+			function kingInCheckMove() {
+				// COMPLETE THIS LOGIC
+			}
+
 			// ---------------------------------------
 			if (litDivs.length) { kingInCheckMove(); }
-			// handles logic to move activeKing
-
-			//===================================
-			function eatOrBlock(kingAttackerId) {
-				console.log('ENTERS eatOrBlock()');
-				// populates canEatKingAttacker & canBlockPathOfCheck, excluding activeKing
-				activePieceIsPinned = false;
-				// ------------------------------------------------------------------------
-				activeSide.forEach(activePiece => {
-					// if activePiece not pinned
-					for (let i = 0; i < pinnedPieces.length; i++) {
-						// ------------------------------------------
-						if (pinnedPieces[i].pinned === activePiece) {
-							// --------------------------------------
-							activePieceIsPinned = true;
-							break;
-						}
+			// since king can move, handles moving activeKing
+			/////////////////////////////////////////////////////
+			// populates canEatKingAttacker & canBlockPathOfCheck
+			// excludes activeKing
+			activePieceIsPinned = false;
+			// --------------------------------
+			activeSide.forEach(activePiece => {
+				// if activePiece not pinned
+				for (let i = 0; i < pinnedPieces.length; i++) {
+					// ------------------------------------------
+					if (pinnedPieces[i].pinned === activePiece) {
+						// --------------------------------------
+						activePieceIsPinned = true;
+						break;
 					}
-					if (!activePieceIsPinned) {
-						// and if activePiece is not activeKing
-						if (activePiece.getAttribute('data-name') !== 'king') {
-							// ------------------------------------------------
-							pieceToMove = activePiece; // IMPORTANT!
-							// -------------------------------------
-							// if activePiece checks kingAttacker
-							if (checkingSpace(activePiece, kingAttackerId)) {
-								// ------------------------------------------
-								mate = false;  console.log('mate = false');
-								console.log(activePiece.id+' can eat '+kingAttacker.id);
-								// ----------------------------------
-								canEatKingAttacker.push(activePiece);
-							}
-							// -----------------------------
-							// prevents pawns from attacking
-							pawnBlocksKingAttacker = true;
-							// --------------------------------------
-							// sees if activePiece can move to pathId
-							checkPath.forEach(pathId => {
-								// --------------------------------------
-								if (checkingSpace(activePiece, pathId)) {
-									// ----------------------------------
-									mate = false;  console.log('mate = false');
-									console.log(activePiece.id+' can block at '+pathId);
-									// ----------------------
-									canBlockPathOfCheck.push(
-										// ---------------------------------------------
-										{ pathBlocker: activePiece, emptyDivId: pathId }
-									);
-								}
-							});
-							// ----------------------------
-							pawnBlocksKingAttacker = false;
-						}
-					}
-					else { // since activePiece is pinned
-						console.log(activePiece.id+' is pinned');
-						// if activePiece can eat kingAttacker
+				}
+				if (!activePieceIsPinned) {
+					// and if activePiece is not activeKing
+					if (activePiece.getAttribute('data-name') !== 'king') {
+						// ------------------------------------------------
+						pieceToMove = activePiece; // IMPORTANT!
+						// -------------------------------------
+						// if activePiece checks kingAttacker
 						if (checkingSpace(activePiece, kingAttackers[0].id)) {
-							// -----------------------------------------------
+							// -----------------------------------------------------
+							console.log(activePiece.id+' can eat '+kingAttacker.id);
+							// -----------------------------------------------------
 							canEatKingAttacker.push(activePiece);
-							console.log(activePiece.id+' can eat '+kingAttackers[0].id);
 						}
+						// -----------------------------
+						// prevents pawns from attacking
+						pawnBlocksKingAttacker = true;
+						// --------------------------------------
+						// sees if activePiece can move to pathId
+						checkPath.forEach(pathId => {
+							// --------------------------------------
+							if (checkingSpace(activePiece, pathId)) {
+								// ----------------------------------
+								mate = false;  console.log('mate = false');
+								console.log(activePiece.id+' can block at '+pathId);
+								// ----------------------
+								canBlockPathOfCheck.push(
+									// ---------------------------------------------
+									{ pathBlocker: activePiece, emptyDivId: pathId }
+								);
+							}
+						});
+						// ----------------------------
+						pawnBlocksKingAttacker = false;
 					}
-				});
-			} // doesn't apply to activeKing
-			//------------------------------
-			eatOrBlock(kingAttackers[0]);
+				}
+				else { // since activePiece is pinned
+					console.log(activePiece.id+' is pinned');
+					// if activePiece can eat kingAttacker
+					if (checkingSpace(activePiece, kingAttackers[0].id)) {
+						// -----------------------------------------------
+						canEatKingAttacker.push(activePiece);
+						console.log(activePiece.id+' can eat '+kingAttackers[0].id);
+					}
+				}
+			});
+		 	// doesn't apply to activeKing
 
 			// begins interceptKingAttacker() logic
 			// -------------------------------------
