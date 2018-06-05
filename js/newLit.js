@@ -625,10 +625,8 @@ function lit(activeSide, passiveSide) {
 			// ----------------------------------------
 			else { // since able to prevent check mate
 				// ------------------------------------
-				console.log('since there are greyLitPieces, no check mate');
-				// ------------------------------------
-				kingAttackers.forEach(kingAttacker => {
-					// ---------------------------------------------
+				console.log('since only one kingAttacker and at least one greyLitPiece, no check mate');
+					// ---------------------------------------------------------------------------------
 					// lightens & click-listens to each greyLitPiece
 					greyLitPieces.forEach(greyLitPiece => {
 						// -----------------------------------
@@ -636,7 +634,6 @@ function lit(activeSide, passiveSide) {
 						// -----------------------------------------------------
 						greyLitPiece.addEventListener('click', selectGreyPiece);
 					});
-				});
 			}
 			// else if (!greyLitDivs.length) { return endOfGame; }
 		}
