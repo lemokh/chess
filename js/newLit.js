@@ -18,6 +18,8 @@ function lit(activeSide, passiveSide) {
 	newPieceClicked = undefined;
 	// -------------------------
 	tempPinnedPieces = [];
+	// -------------------
+	kingStuck = false;
 
 	//==========================
 	// function toggleClocks() {}
@@ -540,6 +542,7 @@ function lit(activeSide, passiveSide) {
 			// ---------------------------------------
 			if (litDivs.length) { kingInCheckMove(); }
 			// since king can move, handles moving activeKing
+			else { kingStuck = true; }
 			/////////////////////////////////////////////////////
 			// populates canEatKingAttacker & canBlockPathOfCheck
 			// excludes activeKing
@@ -604,23 +607,27 @@ function lit(activeSide, passiveSide) {
 
 			// begins interceptKingAttacker() logic
 			// -------------------------------------
+			
 			greyLitPieces = [...canEatKingAttacker];
 			
-			console.log('greyLitPieces');
-			console.log(greyLitPieces);
-			// -------------------------------------
+			console.log('greyLitPieces');  console.log(greyLitPieces);
+			
+			// -------------------------------------------------------
+			
 			canBlockPathOfCheck.forEach(obj => {
-				// ---------------------------------
 				greyLitPieces.push(obj.pathBlocker);
 			});
-			console.log('greyLitPieces');
-			console.log(greyLitPieces);
-			// ----------------------------------------
+			
+			console.log('greyLitPieces');  console.log(greyLitPieces);
+			
+			// -------------------------------------------------------
 			if (!greyLitPieces.length) {
-				if (!kingMovesOutOfCheck.length) {
+				// if (!kingMovesOutOfCheck.length) {
+				if (kingStuck) {
 					console.log('since no greyLitPieces and king stuck...endOfGame 1');
 					endOfGame();
 				}
+
 			}
 			// ----------------------------------------
 			else { // since able to prevent check mate
