@@ -89,8 +89,7 @@ function isMate() {
 		// ----------------------------------------
 		if (!greyLitPieces.length) {
 			if (!kingMovesOutOfCheck.length) {
-				console.log('since no greyLitPieces and king stuck...');
-				console.log('endOfGame 1');
+				console.log('since no greyLitPieces and king stuck...endOfGame 1');
 				endOfGame();
 			}
 		}
@@ -131,12 +130,13 @@ function isMate() {
 		
 		kingAttackers.forEach(kingAttacker => {
 			// --------------------------------
+			console.log('eatOrBlock('+kingAttacker.id+');');
 			eatOrBlock(kingAttacker.id);
 			// THIS DOES NOT WORK HERE?
 			// WRITE SOMETHING NEW?
 		});
-		
 		// ---------------------
+		console.log('interceptKingAttacker();')
 		interceptKingAttacker();
 	}
 	// ----------------------------------------------------------
@@ -147,22 +147,24 @@ function isMate() {
 		// ---------------------------------------------
 		console.log('king unable to move out of check');
 		// -----------------------------
+		console.log('eatOrBlock('+kingAttackers[0].id+');');
 		eatOrBlock(kingAttackers[0].id);
 		// -----------------------------------------------------
 		// discerns whether an activePiece can prevent checkmate
-		mate = true;
+		mate = true;  console.log('mate = true');
 		// ---------------------
+		console.log('interceptKingAttacker();');
 		interceptKingAttacker();
 		// -----------------------
 		if (mate) {
-			console.log('since only one kingAttacker and king stuck --> endOfGame 2');
+			console.log('since only one kingAttacker, king stuck & mate is true... endOfGame 2');
 			endOfGame();
 		}
 	}
 	// -----------------------------------------------------------
 	// checkmate since multiple kingAttackers and king cannot move
 	else {
-		console.log('since multiple kingAttackers & king stuck --> endOfGame 3');
+		console.log('since multiple kingAttackers & king stuck... endOfGame 3');
 		endOfGame();
 	}
 }
