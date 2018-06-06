@@ -257,9 +257,9 @@ function lit(activeSide, passiveSide) {
 		// resets each litDiv
 		removeLitDivHandler(moveGreyPiece);
 		// --------------------------------
-		if (kingMovesOutOfCheck.length) {
+		if (litDivs.length) {
 			// -------------------------------------
-			kingMovesOutOfCheck.forEach( id => {
+			litDivs.forEach( id => {
 				// ------------------------------------------
 				litPiece = document.getElementById( id );
 				// ------------------------------------------
@@ -275,7 +275,7 @@ function lit(activeSide, passiveSide) {
 		// --------------------------------------
 		if (greyPieceToMove.getAttribute('data-name') === 'king') {
 			// ----------------------------------------------------
-			kingMovesOutOfCheck.forEach(id => {
+			litDivs.forEach(id => {
 			// --------------------------------
 				litPiece = document.getElementById( id );
 				// ------------------------------------------
@@ -305,13 +305,13 @@ function lit(activeSide, passiveSide) {
 		// resets greyPieceToMove
 		console.log('ENTERS moveGreyPiece()');
 		// -----------------------------------------
-		greyPieceToMove.classList.remove('mainLit');
+		greyPieceToMove.classList.remove('mainLt');
 		// -----------------------------------------
 		greyPieceToMove.classList.remove('greyLit');
 		// -----------------------------------------
 		if (greyPieceToMove.getAttribute('data-name') === 'king') {
 			// ----------------------------------------------------
-			kingMovesOutOfCheck.forEach(id => {
+			litDivs.forEach(id => {
 			// --------------------------------
 				litPiece = document.getElementById( id );
 				// ------------------------------------------
@@ -522,10 +522,8 @@ function lit(activeSide, passiveSide) {
 		// populates litDivs where activeKing can move
 		kingLit();
 
-		// if multiple kingAttackers
-		if (kingAttackers.length > 1) {	
-			// since only king can prevent checkmate...
-			
+		// if multiple kingAttackers, only king can prevent checkmate...
+		if (kingAttackers.length > 1) {
 			// if king stuck, then checkmate
 			if (!litDivs.length) { return endOfGame(); }
 
@@ -535,8 +533,6 @@ function lit(activeSide, passiveSide) {
 		else { // since only one kingAttacker
 			// if king can move, handles moving activeKing
 			if (litDivs.length) {
-				// ---------------------------
-				kingMovesOutOfCheck = litDivs;
 				// ----------------------------
 				greyLitPieces.push(activeKing);
 				// ---------------------------------
@@ -564,23 +560,20 @@ function lit(activeSide, passiveSide) {
 							// ---------------------------------------------------------
 							canEatKingAttacker.push(activePiece);
 						}
+						//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 						// prevents pawns from attacking
 						pawnBlocksKingAttacker = true;
-						// ----------------------------------------------------
-						// sees if activePiece can block kingAttacker at pathId
+						// sees if activePiece can move to pathId
 						checkPath.forEach(pathId => {
-							// --------------------------------------
 							if (checkingSpace(activePiece, pathId)) {
-								// ----------------------------------
+
 								console.log(activePiece.id+' can block at '+pathId);
-								// -------------------------------------------------
+
 								canBlockPathOfCheck.push(
-									// ---------------------------------------------
 									{ pathBlocker: activePiece, emptyDivId: pathId }
 								);
 							}
 						});
-						// ----------------------------
 						pawnBlocksKingAttacker = false;
 					}
 				}
@@ -612,7 +605,6 @@ function lit(activeSide, passiveSide) {
 			// -------------------------------------------------------
 			
 			if (!greyLitPieces.length) {
-				// if (!kingMovesOutOfCheck.length) {
 				if (kingStuck) {
 					console.log('since no greyLitPieces and king stuck...endOfGame 1');
 					endOfGame();
@@ -1293,11 +1285,11 @@ function lit(activeSide, passiveSide) {
 		pieceToMove.classList.add('mainLit');
 		// ------------------------------------------------------
 		if (pieceToMove.getAttribute('data-pinned') === 'true') { 
-			alert('that clicked pieceToMove is pinned!');
+			// alert('that clicked pieceToMove is pinned!');
 			// ------------------------------------------
 			pinnedPieceLit();
 		}
-		// ------------------------------------------------------------------------
+		// ----------------------
 		else { possibleMoves(); }
     } // WORKS!
 

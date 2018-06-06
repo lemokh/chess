@@ -1,0 +1,7 @@
+What INFO does each ACT need?
+
+ACT: onload --> first move
+
+INFO: lit(blues, oranges);
+        updated sides
+        

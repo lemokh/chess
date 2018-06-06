@@ -81,15 +81,15 @@ function checkingSpace(somePiece, checkSpaceId) {
 			else { // since orange turn
 				// collects empty space one ahead of orange pawnToMove
 				if (checkSpaceId === somePawn.id[0] + (+somePawn.id[1] + 1)) {
-					// if checkSpaceId is one ahead of blue pawnToMove
+					// if checkSpaceId is one ahead of orange pawnToMove
 					return true;
 				} // -------------------------------------------------
 				// collects empty space two ahead of orange pawnToMove
 				else if (document.getElementById(
 					somePawn.id[0] + (+somePawn.id[1] + 1)
-				).dataset.side === 'empty') {
+				).getAttribute('data-side') === 'empty') {
 					// if empty cell one ahead of orangePawn
-					if (pieceToMove.id[1] === '1') {
+					if (somePawn.id[1] === '1') {
 						// if orange pawnToMove in row 1
 						if (checkSpaceId === somePawn.id[0] + (+somePawn.id[1] + 2)) {
 							// if checkSpaceId is two ahead of orange pawnToMove
@@ -283,24 +283,26 @@ function checkingSpace(somePiece, checkSpaceId) {
 			return true; // someBishop can attack checkSpaceId
 		} // -----------------------------------------------
 		if (nails.length === 1) { // if only one nail
-			// -------------------------------------------------
-			// if that nail & someBishop aren't on the same side
-			if (nails[0].getAttribute('data-side') !== someBishop.getAttribute('data-side')) {
-				// ---------------------------------------------------------------------------
-				pinnedPieces.push(
-					{ pinner: someBishop, pinned: nails[0] }
-				);
-				// -------------------
-				tempPinnedPieces.push(
-					{ pinner: someBishop, pinned: nails[0] }
-				);
-				// ----------------------------------------
-				nails[0].setAttribute('data-pinned', true);
-				// ----------------------------------------------
-				nails[0].setAttribute('data-pinner', someBishop);
-				// -------------------------------------------------------------------------------------------
-				alert(nails[0].getAttribute('data-side') + ' ' + nails[0].getAttribute('data-name') + ' IS PINNED');
-				console.log('pinnedPieces -->');  console.log(pinnedPieces);
+			if (nails[0] !== activeKing) {
+				// -------------------------------------------------
+				// if that nail & someBishop aren't on the same side
+				if (nails[0].getAttribute('data-side') !== someBishop.getAttribute('data-side')) {
+					// ---------------------------------------------------------------------------
+					pinnedPieces.push(
+						{ pinner: someBishop, pinned: nails[0] }
+					);
+					// -------------------
+					tempPinnedPieces.push(
+						{ pinner: someBishop, pinned: nails[0] }
+					);
+					// ----------------------------------------
+					nails[0].setAttribute('data-pinned', true);
+					// ----------------------------------------------
+					nails[0].setAttribute('data-pinner', someBishop);
+					// -------------------------------------------------------------------------------------------
+					alert(nails[0].getAttribute('data-side') + ' ' + nails[0].getAttribute('data-name') + ' IS PINNED');
+					console.log('pinnedPieces -->');  console.log(pinnedPieces);
+				}
 			}
 		} // -------------------------------------------------
 		return false; // someBishop cannot attack checkSpaceId
