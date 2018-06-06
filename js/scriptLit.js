@@ -348,45 +348,9 @@ function lit(activeSide, passiveSide) {
 	emptySpaces = openSpaces(boardIds, pieces); // updates emptySpaces
 	greyPieceToMove = undefined;
     newPieceClicked = [];
-
-    function wherePieceCanMove(e) {
-        // if not first click this turn
-        if (newPieceClicked !== undefined) {
-            newPieceClicked.addEventListener('click', wherePieceCanMove);
-        }
-        
-        newPieceClicked = e.target;
-        e.target.removeEventListener('click', wherePieceCanMove);
-
-        cleanUpAfterFirstClick();
-
-        pieceToMove = e.target;
-
-        if (!enPassanting) { goToDiv = undefined; }
-
-		pieceToMove.classList.add('mainLit');
-
-        if (pieceToMove.getAttribute('data-pinned') === 'true') { pinnedPieceLit(); }
-		else { possibleMoves(); }
-    }
-
-    function possibleMoves() {
-		console.log('ENTERS possibleMoves()');
-		// highlights clicked piece's possible moves
-		switch (pieceToMove.getAttribute('data-name')) {
-			case 'pawn':    pawnLit();              break;
-			case 'knight':  knightLit();            break;
-			case 'bishop':  bishopLit();            break;
-			case 'rook':    rookLit();              break;
-			case 'queen':   bishopLit(); rookLit(); break;
-			case 'king':    kingLit();              break;
-			default: alert('default ERROR! pieceToMove is empty');
-		}
-		// lightens & click-listens to litDivs --> movePiece(e)
-		if (litDivs.length) { addLitDivHandler(movePiece); }
-    }
     
-	function inCheck() { 
+    //==============================
+	function inCheck() { // isMate()
 		// since activeKing is in check...
 		// --------------------------------------------------------------------------------
 		console.log('ENTERS isMate()');  console.log('litDivs -->');  console.log(litDivs);
@@ -501,9 +465,134 @@ function lit(activeSide, passiveSide) {
 					});
 			}
 		}
-	}
+    }
+    
+    function wherePieceCanMove(e) { // pieceLit(e)
+        // if not first click this turn
+        if (newPieceClicked !== undefined) {
+            newPieceClicked.addEventListener('click', wherePieceCanMove);
+        }
+        
+        newPieceClicked = e.target;
+        e.target.removeEventListener('click', wherePieceCanMove);
 
-	function castling(e) {
+        cleanUpAfterFirstClick();
+
+        pieceToMove = e.target;
+
+        if (!enPassanting) { goToDiv = undefined; }
+
+		pieceToMove.classList.add('mainLit');
+
+        if (pieceToMove.getAttribute('data-pinned') === 'true') { pinnedPieceLit(); }
+		else { possibleMoves(); }
+    }
+
+    function possibleMoves() {
+        
+		console.log('ENTERS possibleMoves()');
+		// highlights clicked piece's possible moves
+		switch (pieceToMove.getAttribute('data-name')) {
+			case 'pawn':    pawnLit();              break;
+			case 'knight':  knightLit();            break;
+			case 'bishop':  bishopLit();            break;
+			case 'rook':    rookLit();              break;
+			case 'queen':   bishopLit(); rookLit(); break;
+			case 'king':    kingLit();              break;
+			default: alert('default ERROR! pieceToMove is empty');
+		}
+		// lightens & click-listens to litDivs --> movePiece(e)
+		if (litDivs.length) { addLitDivHandler(movePiece); }
+    }
+    
+    function movePiece(e) {
+
+		console.log('ENTERS movePiece(e)');
+		console.log('removes click-listener from litDivs & pieceToMove');
+
+        // removes click-listeners from pieceToMove
+		document.getElementById( pieceToMove.id ).removeEventListener( 'click', pieceLit );
+
+        // un-lightens mainDiv
+		document.getElementById( pieceToMove.id ).classList.remove( 'mainLit' );
+
+        removeLitDivHandler(movePiece);
+
+        // prevents castling after king's first move
+		if (pieceToMove.getAttribute('data-name') === 'king') {
+			if (pieceToMove.getAttribute('data-side') === 'blue') {
+				blueKingFirstMove = true;
+			} 
+			else { orangeKingFirstMove = true; }
+		}
+        
+        // prevents castling after rook's first move
+		if (pieceToMove.getAttribute('data-name') === 'rook') {
+			if (pieceToMove.getAttribute('data-side') === 'blue') {
+				if (pieceToMove.id === '07') { blueRook1FirstMove = true; }
+				else if (pieceToMove.id === '77') { blueRook2FirstMove = true; }
+			} 
+			else {
+				if (pieceToMove.id === '00') { orangeRook1FirstMove = true; }
+				else if (pieceToMove.id === '70') { orangeRook2FirstMove = true; }
+			}
+		}
+		console.log('un-lightens mainDiv & litDivs');
+		
+		goToDiv = e.target;
+		
+		console.log('pieceToMove -->');  console.log(pieceToMove);
+		console.log('goToDiv -->');      console.log(goToDiv);
+		console.log('pawnJumpDiv -->');  console.log(pawnJumpDiv);
+        
+        // If goToDiv EMPTY
+		if (goToDiv.getAttribute('data-side') === 'empty') {
+			console.log('goToDiv IS empty');            
+
+            // covers anySide enPassant pawn attack
+			if (pieceToMove.getAttribute('data-name') === 'pawn') {
+				if (enPassanting) {
+					if (goToDiv === enPassantDiv) {
+						eat(pawnJumpDiv);                       
+						// sets pawnJumpDiv to empty cell
+						pawnJumpDiv.setAttribute('data-name', 'empty');
+						pawnJumpDiv.setAttribute('data-side', 'empty');
+						pawnJumpDiv.setAttribute('src', './images/transparent.png');
+					} 
+				}
+				// covers bluePawn taking a NON-enPassant empty space
+				if (activeKing.getAttribute('data-side') === 'blue') { // if blue's turn
+					// if pawnToMove jumps two spaces
+					if (goToDiv.id === (pieceToMove.id[0] + (pieceToMove.id[1] - 2))) {
+						enPassanting = true;
+						console.log('enPassanting = true');
+
+                        pawnJumpDiv = goToDiv;
+						console.log('pawnJumpDiv = goToDiv');
+					}
+				}
+				else { // since orange's turn
+					// if pawnToMove jumps two spaces
+					if (goToDiv.id === (pieceToMove.id[0] + (+pieceToMove.id[1] + 2))) {
+						enPassanting = true;
+						console.log('enPassanting = true');
+
+                        pawnJumpDiv = goToDiv;
+						console.log('pawnJumpDiv = goToDiv');
+					}
+				}
+			}
+		}
+		else { // SINCE goToDiv NOT EMPTY, pieceToMove eats goToDiv
+			console.log('goToDiv NOT empty');
+            eat(goToDiv);
+		}
+		// covers pawnToMove moving one or two empty spaces
+		swapSide(pieceToMove, goToDiv);
+        toggleSides();
+    }
+
+    function castling(e) {
 		console.log('enters castling(e)')
 		// -------------------------------------------------
 		// un-lightens & stops click-listening all castleIds
@@ -555,8 +644,8 @@ function lit(activeSide, passiveSide) {
 			console.log('toggles activeSide to blue');
 			lit(blues, oranges);
 		} //\\//\\//\\//\\//\\//\\//\\//\\//
-	}
-
+    }
+  
     function enPassantReset() {
 		console.log('ENTERS enPassantReset()');
         
@@ -642,91 +731,7 @@ function lit(activeSide, passiveSide) {
 		console.log('EXITS eat()');
 	}
 
-    function movePiece(e) {
-		console.log('ENTERS movePiece(e)');
-		console.log('removes click-listener from litDivs & pieceToMove');
-
-        // removes click-listeners from pieceToMove
-		document.getElementById( pieceToMove.id ).removeEventListener( 'click', pieceLit );
-
-        // un-lightens mainDiv
-		document.getElementById( pieceToMove.id ).classList.remove( 'mainLit' );
-
-        removeLitDivHandler(movePiece);
-
-        // prevents castling after king's first move
-		if (pieceToMove.getAttribute('data-name') === 'king') {
-			if (pieceToMove.getAttribute('data-side') === 'blue') {
-				blueKingFirstMove = true;
-			} 
-			else { orangeKingFirstMove = true; }
-		}
-        
-        // prevents castling after rook's first move
-		if (pieceToMove.getAttribute('data-name') === 'rook') {
-			if (pieceToMove.getAttribute('data-side') === 'blue') {
-				if (pieceToMove.id === '07') { blueRook1FirstMove = true; }
-				else if (pieceToMove.id === '77') { blueRook2FirstMove = true; }
-			} 
-			else {
-				if (pieceToMove.id === '00') { orangeRook1FirstMove = true; }
-				else if (pieceToMove.id === '70') { orangeRook2FirstMove = true; }
-			}
-		}
-		console.log('un-lightens mainDiv & litDivs');
-		
-		goToDiv = e.target;
-		
-		console.log('pieceToMove -->');  console.log(pieceToMove);
-		console.log('goToDiv -->');      console.log(goToDiv);
-		console.log('pawnJumpDiv -->');  console.log(pawnJumpDiv);
-        
-        // If goToDiv EMPTY
-		if (goToDiv.getAttribute('data-side') === 'empty') {
-			console.log('goToDiv IS empty');            
-
-            // covers anySide enPassant pawn attack
-			if (pieceToMove.getAttribute('data-name') === 'pawn') {
-				if (enPassanting) {
-					if (goToDiv === enPassantDiv) {
-						eat(pawnJumpDiv);                       
-						// sets pawnJumpDiv to empty cell
-						pawnJumpDiv.setAttribute('data-name', 'empty');
-						pawnJumpDiv.setAttribute('data-side', 'empty');
-						pawnJumpDiv.setAttribute('src', './images/transparent.png');
-					} 
-				}
-				// covers bluePawn taking a NON-enPassant empty space
-				if (activeKing.getAttribute('data-side') === 'blue') { // if blue's turn
-					// if pawnToMove jumps two spaces
-					if (goToDiv.id === (pieceToMove.id[0] + (pieceToMove.id[1] - 2))) {
-						enPassanting = true;
-						console.log('enPassanting = true');
-
-                        pawnJumpDiv = goToDiv;
-						console.log('pawnJumpDiv = goToDiv');
-					}
-				}
-				else { // since orange's turn
-					// if pawnToMove jumps two spaces
-					if (goToDiv.id === (pieceToMove.id[0] + (+pieceToMove.id[1] + 2))) {
-						enPassanting = true;
-						console.log('enPassanting = true');
-
-                        pawnJumpDiv = goToDiv;
-						console.log('pawnJumpDiv = goToDiv');
-					}
-				}
-			}
-		}
-		else { // SINCE goToDiv NOT EMPTY, pieceToMove eats goToDiv
-			console.log('goToDiv NOT empty');
-            eat(goToDiv);
-		}
-		// covers pawnToMove moving one or two empty spaces
-		swapSide(pieceToMove, goToDiv);
-        toggleSides();
-    }
+   
     
 	function pawnLit() {
 		console.log('enters pawnLit()');
@@ -1431,7 +1436,6 @@ function lit(activeSide, passiveSide) {
             case 'king':    return kingAttacks(somePiece);
         }
     } // returns true/false if somePiece can attack checkSpaceId
-
 
     // ********** META-LOGIC **********
 
