@@ -369,7 +369,7 @@ function lit(activeSide, passiveSide) {
 		console.log('removes click-listener from litIds & pieceToMove');
 
         // removes click-listeners from pieceToMove
-		document.getElementById( pieceToMove.id ).removeEventListener( 'click', pieceLit );
+		document.getElementById( pieceToMove.id ).removeEventListener( 'click', wherePieceCanMove );
 
         // un-lightens mainDiv
 		document.getElementById( pieceToMove.id ).classList.remove( 'mainLit' );
@@ -561,7 +561,7 @@ function lit(activeSide, passiveSide) {
 		activeSide.forEach(activePiece => {
 			document.getElementById(
 				activePiece.id
-			).removeEventListener('click', pieceLit);
+			).removeEventListener('click', wherePieceCanMove);
 		});
 		//\\//\\//\\//\\//\\//\\//\\//\\//
 		// toggles side & starts next move 
@@ -696,7 +696,7 @@ function lit(activeSide, passiveSide) {
     function toggleSides() {
         // removes click-listeners from activePieces
         activeSide.forEach(activePiece => {
-            activePiece.removeEventListener('click', pieceLit);
+            activePiece.removeEventListener('click', wherePieceCanMove);
         });
 
         // toggles side & starts next move 
