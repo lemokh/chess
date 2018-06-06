@@ -846,33 +846,26 @@ function lit(activeSide, passiveSide) {
 
     function bishopLit() {
 
-        function quadrant(bishopX, bishopY) {
+        function quadrant(x, y) {
 
-            
-
-
-            let bishopPathId = bishopX.toString() + bishopY;
-            let bishopPath = document.getElementById( bishopPathId );
-            
-            console.log(bishopPath);
+            let bishopPath = document.getElementById( x.toString() + y );
 
             // while bishop path is empty, collect path id
 			while (bishopPath.dataset.side === 'empty') {
 
-				litIds.push( bishopPathId );
+				litIds.push( bishopPath.id );
 
-                // increments bishopX
-				if (bishopX > +pieceToMove.id[0]) { bishopX += 1; }
-				else { bishopX -= 1; }
+                // increments x
+				if (x > +pieceToMove.id[0]) { x += 1; }
+				else { x -= 1; }
 
-                // increments bishopY
-				if (bishopY > +pieceToMove.id[1]) { bishopY += 1; }
-                else { bishopY -= 1; }
+                // increments y
+				if (y > +pieceToMove.id[1]) { y += 1; }
+                else { y -= 1; }
                 
-                bishopPathId = bishopX.toString() + bishopY;
+                bishopPath = document.getElementById( x.toString() + y );
             }
-            
-			// highlights attackable pieces in bishop's path
+
 			for (let i = 0; i < passiveSide.length; i++) {
 				if (passiveSide[i] === bishopPath) {
 					litIds.push( bishopPath.id );
@@ -1220,7 +1213,7 @@ function lit(activeSide, passiveSide) {
             bishopMoves = []; // collects spaces bishop attacks enroute to checkSpaceId
             nails = []; // collects possible pinnedPieces
             bishopX = +bishop.id[0];
-            bishopY = +bishop.id[1];
+            y = +bishop.id[1];
 
             // bishop & checkSpaceId cannot have the same id
             if (bishop.id === checkSpaceId) { return false; }
