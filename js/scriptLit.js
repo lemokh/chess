@@ -347,14 +347,16 @@ function lit(activeSide, passiveSide) {
     function possibleMoves() {
 
 		console.log('ENTERS possibleMoves()');
-		// highlights clicked piece's possible moves
+        // highlights clicked piece's possible moves
+
 		switch (pieceToMove.dataset.name) {
 			case 'pawn':    pawnLit();              break;
 			case 'knight':  knightLit();            break;
 			case 'bishop':  bishopLit();            break;
 			case 'rook':    rookLit();              break;
 			case 'queen':   bishopLit(); rookLit(); break;
-			case 'king':    kingLit();              break;
+            case 'king':    kingLit();              break;
+            
 			default: alert('default ERROR! pieceToMove is empty');
 		}
 		// lightens & click-listens to litIds --> movePiece(e)
@@ -846,10 +848,16 @@ function lit(activeSide, passiveSide) {
 
         function quadrant(bishopX, bishopY) {
 
+            
+
+
             let bishopPathId = bishopX.toString() + bishopY;
+            let bishopPath = document.getElementById( bishopPathId );
+            
+            console.log(bishopPath);
 
             // while bishop path is empty, collect path id
-			while (document.getElementById( bishopPathId ).dataset.side === 'empty') {
+			while (bishopPath.dataset.side === 'empty') {
 
 				litIds.push( bishopPathId );
 
@@ -859,24 +867,33 @@ function lit(activeSide, passiveSide) {
 
                 // increments bishopY
 				if (bishopY > +pieceToMove.id[1]) { bishopY += 1; }
-				else { bishopY -= 1; }
-
-                // updates bishopPathId
-				bishopPathId = bishopX.toString() + bishopY;
+                else { bishopY -= 1; }
+                
+                bishopPathId = bishopX.toString() + bishopY;
             }
             
 			// highlights attackable pieces in bishop's path
 			for (let i = 0; i < passiveSide.length; i++) {
-				if (passiveSide[i].id === bishopPathId) {
-					litIds.push( bishopPathId );
+				if (passiveSide[i] === bishopPath) {
+					litIds.push( bishopPath.id );
 				}
 			}
         }
-        
-		quadrant(+pieceToMove.id[0] + 1, +pieceToMove.id[1] + 1);
-		quadrant(+pieceToMove.id[0] + 1,  pieceToMove.id[1] - 1);
-		quadrant( pieceToMove.id[0] - 1, +pieceToMove.id[1] + 1);
-		quadrant( pieceToMove.id[0] - 1,  pieceToMove.id[1] - 1);
+        ///////////////////////////////////
+        let north = +pieceToMove.id[0] + 1;
+        let south = +pieceToMove.id[0] - 1;
+        let east = +pieceToMove.id[1] + 1;
+        let west = +pieceToMove.id[1] - 1;
+        ///////////////////////////////////
+        let southWest = south + west;
+        let northEast = north + east;
+        let northWest = north + west;
+        let southEast = south + east;
+        /////////////////////////////
+		quadrant(north, east);
+		quadrant(north, west);
+        quadrant(south, east);
+		quadrant(south, west);
     }
     
 	function rookLit() { // pushes correct ids to litIds
