@@ -160,9 +160,9 @@ function lit(activeSide, passiveSide) {
 			// excludes activeKing
 			activeSide.forEach(activePiece => {
 				// for each activePiece, if not pinned
-				if (activePiece.getAttribute('data-pinned') === 'false') {
+				if (activePiece.dataset.pinned === 'false') {
 					// if not activeKing
-					if (activePiece.getAttribute('data-name') !== 'king') {
+					if (activePiece.dataset.name !== 'king') {
 						// ------------------------------------------------
 						pieceToMove = activePiece; // IMPORTANT!
 						// -------------------------------------
@@ -258,7 +258,7 @@ function lit(activeSide, passiveSide) {
         greyPieceToMove = e.target;
         greyPieceToMove.classList.add('mainLit');
 
-        if (greyPieceToMove.getAttribute('data-name') === 'king') {
+        if (greyPieceToMove.dataset.name === 'king') {
 			litIds.forEach(id => {
 				litPiece = document.getElementById( id );
 				litPiece.classList.add( 'lit' );
@@ -286,7 +286,7 @@ function lit(activeSide, passiveSide) {
         greyPieceToMove.classList.remove('mainLt');
 		greyPieceToMove.classList.remove('greyLit');
 
-        if (greyPieceToMove.getAttribute('data-name') === 'king') {
+        if (greyPieceToMove.dataset.name === 'king') {
 			litIds.forEach(id => {
 				litPiece = document.getElementById( id );
 				litPiece.classList.remove( 'lit' );
@@ -303,12 +303,12 @@ function lit(activeSide, passiveSide) {
 
         removeLitDivHandler(moveGreyPiece);
 
-        if (e.target.getAttribute('data-side') !== 'empty') { eat(e.target); }
+        if (e.target.dataset.side !== 'empty') { eat(e.target); }
 
         swapSide(greyPieceToMove, e.target);
 
         // toggles side & starts next move 
-		if (activeKing.getAttribute('data-side') === 'blue') {
+		if (activeKing.dataset.side === 'blue') {
 			// toggleClocks();
 			console.log('toggles activeSide to orange');
 
@@ -340,7 +340,7 @@ function lit(activeSide, passiveSide) {
 
 		pieceToMove.classList.add('mainLit');
 
-        if (pieceToMove.getAttribute('data-pinned') === 'true') { pinnedPieceLit(); }
+        if (pieceToMove.dataset.pinned === 'true') { pinnedPieceLit(); }
 		else { possibleMoves(); }
     }
 
@@ -348,7 +348,7 @@ function lit(activeSide, passiveSide) {
 
 		console.log('ENTERS possibleMoves()');
 		// highlights clicked piece's possible moves
-		switch (pieceToMove.getAttribute('data-name')) {
+		switch (pieceToMove.dataset.name) {
 			case 'pawn':    pawnLit();              break;
 			case 'knight':  knightLit();            break;
 			case 'bishop':  bishopLit();            break;
@@ -375,16 +375,16 @@ function lit(activeSide, passiveSide) {
         removeLitDivHandler(movePiece);
 
         // prevents castling after king's first move
-		if (pieceToMove.getAttribute('data-name') === 'king') {
-			if (pieceToMove.getAttribute('data-side') === 'blue') {
+		if (pieceToMove.dataset.name === 'king') {
+			if (pieceToMove.dataset.side === 'blue') {
 				blueKingFirstMove = true;
 			} 
 			else { orangeKingFirstMove = true; }
 		}
         
         // prevents castling after rook's first move
-		if (pieceToMove.getAttribute('data-name') === 'rook') {
-			if (pieceToMove.getAttribute('data-side') === 'blue') {
+		if (pieceToMove.dataset.name === 'rook') {
+			if (pieceToMove.dataset.side === 'blue') {
 				if (pieceToMove.id === '07') { blueRook1FirstMove = true; }
 				else if (pieceToMove.id === '77') { blueRook2FirstMove = true; }
 			} 
@@ -402,11 +402,11 @@ function lit(activeSide, passiveSide) {
 		console.log('pawnJumpDiv -->');  console.log(pawnJumpDiv);
         
         // If goToDiv EMPTY
-		if (goToDiv.getAttribute('data-side') === 'empty') {
+		if (goToDiv.dataset.side === 'empty') {
 			console.log('goToDiv IS empty');            
 
             // covers anySide enPassant pawn attack
-			if (pieceToMove.getAttribute('data-name') === 'pawn') {
+			if (pieceToMove.dataset.name === 'pawn') {
 				if (enPassanting) {
 					if (goToDiv === enPassantDiv) {
 						eat(pawnJumpDiv);                       
@@ -417,7 +417,7 @@ function lit(activeSide, passiveSide) {
 					} 
 				}
 				// covers bluePawn taking a NON-enPassant empty space
-				if (activeKing.getAttribute('data-side') === 'blue') { // if blue's turn
+				if (activeKing.dataset.side === 'blue') { // if blue's turn
 					// if pawnToMove jumps two spaces
 					if (goToDiv.id === (pieceToMove.id[0] + (pieceToMove.id[1] - 2))) {
 						enPassanting = true;
@@ -454,8 +454,8 @@ function lit(activeSide, passiveSide) {
 		console.log('ENTERS swapSide()');
 
         // re-informs goToDiv
-		toDiv.setAttribute('data-name', fromDiv.getAttribute('data-name'));
-		toDiv.setAttribute('data-side', fromDiv.getAttribute('data-side'));
+		toDiv.setAttribute('data-name', fromDiv.dataset.name);
+		toDiv.setAttribute('data-side', fromDiv.dataset.side);
 		toDiv.setAttribute('src', fromDiv.src);
 
         // gets pieceToMove's activeSide index
@@ -469,7 +469,7 @@ function lit(activeSide, passiveSide) {
 		pieces = [...oranges, ...blues];
 
         // if not an enPassant attack, resets enPassant process
-		if (pieceToMove.getAttribute('data-name') === 'pawn') {
+		if (pieceToMove.dataset.name === 'pawn') {
 			if (toDiv !== pawnJumpDiv) { enPassantReset(); }
 		}
 		else { enPassantReset(); }
@@ -492,7 +492,7 @@ function lit(activeSide, passiveSide) {
         console.log('ENTERS eat('+element+')');
 
         // puts element in its proper takenBox
-		if (activeKing.getAttribute('data-side') === 'blue') { // if blue side
+		if (activeKing.dataset.side === 'blue') { // if blue side
 			document.getElementById(
 				blueTakenBoxIdCounter.toString()
 			).src = element.src;
@@ -563,7 +563,7 @@ function lit(activeSide, passiveSide) {
 		});
 		//\\//\\//\\//\\//\\//\\//\\//\\//
 		// toggles side & starts next move 
-		if (activeKing.getAttribute('data-side') === 'blue') {
+		if (activeKing.dataset.side === 'blue') {
 			// toggleClocks();
 			console.log('toggles activeSide to orange');
 			lit(oranges, blues);
@@ -645,7 +645,7 @@ function lit(activeSide, passiveSide) {
 			toggleSides();
 		}
 
-        pinnerPiece = pieceToMove.getAttribute('data-pinner');
+        pinnerPiece = pieceToMove.dataset.pinner;
         
         // if pinned pieceToMove can eat pinner piece
         if (checkingSpace(pieceToMove, pinnerPiece.id)) {	
@@ -698,7 +698,7 @@ function lit(activeSide, passiveSide) {
         });
 
         // toggles side & starts next move 
-        if (activeKing.getAttribute('data-side') === 'blue') {
+        if (activeKing.dataset.side === 'blue') {
             // toggleClocks();
 			console.log('toggles activeSide to orange');
             lit(oranges, blues);
@@ -713,17 +713,18 @@ function lit(activeSide, passiveSide) {
 	function endOfGame() {
 		document.getElementById( 'board' ).classList.add( 'noClick' );
         
-        alert(activeKing.getAttribute('data-side') + ' KING CHECKMATED!');
-		console.log(activeKing.getAttribute('data-side') + ' KING CHECKMATED!');
+        alert(activeKing.dataset.side + ' KING CHECKMATED!');
+		console.log(activeKing.dataset.side + ' KING CHECKMATED!');
 		console.log('END OF GAME');
     }
 
 
 	function pawnLit() {
+
 		console.log('enters pawnLit()');
 
         // highlights all possible moves for blue pawnToMove
-		if (activeKing.getAttribute('data-side') === 'blue') {
+		if (activeKing.dataset.side === 'blue') {
 			// if enPassant attack is possible
 			if (enPassanting) { // same as: if (pawnJumpDiv.length) ?
                 // covers enPassant attack
@@ -753,7 +754,7 @@ function lit(activeSide, passiveSide) {
 				}
 			});
 			// collects empty space one ahead of blue pawnToMove
-			if (document.getElementById(pieceToMove.id[0] + (pieceToMove.id[1] - 1)).getAttribute('data-side') === 'empty') { 
+			if (document.getElementById(pieceToMove.id[0] + (pieceToMove.id[1] - 1)).dataset.side === 'empty') { 
 				litIds.push(pieceToMove.id[0] + (pieceToMove.id[1] - 1));
 
                 // collects empty space two ahead of blue pawnToMove
@@ -796,7 +797,7 @@ function lit(activeSide, passiveSide) {
 			
 			if (document.getElementById(
                 pieceToMove.id[0] + (+pieceToMove.id[1] + 1)
-            ).getAttribute('data-side') === 'empty') {
+            ).dataset.side === 'empty') {
                 // collects empty space one ahead of orange pawnToMove
 				litIds.push(pieceToMove.id[0] + (+pieceToMove.id[1] + 1));
                 
@@ -805,7 +806,7 @@ function lit(activeSide, passiveSide) {
 					// if empty cell two ahead of orange pawnToMove
 					if (document.getElementById(
                         pieceToMove.id[0] + (+pieceToMove.id[1] + 2)
-                    ).getAttribute('data-side') === 'empty') {
+                    ).dataset.side === 'empty') {
                         // pushes that empty cell to litIds array
 						litIds.push(pieceToMove.id[0] + (+pieceToMove.id[1] + 2));
 					}
@@ -821,8 +822,8 @@ function lit(activeSide, passiveSide) {
                 if (id[0] <= 7) {
                     if (id[1] >= 0) {
                         if (id[1] <= 7) {
-                            if ( document.getElementById( id ).getAttribute('data-side') 
-                            !== activeKing.getAttribute('data-side') ) { return id; }
+                            if ( document.getElementById( id ).dataset.side 
+                            !== activeKing.dataset.side ) { return id; }
                         }
                     }
                 }
@@ -847,16 +848,16 @@ function lit(activeSide, passiveSide) {
 
             let bishopPathId = bishopX.toString() + bishopY;
 
-            // while bishop path empty, highlight space
-			while (emptySpaces.includes(bishopPathId)) {
-				// add id to litIds
+            // while bishop path is empty, collect path id
+			while (document.getElementById( bishopPathId ).dataset.side === 'empty') {
+
 				litIds.push( bishopPathId );
 
-                // increment bishopX
+                // increments bishopX
 				if (bishopX > +pieceToMove.id[0]) { bishopX += 1; }
 				else { bishopX -= 1; }
 
-                // increment bishopY
+                // increments bishopY
 				if (bishopY > +pieceToMove.id[1]) { bishopY += 1; }
 				else { bishopY -= 1; }
 
@@ -878,23 +879,22 @@ function lit(activeSide, passiveSide) {
 		quadrant( pieceToMove.id[0] - 1,  pieceToMove.id[1] - 1);
     }
     
-	function rookLit() {
+	function rookLit() { // pushes correct ids to litIds
 		// in case of queen 
-		if (pieceToMove.dataset.side === 'rook') { litIds = []; }
-		// pushes correct div ids to litIds
-
+		if (pieceToMove.dataset.name === 'rook') {
+            litIds = [];
+        }
+		
         function first(rookX) {
-		    // first(+pieceToMove.id[0] + 1);
-		    // first(pieceToMove.id[0] - 1);
 
             rookPathId = rookX.toString() + pieceToMove.id[1];
 
-            // while rook path empty, highlight space
-			while (emptySpaces.includes( rookPathId )) {
+            // while rook path is empty, collect path id
+			while (document.getElementById( rookPathId ).dataset.side === 'empty') {
 
                 litIds.push( rookPathId );
 
-                // increment rookX
+                // increments rookX
 				if (rookX > +pieceToMove.id[0]) { rookX += 1; }
                 else { rookX -= 1; }
 
@@ -910,23 +910,19 @@ function lit(activeSide, passiveSide) {
         }
         
 		function second(rookY) {
-		    // second(+pieceToMove.id[1] + 1);
-		    // second(pieceToMove.id[1] - 1);
 
-            rookPathId = pieceToMove.id[0].toString() + rookY;
+            rookPathId = pieceToMove.id[0] + rookY.toString();
 
             // while rook path empty, highlight space
-            while (emptySpaces.includes( rookPathId )) {
+            while (document.getElementById( rookPathId ).dataset.side === 'empty') {
 
-                // add rookPathId to litIds
 				litIds.push( rookPathId );
 
-                // increment rookY
+                // increments rookY
 				if (rookY > +pieceToMove.id[1]) { rookY += 1; }
                 else { rookY -= 1; }
 
-                // updates rookPathId
-				rookPathId = pieceToMove.id[0].toString() + rookY;
+				rookPathId = pieceToMove.id[0] + rookY.toString();
             }
             
 			// highlights attackable pieces in rook's path
@@ -938,10 +934,10 @@ function lit(activeSide, passiveSide) {
         } 
 
         first(+pieceToMove.id[0] + 1);
-		first( pieceToMove.id[0] - 1);
+		first(+pieceToMove.id[0] - 1);
         
         second(+pieceToMove.id[1] + 1);
-		second( pieceToMove.id[1] - 1);
+		second(+pieceToMove.id[1] - 1);
     }
     
 	function kingLit() {
@@ -953,10 +949,10 @@ function lit(activeSide, passiveSide) {
 
         // covers king castling
 		if (!kingAttackers.length) { // if king not in check
-			if (pieceToMove.getAttribute('data-side') === 'blue') {
+			if (pieceToMove.dataset.side === 'blue') {
 				if (!blueKingFirstMove) {
                     if (!blueRook1FirstMove) {
-						if (['17', '27', '37'].every(id => document.getElementById(id).getAttribute('data-side') === 'empty')) {
+						if (['17', '27', '37'].every(id => document.getElementById(id).dataset.side === 'empty')) {
 							noCastle = false;
 
                             for (let i = 0; i < 3; i++) {
@@ -970,7 +966,7 @@ function lit(activeSide, passiveSide) {
 						}
                     }
 					if (!blueRook2FirstMove) {
-						if (['57', '67'].every(id => document.getElementById(id).getAttribute('data-side') === 'empty')) {
+						if (['57', '67'].every(id => document.getElementById(id).dataset.side === 'empty')) {
 							noCastle = false;
 
                             for (let i = 0; i < 2; i++) {
@@ -988,7 +984,7 @@ function lit(activeSide, passiveSide) {
 			else { // since activeSide is orange
 				if (!orangeKingFirstMove) {
 					if (!orangeRook1FirstMove) {
-						if (['10', '20', '30'].every(id => document.getElementById(id).getAttribute('data-side') === 'empty')) {
+						if (['10', '20', '30'].every(id => document.getElementById(id).dataset.side === 'empty')) {
 							for (let i = 0; i < 3; i++) {
 								noCastle = false;
 
@@ -1001,7 +997,7 @@ function lit(activeSide, passiveSide) {
 						}
                     }
 					if (!orangeRook2FirstMove) {
-						if (['50', '60'].every(id => document.getElementById(id).getAttribute('data-side') === 'empty')) {
+						if (['50', '60'].every(id => document.getElementById(id).dataset.side === 'empty')) {
 							noCastle = false;
 
                             for (let i = 0; i < 2; i++) {
@@ -1064,7 +1060,7 @@ function lit(activeSide, passiveSide) {
 				for (let i = 0; i < passiveSide.length; i++) {
 					// if passivePiece can check the oAOHKS...(kingSpace devoid of activePiece)
 					if (checkingSpace(passiveSide[i], id)) {
-                        console.log(passiveSide[i].getAttribute('data-side') + ' ' + passiveSide[i].getAttribute('data-name') + ' can attack ' + id);
+                        console.log(passiveSide[i].dataset.side + ' ' + passiveSide[i].dataset.name + ' can attack ' + id);
 
                         canCheck = true;
 						break;
@@ -1088,7 +1084,7 @@ function lit(activeSide, passiveSide) {
             if (pawnBlocksKingAttacker) {
                 // inCheck() sets pawnBlocksKingAttacker
                 // sees if pawn can block checkSpaceId
-                if (pawn.getAttribute('data-side') === 'blue') {
+                if (pawn.dataset.side === 'blue') {
                     // if blue turn
                     if (checkSpaceId === pawn.id[0] + (pawn.id[1] - 1)) {
                         // if checkSpaceId is one ahead of blue pawnToMove
@@ -1096,7 +1092,7 @@ function lit(activeSide, passiveSide) {
                     }
                     else if (document.getElementById(
                         pawn.id[0] + (pawn.id[1] - 1)
-                    ).getAttribute('data-side') === 'empty') {
+                    ).dataset.side === 'empty') {
                         // if empty cell one ahead of bluePawn
                         if (pawn.id[1] === '6') {
                             // if blue pawnToMove in row 6
@@ -1117,7 +1113,7 @@ function lit(activeSide, passiveSide) {
                     // collects empty space two ahead of orange pawnToMove
                     else if (document.getElementById(
                         pawn.id[0] + (+pawn.id[1] + 1)
-                    ).getAttribute('data-side') === 'empty') {
+                    ).dataset.side === 'empty') {
                         // if empty cell one ahead of orangePawn
                         if (pawn.id[1] === '1') {
                             // if orange pawnToMove in row 1
@@ -1135,7 +1131,7 @@ function lit(activeSide, passiveSide) {
                 if (pawn.id[0] - 1 == checkSpaceId[0]
                 || (+pawn.id[0] + 1) == checkSpaceId[0]) {
                     // if pawn is blue
-                    if (pawn.getAttribute('data-side') === 'blue') {
+                    if (pawn.dataset.side === 'blue') {
                         return checkSpaceId[1] == (pawn.id[1] - 1);
                     }
                     // since pawn is orange
@@ -1277,7 +1273,7 @@ function lit(activeSide, passiveSide) {
             // populates nails with pieces that block bishop's path to checkSpaceId
             bishopMoves.forEach(bishopMove => {
                 blocker = document.getElementById( bishopMove );
-                if (blocker.getAttribute('data-side') !== 'empty') { nails.push(blocker); }
+                if (blocker.dataset.side !== 'empty') { nails.push(blocker); }
             });
             console.log('nails -->');  console.log(nails);
 
@@ -1291,7 +1287,7 @@ function lit(activeSide, passiveSide) {
             if (nails.length === 1) { // if only one nail
                 if (nails[0] !== activeKing) {
                     // if that nail & bishop aren't on the same side
-                    if (nails[0].getAttribute('data-side') !== bishop.getAttribute('data-side')) {
+                    if (nails[0].dataset.side !== bishop.dataset.side) {
                         pinnedPieces.push(
                             { pinner: bishop, pinned: nails[0] }
                         );
@@ -1300,7 +1296,7 @@ function lit(activeSide, passiveSide) {
                         );
                         nails[0].setAttribute('data-pinned', true);
                         nails[0].setAttribute('data-pinner', bishop);
-                        alert(nails[0].getAttribute('data-side') + ' ' + nails[0].getAttribute('data-name') + ' IS PINNED');
+                        alert(nails[0].dataset.side + ' ' + nails[0].dataset.name + ' IS PINNED');
                         console.log('pinnedPieces -->');  console.log(pinnedPieces);
                     }
                 }
@@ -1349,14 +1345,14 @@ function lit(activeSide, passiveSide) {
             // populates nails with pieces that block rook's path to checkSpaceId
             rookMoves.forEach(rookMove => {
                 blocker = document.getElementById( rookMove );
-                if (blocker.getAttribute('data-side') !== 'empty') { nails.push(blocker); }
+                if (blocker.dataset.side !== 'empty') { nails.push(blocker); }
             });
             // console.log('nails -->');  console.log(nails);
             
             // returns true/false if no piece blocks rook's path to checkSpaceId
             if (!nails.length) { // nails can be both sides
                 // pathOfCheck array becomes rook.id route to checkSpaceId
-                if (rook.getAttribute('data-name') === 'queen') {
+                if (rook.dataset.name === 'queen') {
                     pathOfCheck = [...pathOfCheck, ...rookMoves];
                 }
                 else { pathOfCheck = rookMoves; }
@@ -1364,7 +1360,7 @@ function lit(activeSide, passiveSide) {
             }
             if (nails.length === 1) { // if only one nail
                 // if that nail & rook aren't on the same side
-                if (nails[0].getAttribute('data-side') !== rook.getAttribute('data-side')) {
+                if (nails[0].dataset.side !== rook.dataset.side) {
                     pinnedPieces.push(
                         { pinner: rook, pinned: nails[0] }
                     );
@@ -1373,7 +1369,7 @@ function lit(activeSide, passiveSide) {
                     );
                     nails[0].setAttribute('data-pinned', true);
                     nails[0].setAttribute('data-pinner', rook);
-                    alert(nails[0].getAttribute('data-side') + ' ' + nails[0].getAttribute('data-name') + ' IS PINNED');
+                    alert(nails[0].dataset.side + ' ' + nails[0].dataset.name + ' IS PINNED');
                     console.log('pinnedPieces -->');  console.log(pinnedPieces);
                 }
             }
@@ -1419,7 +1415,7 @@ function lit(activeSide, passiveSide) {
         }
 
         // sees if somePiece can check space
-        switch (somePiece.getAttribute('data-name')) {
+        switch (somePiece.dataset.name) {
             case 'pawn':    return pawnAttacks(somePiece);
             case 'knight':  return knightAttacks(somePiece); 
             case 'bishop':  return bishopAttacks(somePiece);
@@ -1436,7 +1432,7 @@ function lit(activeSide, passiveSide) {
     
     // sets activeKing
 	for (i = 0; i < activeSide.length; i++) {      
-        if (activeSide[i].getAttribute('data-name') === 'king') {
+        if (activeSide[i].dataset.name === 'king') {
             activeKing = activeSide[i];
             break;
 		}
