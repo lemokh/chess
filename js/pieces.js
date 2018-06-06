@@ -47,6 +47,7 @@ function endGameNow() {
 //========================================================
 //========================================================
 
+
 // returns true/false if somePiece can attack checkSpaceId
 function checkingSpace(somePiece, checkSpaceId) {
     // somePiece is an <img>

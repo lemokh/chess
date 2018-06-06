@@ -338,9 +338,9 @@ function lit(activeSide, passiveSide) {
 	}
 	*/
 }
-
 //////////////////////////////////////////////////////////////////////////
-
+//////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////
 function lit(activeSide, passiveSide) {
 
 	litIds = []; // contains litIds on which to apply click-listeners
@@ -1080,8 +1080,361 @@ function lit(activeSide, passiveSide) {
 		}
 	}
 
+    // returns true/false if somePiece can attack checkSpaceId
+    function checkingSpace(somePiece, checkSpaceId) {
+        
+        pinnedPieces = [];
+        pathOfCheck = [];
+
+        function pawnAttacks(pawn) {
+
+            if (pawnBlocksKingAttacker) {
+                // inCheck() sets pawnBlocksKingAttacker
+                // sees if pawn can block checkSpaceId
+                if (pawn.getAttribute('data-side') === 'blue') {
+                    // if blue turn
+                    if (checkSpaceId === pawn.id[0] + (pawn.id[1] - 1)) {
+                        // if checkSpaceId is one ahead of blue pawnToMove
+                        return true;
+                    }
+                    else if (document.getElementById(
+                        pawn.id[0] + (pawn.id[1] - 1)
+                    ).getAttribute('data-side') === 'empty') {
+                        // if empty cell one ahead of bluePawn
+                        if (pawn.id[1] === '6') {
+                            // if blue pawnToMove in row 6
+                            if (checkSpaceId === pawn.id[0] + (pawn.id[1] - 2)) {
+                                // if checkSpaceId is two ahead of blue pawnToMove
+                                return true;
+                            }
+                        }
+                    }
+                    return false;
+                }
+                else { // since orange turn
+                    // collects empty space one ahead of orange pawnToMove
+                    if (checkSpaceId === pawn.id[0] + (+pawn.id[1] + 1)) {
+                        // if checkSpaceId is one ahead of orange pawnToMove
+                        return true;
+                    }
+                    // collects empty space two ahead of orange pawnToMove
+                    else if (document.getElementById(
+                        pawn.id[0] + (+pawn.id[1] + 1)
+                    ).getAttribute('data-side') === 'empty') {
+                        // if empty cell one ahead of orangePawn
+                        if (pawn.id[1] === '1') {
+                            // if orange pawnToMove in row 1
+                            if (checkSpaceId === pawn.id[0] + (+pawn.id[1] + 2)) {
+                                // if checkSpaceId is two ahead of orange pawnToMove
+                                return true;
+                            }
+                        }
+                    }
+                    return false;
+                }
+            }
+            else { // since !pawnBlocksKingAttacker
+                // sees if pawn can eat checkSpaceId
+                if (pawn.id[0] - 1 == checkSpaceId[0]
+                || (+pawn.id[0] + 1) == checkSpaceId[0]) {
+                    // if pawn is blue
+                    if (pawn.getAttribute('data-side') === 'blue') {
+                        return checkSpaceId[1] == (pawn.id[1] - 1);
+                    }
+                    // since pawn is orange
+                    else { return checkSpaceId[1] == (+pawn.id[1] + 1); }
+                }
+                return false;
+            }
+        }
+
+        // returns true/false if knight can attack checkSpaceId
+        function knightAttacks(knight) {
+            // to hold two spaces where knight might checkSpaceId
+            knightMoves = [];
+            // if knight is left of checkSpaceId
+            if (knight.id[0] < checkSpaceId[0]) {
+                // and if knight is above checkSpaceId
+                if (knight.id[1] < checkSpaceId[1]) {
+
+                    knightMoves.push(
+                        (+knight.id[0] + 1) +
+                        (+knight.id[1] + 2).toString()
+                    );
+                    // console.log('knightMoves -->'); console.log(knightMoves);
+                    knightMoves.push(
+                        (+knight.id[0] + 2) +
+                        (+knight.id[1] + 1).toString()
+                    ); 
+                    // console.log('knightMoves -->'); console.log(knightMoves);
+                }
+                else { // since knight is left of & below checkSpaceId
+                    knightMoves.push(
+                        (+knight.id[0] + 1) +
+                        (knight.id[1] - 2).toString()
+                    );
+                    knightMoves.push(
+                        (+knight.id[0] + 2) +
+                        (knight.id[1] - 1).toString()
+                    );
+                }
+            }
+            else { // since knight is right of & above checkSpaceId
+                if (knight.id[1] < checkSpaceId[1]) {
+                    knightMoves.push(
+                        (knight.id[0] - 1) +
+                        (+knight.id[1] + 2).toString()
+                    );
+                    knightMoves.push(
+                        (knight.id[0] - 2) +
+                        (+knight.id[1] + 1).toString()
+                    );
+                }
+                else { // since knight is right of & below checkSpaceId
+                    knightMoves.push(
+                        (knight.id[0] - 1) +
+                        (knight.id[1] - 2).toString()
+                    );
+                    knightMoves.push(
+                        (knight.id[0] - 2) +
+                        (knight.id[1] - 1).toString()
+                    );
+                }
+            }
+            return knightMoves.includes(checkSpaceId); 
+        }
+
+        // returns true/false if bishop can attack checkSpaceId
+        function bishopAttacks(bishop) {
+            // checks for clear path between bishop.id & checkSpaceId
+            bishopMoves = []; // collects spaces bishop attacks enroute to checkSpaceId
+            nails = []; // collects possible pinnedPieces
+            bishopX = +bishop.id[0];
+            bishopY = +bishop.id[1];
+
+            // bishop & checkSpaceId cannot have the same id
+            if (bishop.id === checkSpaceId) { return false; }
+
+            // (LEFT BOARD SIDE) if bishop.id is left of checkSpaceId
+            if (bishop.id[0] < checkSpaceId[0]) {
+                // (FIRST QUADRANT) and if bishop is above checkSpaceId
+                if (bishop.id[1] < checkSpaceId[1]) {
+                    // if bishop's path aligns with checkSpaceId
+                    if ( (checkSpaceId[0] - bishop.id[0]) 
+                    === (checkSpaceId[1] - bishop.id[1]) ) {
+                        // collects bishop's attack path to checkSpaceId
+                        while ( bishopX < (checkSpaceId[0] - 1) ) {
+                            bishopX += 1;
+                            bishopY += 1;
+                            bishopMoves.push( bishopX + bishopY.toString() );
+                        }
+                    }
+                    else { return false; } // bishop can't checkSpaceId
+                }
+                else { // (THIRD QUADRANT) bishop is left of & below checkSpaceId
+                    // if bishop aligns with checkSpaceId
+                    if ( (checkSpaceId[0] - bishop.id[0])
+                    === (bishop.id[1] - checkSpaceId[1]) ) {
+                        // collects bishop's attack path to checkSpaceId
+                        while ( (bishopX < checkSpaceId[0] - 1) ) {
+                            bishopX += 1;
+                            bishopY -= 1;
+                            bishopMoves.push( bishopX + bishopY.toString() );
+                        }
+                    }
+                    else { return false; } // bishop cannot checkSpaceId
+                }
+            }
+            else { // (RIGHT BOARD SIDE) since bishop is right of checkSpaceId
+                // (SECOND QUADRANT) & since bishop is above checkSpaceId
+                if (bishop.id[1] < checkSpaceId[1]) {
+                    // if bishop aligns with checkSpaceId
+                    if ( (bishop.id[0] - checkSpaceId[0])
+                    === (checkSpaceId[1] - bishop.id[1]) ) {
+                        // collects bishop's attack path to checkSpaceId
+                        while ( bishopX > (checkSpaceId[0] + 1) ) {
+                            bishopX -= 1;
+                            bishopY += 1;
+                            bishopMoves.push( bishopX + bishopY.toString() );
+                        }
+                    }
+                    else { return false; } // bishop can't checkSpaceId
+                }
+                else { // (FOURTH QUADRANT)
+                    // since bishop is right of & below checkSpaceId
+                    // if bishop aligns with checkSpaceId
+                    if ( (bishop.id[0] - checkSpaceId[0])
+                    === (bishop.id[1] - checkSpaceId[1]) ) {
+                        // collects bishop's attack path to checkSpaceId
+                        while ( bishopX > (checkSpaceId[0] + 1) ) {
+                            bishopX -= 1;
+                            bishopY -= 1;
+                            bishopMoves.push( bishopX + bishopY.toString() );
+                        }
+                    }
+                    else { return false; } // bishop can't attack king
+                }
+            }
+            console.log('bishopMoves -->');  console.log(bishopMoves);
+
+            // populates nails with pieces that block bishop's path to checkSpaceId
+            bishopMoves.forEach(bishopMove => {
+                blocker = document.getElementById( bishopMove );
+                if (blocker.getAttribute('data-side') !== 'empty') { nails.push(blocker); }
+            });
+            console.log('nails -->');  console.log(nails);
+
+            // returns true/false if no piece blocks bishop's path to checkSpaceId
+            if (!nails.length) { // note: nails may contain pieces from both sides
+                // pathOfCheck array becomes bishop's id route to checkSpaceId
+                pathOfCheck = bishopMoves;
+                console.log('pathOfCheck -->');  console.log(pathOfCheck);
+                return true; // bishop can attack checkSpaceId
+            }
+            if (nails.length === 1) { // if only one nail
+                if (nails[0] !== activeKing) {
+                    // if that nail & bishop aren't on the same side
+                    if (nails[0].getAttribute('data-side') !== bishop.getAttribute('data-side')) {
+                        pinnedPieces.push(
+                            { pinner: bishop, pinned: nails[0] }
+                        );
+                        tempPinnedPieces.push(
+                            { pinner: bishop, pinned: nails[0] }
+                        );
+                        nails[0].setAttribute('data-pinned', true);
+                        nails[0].setAttribute('data-pinner', bishop);
+                        alert(nails[0].getAttribute('data-side') + ' ' + nails[0].getAttribute('data-name') + ' IS PINNED');
+                        console.log('pinnedPieces -->');  console.log(pinnedPieces);
+                    }
+                }
+            }
+            return false; // bishop cannot attack checkSpaceId
+        }
+
+        // returns true/false if rook can attack checkSpaceId
+        function rookAttacks(rook) {
+            // checks for clear path between rook.id & checkSpaceId
+            rookMoves = []; // collects spaces rook attacks enroute to checkSpaceId
+            nails = []; // collects possible pinnedPieces
+            // if rook & checkSpaceId share column
+            if (rook.id[0] === checkSpaceId[0]) {
+                // if rook below checkSpaceId, rook.y++
+                if (rook.id[1] < checkSpaceId[1]) {
+                    for (let i = (+rook.id[1] + 1); i < checkSpaceId[1]; i++) {
+                        rookMoves.push( checkSpaceId[0] + i ); // an id
+                    }
+                }
+                else { // since rook is above checkSpaceId, rook.id[1]--
+                    for (let i = (rook.id[1] - 1); i > checkSpaceId[1]; i--) {
+                        rookMoves.push( checkSpaceId[0] + i ); // an id
+                    }
+                }
+            } // pushes column spaces between rook & checkSpaceId to rookMoves
+
+            // else if rook & checkSpaceId share row
+            else if (rook.id[1] === checkSpaceId[1]) {
+                // if rook left of checkSpaceId, rook.id[0]++
+                if (rook.id[0] < checkSpaceId[0]) {
+                    for (let i = (+rook.id[0] + 1); i < checkSpaceId[0]; i++) {
+                        rookMoves.push( i + checkSpaceId[1] ); // an id
+                    }
+                }
+                else { // since rook right of checkSpaceId, rook.id[0]--
+                    for (let i = (rook.id[0] - 1); i > checkSpaceId[0]; i--) {
+                        rookMoves.push( i + checkSpaceId[1] ); // an id
+                    }
+                }
+            }  // pushes row spaces between rook & checkSpaceId to rookMoves
+            
+            else { return false; } // rook can't checkSpaceId
+            // console.log('rookMoves -->');  console.log(rookMoves);
+            
+            // populates nails with pieces that block rook's path to checkSpaceId
+            rookMoves.forEach(rookMove => {
+                blocker = document.getElementById( rookMove );
+                if (blocker.getAttribute('data-side') !== 'empty') { nails.push(blocker); }
+            });
+            // console.log('nails -->');  console.log(nails);
+            
+            // returns true/false if no piece blocks rook's path to checkSpaceId
+            if (!nails.length) { // nails can be both sides
+                // pathOfCheck array becomes rook.id route to checkSpaceId
+                if (rook.getAttribute('data-name') === 'queen') {
+                    pathOfCheck = [...pathOfCheck, ...rookMoves];
+                }
+                else { pathOfCheck = rookMoves; }
+                return true; // rook can attack checkSpaceId
+            }
+            if (nails.length === 1) { // if only one nail
+                // if that nail & rook aren't on the same side
+                if (nails[0].getAttribute('data-side') !== rook.getAttribute('data-side')) {
+                    pinnedPieces.push(
+                        { pinner: rook, pinned: nails[0] }
+                    );
+                    tempPinnedPieces.push(
+                        { pinner: rook, pinned: nails[0] }
+                    );
+                    nails[0].setAttribute('data-pinned', true);
+                    nails[0].setAttribute('data-pinner', rook);
+                    alert(nails[0].getAttribute('data-side') + ' ' + nails[0].getAttribute('data-name') + ' IS PINNED');
+                    console.log('pinnedPieces -->');  console.log(pinnedPieces);
+                }
+            }
+            return false; // rook cannot attack checkSpaceId
+        }
+
+        // returns true/false if queen can attack checkSpaceId
+        function queenAttacks(queen) {
+            return (
+                bishopAttacks(queen, checkSpaceId) 
+                || rookAttacks(queen, checkSpaceId)
+            );
+        }
+
+        // returns true if king can attack checkSpaceId
+        function kingAttacks(king) {
+            
+            switch (+checkSpaceId[0]) { // if checkSpaceId's column equals...
+                case +king.id[0]: // king's column
+                    return (
+                        ( +checkSpaceId[1] === (+king.id[1] + 1) )
+                        || 
+                        ( +checkSpaceId[1] === (king.id[1] - 1) )
+                    );
+                case +king.id[0] + 1: // king's column + 1
+                    return (
+                        (  checkSpaceId[1] ===   king.id[1] )
+                        ||
+                        ( +checkSpaceId[1] === (+king.id[1] + 1) )
+                        ||
+                        ( +checkSpaceId[1] ===  (king.id[1] - 1) )
+                    );
+                case king.id[0] - 1: // king's column - 1
+                    return (
+                        ( checkSpaceId[1] === king.id[1] )
+                        ||
+                        ( +checkSpaceId[1] === (+king.id[1] + 1) )
+                        ||
+                        ( +checkSpaceId[1] === (king.id[1] - 1) )
+                    );
+                default: return false;
+            }
+        }
+
+        // sees if somePiece can check space
+        switch (somePiece.getAttribute('data-name')) {
+            case 'pawn':    return pawnAttacks(somePiece);
+            case 'knight':  return knightAttacks(somePiece); 
+            case 'bishop':  return bishopAttacks(somePiece);
+            case 'rook':    return rookAttacks(somePiece);
+            case 'queen':   return queenAttacks(somePiece);
+            case 'king':    return kingAttacks(somePiece);
+        }
+    } // returns true/false if somePiece can attack checkSpaceId
+
+
     // ********** META-LOGIC **********
-    
+
     // startsActiveClock();
     
     // sets activeKing
@@ -1101,8 +1454,7 @@ function lit(activeSide, passiveSide) {
 		}
     });  console.log('kingAttackers -->');  console.log(kingAttackers);
 
-    // if in check
-    if (kingAttackers.length) { inCheck(); }
+    if (kingAttackers.length) { inCheck(); } // if in check
     
 	else { // since not in check
 		activeSide.forEach(activePiece => {
