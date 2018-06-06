@@ -846,7 +846,7 @@ function lit(activeSide, passiveSide) {
 
     function bishopLit() {
 
-        function quadrant(x, y) { // x & y are numbers
+        function quadrant(x, y) { // x & y are a number
 
             let bishopPath = document.getElementById( x.toString() + y );
 
@@ -864,7 +864,7 @@ function lit(activeSide, passiveSide) {
                                 else { x -= 1; } // continue west
                                 
                                 // increments y
-                                // if x is south of pieceToMove, continue south
+                                // if y is south of pieceToMove, continue south
                                 if (y > +pieceToMove.id[1]) { y += 1; }
                                 else { y -= 1; } // continue north
                                 
@@ -883,68 +883,57 @@ function lit(activeSide, passiveSide) {
 		quadrant(+pieceToMove.id[0] + 1, +pieceToMove.id[1] - 1);
         quadrant(+pieceToMove.id[0] - 1, +pieceToMove.id[1] + 1);
 		quadrant(+pieceToMove.id[0] - 1, +pieceToMove.id[1] - 1);
-    }
+    }  // fills litIds with ids where bishop can move
     
-	function rookLit() { // pushes correct ids to litIds
-		// in case of queen 
+	function rookLit() {
+
 		if (pieceToMove.dataset.name === 'rook') {
             litIds = [];
-        }
-		
-        function first(rookX) {
+        } // in case of queen
 
-            rookPathId = rookX.toString() + pieceToMove.id[1];
+        function line(x, y) { // x & y are a number
 
-            // while rook path is empty, collect path id
-			while (document.getElementById( rookPathId ).dataset.side === 'empty') {
+            let rookPath = document.getElementById( x.toString() + y );
 
-                litIds.push( rookPathId );
+            if (x >= 0) {
+                if (x <= 7) {
+                    if (y >= 0) {
+                        if (y <= 7) { // since x & y are on the board..
+                            // collects id, if empty or passivePiece
+                            if (rookPath.dataset.side === 'empty') {
 
-                // increments rookX
-				if (rookX > +pieceToMove.id[0]) { rookX += 1; }
-                else { rookX -= 1; }
+                                litIds.push( rookPath.id );
+                                
+                                // increments x
+                                if (x !== +pieceToMove.id[0]) {
+                                    // if x is east of pieceToMove, continue east
+                                    if (x > +pieceToMove.id[0]) { x += 1; }
+                                    else { x -= 1; } // continue west
+                                }
+                                
+                                // increments y
+                                if (y !== +pieceToMove.id[1]) {
+                                    // if y is south of pieceToMove, continue south
+                                    if (y > +pieceToMove.id[1]) { y += 1; }
+                                    else { y -= 1; } // continue north
+                                }
 
-				rookPathId = rookX.toString() + pieceToMove.id[1];
-			}
-            
-            // highlights attackable pieces in rook's path
-			for (let i = 0; i < passiveSide.length; i++) {
-				if (passiveSide[i].id === rookPathId) {
-					litIds.push( rookPathId );
-				}
-			}
-        }
-        
-		function second(rookY) {
-
-            rookPathId = pieceToMove.id[0] + rookY.toString();
-
-            // while rook path empty, highlight space
-            while (document.getElementById( rookPathId ).dataset.side === 'empty') {
-
-				litIds.push( rookPathId );
-
-                // increments rookY
-				if (rookY > +pieceToMove.id[1]) { rookY += 1; }
-                else { rookY -= 1; }
-
-				rookPathId = pieceToMove.id[0] + rookY.toString();
-            }
-            
-			// highlights attackable pieces in rook's path
-			for (let i = 0; i < passiveSide.length; i++) {
-				if (passiveSide[i].id === rookPathId) {
-					litIds.push( rookPathId );
-				}
-			}
+                                line(x, y); // continue path
+                            }
+                            else if (rookPath.dataset.side === passiveSide[0].dataset.side) {
+                                litIds.push( rookPath.id ); // path ends
+                            }
+                        }
+                    }
+                }
+            }           
         } 
 
-        first(+pieceToMove.id[0] + 1);
-		first(+pieceToMove.id[0] - 1);
-        
-        second(+pieceToMove.id[1] + 1);
-		second(+pieceToMove.id[1] - 1);
-    }
+        line(+pieceToMove.id[0] + 1, +pieceToMove.id[1]);
+        line(+pieceToMove.id[0] - 1, +pieceToMove.id[1]);
+        line(+pieceToMove.id[0], +pieceToMove.id[1] + 1);
+		line(+pieceToMove.id[0], +pieceToMove.id[1] - 1);
+    } // fills litIds with ids where rook can move
     
 	function kingLit() {
 		// highlights all possible moves for activeKing
@@ -1245,7 +1234,7 @@ function lit(activeSide, passiveSide) {
                 }
             }
             else { // (RIGHT BOARD SIDE) since bishop is right of checkSpaceId
-                // (SECOND QUADRANT) & since bishop is above checkSpaceId
+                // (row QUADRANT) & since bishop is above checkSpaceId
                 if (bishop.id[1] < checkSpaceId[1]) {
                     // if bishop aligns with checkSpaceId
                     if ( (bishop.id[0] - checkSpaceId[0])
