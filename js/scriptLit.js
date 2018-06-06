@@ -1,3 +1,35 @@
+var knightCells, pinningPiece, pawnBlocksKingAttacker, pathToCheck, idToBlock, kingAttackers= [], greyLitPieces = [], defenders = [], pawnDefenders = [], enPassantCell = '', orangeTakenBoxIdCounter = -16, blueTakenBoxIdCounter = -1, enPassanting = false,
+heroics = [], anId, kingStuck, kingMovesOutOfCheck = [], possiblePinnedMoves, kingMovesOutOfCheck, newPieceClicked, pinnerPiece, tempPinnedPieces, greyPieceToMove, pathPiece, activePieceIsPinned, litSpace, blocker, mate = false, canCheck, canEatKingAttacker = [], greyLitDivs, canBlockPathOfCheck = [], gameOver, kingSlayer, checkPath, emptySpaces, knightLight, bishopPathId, rookPathId, blueKingFirstMove, blueRook1FirstMove, activeKing, blueRook2FirstMove,  orangeKingFirstMove, orangeRook1FirstMove, orangeRook2FirstMove, castleIds = [], noCastle, kingAble, pieceToMove, goToDiv, enPassantDiv, prevGoToDiv, enPassantGoToDiv, pawnJumpDiv, enPassantables2 = [], enPassantedPawn, knightLight, takenOrangeBox, takenBlueBox, gameEnds, tempSide, movedPiece, mainLitDiv, litDivs, unLitDivs, img, index1, index2, tempPiece, moves, takenBox, activeCells, openAndOpponentHeldKingSpaces, kingSpacesUnderAttack, orangeKingSpacesUnderAttack, orangelessKingSpaces, orangelessKingSpaces, blueKingSpaces, bluelessKingSpaces, orangeKingSpacesUnderAttack, vacantKingSpaces, whiteKing, blackKing, knightMoves, bishopMoves, bishopX, bishopY, rookMoves, kingSpaces, kingOpenSpaces, occupiedKingSpaces, defenders, pinnedPieces, pathOfCheck = [], nails, whites, blacks;
+
+const boardIds = [
+	'00', '01', '02', '03', '04', '05', '06', '07',
+	'10', '11', '12', '13', '14', '15', '16', '17',
+	'20', '21', '22', '23', '24', '25', '26', '27',
+	'30', '31', '32', '33', '34', '35', '36', '37',
+	'40', '41', '42', '43', '44', '45', '46', '47',
+	'50', '51', '52', '53', '54', '55', '56', '57',
+	'60', '61', '62', '63', '64', '65', '66', '67',
+	'70', '71', '72', '73', '74', '75', '76', '77'
+];
+
+function openSpaces(arr1, arr2) {
+	return arr1.filter(cell => {
+		return !arr2.some(piece => {
+			return cell === piece.id;
+		});
+	});
+}
+
+var board = document.getElementById('board');
+
+let orangeNodes = board.querySelectorAll("[data-side='orange']");
+let blueNodes = board.querySelectorAll("[data-side='blue']");
+
+var oranges = Array.from(orangeNodes);
+var blues = Array.from(blueNodes);
+
+var pieces = [...oranges, ...blues];
+
 /*
 //===========================================
 function pinnedPieceAttack(somePinnedPiece) {
@@ -653,7 +685,7 @@ function lit(activeSide, passiveSide) {
 		});
 	}
 
-    
+
     function toggleSides() {
         // removes click-listeners from activePieces
         activeSide.forEach(activePiece => {
