@@ -846,47 +846,43 @@ function lit(activeSide, passiveSide) {
 
     function bishopLit() {
 
-        function quadrant(x, y) {
+        function quadrant(x, y) { // x & y are numbers
 
             let bishopPath = document.getElementById( x.toString() + y );
 
-            // while bishop path is empty, collect path id
-			while (bishopPath.dataset.side === 'empty') {
-
-				litIds.push( bishopPath.id );
-
-                // increments x
-				if (x > +pieceToMove.id[0]) { x += 1; }
-				else { x -= 1; }
-
-                // increments y
-				if (y > +pieceToMove.id[1]) { y += 1; }
-                else { y -= 1; }
-                
-                bishopPath = document.getElementById( x.toString() + y );
+            if (x >= 0) {
+                if (x <= 7) {
+                    if (y >= 0) {
+                        if (y <= 7) { // since x & y are on the board..
+                            // collects id, if empty or passivePiece
+                            if (bishopPath.dataset.side === 'empty') {
+                                litIds.push( bishopPath.id );
+                                
+                                // increments x
+                                // if x is east of pieceToMove, continue east
+                                if (x > +pieceToMove.id[0]) { x += 1; }
+                                else { x -= 1; } // continue west
+                                
+                                // increments y
+                                // if x is south of pieceToMove, continue south
+                                if (y > +pieceToMove.id[1]) { y += 1; }
+                                else { y -= 1; } // continue north
+                                
+                                quadrant(x, y); // continue path
+                            }
+                            else if (bishopPath.dataset.side === passiveSide[0].dataset.side) {
+                                litIds.push( bishopPath.id ); // path ends
+                            }
+                        }
+                    }
+                }
             }
-
-			for (let i = 0; i < passiveSide.length; i++) {
-				if (passiveSide[i] === bishopPath) {
-					litIds.push( bishopPath.id );
-				}
-			}
         }
-        ///////////////////////////////////
-        let north = +pieceToMove.id[0] + 1;
-        let south = +pieceToMove.id[0] - 1;
-        let east = +pieceToMove.id[1] + 1;
-        let west = +pieceToMove.id[1] - 1;
-        ///////////////////////////////////
-        let southWest = south + west;
-        let northEast = north + east;
-        let northWest = north + west;
-        let southEast = south + east;
-        /////////////////////////////
-		quadrant(north, east);
-		quadrant(north, west);
-        quadrant(south, east);
-		quadrant(south, west);
+
+		quadrant(+pieceToMove.id[0] + 1, +pieceToMove.id[1] + 1);
+		quadrant(+pieceToMove.id[0] + 1, +pieceToMove.id[1] - 1);
+        quadrant(+pieceToMove.id[0] - 1, +pieceToMove.id[1] + 1);
+		quadrant(+pieceToMove.id[0] - 1, +pieceToMove.id[1] - 1);
     }
     
 	function rookLit() { // pushes correct ids to litIds
