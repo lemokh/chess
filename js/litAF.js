@@ -944,8 +944,7 @@ function checkingSpace(somePiece, checkSpaceId) {
 
 	function pawnAttacks(pawn) {
 
-		if (pawnBlocksKingAttacker) {
-			// inCheck() sets pawnBlocksKingAttacker
+		if (pawnBlocksKingAttacker) { // set by inCheck()
 			// sees if pawn can block checkSpaceId
 			if (pawn.dataset.side === 'blue') {
 				// if blue turn
@@ -1008,6 +1007,7 @@ function checkingSpace(somePiece, checkSpaceId) {
 	function knightAttacks(knight) {
 		// to hold two spaces where knight might checkSpaceId
 		knightMoves = [];
+		
 		// if knight is left of checkSpaceId
 		if (knight.id[0] < checkSpaceId[0]) {
 			// and if knight is above checkSpaceId
