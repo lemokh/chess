@@ -34,7 +34,7 @@ function inCheck() { // isMate()
 		if (!litIds.length) { return endOfGame(); }
 
 		// else click greyPiece to selectGreyPiece()
-		else { return addHandler(litIds, 'litDiv', selectGreyPiece); }
+		else { return addLitDivHandler(selectGreyPiece); }
 	}
 	else { // since only one kingAttacker
 		// if king can move, handles moving activeKing
@@ -124,7 +124,7 @@ function selectGreyPiece(e) {
 		greyPieceToMove.classList.remove('mainLit');
 	}
 
-	removeHandler(litIds, 'litDiv', moveGreyPiece); // resets each litDiv
+	removeLitDivHandler(moveGreyPiece); // resets each litDiv
 
 	if (litIds.length) {
 		litIds.forEach( id => {
@@ -154,7 +154,7 @@ function selectGreyPiece(e) {
 		}
 	});
 
-	addHandler(litIds, 'litDiv', moveGreyPiece);
+	addLitDivHandler(moveGreyPiece);
 }
 
 function moveGreyPiece(e) {
@@ -180,7 +180,7 @@ function moveGreyPiece(e) {
 	});
 	greyLitPieces = [];
 
-	removeHandler(litIds, 'litDiv', moveGreyPiece);
+	removeLitDivHandler(moveGreyPiece);
 
 	if (e.target.dataset.side !== 'empty') { eat(e.target); }
 
@@ -227,7 +227,7 @@ function possibleMoves() {
 		default: alert('default ERROR! pieceToMove is empty');
 	}
 	// lightens & click-listens to litIds --> movePiece(e)
-	if (litIds.length) { addHandler(litIds, 'litDiv', movePiece); }
+	if (litIds.length) { addLitDivHandler(movePiece); }
 }
 
 function movePiece(e) {
@@ -241,7 +241,7 @@ function movePiece(e) {
 	// un-lightens mainDiv
 	document.getElementById( pieceToMove.id ).classList.remove( 'mainLit' );
 
-	removeHandler(litIds, 'litDiv', movePiece);
+	removeLitDivHandler(movePiece);
 
 	// prevents castling after king's first move
 	if (pieceToMove.dataset.name === 'king') {
@@ -379,7 +379,7 @@ function eat(piece) {
 	// gets piece's passiveSide index
 	index2 = passiveSide.indexOf(piece);
 
-	// removes element from passiveSide array
+	// removes piece from passiveSide array
 	passiveSide.splice(index2, 1);
 
 	console.log('passiveSide -->');  console.log(passiveSide);
@@ -449,23 +449,23 @@ function enPassantReset() {
 }
 
 
-function addHandler(arr, someClass, funcName) {
+function addLitDivHandler(funcName) {
 
-	arr.forEach( cell => {
-		litPiece = document.getElementById( cell );
-		litPiece.classList.add( someClass );
+	litIds.forEach( litDiv => {
+		litPiece = document.getElementById( litDiv );
+		litPiece.classList.add( 'lit' );
 		litPiece.addEventListener( 'click', funcName );
 	});
 }
 
-function removeHandler(arr, someClass, funcName) {
+function removeLitDivHandler(funcName) {
 
-	arr.forEach( cell => {
-		litPiece = document.getElementById( cell );
-		litPiece.classList.remove( someClass );
+	litIds.forEach( litDiv => {
+		litPiece = document.getElementById( litDiv );
+		litPiece.classList.remove( 'lit' );
 		litPiece.removeEventListener( 'click', funcName );
 	});
-	arr = [];
+	litIds = [];
 }
 
 function cleanUpAfterFirstClick() {
@@ -476,7 +476,7 @@ function cleanUpAfterFirstClick() {
 		pieceToMove.classList.remove( 'mainLit' );
 		
 		// un-lightens, clears out & stops click-listening to litIds
-		if (litIds.length) { removeHandler(litIds, 'litDiv', movePiece); }
+		if (litIds.length) { removeLitDivHandler(movePiece); }
 		
 		// un-lightens, clears out & stops click-listening to castleIds
 		if (castleIds.length) { // if king ready to castle
@@ -498,7 +498,7 @@ function pinnedPieceLit() {
 	function movePinnedPiece(e) {
 		
 		pieceToMove.classList.remove('mainLit');
-		removeHandler(litIds, 'litDiv', movePinnedPiece);
+		removeLitDivHandler(movePinnedPiece);
 		swapSide(pieceToMove, e.target);
 		toggleSides();
 	}
