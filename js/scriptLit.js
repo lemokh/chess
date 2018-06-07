@@ -1196,7 +1196,7 @@ function lit(activeSide, passiveSide) {
             bishopMoves = []; // collects spaces bishop attacks enroute to checkSpaceId
             nails = []; // collects possible pinnedPieces
             bishopX = +bishop.id[0];
-            y = +bishop.id[1];
+            bishopY = +bishop.id[1];
 
             // bishop & checkSpaceId cannot have the same id
             if (bishop.id === checkSpaceId) { return false; }

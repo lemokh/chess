@@ -1016,8 +1016,7 @@ function checkingSpace(somePiece, checkSpaceId) {
 			if (id === checkSpaceId) { return id; }
 		}
 		
-		if (knightSpaces(knight).filter(onBoardNonActiveIds).filter(attacks).length) { 
-			console.log('TRUE knightAttacks checkSpaceId');
+		if (knightSpaces(knight).filter(onBoardNonActiveIds).filter(attacks).length) {
 			return true; 
 		}
 		
@@ -1073,13 +1072,18 @@ function checkingSpace(somePiece, checkSpaceId) {
 		
 	}
 
-	// returns true/false if bishop can attack checkSpaceId
+
+
+
+	// returns true/false... if bishop can attack checkSpaceId
+	// that is... if no piece blocks bishop's path to checkSpaceId
 	function bishopAttacks(bishop) {
+
 		// checks for clear path between bishop.id & checkSpaceId
 		bishopMoves = []; // collects spaces bishop attacks enroute to checkSpaceId
 		nails = []; // collects possible pinnedPieces
 		bishopX = +bishop.id[0];
-		y = +bishop.id[1];
+		bishopY = +bishop.id[1];
 
 		// bishop & checkSpaceId cannot have the same id
 		if (bishop.id === checkSpaceId) { return false; }
@@ -1179,6 +1183,8 @@ function checkingSpace(somePiece, checkSpaceId) {
 		}
 		return false; // bishop cannot attack checkSpaceId
 	}
+
+
 
 	// returns true/false if rook can attack checkSpaceId
 	function rookAttacks(rook) {
@@ -1349,3 +1355,101 @@ function lit() {
 		});
 	}
 }
+
+
+
+
+
+/*
+function bishopMistakeLogic() {
+	// bishopAttackPath = [];
+	bishopMoves = []; // collects bishop's id path to checkSpaceId
+	nails = []; // collects possible pinnedPieces
+
+	// since bishopLit() yields all litIds where bishop can move
+	pieceToMove = bishop;
+	bishopLit();
+	pieceToMove = undefined;
+
+	// if bishop can attack checkSpaceId
+	if (litIds.includes(checkSpaceId)) {
+		
+		bishopX = +bishop.id[0];
+		bishopY = +bishop.id[1];
+		
+		// collect ids between bishop & checkSpaceId
+		if (bishop.id[0] < checkSpaceId[0]) {
+			if (bishop.id[1] < checkSpaceId[1]) {
+				// bishop attacks southEastWard diagonal
+				while ( bishopX < checkSpaceId[0] ) {
+					bishopX += 1;
+					bishopY += 1;
+					bishopMoves.push( bishopX + bishopY.toString() );
+				}
+			}
+			else { // bishop attacks northEast diagonal
+				while ( bishopX < checkSpaceId[0] ) {
+					bishopX += 1;
+					bishopY -= 1;
+					bishopMoves.push( bishopX + bishopY.toString() );
+				}
+			}
+		}
+		else {
+			if ( bishop.id[1] < checkSpaceId[1] ) {
+				// bishop attacks southWest diagonal
+				while ( bishopX > checkSpaceId[0] ) {
+					bishopX -= 1;
+					bishopY += 1;
+					bishopMoves.push( bishopX + bishopY.toString() );
+				}
+			}
+			else { // bishop attacks northWest diagonal
+				while ( bishopX > checkSpaceId[0] ) {
+					bishopX -= 1;
+					bishopY -= 1;
+					bishopMoves.push( bishopX + bishopY.toString() );
+				}
+			}
+		}  console.log('bishopMoves -->');  console.log(bishopMoves);			
+
+		return true;
+	}
+	else { return false; }
+
+
+	//-----------------------------------------------------------------------------
+	// populates nails with pieces that block bishop's path to checkSpaceId
+	bishopMoves.forEach(bishopMove => {
+		blocker = document.getElementById( bishopMove );
+		if (blocker.dataset.side !== 'empty') { nails.push(blocker); }
+	});
+	console.log('nails -->');  console.log(nails);
+
+	// returns true/false if no piece blocks bishop's path to checkSpaceId
+	if (!nails.length) { // note: nails may contain pieces from both sides
+		// pathOfCheck array becomes bishop's id route to checkSpaceId
+		pathOfCheck = bishopMoves;
+		console.log('pathOfCheck -->');  console.log(pathOfCheck);
+		return true; // bishop can attack checkSpaceId
+	}
+	if (nails.length === 1) { // if only one nail
+		if (nails[0] !== activeKing) {
+			// if that nail & bishop aren't on the same side
+			if (nails[0].dataset.side !== bishop.dataset.side) {
+				pinnedPieces.push(
+					{ pinner: bishop, pinned: nails[0] }
+				);
+				tempPinnedPieces.push(
+					{ pinner: bishop, pinned: nails[0] }
+				);
+				nails[0].setAttribute('data-pinned', true);
+				nails[0].setAttribute('data-pinner', bishop);
+				alert(nails[0].dataset.side + ' ' + nails[0].dataset.name + ' IS PINNED');
+				console.log('pinnedPieces -->');  console.log(pinnedPieces);
+			}
+		}
+	}
+	return false; // bishop cannot attack checkSpaceId
+}
+*/
