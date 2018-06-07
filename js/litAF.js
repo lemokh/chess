@@ -1,5 +1,5 @@
 var pieces, knightCells, pinningPiece, pawnBlocksKingAttacker, pathToCheck, idToBlock, kingAttackers= [], greyLitPieces = [], defenders = [], pawnDefenders = [], enPassantCell = '', orangeTakenBoxIdCounter = -16, blueTakenBoxIdCounter = -1, enPassanting = false,
-heroics = [], anId, kingStuck, kingMovesOutOfCheck = [], possiblePinnedMoves, kingMovesOutOfCheck, newPieceClicked, pinnerPiece, tempPinnedPieces, greyPieceToMove, pathPiece, activePieceIsPinned, litSpace, blocker, mate = false, canCheck, canEatKingAttacker = [], greyLitDivs, canBlockPathOfCheck = [], gameOver, kingSlayer, checkPath, emptySpaces, knightLight, bishopPathId, rookPathId, blueKingFirstMove, blueRook1FirstMove, activeKing, blueRook2FirstMove,  orangeKingFirstMove, orangeRook1FirstMove, orangeRook2FirstMove, castleIds = [], noCastle, kingAble, pieceToMove, goToDiv, enPassantDiv, prevGoToDiv, enPassantGoToDiv, pawnJumpDiv, enPassantables2 = [], enPassantedPawn, knightLight, takenOrangeBox, takenBlueBox, gameEnds, tempSide, movedPiece, mainLitDiv, litIds, unLitDivs, img, index1, index2, tempPiece, moves, takenBox, activeCells, openAndOpponentHeldKingSpaces, kingSpacesUnderAttack, orangeKingSpacesUnderAttack, orangelessKingSpaces, orangelessKingSpaces, blueKingSpaces, bluelessKingSpaces, orangeKingSpacesUnderAttack, vacantKingSpaces, whiteKing, blackKing, knightMoves, bishopMoves, bishopX, bishopY, rookMoves, kingSpaces, kingOpenSpaces, occupiedKingSpaces, defenders, pinnedPieces, pathOfCheck = [], nails, whites, blacks;
+heroics = [], anId, kingStuck, kingMovesOutOfCheck = [], possiblePinnedMoves, kingMovesOutOfCheck, newPieceClicked, pinnerPiece, tempPinnedPieces, greyPieceToMove, pathPiece, activePieceIsPinned, litSpace, blocker, mate = false, passiveSideCoversId, canEatKingAttacker = [], greyLitDivs, canBlockPathOfCheck = [], gameOver, kingSlayer, checkPath, emptySpaces, knightLight, bishopPathId, rookPathId, blueKingFirstMove, blueRook1FirstMove, activeKing, blueRook2FirstMove,  orangeKingFirstMove, orangeRook1FirstMove, orangeRook2FirstMove, castleIds = [], noCastle, kingAble, pieceToMove, goToDiv, enPassantDiv, prevGoToDiv, enPassantGoToDiv, pawnJumpDiv, enPassantables2 = [], enPassantedPawn, knightLight, takenOrangeBox, takenBlueBox, gameEnds, tempSide, movedPiece, mainLitDiv, litIds, unLitDivs, img, index1, index2, tempPiece, moves, takenBox, activeCells, openAndOpponentHeldKingSpaces, kingSpacesUnderAttack, orangeKingSpacesUnderAttack, orangelessKingSpaces, orangelessKingSpaces, blueKingSpaces, bluelessKingSpaces, orangeKingSpacesUnderAttack, vacantKingSpaces, whiteKing, blackKing, knightMoves, bishopMoves, bishopX, bishopY, rookMoves, kingSpaces, kingOpenSpaces, occupiedKingSpaces, defenders, pinnedPieces, pathOfCheck = [], nails, whites, blacks;
 
 const board = document.getElementById('board');
 
@@ -233,13 +233,14 @@ function possibleMoves() {
 function movePiece(e) {
 
 	console.log('ENTERS movePiece(e)');
+
 	console.log('removes click-listener from litIds & pieceToMove');
 
-	// removes click-listeners from pieceToMove
-	document.getElementById( pieceToMove.id ).removeEventListener( 'click', wherePieceCanMove );
+	// removes click-listener from pieceToMove
+	pieceToMove.removeEventListener( 'click', wherePieceCanMove );
 
 	// un-lightens mainDiv
-	document.getElementById( pieceToMove.id ).classList.remove( 'mainLit' );
+	pieceToMove.classList.remove( 'mainLit' );
 
 	removeLitDivHandler(movePiece);
 
@@ -264,17 +265,16 @@ function movePiece(e) {
 	}
 	console.log('un-lightens mainDiv & litIds');
 	
-	goToDiv = e.target;
+	goToDiv = e.target; // not necessary...
 	
 	console.log('pieceToMove -->');  console.log(pieceToMove);
 	console.log('goToDiv -->');      console.log(goToDiv);
 	console.log('pawnJumpDiv -->');  console.log(pawnJumpDiv);
 	
-	// If goToDiv EMPTY
+	// covers enPassant pawn attack
 	if (goToDiv.dataset.side === 'empty') {
 		console.log('goToDiv IS empty');            
 
-		// covers anySide enPassant pawn attack
 		if (pieceToMove.dataset.name === 'pawn') {
 			if (enPassanting) {
 				if (goToDiv === enPassantDiv) {
@@ -308,8 +308,8 @@ function movePiece(e) {
 			}
 		}
 	}
-	else { // SINCE goToDiv NOT EMPTY, pieceToMove eats goToDiv
-		console.log('goToDiv NOT empty');
+	else { // covers pieceToMove eats goToDiv
+		console.log('since goToDiv is NOT empty, pieceToMove eats goToDiv');
 		eat(goToDiv);
 	}
 	// covers pawnToMove moving one or two empty spaces
@@ -578,8 +578,13 @@ function toggleSides() {
 }
 
 function endOfGame() {
-	document.getElementById( 'board' ).classList.add( 'noClick' );
+	// document.getElementById( 'board' ).classList.add( 'noClick' );
 	
+	// activeSide.forEach(activePiece => {
+	// 	activePiece.removeEventListener('click', wherePieceCanMove);
+	// });
+
+
 	alert(activeKing.dataset.side + ' KING CHECKMATED!');
 	console.log(activeKing.dataset.side + ' KING CHECKMATED!');
 	console.log('END OF GAME');
@@ -802,7 +807,7 @@ function kingLit() {
 	// highlights all possible moves for activeKing
 	console.log('ENTERS kingLit()');
 
-	canCheck = false;
+	passiveSideCoversId = false;
 	kingSpacesUnderAttack = [];
 
 	// covers king castling
@@ -913,18 +918,18 @@ function kingLit() {
 
 		// populates litIds with safe kingSpaces
 		openAndOpponentHeldKingSpaces.forEach(id => {
-			canCheck = false;
+			passiveSideCoversId = false;
 			// for each oAOHKS & each passivePiece
 			for (let i = 0; i < passiveSide.length; i++) {
-				// if passivePiece can check the oAOHKS...(kingSpace devoid of activePiece)
+				// if a passivePiece can check that oAOHKS...(kingSpace id devoid of activePiece)
 				if (checkingSpace(passiveSide[i], id)) {
 					console.log(passiveSide[i].dataset.side + ' ' + passiveSide[i].dataset.name + ' can attack ' + id);
 
-					canCheck = true;
+					passiveSideCoversId = true;
 					break;
 				}
 			}
-			if (!canCheck) { litIds.push(id); }
+			if (!passiveSideCoversId) { litIds.push(id); }
 		});
 		console.log('litIds -->');  console.log(litIds);
 	}
@@ -1290,6 +1295,7 @@ function lit() {
 	litIds = [];
 	kingAttackers = []; // passivePieces that check activeKing
 	greyPieceToMove = undefined;
+	newPieceClicked = undefined;
 
 	canBlockPathOfCheck = [];
 	canEatKingAttacker = [];

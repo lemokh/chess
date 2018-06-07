@@ -112,7 +112,8 @@ function lit(activeSide, passiveSide) {
     pieces = [...oranges, ...blues];
 	litIds = [];
 	kingAttackers = []; // passivePieces that check activeKing
-	greyPieceToMove = undefined;
+    greyPieceToMove = undefined;
+    newPieceClicked = undefined;
 
     canBlockPathOfCheck = [];
 	canEatKingAttacker = [];
@@ -367,10 +368,10 @@ function lit(activeSide, passiveSide) {
 		console.log('removes click-listener from litIds & pieceToMove');
 
         // removes click-listeners from pieceToMove
-		document.getElementById( pieceToMove.id ).removeEventListener( 'click', wherePieceCanMove );
+		pieceToMove.removeEventListener( 'click', wherePieceCanMove );
 
         // un-lightens mainDiv
-		document.getElementById( pieceToMove.id ).classList.remove( 'mainLit' );
+		pieceToMove.classList.remove( 'mainLit' );
 
         removeLitDivHandler(movePiece);
 
@@ -401,11 +402,10 @@ function lit(activeSide, passiveSide) {
 		console.log('goToDiv -->');      console.log(goToDiv);
 		console.log('pawnJumpDiv -->');  console.log(pawnJumpDiv);
         
-        // If goToDiv EMPTY
+        // covers enPassant pawn attack
 		if (goToDiv.dataset.side === 'empty') {
 			console.log('goToDiv IS empty');            
 
-            // covers anySide enPassant pawn attack
 			if (pieceToMove.dataset.name === 'pawn') {
 				if (enPassanting) {
 					if (goToDiv === enPassantDiv) {
@@ -439,8 +439,8 @@ function lit(activeSide, passiveSide) {
 				}
 			}
 		}
-		else { // SINCE goToDiv NOT EMPTY, pieceToMove eats goToDiv
-			console.log('goToDiv NOT empty');
+		else { // covers pieceToMove eats goToDiv
+			console.log('goToDiv NOT empty --> pieceToMove eats goToDiv');
             eat(goToDiv);
 		}
 		// covers pawnToMove moving one or two empty spaces
@@ -711,7 +711,7 @@ function lit(activeSide, passiveSide) {
     }
     
 	function endOfGame() {
-		document.getElementById( 'board' ).classList.add( 'noClick' );
+		// document.getElementById( 'board' ).classList.add( 'noClick' );
         
         alert(activeKing.dataset.side + ' KING CHECKMATED!');
 		console.log(activeKing.dataset.side + ' KING CHECKMATED!');
