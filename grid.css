@@ -108,11 +108,11 @@ game {
     background-color: rgba(255, 0, 0, 0.2);
   }
   
-  .greyLit {
+  .preventMateLit {
     background-color: rgba(224, 168, 226, 0.2);
   }
   
-  .noClick {
+  /* .noClick {
     pointer-events: none;
-  }
+  } */
   
