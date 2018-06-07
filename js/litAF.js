@@ -590,7 +590,6 @@ function endOfGame() {
 	console.log('END OF GAME');
 }
 
-
 function pawnLit() {
 
 	console.log('enters pawnLit()');
@@ -687,6 +686,19 @@ function pawnLit() {
 	}
 } // fills litIds with ids where pawn can move
 
+function knightSpaces(knight) { 
+	return [
+	(+knight.id[0] + 1) + (+knight.id[1] + 2).toString(),
+	(+knight.id[0] + 1) +  (knight.id[1] - 2).toString(),
+		(knight.id[0] - 1) + (+knight.id[1] + 2).toString(),
+		(knight.id[0] - 1) +  (knight.id[1] - 2).toString(),
+	(+knight.id[0] + 2) + (+knight.id[1] + 1).toString(),
+	(+knight.id[0] + 2) +  (knight.id[1] - 1).toString(),
+		(knight.id[0] - 2) + (+knight.id[1] + 1).toString(),
+		(knight.id[0] - 2) +  (knight.id[1] - 1).toString()
+	];
+}
+
 function knightLit() {
 
 	function onBoardNotActiveSideIds(id) {
@@ -702,16 +714,7 @@ function knightLit() {
 		}
 	}
 
-	litIds = [
-		(+pieceToMove.id[0] + 1) + (+pieceToMove.id[1] + 2).toString(),
-		(+pieceToMove.id[0] + 1) +  (pieceToMove.id[1] - 2).toString(),
-			(pieceToMove.id[0] - 1) + (+pieceToMove.id[1] + 2).toString(),
-			(pieceToMove.id[0] - 1) +  (pieceToMove.id[1] - 2).toString(),
-		(+pieceToMove.id[0] + 2) + (+pieceToMove.id[1] + 1).toString(),
-		(+pieceToMove.id[0] + 2) +  (pieceToMove.id[1] - 1).toString(),
-			(pieceToMove.id[0] - 2) + (+pieceToMove.id[1] + 1).toString(),
-			(pieceToMove.id[0] - 2) +  (pieceToMove.id[1] - 1).toString()
-	].filter(onBoardNotActiveSideIds);
+	litIds = knightSpaces(pieceToMove).filter(onBoardNotActiveSideIds);
 } // fills litIds with ids where knight can move
 
 function bishopLit() {
@@ -1005,59 +1008,58 @@ function checkingSpace(somePiece, checkSpaceId) {
 
 	// returns true/false if knight can attack checkSpaceId
 	function knightAttacks(knight) {
-		// to hold two spaces where knight might checkSpaceId
-		knightMoves = [];
+
+		// console.log(knightSpaces(knight).filter(checkSpaceId));
+		// let attack = knightSpaces(knight).filter(checkSpaceId);
+		// if (attack.length) { return true; }
+
 		
 		// if knight is left of checkSpaceId
 		if (knight.id[0] < checkSpaceId[0]) {
 			// and if knight is above checkSpaceId
 			if (knight.id[1] < checkSpaceId[1]) {
 
-				knightMoves.push(
-					(+knight.id[0] + 1) +
-					(+knight.id[1] + 2).toString()
-				);
-				// console.log('knightMoves -->'); console.log(knightMoves);
-				knightMoves.push(
-					(+knight.id[0] + 2) +
-					(+knight.id[1] + 1).toString()
-				); 
-				// console.log('knightMoves -->'); console.log(knightMoves);
+				if (checkSpaceId === (+knight.id[0] + 1) + (knight.id[1] + 2).toString() ) {
+					return true;
+				}
+
+				if (checkSpaceId === (+knight.id[0] + 2) + (+knight.id[1] + 1).toString() ) {
+					return true;
+				}
 			}
 			else { // since knight is left of & below checkSpaceId
-				knightMoves.push(
-					(+knight.id[0] + 1) +
-					(knight.id[1] - 2).toString()
-				);
-				knightMoves.push(
-					(+knight.id[0] + 2) +
-					(knight.id[1] - 1).toString()
-				);
+				
+				if (checkSpaceId === (+knight.id[0] + 1) + (knight.id[1] - 2).toString() ) {
+					return true;
+				}
+
+				if (checkSpaceId === (+knight.id[0] + 2) + (+knight.id[1] + 1).toString() ) {
+					return true;
+				}
 			}
 		}
 		else { // since knight is right of & above checkSpaceId
 			if (knight.id[1] < checkSpaceId[1]) {
-				knightMoves.push(
-					(knight.id[0] - 1) +
-					(+knight.id[1] + 2).toString()
-				);
-				knightMoves.push(
-					(knight.id[0] - 2) +
-					(+knight.id[1] + 1).toString()
-				);
+				
+				if (checkSpaceId === (knight.id[0] - 1) + (+knight.id[1] + 2).toString() ) {
+					return true;
+				}
+				
+				if (checkSpaceId === (knight.id[0] - 2) + (+knight.id[1] + 1).toString() ) {
+					return true;
+				}
 			}
 			else { // since knight is right of & below checkSpaceId
-				knightMoves.push(
-					(knight.id[0] - 1) +
-					(knight.id[1] - 2).toString()
-				);
-				knightMoves.push(
-					(knight.id[0] - 2) +
-					(knight.id[1] - 1).toString()
-				);
+				if (checkSpaceId === (knight.id[0] - 1) + (knight.id[1] - 2).toString() ) {
+					return true;
+				}
+			
+				if (checkSpaceId === (knight.id[0] - 2) + (knight.id[1] - 1).toString() ) {
+					return true;
+				}
 			}
 		}
-		return knightMoves.includes(checkSpaceId); 
+		
 	}
 
 	// returns true/false if bishop can attack checkSpaceId
