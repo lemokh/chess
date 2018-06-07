@@ -15,112 +15,18 @@ var passiveSide = oranges;
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
-
-/*
-
-const boardIds = [
-	'00', '01', '02', '03', '04', '05', '06', '07',
-	'10', '11', '12', '13', '14', '15', '16', '17',
-	'20', '21', '22', '23', '24', '25', '26', '27',
-	'30', '31', '32', '33', '34', '35', '36', '37',
-	'40', '41', '42', '43', '44', '45', '46', '47',
-	'50', '51', '52', '53', '54', '55', '56', '57',
-	'60', '61', '62', '63', '64', '65', '66', '67',
-	'70', '71', '72', '73', '74', '75', '76', '77'
-];
-
-//===============================
-function openSpaces(arr1, arr2) {
-	return arr1.filter(cell => {
-		return !arr2.some(piece => {
-			return cell === piece.id;
-		});
-	});
-}
-
-//===========================================
-function pinnedPieceAttack(somePinnedPiece) {
-    // --------------------------------------
-    let pinCounter = 0;
-    // ----------------------------------------------
-    // counts how many pieces are pinning activePiece
-    pinnedPieces.forEach(pinnedPiece => {
-        // ------------------------------------------------------------
-        if (pinnedPiece.id === somePinnedPiece.id) { pinCounter += 1; }
-    });
-    console.log(pinCounter);
-    // ---------------------
-    if (pinCounter === 1) {
-        // ------------------------------------------------------------------
-        pinningPiece = pinnerPieces[ pinnedPieces.indexOf(somePinnedPiece) ];
-        // ------------------------------------------------------------------
-        // if somePinnedPiece can eat its pinningPiece
-        if (checkingSpace(somePinnedPiece, pinningPiece.id)) {
-            // -----------------------------------------------
-            cleanUpAfterFirstClick();
-            // ---------------------------
-            pieceToMove = somePinnedPiece;
-            // -----------------------------------======================
-            pieceToMove.addEventListener('click', function pinnedLit() {
-                // -------------------------------======================
-                pieceToMove.classList.add('mainLit');
-                // ------------------------------
-                pinningPiece.classList.add('lit');
-                // ------------------------------------=============================
-                pinningPiece.addEventListener('click', function pinnedPieceEats() {
-                    // --------------------------------=============================
-                    pieceToMove.removeEventListener('click', pinnedLit);
-                    // -------------------------------------------------
-                    pieceToMove.classList.remove('mainLit');
-                    // -------------------------------------
-                    pinningPiece.classList.remove('lit');
-                    // ----------------------------------
-                    pinningPiece.removeEventListener('click', pinnedPieceEats);
-                    // --------------------------------------------------------
-                    eat(pinningPiece);
-                    // ---------------------------------
-                    swapSide(pieceToMove, pinningPiece);
-                    // ---------------------------------
-                    toggleSides();
-                });
-            });
-        }
-    }
-}
-
-//================================
-function pinnedEatsPinner(obj) {
-    // ------------------------------------
-    obj.pinned.classList.remove('mainLit');
-    // ------------------------------------
-    obj.pinner.classList.remove('lit');
-    // -------------------------------------------------------
-    obj.pinner.removeEventListener('click', pinnedEatsPinner);
-    // -------------------------------------------------------
-    eat(obj.pinner);
-    // -----------------------------
-    swapSide(pieceToMove, obj.pinner);
-    // -----------------------------
-    toggleSides();
-}
-
-*/
-
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
-
+ 
 function inCheck() { // isMate()
-	// since activeKing is in check...
-	// --------------------------------------------------------------------------------
+
 	console.log('ENTERS isMate()');  console.log('litIds -->');  console.log(litIds);
-	// --------------------------------------------------------------------------------
+
 	checkPath = pathOfCheck;
-	// ----------------------
 	pieceToMove = activeKing;
 
-	// populates litIds where activeKing can move
-	kingLit();
+	kingLit(); // fills litIds with ids where activeKing can move
 
 	// if multiple kingAttackers, only king can prevent checkmate...
 	if (kingAttackers.length > 1) {
@@ -133,11 +39,8 @@ function inCheck() { // isMate()
 	else { // since only one kingAttacker
 		// if king can move, handles moving activeKing
 		if (litIds.length) {
-			// ----------------------------
 			greyLitPieces.push(activeKing);
-			// ---------------------------------
 			activeKing.classList.add('greyLit');
-			// ---------------------------------------------------
 			activeKing.addEventListener('click', selectGreyPiece);
 		}
 		else { kingStuck = true; }
@@ -150,14 +53,10 @@ function inCheck() { // isMate()
 			if (activePiece.dataset.pinned === 'false') {
 				// if not activeKing
 				if (activePiece.dataset.name !== 'king') {
-					// ------------------------------------------------
 					pieceToMove = activePiece; // IMPORTANT!
-					// -------------------------------------
 					// if activePiece checks kingAttacker
 					if (checkingSpace(activePiece, kingAttackers[0].id)) {
-						// ---------------------------------------------------------
 						console.log(activePiece.id+' can eat '+kingAttackers[0].id);
-						// ---------------------------------------------------------
 						canEatKingAttacker.push(activePiece);
 					}
 					//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
@@ -181,7 +80,6 @@ function inCheck() { // isMate()
 				console.log(activePiece.id+' is pinned');
 				// if activePiece can eat kingAttacker
 				if (checkingSpace(activePiece, kingAttackers[0].id)) {
-					// -----------------------------------------------
 					canEatKingAttacker.push(activePiece);
 					console.log(activePiece.id+' can eat '+kingAttackers[0].id);
 				}
@@ -195,14 +93,12 @@ function inCheck() { // isMate()
 		greyLitPieces = [...canEatKingAttacker];
 		
 		console.log('greyLitPieces');  console.log(greyLitPieces);
-		// -------------------------------------------------------
 		
 		canBlockPathOfCheck.forEach(obj => {
 			greyLitPieces.push(obj.pathBlocker);
 		});
 		
 		console.log('greyLitPieces');  console.log(greyLitPieces);
-		// -------------------------------------------------------
 		
 		if (!greyLitPieces.length) {
 			if (kingStuck) {
@@ -211,16 +107,11 @@ function inCheck() { // isMate()
 			}
 
 		}
-		// ----------------------------------------
 		else { // since able to prevent check mate
-			// ------------------------------------
 			console.log('since only one kingAttacker and at least one greyLitPiece, no check mate');
-				// ---------------------------------------------------------------------------------
 				// lightens & click-listens to each greyLitPiece
 				greyLitPieces.forEach(greyLitPiece => {
-					// -----------------------------------
 					greyLitPiece.classList.add('greyLit');
-					// -----------------------------------------------------
 					greyLitPiece.addEventListener('click', selectGreyPiece);
 				});
 		}
@@ -232,8 +123,8 @@ function selectGreyPiece(e) {
 	if (greyPieceToMove !== undefined) {
 		greyPieceToMove.classList.remove('mainLit');
 	}
-	// resets each litDiv
-	removeLitDivHandler(moveGreyPiece);
+
+	removeLitDivHandler(moveGreyPiece); // resets each litDiv
 
 	if (litIds.length) {
 		litIds.forEach( id => {
@@ -267,9 +158,10 @@ function selectGreyPiece(e) {
 }
 
 function moveGreyPiece(e) {
-	// resets greyPieceToMove
+	
 	console.log('ENTERS moveGreyPiece()');
-
+	
+	// resets greyPieceToMove
 	greyPieceToMove.classList.remove('mainLt');
 	greyPieceToMove.classList.remove('greyLit');
 
@@ -788,7 +680,7 @@ function pawnLit() {
 			}
 		}
 	}
-}
+} // fills litIds with ids where pawn can move
 
 function knightLit() {
 
@@ -1390,6 +1282,7 @@ function checkingSpace(somePiece, checkSpaceId) {
 		case 'king':    return kingAttacks(somePiece);
 	}
 } // returns true/false if somePiece can attack checkSpaceId
+
 
 function lit() {
 
