@@ -1100,8 +1100,8 @@ function checkingSpace(somePiece, checkSpaceId) {
 			if (bishop.id[1] < checkSpaceId[1]) {
 				console.log('southEast diagonal');
 				// if bishop's path aligns with checkSpaceId
-				if ( (+checkSpaceId[0] - +bishop.id[0])
-				=== (+checkSpaceId[1] - +bishop.id[1]) ) {
+				if (checkSpaceId[0] - bishop.id[0]
+				=== checkSpaceId[1] - bishop.id[1]) {
 					console.log('southEast aligns checkSpaceId');
 					// collects bishop's attack path to checkSpaceId
 					while ( bishopX < (+checkSpaceId[0] - 1) ) {
@@ -1115,8 +1115,8 @@ function checkingSpace(somePiece, checkSpaceId) {
 			else { // since bishop attacks in a northEast diagonal
 				console.log('northEast diagonal');
 				// if bishop aligns with checkSpaceId
-				if ( (+checkSpaceId[0] - +bishop.id[0])
-				=== (+bishop.id[1] - +checkSpaceId[1]) ) {
+				if ( checkSpaceId[0] - bishop.id[0]
+				=== bishop.id[1] - checkSpaceId[1]) {
 					console.log('northEast aligns checkSpaceId');
 					// collects bishop's attack path to checkSpaceId
 					while ( bishopX < (+checkSpaceId[0] - 1) ) {
@@ -1133,8 +1133,8 @@ function checkingSpace(somePiece, checkSpaceId) {
 			if (bishop.id[1] < checkSpaceId[1]) {
 				console.log('southWest diagonal');
 				// if bishop aligns with checkSpaceId
-				if ( (+bishop.id[0] - +checkSpaceId[0])
-				=== (+checkSpaceId[1] - +bishop.id[1]) ) {
+				if ( bishop.id[0] - checkSpaceId[0]
+				=== checkSpaceId[1] - bishop.id[1]) {
 					console.log('southWest aligns checkSpaceId');
 					// collects bishop's attack path to checkSpaceId
 					while ( bishopX > (+checkSpaceId[0] + 1) ) {
@@ -1148,8 +1148,8 @@ function checkingSpace(somePiece, checkSpaceId) {
 			else { // since bishop attacks in a northWest diagonal
 				console.log('northWest diagonal');
 				// if bishop aligns with checkSpaceId
-				if ( (+bishop.id[0] - +checkSpaceId[0])
-				=== (+bishop.id[1] - +checkSpaceId[1]) ) {
+				if ( bishop.id[0] - checkSpaceId[0]
+				=== bishop.id[1] - checkSpaceId[1]) {
 					console.log('northWest aligns checkSpaceId');
 					// collects bishop's attack path to checkSpaceId
 					while ( bishopX > (+checkSpaceId[0] + 1) ) {
