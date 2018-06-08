@@ -946,7 +946,6 @@ function kingLit() {
 function checkingSpace(somePiece, checkSpaceId) {
 	
 	pinnedPieces = [];
-	pathOfCheck = [];
 
 	function pawnAttacks(pawn) {
 
@@ -1078,6 +1077,9 @@ function checkingSpace(somePiece, checkSpaceId) {
 		// if true, sees if bishop checks activeKing
 		// if false, sees if bishop pins an activePiece
 		
+		// bishop & checkSpaceId cannot have the same id
+		if (bishop.id === checkSpaceId) { return false; }
+
 		// checks for clear path between bishop.id & checkSpaceId
 		bishopX = +bishop.id[0];
 		bishopY = +bishop.id[1];
@@ -1091,7 +1093,8 @@ function checkingSpace(somePiece, checkSpaceId) {
 
 		// if bishop can attack checkSpaceId
 		if (litIds.includes(checkSpaceId)) {
-			// if bishop attacks king
+			// if bishop checks king,
+			// pushes bishop & path to kingAttackers
 			if (checkSpaceId === activeKing.id) {
 				// collects ids between bishop & checkSpaceId
 				if (bishop.id[0] < checkSpaceId[0]) {
@@ -1128,18 +1131,15 @@ function checkingSpace(somePiece, checkSpaceId) {
 						}
 					}
 				}
+				// now bishopMoves contains 
 				console.log('bishopMoves -->');  console.log(bishopMoves);
 				
-				kingAttackers.push(
-					{ attacker: bishop, path: bishopMoves }
-				);	
+				pathOfCheck.push( ...bishopMoves );	
 			}
 			return true;
 		}
 		else { // since bishop cannot attack checkSpaceId
 			if (checkSpaceId === activeKing.id) {
-			// bishop & checkSpaceId cannot have the same id
-			// if (bishop.id === checkSpaceId) { return false; }
 
 				// (LEFT BOARD SIDE) if bishop.id is left of checkSpaceId
 				if (bishop.id[0] < checkSpaceId[0]) {
@@ -1372,7 +1372,8 @@ function lit() {
 	kingAttackers = []; // passivePieces that check activeKing
 	greyPieceToMove = undefined;
 	newPieceClicked = undefined;
-
+	
+	pathOfCheck = [];
 	canBlockPathOfCheck = [];
 	canEatKingAttacker = [];
 	pawnBlocksKingAttacker = false;
