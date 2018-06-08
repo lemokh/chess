@@ -1091,17 +1091,12 @@ function checkingSpace(somePiece, checkSpaceId) {
 
 		// if bishop can attack checkSpaceId
 		if (litIds.includes(checkSpaceId)) {
-			
+			// if bishop attacks king
 			if (checkSpaceId === activeKing.id) {
-				// since bishop attacks king
-
-				bishopX = +bishop.id[0];
-				bishopY = +bishop.id[1];
-				
-				// collect ids between bishop & checkSpaceId
+				// collects ids between bishop & checkSpaceId
 				if (bishop.id[0] < checkSpaceId[0]) {
 					if (bishop.id[1] < checkSpaceId[1]) {
-						// bishop attacks southEastWard diagonal
+						// bishop attacks southEast diagonal
 						while ( bishopX < checkSpaceId[0] ) {
 							bishopX += 1;
 							bishopY += 1;
