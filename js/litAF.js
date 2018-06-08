@@ -1,5 +1,5 @@
 var pieces, knightCells, pinningPiece, rubbishIds, pawnBlocksKingAttacker, pathToCheck, idToBlock, kingAttackers= [], greyLitPieces = [], defenders = [], pawnDefenders = [], enPassantCell = '', orangeTakenBoxIdCounter = -16, blueTakenBoxIdCounter = -1, enPassanting = false,
-heroics = [], anId, kingStuck, preventMateIds = [], kingMovesOutOfCheck = [], possiblePinnedMoves, kingMovesOutOfCheck, newPieceClicked, pinnerPiece, tempPinnedPieces, greyPieceToMove, pathPiece, activePieceIsPinned, litSpace, blocker, mate = false, passiveSideCoversId, canEatKingAttacker = [], greyLitDivs, canBlockPathOfCheck = [], gameOver, kingSlayer, checkPath, emptySpaces, knightLight, bishopPathId, rookPathId, blueKingFirstMove, blueRook1FirstMove, activeKing, blueRook2FirstMove,  orangeKingFirstMove, orangeRook1FirstMove, orangeRook2FirstMove, castleIds = [], noCastle, kingAble, pieceToMove, goToDiv, enPassantDiv, prevGoToDiv, enPassantGoToDiv, pawnJumpDiv, enPassantables2 = [], enPassantedPawn, knightLight, takenOrangeBox, takenBlueBox, gameEnds, tempSide, movedPiece, mainLitDiv, litIds, unLitDivs, img, index1, index2, tempPiece, moves, takenBox, activeCells, openAndOpponentHeldKingSpaces, kingSpacesUnderAttack, orangeKingSpacesUnderAttack, orangelessKingSpaces, orangelessKingSpaces, blueKingSpaces, bluelessKingSpaces, orangeKingSpacesUnderAttack, vacantKingSpaces, whiteKing, blackKing, knightMoves, bishopMoves, bishopX, bishopY, rookMoves, kingSpaces, kingOpenSpaces, occupiedKingSpaces, defenders, pinnedPieces, pathOfCheck = [], nails, whites, blacks;
+heroics = [], anId, pins, kingStuck, preventMateIds = [], kingMovesOutOfCheck = [], possiblePinnedMoves, kingMovesOutOfCheck, newPieceClicked, pinnerPiece, tempPinnedPieces, greyPieceToMove, pathPiece, activePieceIsPinned, litSpace, blocker, mate = false, passiveSideCoversId, canEatKingAttacker = [], greyLitDivs, canBlockPathOfCheck = [], gameOver, kingSlayer, checkPath, emptySpaces, knightLight, bishopPathId, rookPathId, blueKingFirstMove, blueRook1FirstMove, activeKing, blueRook2FirstMove,  orangeKingFirstMove, orangeRook1FirstMove, orangeRook2FirstMove, castleIds = [], noCastle, kingAble, pieceToMove, goToDiv, enPassantDiv, prevGoToDiv, enPassantGoToDiv, pawnJumpDiv, enPassantables2 = [], enPassantedPawn, knightLight, takenOrangeBox, takenBlueBox, gameEnds, tempSide, movedPiece, mainLitDiv, litIds, unLitDivs, img, index1, index2, tempPiece, moves, takenBox, activeCells, openAndOpponentHeldKingSpaces, kingSpacesUnderAttack, orangeKingSpacesUnderAttack, orangelessKingSpaces, orangelessKingSpaces, blueKingSpaces, bluelessKingSpaces, orangeKingSpacesUnderAttack, vacantKingSpaces, whiteKing, blackKing, knightMoves, bishopMoves, bishopX, bishopY, rookMoves, kingSpaces, kingOpenSpaces, occupiedKingSpaces, defenders, pinnedPieces, pathOfCheck = [], nails, whites, blacks;
 
 const board = document.getElementById('board');
 
@@ -1098,11 +1098,11 @@ function checkingSpace(somePiece, checkSpaceId) {
 		if (bishop.id[0] < checkSpaceId[0]) {
 			// bishop attacks in a southEast diagonal
 			if (bishop.id[1] < checkSpaceId[1]) {
-				console.log('southEast diagonal');
+				// console.log('southEast diagonal');
 				// if bishop's path aligns with checkSpaceId
 				if (checkSpaceId[0] - bishop.id[0]
 				=== checkSpaceId[1] - bishop.id[1]) {
-					console.log('southEast aligns checkSpaceId');
+					// console.log('southEast aligns checkSpaceId');
 					// collects bishop's attack path to checkSpaceId
 					while ( bishopX < (+checkSpaceId[0] - 1) ) {
 						bishopX += 1;
@@ -1113,11 +1113,11 @@ function checkingSpace(somePiece, checkSpaceId) {
 				else { return false; } // bishop can't checkSpaceId
 			}
 			else { // since bishop attacks in a northEast diagonal
-				console.log('northEast diagonal');
+				// console.log('northEast diagonal');
 				// if bishop aligns with checkSpaceId
 				if ( checkSpaceId[0] - bishop.id[0]
 				=== bishop.id[1] - checkSpaceId[1]) {
-					console.log('northEast aligns checkSpaceId');
+					// console.log('northEast aligns checkSpaceId');
 					// collects bishop's attack path to checkSpaceId
 					while ( bishopX < (+checkSpaceId[0] - 1) ) {
 						bishopX += 1;
@@ -1131,11 +1131,11 @@ function checkingSpace(somePiece, checkSpaceId) {
 		else { // BISHOPMOVES NOT PUSHING HERE
 			// since bishop attacks in a southWest diagonal
 			if (bishop.id[1] < checkSpaceId[1]) {
-				console.log('southWest diagonal');
+				// console.log('southWest diagonal');
 				// if bishop aligns with checkSpaceId
 				if ( bishop.id[0] - checkSpaceId[0]
 				=== checkSpaceId[1] - bishop.id[1]) {
-					console.log('southWest aligns checkSpaceId');
+					// console.log('southWest aligns checkSpaceId');
 					// collects bishop's attack path to checkSpaceId
 					while ( bishopX > (+checkSpaceId[0] + 1) ) {
 						bishopX -= 1;
@@ -1146,11 +1146,11 @@ function checkingSpace(somePiece, checkSpaceId) {
 				else { return false; } // bishop can't checkSpaceId
 			}
 			else { // since bishop attacks in a northWest diagonal
-				console.log('northWest diagonal');
+				// console.log('northWest diagonal');
 				// if bishop aligns with checkSpaceId
 				if ( bishop.id[0] - checkSpaceId[0]
 				=== bishop.id[1] - checkSpaceId[1]) {
-					console.log('northWest aligns checkSpaceId');
+					// console.log('northWest aligns checkSpaceId');
 					// collects bishop's attack path to checkSpaceId
 					while ( bishopX > (+checkSpaceId[0] + 1) ) {
 						bishopX -= 1;
@@ -1212,12 +1212,12 @@ function checkingSpace(somePiece, checkSpaceId) {
 		if (rook.id[0] === checkSpaceId[0]) {
 			// if rook below checkSpaceId, rook.y++
 			if (rook.id[1] < checkSpaceId[1]) {
-				for (let i = (+rook.id[1] + 1); i < checkSpaceId[1]; i++) {
+				for (let i = +rook.id[1] + 1; i < +checkSpaceId[1]; i++) {
 					rookMoves.push( checkSpaceId[0] + i ); // an id
 				}
 			}
 			else { // since rook is above checkSpaceId, rook.id[1]--
-				for (let i = (rook.id[1] - 1); i > checkSpaceId[1]; i--) {
+				for (let i = +rook.id[1] - 1; i > +checkSpaceId[1]; i--) {
 					rookMoves.push( checkSpaceId[0] + i ); // an id
 				}
 			}
@@ -1227,12 +1227,12 @@ function checkingSpace(somePiece, checkSpaceId) {
 		else if (rook.id[1] === checkSpaceId[1]) {
 			// if rook left of checkSpaceId, rook.id[0]++
 			if (rook.id[0] < checkSpaceId[0]) {
-				for (let i = (+rook.id[0] + 1); i < checkSpaceId[0]; i++) {
+				for (let i = +rook.id[0] + 1; i < +checkSpaceId[0]; i++) {
 					rookMoves.push( i + checkSpaceId[1] ); // an id
 				}
 			}
 			else { // since rook right of checkSpaceId, rook.id[0]--
-				for (let i = (rook.id[0] - 1); i > checkSpaceId[0]; i--) {
+				for (let i = +rook.id[0] - 1; i > +checkSpaceId[0]; i--) {
 					rookMoves.push( i + checkSpaceId[1] ); // an id
 				}
 			}
@@ -1313,6 +1313,7 @@ function checkingSpace(somePiece, checkSpaceId) {
 					||
 					( +checkSpaceId[1] === (king.id[1] - 1) )
 				);
+
 			default: return false;
 		}
 	}
@@ -1343,8 +1344,12 @@ function lit() {
 	pawnBlocksKingAttacker = false;
 	kingStuck = false;
 	findingKingAttackers = true;
+	pins = [];
 
     // ********** META-LOGIC **********
+
+	previousPinnedPieces = board.querySelectorAll("[data-pinned='true']");
+	console.log('previousPinnedPieces -->');  console.log(previousPinnedPieces);
 
     // startsActiveClock();
     
@@ -1362,7 +1367,37 @@ function lit() {
             kingAttackers.push(passivePiece);
 			console.log('pathOfCheck -->');  console.log(pathOfCheck);
 		}
-	});  console.log('kingAttackers -->');  console.log(kingAttackers);
+	});
+
+	console.log('previousPinnedPieces -->');  console.log(previousPinnedPieces);
+	
+	if (previousPinnedPieces.length) {
+
+		pinnedPieces.forEach(obj => { pins.push(obj.pinned); });
+
+		for (let i = 0; i < previousPinnedPieces.length; i++) {
+			if (!pins.includes(previousPinnedPieces[i])) {
+				previousPinnedPieces[i].setAttribute('data-pinned', 'false');
+				previousPinnedPieces[i].setAttribute('data-pinner', 'empty');
+			}
+		}
+		
+		// previousPinnedPieces.forEach( prevPiece => {
+
+		// 	pinnedPieces.forEach(obj => {
+				
+		// 		if (obj.pinned === prevPiece) {
+
+		// 		}
+			
+		// 	});
+
+		// }
+	}
+
+	console.log('pinnedPieces -->');  console.log(pinnedPieces);
+	console.log('kingAttackers -->');  console.log(kingAttackers);
+	
 	findingKingAttackers = false;
 
     if (kingAttackers.length) { inCheck(); } // if in check
