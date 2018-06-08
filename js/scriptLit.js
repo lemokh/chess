@@ -1195,6 +1195,7 @@ function lit(activeSide, passiveSide) {
             // checks for clear path between bishop.id & checkSpaceId
             bishopMoves = []; // collects spaces bishop attacks enroute to checkSpaceId
             nails = []; // collects possible pinnedPieces
+            
             bishopX = +bishop.id[0];
             bishopY = +bishop.id[1];
 
