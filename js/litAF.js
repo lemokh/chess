@@ -34,15 +34,20 @@ function inCheck() { // isMate()
 		
 		console.log('checkPath -->');  console.log(checkPath);
 		console.log('litIds -->');  console.log(litIds);
-		
-		
 
 		// excludes checkPath id from litIds array
 		kingLitIds = litIds.filter(litId =>
 			!checkPath.some( id => litId === id )
 		);
 		
+		checkPath = checkPath.filter(id =>
+			!litIds.some( litId => id === litId )			
+		);
+		
 		litIds = kingLitIds;
+		
+		console.log('checkPath -->');  console.log(checkPath);
+		console.log('litIds -->');  console.log(litIds);
 		console.log('kingLitIds -->');  console.log(kingLitIds);
 
 		greyLitPieces.push(activeKing);
