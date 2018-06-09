@@ -213,7 +213,10 @@ function wherePieceCanMove(e) { // pieceLit(e)
 
 	pieceToMove.classList.add('mainLit');
 
-	if (pieceToMove.dataset.pinned === 'true') { pinnedPieceLit(); }
+	if (pieceToMove.dataset.pinned === 'true') { 
+		return;
+		// pinnedPieceLit(); 
+	}
 	else { possibleMoves(); }
 }
 
@@ -1011,7 +1014,7 @@ function checkingSpace(somePiece, checkSpaceId) {
 		}
 		else { // since !pawnBlocksKingAttacker
 			// sees if pawn can eat checkSpaceId
-			if (pawn.id[0] - 1 == checkSpaceId[0]
+			if (+pawn.id[0] - 1 == checkSpaceId[0]
 			|| (+pawn.id[0] + 1) == checkSpaceId[0]) {
 				// if pawn is blue
 				if (pawn.dataset.side === 'blue') {
