@@ -289,7 +289,7 @@ function movePiece(e) {
 	}
 	console.log('un-lightens mainDiv & litIds');
 	
-	goToDiv = e.target; // not necessary...
+	goToDiv = e.target; // unnecessary, use e.target instead
 	
 	console.log('pieceToMove -->');  console.log(pieceToMove);
 	console.log('goToDiv -->');      console.log(goToDiv);
@@ -300,8 +300,10 @@ function movePiece(e) {
 		console.log('goToDiv IS empty');            
 
 		if (pieceToMove.dataset.name === 'pawn') {
+			
 			if (enPassanting) {
 				if (goToDiv === enPassantDiv) {
+					console.log('enPassant pawn attack is happening');
 					eat(pawnJumpDiv);                       
 					// sets pawnJumpDiv to empty cell
 					pawnJumpDiv.setAttribute('data-name', 'empty');
@@ -575,9 +577,9 @@ function toggleSides() {
 	activeSide.forEach(activePiece => {
 		activePiece.removeEventListener('click', wherePieceCanMove);
 	});
-
+	// console.log(activeKing);
 	// toggles side & starts next move 
-	if (activeKing.dataset.side === 'blue') {
+	if (activeSide[0].dataset.side === 'blue') {
 		// toggleClocks();
 		console.log('toggles activeSide to orange');
 		
