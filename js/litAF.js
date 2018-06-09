@@ -19,7 +19,7 @@ var passiveSide = oranges;
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
  
-function inCheck() { // isMate()
+function inCheck() {
 
 	console.log('ENTERS inCheck()');  
 	console.log('litIds -->');  console.log(litIds);
@@ -1236,13 +1236,14 @@ function checkingSpace(somePiece, checkSpaceId) {
 			}
 		}
 		console.log('bishopMoves -->');  console.log(bishopMoves);
-
-		// populates nails with pieces that block bishop's path to checkSpaceId
-		bishopMoves.forEach(bishopMove => {
-			blocker = document.getElementById( bishopMove );
-			if (blocker.dataset.side !== 'empty') { nails.push(blocker); }
-		});
-		console.log('nails -->');  console.log(nails);
+		if (bishopMoves.length) {
+			// populates nails with pieces that block bishop's path to checkSpaceId
+			bishopMoves.forEach(bishopMove => {
+				blocker = document.getElementById( bishopMove );
+				if (blocker.dataset.side !== 'empty') { nails.push(blocker); }
+			});
+			console.log('nails -->');  console.log(nails);
+		}
 
 		// returns true/false if no piece blocks bishop's path to checkSpaceId
 		if (!nails.length) { // note: nails may contain pieces from both sides
@@ -1329,14 +1330,14 @@ function checkingSpace(somePiece, checkSpaceId) {
 		
 		else { return false; } // rook can't checkSpaceId
 		// console.log('rookMoves -->');  console.log(rookMoves);
-		
-		// populates nails with pieces that block rook's path to checkSpaceId
-		rookMoves.forEach(rookMove => {
-			blocker = document.getElementById( rookMove );
-			if (blocker.dataset.side !== 'empty') { nails.push(blocker); }
-		});
-		// console.log('nails -->');  console.log(nails);
-		
+		if (rookMoves.length) {
+			// populates nails with pieces that block rook's path to checkSpaceId
+			rookMoves.forEach(rookMove => {
+				blocker = document.getElementById( rookMove );
+				if (blocker.dataset.side !== 'empty') { nails.push(blocker); }
+			});
+			// console.log('nails -->');  console.log(nails);
+		}
 		// returns true/false if no piece blocks rook's path to checkSpaceId
 		if (!nails.length) { // nails can be both sides
 			// pathOfCheck array becomes rook.id route to checkSpaceId
