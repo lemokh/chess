@@ -21,7 +21,8 @@ var passiveSide = oranges;
  
 function inCheck() { // isMate()
 
-	console.log('ENTERS isMate()');  console.log('litIds -->');  console.log(litIds);
+	console.log('ENTERS inCheck()');  
+	console.log('litIds -->');  console.log(litIds);
 
 	checkPath = pathOfCheck;
 	
@@ -30,8 +31,19 @@ function inCheck() { // isMate()
 
 	// if king can move, handles moving activeKing
 	if (litIds.length) {
+		
+		console.log('checkPath -->');  console.log(checkPath);
 		console.log('litIds -->');  console.log(litIds);
+		
 		kingLitIds = litIds;
+
+		// excludes checkPath id from litIds array
+		kingLitIds = litIds.filter(litId =>
+			!checkPath.some( id => litId === id )
+		);
+
+		console.log('kingLitIds -->');  console.log(kingLitIds);
+
 		greyLitPieces.push(activeKing);
 		activeKing.classList.add('preventMateLit');
 		activeKing.addEventListener('click', selectGreyPiece);
@@ -1218,7 +1230,7 @@ function checkingSpace(somePiece, checkSpaceId) {
 			console.log('pathOfCheck -->');  console.log(pathOfCheck);
 			return true; // bishop can attack checkSpaceId
 		}
-		if (nails.length === 1) { // if only one nail			
+		if (nails.length === 1) { // if only one nail
 			// if that nail & bishop aren't on the same side
 			if (nails[0].dataset.side !== bishop.dataset.side) {
 				if (nails[0] !== activeKing) {
@@ -1287,7 +1299,7 @@ function checkingSpace(somePiece, checkSpaceId) {
 		if (!nails.length) { // nails can be both sides
 			// pathOfCheck array becomes rook.id route to checkSpaceId
 			if (rook.dataset.name === 'queen') {
-				pathOfCheck = [...pathOfCheck, ...rookMoves];
+				pathOfCheck.push( ...rookMoves);
 			}
 			else { pathOfCheck = rookMoves; }
 			return true; // rook can attack checkSpaceId
