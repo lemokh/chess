@@ -1169,7 +1169,7 @@ function checkingSpace(somePiece, checkSpaceId) {
 				else { return false; } // bishop cannot checkSpaceId
 			}
 		}
-		else { // BISHOPMOVES NOT PUSHING HERE
+		else {
 			// since bishop attacks in a southWest diagonal
 			if (bishop.id[1] < checkSpaceId[1]) {
 				// console.log('southWest diagonal');
@@ -1218,17 +1218,15 @@ function checkingSpace(somePiece, checkSpaceId) {
 			console.log('pathOfCheck -->');  console.log(pathOfCheck);
 			return true; // bishop can attack checkSpaceId
 		}
-		if (nails.length === 1) { // if only one nail
-			
+		if (nails.length === 1) { // if only one nail			
 			// if that nail & bishop aren't on the same side
 			if (nails[0].dataset.side !== bishop.dataset.side) {
-				
-				if (nails[0] !== activeKing) {		
-				
+				if (nails[0] !== activeKing) {
+					// collects bishop & nails[0]
 					pinnedPieces.push(
 						{ pinner: bishop, pinned: nails[0] }
 					);
-					
+					// sets dataset.pinned & dataset.pinner for nails[0]
 					nails[0].setAttribute('data-pinned', true);
 					nails[0].setAttribute('data-pinner', bishop);
 					
