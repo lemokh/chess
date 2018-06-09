@@ -853,7 +853,7 @@ function kingLit() {
 	console.log('ENTERS kingLit()');
 
 	passiveSideCoversId = false;
-	kingSpacesUnderAttack = [];
+	kingSpacesUnderAttack = [];  // unnecessary
 
 	// covers king castling
 	if (!kingAttackers.length) { // if king not in check
@@ -971,7 +971,19 @@ function kingLit() {
 					break;
 				}
 			}
-			if (!passiveSideCoversId) { litIds.push(id); }
+			if (!passiveSideCoversId) {
+				/*
+				kingAttackers.forEach(kingAttacker => {
+					if (kingAttacker.dataset.name === 'bishop') {
+
+					}
+					else if (kingAttacker.dataset.name === 'rook') {
+
+					}
+				});
+				*/
+				litIds.push(id);
+			}
 		});
 		console.log('litIds -->');  console.log(litIds);
 	}
