@@ -923,11 +923,8 @@ function kingLit() {
 	}
 	// lightens & click-listens all castleIds
 	if (castleIds.length) { // if king is castling
-
 		castleIds.forEach(id => {
-
 			document.getElementById(id).classList.add('castleLit');
-
 			document.getElementById(id).addEventListener('click', castling);
 		});
 	}
