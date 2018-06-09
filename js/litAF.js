@@ -24,39 +24,32 @@ function inCheck() { // isMate()
 	console.log('ENTERS isMate()');  console.log('litIds -->');  console.log(litIds);
 
 	checkPath = pathOfCheck;
+	
 	pieceToMove = activeKing;
-
 	kingLit(); // fills litIds with ids where activeKing can move
 
-	// if multiple kingAttackers, only king can prevent checkmate...
-	if (kingAttackers.length > 1) {
-		// if king stuck, then checkmate
-		if (!litIds.length) { return endOfGame(); }
-
-		// else click greyPiece to selectGreyPiece()
-		else { return addLitDivHandler(selectGreyPiece); }
+	// if king can move, handles moving activeKing
+	if (litIds.length) {
+		greyLitPieces.push(activeKing);
+		activeKing.classList.add('preventMateLit');
+		activeKing.addEventListener('click', selectGreyPiece);
 	}
-	else { // since only one kingAttacker
-		// if king can move, handles moving activeKing
-		if (litIds.length) {
-			greyLitPieces.push(activeKing);
-			activeKing.classList.add('preventMateLit');
-			activeKing.addEventListener('click', selectGreyPiece);
-		}
-		else { kingStuck = true; }
-		
-		/////////////////////////////////////////////////////
+	else { kingStuck = true; }
+	
+	if (kingAttackers.length === 1) { // if only one kingAttacker
+		/////////////////////////////////////////////////////////
 		// populates canEatKingAttacker & canBlockPathOfCheck
-		// excludes activeKing
 		activeSide.forEach(activePiece => {
 			// for each activePiece, if not pinned
 			if (activePiece.dataset.pinned === 'false') {
 				// if not activeKing
 				if (activePiece.dataset.name !== 'king') {
-					pieceToMove = activePiece; // IMPORTANT!
+					//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+					pieceToMove = activePiece; // IMPORTANT
 					// if activePiece checks kingAttacker
 					if (checkingSpace(activePiece, kingAttackers[0].id)) {
 						console.log(activePiece.id+' can eat '+kingAttackers[0].id);
+
 						canEatKingAttacker.push(activePiece);
 					}
 					//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
@@ -65,7 +58,6 @@ function inCheck() { // isMate()
 					// sees if activePiece can move to pathId
 					checkPath.forEach(pathId => {
 						if (checkingSpace(activePiece, pathId)) {
-
 							console.log(activePiece.id+' can block at '+pathId);
 
 							canBlockPathOfCheck.push(
@@ -84,14 +76,12 @@ function inCheck() { // isMate()
 					console.log(activePiece.id+' can eat '+kingAttackers[0].id);
 				}
 			}
-		}); // doesn't apply to activeKing
-		///////////////////////////////////////
-
+		}); // excludes activeKing
+		//////////////////////////
 		// ------------------------------------
 		// begins interceptKingAttacker() logic
 		// -------------------------------------
 		greyLitPieces = [...canEatKingAttacker];
-		
 		console.log('greyLitPieces');  console.log(greyLitPieces);
 		
 		canBlockPathOfCheck.forEach(obj => {
@@ -115,6 +105,15 @@ function inCheck() { // isMate()
 					greyLitPiece.addEventListener('click', selectGreyPiece);
 				});
 		}
+	}
+	else { // since multiple kingAttackers,
+		// only activeKing can prevent checkmate...
+		// if king stuck, checkmate
+		if (kingStuck) { return endOfGame(); }
+
+		// MAYBE THIS IS UNNECESSARY?
+		// else move activeKing --> selectGreyPiece()
+		else { return addLitDivHandler(selectGreyPiece); }
 	}
 }
 
@@ -1381,18 +1380,6 @@ function lit() {
 				previousPinnedPieces[i].setAttribute('data-pinner', 'empty');
 			}
 		}
-		
-		// previousPinnedPieces.forEach( prevPiece => {
-
-		// 	pinnedPieces.forEach(obj => {
-				
-		// 		if (obj.pinned === prevPiece) {
-
-		// 		}
-			
-		// 	});
-
-		// }
 	}
 
 	console.log('pinnedPieces -->');  console.log(pinnedPieces);
