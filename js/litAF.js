@@ -750,8 +750,6 @@ function knightLit() {
 } // fills litIds with ids where knight can move
 
 function bishopLit() {
-	
-	// rubbishIds = [];
 
 	function quadrant(x, y) { // x & y are a number
 
@@ -1136,11 +1134,16 @@ function checkingSpace(somePiece, checkSpaceId) {
 		if (bishop.id[0] < checkSpaceId[0]) {
 			// bishop attacks in a southEast diagonal
 			if (bishop.id[1] < checkSpaceId[1]) {
-				// console.log('southEast diagonal');
 				// if bishop's path aligns with checkSpaceId
 				if (checkSpaceId[0] - bishop.id[0]
 				=== checkSpaceId[1] - bishop.id[1]) {
-					// console.log('southEast aligns checkSpaceId');
+					// if bishop checks activeKing
+					if (checkSpaceId === activeKing.id) {
+						// collects space behind king in bishop's diagonal
+						bishopMoves.push(
+							(+checkSpaceId[0] + 1) + (+checkSpaceId[1] + 1).toString()
+						);
+					}
 					// collects bishop's attack path to checkSpaceId
 					while ( bishopX < (+checkSpaceId[0] - 1) ) {
 						bishopX += 1;
