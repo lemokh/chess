@@ -34,7 +34,7 @@ function inCheck() { // isMate()
 		activeKing.classList.add('preventMateLit');
 		activeKing.addEventListener('click', selectGreyPiece);
 	}
-	else { kingStuck = true; }
+	else { kingStuck = true; } // unnecessary?
 	
 	if (kingAttackers.length === 1) { // if only one kingAttacker
 		/////////////////////////////////////////////////////////
@@ -108,11 +108,11 @@ function inCheck() { // isMate()
 	}
 	else { // since multiple kingAttackers,
 		// only activeKing can prevent checkmate...
-		// if king stuck, checkmate
+		// checkmate if king stuck
 		if (kingStuck) { return endOfGame(); }
 
 		// MAYBE THIS IS UNNECESSARY?
-		// else move activeKing --> selectGreyPiece()
+		// else move activeKing
 		else { return addLitDivHandler(selectGreyPiece); }
 	}
 }
