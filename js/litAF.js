@@ -35,13 +35,14 @@ function inCheck() { // isMate()
 		console.log('checkPath -->');  console.log(checkPath);
 		console.log('litIds -->');  console.log(litIds);
 		
-		kingLitIds = litIds;
+		
 
 		// excludes checkPath id from litIds array
 		kingLitIds = litIds.filter(litId =>
 			!checkPath.some( id => litId === id )
 		);
-
+		
+		litIds = kingLitIds;
 		console.log('kingLitIds -->');  console.log(kingLitIds);
 
 		greyLitPieces.push(activeKing);
@@ -1270,17 +1271,28 @@ function checkingSpace(somePiece, checkSpaceId) {
 		// checks for clear path between rook.id & checkSpaceId
 		rookMoves = []; // collects spaces rook attacks enroute to checkSpaceId
 		nails = []; // collects possible pinnedPieces
+
 		// if rook & checkSpaceId share column
 		if (rook.id[0] === checkSpaceId[0]) {
 			// if rook below checkSpaceId, rook.y++
 			if (rook.id[1] < checkSpaceId[1]) {
+				// if rook checks activeKing
+				if (checkSpaceId === activeKing.id) {
+					// collects space behind king in rook's row
+					rookMoves.push( checkSpaceId[0] + (+checkSpaceId[1] + 1) );
+				}
 				for (let i = +rook.id[1] + 1; i < +checkSpaceId[1]; i++) {
-					rookMoves.push( checkSpaceId[0] + i ); // an id
+					rookMoves.push( checkSpaceId[0] + i );
 				}
 			}
 			else { // since rook is above checkSpaceId, rook.id[1]--
+				// if rook checks activeKing
+				if (checkSpaceId === activeKing.id) {
+					// collects space behind king in rook's row
+					rookMoves.push( checkSpaceId[0] + (+checkSpaceId[1] - 1) );
+				}
 				for (let i = +rook.id[1] - 1; i > +checkSpaceId[1]; i--) {
-					rookMoves.push( checkSpaceId[0] + i ); // an id
+					rookMoves.push( checkSpaceId[0] + i );
 				}
 			}
 		} // pushes column spaces between rook & checkSpaceId to rookMoves
@@ -1289,11 +1301,21 @@ function checkingSpace(somePiece, checkSpaceId) {
 		else if (rook.id[1] === checkSpaceId[1]) {
 			// if rook left of checkSpaceId, rook.id[0]++
 			if (rook.id[0] < checkSpaceId[0]) {
+				// if rook checks activeKing
+				if (checkSpaceId === activeKing.id) {
+					// collects space behind king in rook's row
+					rookMoves.push( (+checkSpaceId[0] + 1) + checkSpaceId[1] );
+				}
 				for (let i = +rook.id[0] + 1; i < +checkSpaceId[0]; i++) {
 					rookMoves.push( i + checkSpaceId[1] ); // an id
 				}
 			}
 			else { // since rook right of checkSpaceId, rook.id[0]--
+				// if rook checks activeKing
+				if (checkSpaceId === activeKing.id) {
+					// collects space behind king in rook's row
+					rookMoves.push( (+checkSpaceId[0] - 1) + checkSpaceId[1] );
+				}
 				for (let i = +rook.id[0] - 1; i > +checkSpaceId[0]; i--) {
 					rookMoves.push( i + checkSpaceId[1] ); // an id
 				}
