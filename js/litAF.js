@@ -1166,11 +1166,16 @@ function checkingSpace(somePiece, checkSpaceId) {
 				else { return false; } // bishop can't checkSpaceId
 			}
 			else { // since bishop attacks in a northEast diagonal
-				// console.log('northEast diagonal');
 				// if bishop aligns with checkSpaceId
 				if ( checkSpaceId[0] - bishop.id[0]
 				=== bishop.id[1] - checkSpaceId[1]) {
-					// console.log('northEast aligns checkSpaceId');
+					// if bishop checks activeKing
+					if (checkSpaceId === activeKing.id) {
+						// collects space behind king in bishop's diagonal
+						bishopMoves.push(
+							(+checkSpaceId[0] + 1) + (+checkSpaceId[1] - 1).toString()
+						);
+					}
 					// collects bishop's attack path to checkSpaceId
 					while ( bishopX < (+checkSpaceId[0] - 1) ) {
 						bishopX += 1;
@@ -1184,11 +1189,16 @@ function checkingSpace(somePiece, checkSpaceId) {
 		else {
 			// since bishop attacks in a southWest diagonal
 			if (bishop.id[1] < checkSpaceId[1]) {
-				// console.log('southWest diagonal');
 				// if bishop aligns with checkSpaceId
 				if ( bishop.id[0] - checkSpaceId[0]
 				=== checkSpaceId[1] - bishop.id[1]) {
-					// console.log('southWest aligns checkSpaceId');
+					// if bishop checks activeKing
+					if (checkSpaceId === activeKing.id) {
+						// collects space behind king in bishop's diagonal
+						bishopMoves.push(
+							(+checkSpaceId[0] - 1) + (+checkSpaceId[1] + 1).toString()
+						);
+					}
 					// collects bishop's attack path to checkSpaceId
 					while ( bishopX > (+checkSpaceId[0] + 1) ) {
 						bishopX -= 1;
@@ -1199,11 +1209,16 @@ function checkingSpace(somePiece, checkSpaceId) {
 				else { return false; } // bishop can't checkSpaceId
 			}
 			else { // since bishop attacks in a northWest diagonal
-				// console.log('northWest diagonal');
 				// if bishop aligns with checkSpaceId
 				if ( bishop.id[0] - checkSpaceId[0]
 				=== bishop.id[1] - checkSpaceId[1]) {
-					// console.log('northWest aligns checkSpaceId');
+					// if bishop checks activeKing
+					if (checkSpaceId === activeKing.id) {
+						// collects space behind king in bishop's diagonal
+						bishopMoves.push(
+							(+checkSpaceId[0] - 1) + (+checkSpaceId[1] - 1).toString()
+						);
+					}
 					// collects bishop's attack path to checkSpaceId
 					while ( bishopX > (+checkSpaceId[0] + 1) ) {
 						bishopX -= 1;
