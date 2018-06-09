@@ -30,9 +30,13 @@ function inCheck() { // isMate()
 
 	// if king can move, handles moving activeKing
 	if (litIds.length) {
+		console.log('litIds -->');  console.log(litIds);
+
 		greyLitPieces.push(activeKing);
 		activeKing.classList.add('preventMateLit');
 		activeKing.addEventListener('click', selectGreyPiece);
+		
+		console.log('greyLitPieces -->');  console.log(greyLitPieces);
 	}
 	else { kingStuck = true; } // unnecessary?
 	
@@ -81,7 +85,8 @@ function inCheck() { // isMate()
 		// ------------------------------------
 		// begins interceptKingAttacker() logic
 		// -------------------------------------
-		greyLitPieces = [...canEatKingAttacker];
+		greyLitPieces.push(...canEatKingAttacker);
+		
 		console.log('greyLitPieces');  console.log(greyLitPieces);
 		
 		canBlockPathOfCheck.forEach(obj => {
@@ -125,7 +130,9 @@ function selectGreyPiece(e) {
 
 	removeLitDivHandler(moveGreyPiece); // resets each litDiv
 
-	if (litIds.length) {
+	console.log(litIds);
+
+	if (litIds.length) { // if king can move?
 		litIds.forEach( id => {
 			litPiece = document.getElementById( id );
 			litPiece.classList.remove( 'lit' );
@@ -1187,10 +1194,6 @@ function checkingSpace(somePiece, checkSpaceId) {
 						{ pinner: bishop, pinned: nails[0] }
 					);
 					
-					// tempPinnedPieces.push(
-					// 	{ pinner: bishop, pinned: nails[0] }
-					// );
-
 					nails[0].setAttribute('data-pinned', true);
 					nails[0].setAttribute('data-pinner', bishop);
 					
@@ -1264,10 +1267,6 @@ function checkingSpace(somePiece, checkSpaceId) {
 					{ pinner: rook, pinned: nails[0] }
 				);
 
-				// tempPinnedPieces.push(
-				// 	{ pinner: rook, pinned: nails[0] }
-				// );
-				
 				nails[0].setAttribute('data-pinned', true);
 				nails[0].setAttribute('data-pinner', rook);
 				
