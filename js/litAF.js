@@ -128,17 +128,18 @@ function selectGreyPiece(e) {
 		greyPieceToMove.classList.remove('mainLit');
 	}
 
-	removeLitDivHandler(moveGreyPiece); // resets each litDiv
-
 	console.log(litIds);
 
-	if (litIds.length) { // if king can move?
+	// removeLitDivHandler(moveGreyPiece); --> without litIds = []
+	if (litIds.length) { // resets each litId of class & click-listeners
 		litIds.forEach( id => {
 			litPiece = document.getElementById( id );
+			// --------------------------------------
 			litPiece.classList.remove( 'lit' );
 			litPiece.removeEventListener( 'click', moveGreyPiece );
 		});
 	}
+
 	greyPieceToMove = e.target;
 	greyPieceToMove.classList.add('mainLit');
 
@@ -496,7 +497,7 @@ function cleanUpAfterFirstClick() {
 	}
 }
 
-
+// NEEDS WORK!
 function pinnedPieceLit() {
 
 	console.log('ENTERS pinnedPieceLit()');
