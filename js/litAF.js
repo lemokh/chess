@@ -618,19 +618,20 @@ function pawnLit() {
 	console.log('enters pawnLit()');
 
 	// highlights all possible moves for blue pawnToMove
-	if (activeKing.dataset.side === 'blue') {
+	if (activeSide[0].dataset.side === 'blue') {
 		// if enPassant attack is possible
 		if (enPassanting) { // same as: if (pawnJumpDiv.length) ?
-			// covers enPassant attack
-			
-			// if bluePawnToMove is beside pawnJump,
-			if ((pieceToMove.id === (pawnJumpDiv.id[0] - 1) + pawnJumpDiv.id[1])
-			|| (pieceToMove.id === (+pawnJumpDiv.id[0] + 1) + pawnJumpDiv.id[1])) {
-				// adds bluePawnToMove's enPassant-attack-div to litIds
-				enPassantDiv = document.getElementById(
-					pawnJumpDiv.id[0] + (pawnJumpDiv.id[1] - 1) 
-				);
-				litIds.push( enPassantDiv.id );
+			// covers enPassant attack, if bluePawn is in third row
+			if (pieceToMove.id[1] === "3") {
+				// if bluePawnToMove is beside pawnJump
+				if ((pieceToMove.id === (pawnJumpDiv.id[0] - 1) + pawnJumpDiv.id[1])
+				|| (pieceToMove.id === (+pawnJumpDiv.id[0] + 1) + pawnJumpDiv.id[1])) {
+					// adds bluePawnToMove's enPassant-attack-div to litIds
+					enPassantDiv = document.getElementById(
+						pawnJumpDiv.id[0] + (pawnJumpDiv.id[1] - 1) 
+					);
+					litIds.push( enPassantDiv.id );
+				}
 			}
 		}
 		// collects potential normal attack divs
@@ -665,13 +666,15 @@ function pawnLit() {
 	else { // since orange's turn
 		// if enPassant attack is possible
 		if (enPassanting) { // if (pawnJumpDiv.length) {}
-			if ((pieceToMove.id === (pawnJumpDiv.id[0] - 1) + pawnJumpDiv.id[1])
-			|| (pieceToMove.id === (+pawnJumpDiv.id[0] + 1) + pawnJumpDiv.id[1])) {
-				// adds enPassant attack div to litIds
-				enPassantDiv = document.getElementById(
-					pawnJumpDiv.id[0] + (+pawnJumpDiv.id[1] + 1)
-				);
-				litIds.push( enPassantDiv.id );
+			if (pieceToMove.id[1] === "5") {
+				if ((pieceToMove.id === (pawnJumpDiv.id[0] - 1) + pawnJumpDiv.id[1])
+				|| (pieceToMove.id === (+pawnJumpDiv.id[0] + 1) + pawnJumpDiv.id[1])) {
+					// adds enPassant attack div to litIds
+					enPassantDiv = document.getElementById(
+						pawnJumpDiv.id[0] + (+pawnJumpDiv.id[1] + 1)
+					);
+					litIds.push( enPassantDiv.id );
+				}
 			}
 		}
 		// collects potential normal attack divs
