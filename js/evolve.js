@@ -367,23 +367,22 @@ function movePiece(e) {
 
 ///////////////////////////////////////////////////////////////////////
 function pawnEvolve(e) {
-	// uses pieceToMove for pawn
-	// uses e.target for new piece
-	
+	// uses pieceToMove for pawn & e.target for new piece
+
 	// re-informs goToDiv
 	goToDiv.setAttribute('data-name', e.target.dataset.name);
 	goToDiv.setAttribute('data-side', e.target.dataset.side);
 	goToDiv.setAttribute('src', e.target.src);
 
 	// gets pieceToMove's activeSide index
-	index1 = activeSide.indexOf(pieceToMove);
+	index1 = passiveSide.indexOf(pieceToMove);
 
-	// removes now-empty e from activeSide    
-	activeSide.splice(index1, 1);
+	// removes now-empty pieceToMove from activeSide    
+	passiveSide.splice(index1, 1);
 
 	// updates activeSide & pieces array
-	activeSide.push(goToDiv);
-	pieces = [...oranges, ...blues];
+	passiveSide.push(goToDiv);
+	// pieces = [...activeSide, ...passiveSide];
 
 	// un-informs pieceToMove
 	pieceToMove.setAttribute('data-name', 'empty');
@@ -400,7 +399,7 @@ function pawnEvolve(e) {
 function swapSide(fromDiv, toDiv) {
 	// swaps pieceToMove & goToDiv info
 	console.log('ENTERS swapSide()');
-
+	// handles blue pawn evolution modal window
 	if ( (fromDiv.dataset.name === 'pawn') && (toDiv.id[1] === '0') ) {
 		document.querySelector('.modalBlue').classList.toggle("show-modal");
 		document.getElementById('blueQueen').addEventListener(
@@ -409,7 +408,7 @@ function swapSide(fromDiv, toDiv) {
 		document.getElementById('blueKnight').addEventListener(
 			'click', pawnEvolve
 		);
-	}
+	} // handles orange pawn evolution modal window
 	else if ( (fromDiv.dataset.name === 'pawn') && (toDiv.id[1] === '7') ) {
 		document.querySelector('.modalOrange').classList.toggle("show-modal");
 		document.getElementById('orangeQueen').addEventListener(
@@ -419,7 +418,7 @@ function swapSide(fromDiv, toDiv) {
 			'click', pawnEvolve
 		);
 	}
-	else {
+	else { // since no pawn evolution
 		// re-informs goToDiv
 		toDiv.setAttribute('data-name', fromDiv.dataset.name);
 		toDiv.setAttribute('data-side', fromDiv.dataset.side);
@@ -433,9 +432,8 @@ function swapSide(fromDiv, toDiv) {
 
 		// updates activeSide & pieces array
 		activeSide.push(toDiv);
-		pieces = [...oranges, ...blues];
+		// pieces = [...activeSide, ...passiveSide];
 
-		// FIND BETTER LOGIC FOR THIS PART
 		// if not an enPassant attack, resets enPassant process
 		if (pieceToMove.dataset.name === 'pawn') {
 			if (toDiv !== pawnJumpDiv) { enPassantReset(); }
@@ -1514,8 +1512,7 @@ function checkingSpace(somePiece, checkSpaceId) {
 
 function lit() {
 
-	pieces = [...oranges, ...blues];
-	pinnedPieces = [];
+	// pieces = [...activeSide, ...passiveSide];	pinnedPieces = [];
 	litIds = [];
 	kingIds = [];
 	
