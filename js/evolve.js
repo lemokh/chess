@@ -369,13 +369,30 @@ function movePiece(e) {
 function pawnEvolve(e) {
 	// use pieceToMove for pawn
 	// use e.target for new piece
-	if (e.target.dataset.side === 'blue') {
+	if (pieceToMove.dataset.side === 'blue') {
+	
+	// re-informs goToDiv
+	e.target.setAttribute('data-name', pieceToMove.dataset.name);
+	e.target.setAttribute('data-side', pieceToMove.dataset.side);
+	e.target.setAttribute('src', pieceToMove.src);
 
+	// gets pieceToMove's activeSide index
+	index1 = activeSide.indexOf(pieceToMove);
+
+	// removes now-empty pieceToMove from activeSide    
+	activeSide.splice(index1, 1);
+
+	// updates activeSide & pieces array
+	activeSide.push(e.target);
+	pieces = [...oranges, ...blues];
+
+	// un-informs pieceToMove
+	pieceToMove.setAttribute('data-name', 'empty');
+	pieceToMove.setAttribute('data-side', 'empty');
+	pieceToMove.setAttribute('src', './images/transparent.png');
 	}
-	else { // since orange pawn to transform
-
-
-	}
+	// else { // since orange pawn to transform
+	// }
 }
 
 function swapSide(fromDiv, toDiv) {
@@ -383,7 +400,7 @@ function swapSide(fromDiv, toDiv) {
 	console.log('ENTERS swapSide()');
 
 	// maybe this goes outside of here
-	if (fromDiv.dataset.name = 'pawn') {
+	if (fromDiv.dataset.name === 'pawn') {
 		if (toDiv.id[1] === '0') {
 			document.getElementById('modalBlue').classList.toggle("show-modal");
 			document.getElementById('blueQueen').addEventListener(
@@ -393,6 +410,7 @@ function swapSide(fromDiv, toDiv) {
 				'click', pawnEvolve
 			);
 		}
+		/*
 		else if (toDiv.id[1] === '7') {
 			modal.classList.toggle("show-modal");
 			document.getElementById('orangeQueen').addEventListener(
@@ -402,6 +420,7 @@ function swapSide(fromDiv, toDiv) {
 				'click', pawnEvolve
 			);
 		}
+		*/
 	}
 
 	// re-informs goToDiv

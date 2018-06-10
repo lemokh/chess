@@ -100,6 +100,7 @@ game {
       linear-gradient(purple 0%, red 90%), 
       linear-gradient(to right, purple 0%, yellow 90%); */
     /* background-blend-mode: screen, difference, lighten; */
+    /* background-color: rgba(205, 92, 92, 0.2); */
     background-color: rgba(219, 112, 147, .2);
     /*background-blend-mode: luminosity;*/
   }
@@ -109,7 +110,7 @@ game {
   }
   
   .preventMateLit {
-    background-color: rgb(15, 50, 73);
+    background-color: rgba(211, 211, 211, 0.2);
   }
   
   /* .noClick {
