@@ -367,89 +367,86 @@ function movePiece(e) {
 
 ///////////////////////////////////////////////////////////////////////
 function pawnEvolve(e) {
-	// use pieceToMove for pawn
-	// use e.target for new piece
-	if (pieceToMove.dataset.side === 'blue') {
+	// uses pieceToMove for pawn
+	// uses e.target for new piece
 	
 	// re-informs goToDiv
-	e.target.setAttribute('data-name', pieceToMove.dataset.name);
-	e.target.setAttribute('data-side', pieceToMove.dataset.side);
-	e.target.setAttribute('src', pieceToMove.src);
+	goToDiv.setAttribute('data-name', e.target.dataset.name);
+	goToDiv.setAttribute('data-side', e.target.dataset.side);
+	goToDiv.setAttribute('src', e.target.src);
 
 	// gets pieceToMove's activeSide index
 	index1 = activeSide.indexOf(pieceToMove);
 
-	// removes now-empty pieceToMove from activeSide    
+	// removes now-empty e from activeSide    
 	activeSide.splice(index1, 1);
 
 	// updates activeSide & pieces array
-	activeSide.push(e.target);
+	activeSide.push(goToDiv);
 	pieces = [...oranges, ...blues];
 
 	// un-informs pieceToMove
 	pieceToMove.setAttribute('data-name', 'empty');
 	pieceToMove.setAttribute('data-side', 'empty');
 	pieceToMove.setAttribute('src', './images/transparent.png');
+
+	// closes modal window
+	if (e.target.dataset.side === 'blue') {
+		document.querySelector('.modalBlue').classList.toggle("show-modal");
 	}
-	// else { // since orange pawn to transform
-	// }
+	else if (e.target.dataset.side === 'orange') { document.querySelector('.modalOrange').classList.toggle("show-modal"); }
 }
 
 function swapSide(fromDiv, toDiv) {
 	// swaps pieceToMove & goToDiv info
 	console.log('ENTERS swapSide()');
 
-	// maybe this goes outside of here
-	if (fromDiv.dataset.name === 'pawn') {
-		if (toDiv.id[1] === '0') {
-			document.getElementById('modalBlue').classList.toggle("show-modal");
-			document.getElementById('blueQueen').addEventListener(
-				'click', pawnEvolve
-			);
-			document.getElementById('blueKnight').addEventListener(
-				'click', pawnEvolve
-			);
-		}
-		/*
-		else if (toDiv.id[1] === '7') {
-			modal.classList.toggle("show-modal");
-			document.getElementById('orangeQueen').addEventListener(
-				'click', pawnEvolve
-			);
-			document.getElementById('orangeKnight').addEventListener(
-				'click', pawnEvolve
-			);
-		}
-		*/
+	if ( (fromDiv.dataset.name === 'pawn') && (toDiv.id[1] === '0') ) {
+		document.querySelector('.modalBlue').classList.toggle("show-modal");
+		document.getElementById('blueQueen').addEventListener(
+			'click', pawnEvolve
+		);
+		document.getElementById('blueKnight').addEventListener(
+			'click', pawnEvolve
+		);
 	}
-
-	// re-informs goToDiv
-	toDiv.setAttribute('data-name', fromDiv.dataset.name);
-	toDiv.setAttribute('data-side', fromDiv.dataset.side);
-	toDiv.setAttribute('src', fromDiv.src);
-
-	// gets pieceToMove's activeSide index
-	index1 = activeSide.indexOf(fromDiv);
-
-	// removes now-empty pieceToMove from activeSide    
-	activeSide.splice(index1, 1);
-
-	// updates activeSide & pieces array
-	activeSide.push(toDiv);
-	pieces = [...oranges, ...blues];
-
-	// FIND BETTER LOGIC FOR THIS PART
-	// if not an enPassant attack, resets enPassant process
-	if (pieceToMove.dataset.name === 'pawn') {
-		if (toDiv !== pawnJumpDiv) { enPassantReset(); }
+	else if ( (fromDiv.dataset.name === 'pawn') && (toDiv.id[1] === '7') ) {
+		document.querySelector('.modalOrange').classList.toggle("show-modal");
+		document.getElementById('orangeQueen').addEventListener(
+			'click', pawnEvolve
+		);
+		document.getElementById('orangeKnight').addEventListener(
+			'click', pawnEvolve
+		);
 	}
-	else { enPassantReset(); }
+	else {
+		// re-informs goToDiv
+		toDiv.setAttribute('data-name', fromDiv.dataset.name);
+		toDiv.setAttribute('data-side', fromDiv.dataset.side);
+		toDiv.setAttribute('src', fromDiv.src);
 
-	// un-informs pieceToMove
-	fromDiv.setAttribute('data-name', 'empty');
-	fromDiv.setAttribute('data-side', 'empty');
-	fromDiv.setAttribute('src', './images/transparent.png');
+		// gets pieceToMove's activeSide index
+		index1 = activeSide.indexOf(fromDiv);
 
+		// removes now-empty pieceToMove from activeSide    
+		activeSide.splice(index1, 1);
+
+		// updates activeSide & pieces array
+		activeSide.push(toDiv);
+		pieces = [...oranges, ...blues];
+
+		// FIND BETTER LOGIC FOR THIS PART
+		// if not an enPassant attack, resets enPassant process
+		if (pieceToMove.dataset.name === 'pawn') {
+			if (toDiv !== pawnJumpDiv) { enPassantReset(); }
+		}
+		else { enPassantReset(); }
+
+		// un-informs pieceToMove
+		fromDiv.setAttribute('data-name', 'empty');
+		fromDiv.setAttribute('data-side', 'empty');
+		fromDiv.setAttribute('src', './images/transparent.png');
+	}
 	console.log('EXITS swapSide()');
 }
 
