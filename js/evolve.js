@@ -365,7 +365,6 @@ function movePiece(e) {
 	toggleSides();
 }
 
-///////////////////////////////////////////////////////////////////////
 function pawnEvolve(e) {
 	// uses pieceToMove for pawn & e.target for new piece
 
