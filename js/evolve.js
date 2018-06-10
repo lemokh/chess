@@ -231,7 +231,6 @@ function moveGreyPiece(e) {
 	toggleSides();
 }
 
-
 function wherePieceCanMove(e) { // pieceLit(e)
 	// if not first click of this turn
 	if (newPieceClicked !== undefined) {
@@ -366,10 +365,44 @@ function movePiece(e) {
 	toggleSides();
 }
 
+///////////////////////////////////////////////////////////////////////
+function pawnEvolve(e) {
+	// use pieceToMove for pawn
+	// use e.target for new piece
+	if (e.target.dataset.side === 'blue') {
+
+	}
+	else { // since orange pawn to transform
+
+
+	}
+}
 
 function swapSide(fromDiv, toDiv) {
 	// swaps pieceToMove & goToDiv info
 	console.log('ENTERS swapSide()');
+
+	// maybe this goes outside of here
+	if (fromDiv.dataset.name = 'pawn') {
+		if (toDiv.id[1] === '0') {
+			document.getElementById('modalBlue').classList.toggle("show-modal");
+			document.getElementById('blueQueen').addEventListener(
+				'click', pawnEvolve
+			);
+			document.getElementById('blueKnight').addEventListener(
+				'click', pawnEvolve
+			);
+		}
+		else if (toDiv.id[1] === '7') {
+			modal.classList.toggle("show-modal");
+			document.getElementById('orangeQueen').addEventListener(
+				'click', pawnEvolve
+			);
+			document.getElementById('orangeKnight').addEventListener(
+				'click', pawnEvolve
+			);
+		}
+	}
 
 	// re-informs goToDiv
 	toDiv.setAttribute('data-name', fromDiv.dataset.name);
@@ -386,6 +419,7 @@ function swapSide(fromDiv, toDiv) {
 	activeSide.push(toDiv);
 	pieces = [...oranges, ...blues];
 
+	// FIND BETTER LOGIC FOR THIS PART
 	// if not an enPassant attack, resets enPassant process
 	if (pieceToMove.dataset.name === 'pawn') {
 		if (toDiv !== pawnJumpDiv) { enPassantReset(); }
@@ -431,7 +465,6 @@ function eat(piece) {
 
 	console.log('EXITS eat()');
 }
-
 
 function castling(e) {
 	console.log('enters castling(e)')
@@ -493,7 +526,6 @@ function enPassantReset() {
 	enPassantDiv = undefined;
 	console.log('enPassantDiv = undefined');
 }
-
 
 function addLitDivHandler(funcName) {
 
