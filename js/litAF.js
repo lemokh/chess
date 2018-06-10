@@ -366,37 +366,85 @@ function movePiece(e) {
 	toggleSides();
 }
 
+function pawnEvolve(e) {
+	// uses pieceToMove for pawn & e.target for new piece
+
+	// re-informs goToDiv
+	goToDiv.setAttribute('data-name', e.target.dataset.name);
+	goToDiv.setAttribute('data-side', e.target.dataset.side);
+	goToDiv.setAttribute('src', e.target.src);
+
+	// gets pieceToMove's activeSide index
+	index1 = passiveSide.indexOf(pieceToMove);
+
+	// removes now-empty pieceToMove from activeSide    
+	passiveSide.splice(index1, 1);
+
+	// updates activeSide & pieces array
+	passiveSide.push(goToDiv);
+	// pieces = [...activeSide, ...passiveSide];
+
+	// un-informs pieceToMove
+	pieceToMove.setAttribute('data-name', 'empty');
+	pieceToMove.setAttribute('data-side', 'empty');
+	pieceToMove.setAttribute('src', './images/transparent.png');
+
+	// closes modal window
+	if (e.target.dataset.side === 'blue') {
+		document.querySelector('.modalBlue').classList.toggle("show-modal");
+	}
+	else if (e.target.dataset.side === 'orange') { document.querySelector('.modalOrange').classList.toggle("show-modal"); }
+}
 
 function swapSide(fromDiv, toDiv) {
 	// swaps pieceToMove & goToDiv info
 	console.log('ENTERS swapSide()');
-
-	// re-informs goToDiv
-	toDiv.setAttribute('data-name', fromDiv.dataset.name);
-	toDiv.setAttribute('data-side', fromDiv.dataset.side);
-	toDiv.setAttribute('src', fromDiv.src);
-
-	// gets pieceToMove's activeSide index
-	index1 = activeSide.indexOf(fromDiv);
-
-	// removes now-empty pieceToMove from activeSide    
-	activeSide.splice(index1, 1);
-
-	// updates activeSide & pieces array
-	activeSide.push(toDiv);
-	pieces = [...oranges, ...blues];
-
-	// if not an enPassant attack, resets enPassant process
-	if (pieceToMove.dataset.name === 'pawn') {
-		if (toDiv !== pawnJumpDiv) { enPassantReset(); }
+	// handles blue pawn evolution modal window
+	if ( (fromDiv.dataset.name === 'pawn') && (toDiv.id[1] === '0') ) {
+		document.querySelector('.modalBlue').classList.toggle("show-modal");
+		document.getElementById('blueQueen').addEventListener(
+			'click', pawnEvolve
+		);
+		document.getElementById('blueKnight').addEventListener(
+			'click', pawnEvolve
+		);
+	} // handles orange pawn evolution modal window
+	else if ( (fromDiv.dataset.name === 'pawn') && (toDiv.id[1] === '7') ) {
+		document.querySelector('.modalOrange').classList.toggle("show-modal");
+		document.getElementById('orangeQueen').addEventListener(
+			'click', pawnEvolve
+		);
+		document.getElementById('orangeKnight').addEventListener(
+			'click', pawnEvolve
+		);
 	}
-	else { enPassantReset(); }
+	else { // since no pawn evolution
+		// re-informs goToDiv
+		toDiv.setAttribute('data-name', fromDiv.dataset.name);
+		toDiv.setAttribute('data-side', fromDiv.dataset.side);
+		toDiv.setAttribute('src', fromDiv.src);
 
-	// un-informs pieceToMove
-	fromDiv.setAttribute('data-name', 'empty');
-	fromDiv.setAttribute('data-side', 'empty');
-	fromDiv.setAttribute('src', './images/transparent.png');
+		// gets pieceToMove's activeSide index
+		index1 = activeSide.indexOf(fromDiv);
 
+		// removes now-empty pieceToMove from activeSide    
+		activeSide.splice(index1, 1);
+
+		// updates activeSide & pieces array
+		activeSide.push(toDiv);
+		// pieces = [...activeSide, ...passiveSide];
+
+		// if not an enPassant attack, resets enPassant process
+		if (pieceToMove.dataset.name === 'pawn') {
+			if (toDiv !== pawnJumpDiv) { enPassantReset(); }
+		}
+		else { enPassantReset(); }
+
+		// un-informs pieceToMove
+		fromDiv.setAttribute('data-name', 'empty');
+		fromDiv.setAttribute('data-side', 'empty');
+		fromDiv.setAttribute('src', './images/transparent.png');
+	}
 	console.log('EXITS swapSide()');
 }
 
@@ -1466,7 +1514,7 @@ function checkingSpace(somePiece, checkSpaceId) {
 
 function lit() {
 
-	pieces = [...oranges, ...blues];
+	// pieces = [...oranges, ...blues];
 	pinnedPieces = [];
 	litIds = [];
 	kingIds = [];
