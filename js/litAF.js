@@ -1470,7 +1470,7 @@ function lit() {
 	pinnedPieces = [];
 	litIds = [];
 	kingIds = [];
-	
+
 	kingAttackers = []; // passivePieces that check activeKing
 	greyPieceToMove = undefined;
 	newPieceClicked = undefined;
@@ -1513,7 +1513,7 @@ function lit() {
 		pinnedPieces.forEach(obj => { pins.push(obj.pinned); });
 		console.log('pins -->');  console.log(pins);
 
-		// for each previousPinnedPiece, if not in pins
+		// for each previousPinnedPiece, if not in pins, un-pins that piece
 		for (let i = 0; i < previousPinnedPieces.length; i++) {
 			if (!pins.includes(previousPinnedPieces[i])) {
 				// sets dataset.pinned to 'false' & dataset.pinner to 'empty'
