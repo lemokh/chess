@@ -208,14 +208,14 @@ function moveGreyPiece(e) {
 	greyPieceToMove.classList.remove('preventMateLit');
 
 	if (greyPieceToMove.dataset.name === 'king') {
-		litIds.forEach(id => {
+		kingLitIds.forEach(id => {
 			litPiece = document.getElementById( id );
 			litPiece.classList.remove( 'lit' );
 			litPiece.removeEventListener( 'click', moveGreyPiece );
 		});
 	}
 
-	// clears greyLitDiv pieces
+	// clears and resets greyLitPieces
 	greyLitPieces.forEach(greyLitPiece => {
 		greyLitPiece.removeEventListener('click', selectGreyPiece);
 		greyLitPiece.classList.remove('preventMateLit');
