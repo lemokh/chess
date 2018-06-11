@@ -18,7 +18,15 @@ var passiveSide = oranges;
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
- 
+
+function toggleClocks() {
+	return;
+}
+
+function clocks() {
+	return;
+}
+
 function inCheck() {
 
 	console.log('ENTERS inCheck()');  
@@ -142,9 +150,6 @@ function inCheck() {
 	}
 }
 
-/////////////////////////////////
-
-
 function selectGreyPiece(e) {
 
 	if (greyPieceToMove !== undefined) {
@@ -230,103 +235,6 @@ function moveGreyPiece(e) {
 
 	toggleSides();
 }
-
-/////////////////////////////////
-
-/*
-function selectGreyPiece(e) {
-
-	// resets previous clicked greyPieceToMove 
-	if (greyPieceToMove !== undefined) {
-		greyPieceToMove.classList.remove('mainLit');
-		// on-clicking new preventMateLit piece, 
-		// enables clicking of prior preventMateLit clicked-piece
-		greyPieceToMove.addEventListener('click', selectGreyPiece);
-	}
-	
-	// resets each litId of class & click-listeners then empties litIds
-	removeLitDivHandler(moveGreyPiece);
-	
-	if (kingLitIds.length) {
-		kingLitIds.forEach(id => {
-			kingLitPiece = document.getElementById( id );
-			kingLitPiece.classList.remove( 'lit' );
-			kingLitPiece.removeEventListener( 'click', moveGreyPiece );
-		});
-	}
-
-	greyPieceToMove = e.target;
-	// temporarily disables clicking of this piece
-	e.target.removeEventListener('click', selectGreyPiece);
-	greyPieceToMove.classList.add('mainLit');
-
-	console.log('litIds -->');  console.log(litIds);
-	console.log('kingLitIds -->');  console.log(kingLitIds);
-	// kingIds works here
-
-	console.log('litIds -->');  console.log(litIds);
-
-	if (greyPieceToMove.dataset.name === 'king') {
-		console.log('greyPieceToMove IS activeKing');
-		kingLitIds.forEach(id => {
-			if (onBoard(kingLitIds)) {
-				kingLitPiece = document.getElementById( id );
-				kingLitPiece.classList.add( 'lit' );
-				kingLitPiece.addEventListener( 'click', moveGreyPiece );
-			}
-		});
-	}
-	else { // since greyPieceToMove is not the king
-		console.log('greyPieceToMove is NOT activeKing');
-		if (canEatKingAttacker.includes(e.target)) {
-			litIds.push(kingAttackers[0].id);
-		}
-		// collects id of where this piece can block the path of check 
-		canBlockPathOfCheck.forEach(obj => {
-			if (obj.pathBlocker === e.target) {
-				litIds.push(obj.emptyDivId);
-			}
-		});
-		
-		console.log('litIds -->');  console.log(litIds);
-		
-		addLitDivHandler(moveGreyPiece);
-	}
-}
-
-function moveGreyPiece(e) {
-	
-	console.log('ENTERS moveGreyPiece()');
-	
-	// resets greyPieceToMove
-	greyPieceToMove.classList.remove('mainLit');
-	greyPieceToMove.classList.remove('preventMateLit');
-
-	if (greyPieceToMove.dataset.name === 'king') {
-		kingLitIds.forEach(id => {
-			kingLitPiece = document.getElementById( id );
-			kingLitPiece.classList.remove( 'lit' );
-			kingLitPiece.removeEventListener( 'click', moveGreyPiece );
-		});
-	}
-
-	// clears greyLitPieces
-	greyLitPieces.forEach(greyLitPiece => {
-		greyLitPiece.removeEventListener('click', selectGreyPiece);
-		greyLitPiece.classList.remove('preventMateLit');
-	});
-	greyLitPieces = [];
-
-	removeLitDivHandler(moveGreyPiece);
-
-	if (e.target.dataset.side !== 'empty') { eat(e.target); }
-
-	swapSide(greyPieceToMove, e.target);
-
-	toggleSides();
-}
-*/
-
 
 function wherePieceCanMove(e) { // pieceLit(e)
 	// if not first click of this turn
@@ -576,7 +484,6 @@ function eat(piece) {
 	console.log('EXITS eat()');
 }
 
-
 function castling(e) {
 	console.log('enters castling(e)')
 	// -------------------------------------------------
@@ -637,7 +544,6 @@ function enPassantReset() {
 	enPassantDiv = undefined;
 	console.log('enPassantDiv = undefined');
 }
-
 
 function addLitDivHandler(funcName) {
 
@@ -1610,11 +1516,9 @@ function checkingSpace(somePiece, checkSpaceId) {
 
 function lit() {
 
-	// pieces = [...oranges, ...blues];
 	pinnedPieces = [];
 	litIds = [];
 	kingIds = [];
-
 	kingAttackers = []; // passivePieces that check activeKing
 	greyPieceToMove = undefined;
 	newPieceClicked = undefined;
