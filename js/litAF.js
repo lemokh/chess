@@ -142,7 +142,7 @@ function inCheck() {
 
 function selectGreyPiece(e) {
 
-	// if not first click greyPiece this turn
+	// resets previous clicked greyPieceToMove 
 	if (greyPieceToMove !== undefined) {
 		greyPieceToMove.classList.remove('mainLit');
 		// on-clicking new preventMateLit piece, 
@@ -157,6 +157,7 @@ function selectGreyPiece(e) {
 
 	console.log('litIds -->');  console.log(litIds);
 	console.log('kingLitIds -->');  console.log(kingLitIds);
+	// kingIds works here
 	
 	// resets each litId of class & click-listeners then empties litIds
 	removeLitDivHandler(moveGreyPiece);
