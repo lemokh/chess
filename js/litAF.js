@@ -162,6 +162,15 @@ function selectGreyPiece(e) {
 			litPiece.classList.remove( 'lit' );
 			litPiece.removeEventListener( 'click', moveGreyPiece );
 		});
+	} litIds = [];
+
+	if (kingLitIds.length) {
+		kingLitIds.forEach( id => {
+			litPiece = document.getElementById( id );
+			// --------------------------------------
+			litPiece.classList.remove( 'lit' );
+			litPiece.removeEventListener( 'click', moveGreyPiece );
+		});
 	}
 
 	greyPieceToMove = e.target;
@@ -170,7 +179,7 @@ function selectGreyPiece(e) {
 	greyPieceToMove.classList.add('mainLit');
 
 	if (greyPieceToMove.dataset.name === 'king') {
-		litIds.forEach(id => {
+		kingLitIds.forEach(id => {
 			litPiece = document.getElementById( id );
 			litPiece.classList.add( 'lit' );
 			litPiece.addEventListener( 'click', moveGreyPiece );

@@ -36,7 +36,7 @@ addLitDivHandler(pieceToMove, movePiece);
 
 /*
 ERRORS:
-    -2. orange king is pinned when in check sometimes...
+   
     
     -1. after castling, toggleSides repeats turn for castling side
         line 699... logic is too loose there for castling(e) scenario
@@ -45,10 +45,7 @@ ERRORS:
 
     1.  pinnedPiece no longer moves between its path to king and its path to its pinner 
 
-    2.  TO BEGIN EACH TURN:
-            if (pinnedPiece no longer pinned) { 
-                pinnedPiece.setAttribute('data-pinned', 'true');
-            }
+    2. orange king is pinned when in check sometimes...
 
     3. correctly alert check mate
 
