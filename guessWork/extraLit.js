@@ -1052,3 +1052,4 @@ function lit(activeSide, passiveSide) {
 		});
 	}
 }
+lit(blues, oranges);
