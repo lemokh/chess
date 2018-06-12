@@ -103,7 +103,7 @@ function inCheck() {
 			// pinnedPiece can only attack in line of its pinner path to king
 			else { // since activePiece is pinned
 				console.log(activePiece.id+' is pinned');
-				pinnedPieceLit(activePiece);				
+				pinnedLit(activePiece);				
 			}
 		}); // excludes activeKing
 		//////////////////////////
@@ -1131,54 +1131,6 @@ function checkingSpace(somePiece, checkSpaceId) {
 		if (knightSpaces(knight).filter(onBoardNonActiveIds).filter(attacks).length) {
 			return true; 
 		}
-		
-
-
-		/*
-		// if knight is left of checkSpaceId
-		if (knight.id[0] < checkSpaceId[0]) {
-			// and if knight is above checkSpaceId
-			if (knight.id[1] < checkSpaceId[1]) {
-				if (checkSpaceId === (+knight.id[0] + 1) + (knight.id[1] + 2).toString() ) {
-					return true;
-				}
-				if (checkSpaceId === (+knight.id[0] + 2) + (+knight.id[1] + 1).toString() ) {
-					return true;
-				}
-			}
-			else { // since knight is left of & below checkSpaceId
-				
-				if (checkSpaceId === (+knight.id[0] + 1) + (knight.id[1] - 2).toString() ) {
-					return true;
-				}
-				if (checkSpaceId === (+knight.id[0] + 2) + (+knight.id[1] + 1).toString() ) {
-					return true;
-				}
-			}
-		}
-		else { // since knight is right of & above checkSpaceId
-			if (knight.id[1] < checkSpaceId[1]) {
-				
-				if (checkSpaceId === (knight.id[0] - 1) + (+knight.id[1] + 2).toString() ) {
-					return true;
-				}
-				
-				if (checkSpaceId === (knight.id[0] - 2) + (+knight.id[1] + 1).toString() ) {
-					return true;
-				}
-			}
-			else { // since knight is right of & below checkSpaceId
-				if (checkSpaceId === (knight.id[0] - 1) + (knight.id[1] - 2).toString() ) {
-					return true;
-				}
-			
-				if (checkSpaceId === (knight.id[0] - 2) + (knight.id[1] - 1).toString() ) {
-					return true;
-				}
-			}
-		}
-		*/
-		
 	}
 
 	// returns true/false... if bishop can attack checkSpaceId,
