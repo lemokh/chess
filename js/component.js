@@ -35,38 +35,22 @@ addLitDivHandler(pieceToMove, movePiece);
 
 
 /*
-ERRORS:
-   
-    
-    -1. after castling, toggleSides repeats turn for castling side
-        line 699... logic is too loose there for castling(e) scenario
+ERRORS: 
+        0.  king does not eat uncovered rook / queen
 
-    0.  obj.pathBlocker doesn't work on left side
+        1.  pinnedPiece needs to move between its path to king
+                and its path to its pinner
 
-    1.  pinnedPiece no longer moves between its path to king and its path to its pinner 
+        2.  oragne enPassant doesn't work
 
-    2. orange king is pinned when in check sometimes...
+METHOD: step through entire file to find mistakes... open flood gates    
 
-    3. correctly alert check mate
-
-
-METHOD: step through lit() for each scenario to find mistakes
-        ... open the flood gates    
-
-
-SCENARIOS:
-    
-    1.  pinnedPiece clicked --> move where able
-    
-    2. pinnedPiece from previous turn no longer pinned --> click and move
-
+SCENARIOS:  1.  pinnedPiece clicked --> move where able
 
 BUILD:
 
-    1. pawn evolution --> queen or knight
-    
-    2. add two clocks --> choose the game duration
+    0. add two clocks --> on-load, choose game duration
 
-    3. add resign button
+    1. add resign button
 
 */
