@@ -24,7 +24,7 @@ function toggleClocks() {
 }
 
 function clocks() {
-	return;
+	return true;
 }
 
 function inCheck() {
@@ -316,7 +316,7 @@ function movePiece(e) {
 	}
 	console.log('un-lightens mainDiv & litIds');
 	
-	goToDiv = e.target;
+	goToDiv = e.target; // unnecessary, use e.target instead
 	
 	console.log('pieceToMove -->');  console.log(pieceToMove);
 	console.log('goToDiv -->');      console.log(goToDiv);
@@ -327,6 +327,7 @@ function movePiece(e) {
 		console.log('goToDiv IS empty');            
 
 		if (pieceToMove.dataset.name === 'pawn') {
+			
 			if (enPassanting) {
 				if (goToDiv === enPassantDiv) {
 					console.log('enPassant pawn attack is happening');
@@ -338,7 +339,7 @@ function movePiece(e) {
 				} 
 			}
 			// covers bluePawn taking a NON-enPassant empty space
-			if (activeSide[0].dataset.side === 'blue') { // if blue's turn
+			if (activeKing.dataset.side === 'blue') { // if blue's turn
 				// if pawnToMove jumps two spaces
 				if (goToDiv.id === (pieceToMove.id[0] + (pieceToMove.id[1] - 2))) {
 					enPassanting = true;
@@ -439,13 +440,7 @@ function swapSide(fromDiv, toDiv) {
 
 		// if not an enPassant attack, resets enPassant process
 		if (pieceToMove.dataset.name === 'pawn') {
-			if (toDiv !== pawnJumpDiv) { 
-
-				console.log('toDiv !== pawnJumpDiv');
-				console.log([toDiv, pawnJumpDiv])
-				
-				enPassantReset();
-			}
+			if (toDiv !== pawnJumpDiv) { enPassantReset(); }
 		}
 		else { enPassantReset(); }
 
@@ -702,11 +697,11 @@ function pawnLit() {
 			// covers enPassant attack, if bluePawn is in third row
 			if (pieceToMove.id[1] === "3") {
 				// if bluePawnToMove is beside pawnJump
-				if ((pieceToMove.id === (+pawnJumpDiv.id[0] - 1) + pawnJumpDiv.id[1])
+				if ((pieceToMove.id === (pawnJumpDiv.id[0] - 1) + pawnJumpDiv.id[1])
 				|| (pieceToMove.id === (+pawnJumpDiv.id[0] + 1) + pawnJumpDiv.id[1])) {
 					// adds bluePawnToMove's enPassant-attack-div to litIds
 					enPassantDiv = document.getElementById(
-						pawnJumpDiv.id[0] + (+pawnJumpDiv.id[1] - 1) 
+						pawnJumpDiv.id[0] + (pawnJumpDiv.id[1] - 1) 
 					);
 					litIds.push( enPassantDiv.id );
 				}
