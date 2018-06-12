@@ -1047,10 +1047,8 @@ function kingLit() {
 				/*
 				kingAttackers.forEach(kingAttacker => {
 					if (kingAttacker.dataset.name === 'bishop') {
-
 					}
 					else if (kingAttacker.dataset.name === 'rook') {
-
 					}
 				});
 				*/
@@ -1144,11 +1142,9 @@ function checkingSpace(somePiece, checkSpaceId) {
 		if (knight.id[0] < checkSpaceId[0]) {
 			// and if knight is above checkSpaceId
 			if (knight.id[1] < checkSpaceId[1]) {
-
 				if (checkSpaceId === (+knight.id[0] + 1) + (knight.id[1] + 2).toString() ) {
 					return true;
 				}
-
 				if (checkSpaceId === (+knight.id[0] + 2) + (+knight.id[1] + 1).toString() ) {
 					return true;
 				}
@@ -1158,7 +1154,6 @@ function checkingSpace(somePiece, checkSpaceId) {
 				if (checkSpaceId === (+knight.id[0] + 1) + (knight.id[1] - 2).toString() ) {
 					return true;
 				}
-
 				if (checkSpaceId === (+knight.id[0] + 2) + (+knight.id[1] + 1).toString() ) {
 					return true;
 				}
@@ -1518,7 +1513,6 @@ function lit() {
 	kingAttackers = []; // passivePieces that check activeKing
 	greyPieceToMove = undefined;
 	newPieceClicked = undefined;
-	// tempPinnedPieces = [];
 	pathOfCheck = [];
 	canBlockPathOfCheck = [];
 	canEatKingAttacker = [];

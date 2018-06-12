@@ -1,5 +1,5 @@
 /*  for each pinnedPiece,
-        collect into pinnedPiece's pinnedMoveIds attribute:
+        collects in pinnedPiece's pinnedMoveIds attribute:
             ids between it & its pinner
             then also ids between it & its own king */
 
