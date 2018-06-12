@@ -103,7 +103,7 @@ function inCheck() {
 			// pinnedPiece can only attack in line of its pinner path to king
 			else { // since activePiece is pinned
 				console.log(activePiece.id+' is pinned');
-				pinnedLit(activePiece);				
+				return;			
 			}
 		}); // excludes activeKing
 		//////////////////////////
@@ -253,8 +253,8 @@ function wherePieceCanMove(e) { // pieceLit(e)
 	pieceToMove.classList.add('mainLit');
 
 	if (pieceToMove.dataset.pinned === 'true') { 
-		return;
-		// pinnedPieceLit(); 
+		// return;
+		pinnedPieceLit(); 
 	}
 	else { possibleMoves(); }
 }
@@ -1056,8 +1056,6 @@ function kingLit() {
 	}
 }  // fills litIds with ids where king can move
 
-
-// returns true/false if somePiece can attack checkSpaceId
 function checkingSpace(somePiece, checkSpaceId) {
 
 	function pawnAttacks(pawn) {
@@ -1452,7 +1450,6 @@ function checkingSpace(somePiece, checkSpaceId) {
 		case 'king':    return kingAttacks(somePiece);
 	}
 } // returns true/false if somePiece can attack checkSpaceId
-
 
 function lit() {
 
