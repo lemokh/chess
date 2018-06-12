@@ -100,13 +100,10 @@ function inCheck() {
 					pawnBlocksKingAttacker = false;
 				}
 			}
+			// pinnedPiece can only attack in line of its pinner path to king
 			else { // since activePiece is pinned
 				console.log(activePiece.id+' is pinned');
-				// if activePiece can eat kingAttacker
-				if (checkingSpace(activePiece, kingAttackers[0].id)) {
-					canEatKingAttacker.push(activePiece);
-					console.log(activePiece.id+' can eat '+kingAttackers[0].id);
-				}
+				pinnedPieceLit(activePiece);				
 			}
 		}); // excludes activeKing
 		//////////////////////////
