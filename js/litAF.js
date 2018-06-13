@@ -923,7 +923,7 @@ function kingLit() {
 	console.log('ENTERS kingLit()');
 
 	passiveSideCoversId = false;
-	kingSpacesUnderAttack = [];  // unnecessary
+	// kingSpacesUnderAttack = [];  // unnecessary
 
 	// covers king castling
 	if (!kingAttackers.length) { // if king not in check
