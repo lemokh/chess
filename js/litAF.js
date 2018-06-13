@@ -1033,12 +1033,15 @@ function kingLit() {
 			passiveSideCoversId = false;
 			// for each oAOHKS & each passivePiece
 			for (let i = 0; i < passiveSide.length; i++) {
-				// if a passivePiece can check that oAOHKS...(kingSpace id devoid of activePiece)
-				if (checkingSpace(passiveSide[i], id)) {
-					console.log(passiveSide[i].dataset.side + ' ' + passiveSide[i].dataset.name + ' can attack ' + id);
+				if (passiveSide[i].id !== id) {
+					// if a passivePiece can check that oAOHKS...(kingSpace id devoid of activePiece)
+					if (checkingSpace(passiveSide[i], id)) {
+						console.log(passiveSide[i].dataset.side + ' ' + passiveSide[i].dataset.name + ' can attack ' + id);
 
-					passiveSideCoversId = true;
-					break;
+						passiveSideCoversId = true;
+						break;
+						
+					}
 				}
 			}
 			if (!passiveSideCoversId) {
