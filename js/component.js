@@ -35,13 +35,9 @@ addLitDivHandler(pieceToMove, movePiece);
 
 
 /*
-ERRORS: 
-        0.  king does not eat uncovered rook / queen
-
-        1.  pinnedPiece needs to move between its path to king
-                and its path to its pinner
-
-        2.  oragne enPassant doesn't work
+ERRORS:
+1.  pinnedPiece needs to move between its path to king
+        and its path to its pinner --> rewrite pinnedPieceLit()
 
 METHOD: step through entire file to find mistakes... open flood gates    
 
@@ -51,6 +47,6 @@ BUILD:
 
     0. add two clocks --> on-load, choose game duration
 
-    1. add resign button
+    1. add one resign button to endGame() for activeSide
 
 */
