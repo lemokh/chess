@@ -673,9 +673,9 @@ function toggleSides() {
 function endOfGame() {
 	// document.getElementById( 'board' ).classList.add( 'noClick' );
 	
-	// activeSide.forEach(activePiece => {
-	// 	activePiece.removeEventListener('click', wherePieceCanMove);
-	// });
+	activeSide.forEach(activePiece => {
+		activePiece.removeEventListener('click', wherePieceCanMove);
+	});
 
 
 	alert(activeKing.dataset.side + ' KING CHECKMATED!');
@@ -1033,6 +1033,7 @@ function kingLit() {
 			passiveSideCoversId = false;
 			// for each oAOHKS & each passivePiece
 			for (let i = 0; i < passiveSide.length; i++) {
+
 				if (passiveSide[i].id !== id) {
 					// if a passivePiece can check that oAOHKS...(kingSpace id devoid of activePiece)
 					if (checkingSpace(passiveSide[i], id)) {
