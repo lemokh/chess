@@ -103,7 +103,8 @@ function inCheck() {
 			// pinnedPiece can only attack in line of its pinner path to king
 			else { // since activePiece is pinned
 				console.log(activePiece.id+' is pinned');
-				return;			
+				pinnedPieceLit(activePiece);
+				return;
 			}
 		}); // excludes activeKing
 		//////////////////////////
@@ -253,8 +254,8 @@ function wherePieceCanMove(e) { // pieceLit(e)
 	pieceToMove.classList.add('mainLit');
 
 	if (pieceToMove.dataset.pinned === 'true') { 
-		// return;
-		pinnedPieceLit(); 
+		pinnedPieceLit();
+		return;
 	}
 	else { possibleMoves(); }
 }
