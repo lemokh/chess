@@ -297,7 +297,15 @@ function movePiece(e) {
 	// un-lightens mainDiv
 	pieceToMove.classList.remove( 'mainLit' );
 
-	removeLitDivHandler(movePiece);
+	if (pieceToMove.dataset.pinned === 'true') {
+		pinnedLitIds.forEach( pinnedLitId => {
+			litPiece = document.getElementById( pinnedLitId );
+			litPiece.classList.remove( 'lit' );
+			litPiece.removeEventListener( 'click', movePiece );
+		});
+		pinnedLitIds = [];
+	}
+	else { removeLitDivHandler(movePiece); }
 
 	// prevents castling after king's first move
 	if (pieceToMove.dataset.name === 'king') {
