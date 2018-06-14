@@ -39,6 +39,9 @@ function inCheck() {
 	
 	console.log('greyLitPieces -->');  console.log(greyLitPieces);
 
+	if (pieceToMove.dataset.pinned === 'true') {
+		
+	}
 	// if king can move, handles moving activeKing
 	if (litIds.length) {
 		
