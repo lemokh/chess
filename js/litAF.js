@@ -622,65 +622,6 @@ function pinnedPieceLit() {
 	pinnedIds = [...pathOfCheck, ...tempIds];
 }
 
-/*
-function pinnedPieceLit(piece) {
-
-	console.log('ENTERS pinnedPieceLit()');
-
-	function movePinnedPiece(e) {
-		
-		pieceToMove.classList.remove('mainLit');
-		removeLitDivHandler(movePinnedPiece);
-		swapSide(pieceToMove, e.target);
-		toggleSides();
-	}
-
-	pinnerPiece = pieceToMove.dataset.pinner;
-	
-	// if pinned pieceToMove can eat pinner piece
-	if (checkingSpace(pieceToMove, pinnerPiece.id)) {	
-		
-		litIds.push(pinnerPiece.id);
-		pinnerPiece.classList.add('lit');
-		pinnerPiece.addEventListener('click', movePinnedPiece);
-	}
-
-	pawnBlocksKingAttacker = true;
-
-	// provides id path from pinner piece to pinned piece
-	checkingSpace(pinnerPiece, pieceToMove.id);
-
-	pathOfCheck.forEach(id => {
-
-		pathPiece = document.getElementById( id );
-
-		if (checkingSpace(pieceToMove, id)) {
-
-			pathPiece.classList.add('lit');
-			litIds.push(id);
-			pathPiece.addEventListener('click', movePinnedPiece);
-		}
-	});
-
-	pawnBlocksKingAttacker = false;
-
-	// provides id path for pinned piece to its own king
-	checkingSpace(pieceToMove, activeKing.id);
-
-	pathOfCheck.forEach(id => {
-
-		pathPiece = document.getElementById( id );
-
-		if (checkingSpace(pieceToMove, id)) {
-
-			pathPiece.classList.add('lit');
-			litIds.push(id);
-			pathPiece.addEventListener('click', movePinnedPiece);
-		}
-	});
-}
-*/
-
 function toggleSides() {
 	// removes click-listeners from activePieces
 	activeSide.forEach(activePiece => {
