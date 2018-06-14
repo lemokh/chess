@@ -39,13 +39,19 @@ function inCheck() {
 	
 	console.log('greyLitPieces -->');  console.log(greyLitPieces);
 
-	// if (pieceToMove.dataset.pinned === 'true') {
+	/* IMPORTANT?
+	if (pieceToMove.dataset.pinned === 'true') {
 		// WRITE THE LOGIC FOR IN-CHECK PINNED PIECE
-		// 1. 
-
-
-
-	// }
+		pinnedPieceLit(); // gets pinnedIds where pinned pieceToMove can go
+		if (pinnedLitIds.length) {
+			pinnedLitIds.forEach( pinnedLitId => {
+				litPiece = document.getElementById( pinnedLitId );
+				litPiece.classList.add( 'lit' );
+				litPiece.addEventListener( 'click', moveGreyPiece );
+			});
+		}
+	}
+	*/
 	// if king can move, handles moving activeKing
 	if (litIds.length) {
 		
@@ -149,9 +155,8 @@ function inCheck() {
 		// checkmate if king stuck
 		if (kingStuck) { return endOfGame(); }
 
-		// MAYBE THIS IS UNNECESSARY?
 		// else move activeKing
-		else { return addLitDivHandler(selectGreyPiece); }
+		else { addLitDivHandler(selectGreyPiece); }
 	}
 }
 
@@ -262,7 +267,7 @@ function wherePieceCanMove(e) { // pieceLit(e)
 
 	if (pieceToMove.dataset.pinned === 'true') {
 		pinnedPieceLit(); // gets pinnedIds where pinned pieceToMove can go
-		if (pinnedLitIds) {
+		if (pinnedLitIds.length) {
 			pinnedLitIds.forEach( pinnedLitId => {
 				litPiece = document.getElementById( pinnedLitId );
 				litPiece.classList.add( 'lit' );
@@ -310,7 +315,6 @@ function movePiece(e) {
 			litPiece.classList.remove( 'lit' );
 			litPiece.removeEventListener( 'click', movePiece );
 		});
-		pinnedLitIds = [];
 	}
 	else { removeLitDivHandler(movePiece); }
 
@@ -592,6 +596,14 @@ function cleanUpAfterFirstClick() {
 		
 		// un-lightens, clears out & stops click-listening to litIds
 		if (litIds.length) { removeLitDivHandler(movePiece); }
+		// un-lightens, clears out & stops click-listening to litIds
+		if (pinnedLitIds) {
+			pinnedLitIds.forEach( pinnedLitId => {
+				litPiece = document.getElementById( pinnedLitId );
+				litPiece.classList.remove( 'lit' );
+				litPiece.removeEventListener( 'click', movePiece );
+			});
+		}
 		
 		// un-lightens, clears out & stops click-listening to castleIds
 		if (castleIds.length) { // if king ready to castle
@@ -1440,6 +1452,7 @@ function checkingSpace(somePiece, checkSpaceId) {
 
 function lit() {
 
+	pinnedLitIds = [];
 	pinnedPieces = [];
 	litIds = [];
 	kingIds = [];
