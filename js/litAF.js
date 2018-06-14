@@ -69,7 +69,7 @@ function inCheck() {
 	else { kingStuck = true; } // unnecessary?
 	
 	if (kingAttackers.length === 1) { // if only one kingAttacker
-		/////////////////////////////////////////////////////////
+		/////////////////////////////////////////////////////
 		// populates canEatKingAttacker & canBlockPathOfCheck
 		activeSide.forEach(activePiece => {
 			pieceToMove = activePiece; // IMPORTANT
