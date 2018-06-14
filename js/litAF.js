@@ -72,12 +72,12 @@ function inCheck() {
 		/////////////////////////////////////////////////////////
 		// populates canEatKingAttacker & canBlockPathOfCheck
 		activeSide.forEach(activePiece => {
+			pieceToMove = activePiece; // IMPORTANT
 			// for each activePiece, if not pinned
 			if (activePiece.dataset.pinned === 'false') {
 				// if not activeKing
 				if (activePiece.dataset.name !== 'king') {
 					//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-					pieceToMove = activePiece; // IMPORTANT
 					// if activePiece checks kingAttacker
 					if (checkingSpace(activePiece, kingAttackers[0].id)) {
 						console.log(activePiece.id+' can eat '+kingAttackers[0].id);
@@ -103,7 +103,7 @@ function inCheck() {
 			// pinnedPiece can only attack in line of its pinner path to king
 			else { // since activePiece is pinned
 				console.log(activePiece.id+' is pinned');
-				pinnedPieceLit(activePiece);
+				pinnedPieceLit();
 				return;
 			}
 		}); // excludes activeKing
@@ -584,14 +584,15 @@ function cleanUpAfterFirstClick() {
 	}
 }
 
-
-function pinnedPieceLit(piece) {
+function pinnedPieceLit() {
 	console.log('ENTERS pinnedPieceLit()');
 	pinnerPiece = pieceToMove.dataset.pinner;
 	// provides id path from pinner piece to pinned piece
 	checkingSpace(pinnerPiece, pieceToMove.id);
+	forwardIds = pathOfCheck;
 	// provides id path for pinned piece to its own king
 	checkingSpace(pieceToMove, activeKing.id);
+	backwardIds = pathOfCheck;
 }
 
 /*
