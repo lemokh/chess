@@ -584,8 +584,18 @@ function cleanUpAfterFirstClick() {
 	}
 }
 
-// NEEDS WORK!
-function pinnedPieceLit() {
+
+function pinnedPieceLit(piece) {
+	console.log('ENTERS pinnedPieceLit()');
+	pinnerPiece = pieceToMove.dataset.pinner;
+	// provides id path from pinner piece to pinned piece
+	checkingSpace(pinnerPiece, pieceToMove.id);
+	// provides id path for pinned piece to its own king
+	checkingSpace(pieceToMove, activeKing.id);
+}
+
+/*
+function pinnedPieceLit(piece) {
 
 	console.log('ENTERS pinnedPieceLit()');
 
@@ -602,8 +612,8 @@ function pinnedPieceLit() {
 	// if pinned pieceToMove can eat pinner piece
 	if (checkingSpace(pieceToMove, pinnerPiece.id)) {	
 		
-		pinnerPiece.classList.add('lit');
 		litIds.push(pinnerPiece.id);
+		pinnerPiece.classList.add('lit');
 		pinnerPiece.addEventListener('click', movePinnedPiece);
 	}
 
@@ -641,6 +651,7 @@ function pinnedPieceLit() {
 		}
 	});
 }
+*/
 
 function toggleSides() {
 	// removes click-listeners from activePieces
