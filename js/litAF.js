@@ -1377,7 +1377,6 @@ function checkingSpace(somePiece, checkSpaceId) {
 		if (nails.length === 2) {
 			nails.forEach(nailId => {
 				if (rook.id[o] === nailId[0]) {
-
 				}
 			});
 		}

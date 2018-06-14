@@ -37,7 +37,7 @@ addLitDivHandler(pieceToMove, movePiece);
 /*
 ERRORS:
 1.  pinnedPieces need to be added when nails.length > 1
-        if nails[i] is between king and passivePiece
+        
 
 2.  when king checked by queen, needs to enter inCheck()
         and be able to eat uncovered queen
