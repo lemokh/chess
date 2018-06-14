@@ -1435,7 +1435,6 @@ function checkingSpace(somePiece, checkSpaceId) {
 				);
 
 				nails[0].setAttribute('data-pinned', true);
-				nails[0].setAttribute('data-pinner', rook);
 				
 				alert(nails[0].dataset.side + ' ' + nails[0].dataset.name + ' IS PINNED');
 				console.log('pinnedPieces -->');  console.log(pinnedPieces);
