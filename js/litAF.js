@@ -40,7 +40,11 @@ function inCheck() {
 	console.log('greyLitPieces -->');  console.log(greyLitPieces);
 
 	if (pieceToMove.dataset.pinned === 'true') {
-		
+		// WRITE THE LOGIC FOR IN-CHECK PINNED PIECE
+		// 1. 
+
+
+
 	}
 	// if king can move, handles moving activeKing
 	if (litIds.length) {
@@ -256,7 +260,7 @@ function wherePieceCanMove(e) { // pieceLit(e)
 
 	pieceToMove.classList.add('mainLit');
 
-	if (pieceToMove.dataset.pinned === 'true') { 
+	if (pieceToMove.dataset.pinned === 'true') {
 		pinnedPieceLit(); // gets pinnedIds where pinned pieceToMove can go
 		if (pinnedLitIds) {
 			pinnedLitIds.forEach( pinnedLitId => {
@@ -603,7 +607,13 @@ function cleanUpAfterFirstClick() {
 
 function pinnedPieceLit() {
 	console.log('ENTERS pinnedPieceLit()');
-	pinnerPiece = pieceToMove.dataset.pinner;
+
+	for (let i = 0; i < pinnedPieces.length; i++) {
+		if (pieceToMove === pinnedPieces[i].pinned) {
+			pinnerPiece = pinnedPieces[i].pinner;
+			break;
+		}
+	}	
 	// provides id path from pinner piece to pinned piece
 	checkingSpace(pinnerPiece, pieceToMove.id);
 	tempIds = pathOfCheck;
@@ -1314,7 +1324,6 @@ function checkingSpace(somePiece, checkSpaceId) {
 					);
 					// sets dataset.pinned & dataset.pinner for nails[0]
 					nails[0].setAttribute('data-pinned', true);
-					nails[0].setAttribute('data-pinner', bishop);
 					
 					alert(nails[0].dataset.side + ' ' + nails[0].dataset.name + ' IS PINNED');
 					console.log('pinnedPieces -->');  console.log(pinnedPieces);
@@ -1523,11 +1532,9 @@ function lit() {
 			console.log('pathOfCheck -->');  console.log(pathOfCheck);
 		}
 	});
-
-	console.log('previousPinnedPieces -->');  console.log(previousPinnedPieces);
 	
 	if (previousPinnedPieces.length) {
-		// collect each pinned piece into pins
+		// collects each pinned piece into pins
 		pinnedPieces.forEach(obj => { pins.push(obj.pinned); });
 		console.log('pins -->');  console.log(pins);
 
@@ -1536,7 +1543,6 @@ function lit() {
 			if (!pins.includes(previousPinnedPieces[i])) {
 				// sets dataset.pinned to 'false' & dataset.pinner to 'empty'
 				previousPinnedPieces[i].setAttribute('data-pinned', 'false');
-				previousPinnedPieces[i].setAttribute('data-pinner', 'empty');
 			}
 		}
 	}
