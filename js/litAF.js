@@ -606,22 +606,21 @@ function pinnedPieceLit() {
 	console.log('ENTERS pinnedPieceLit()');
 
 	for (let i = 0; i < pinnedPieces.length; i++) {
+		// assigns pinned pieceToMove's pinnerPiece
 		if (pieceToMove === pinnedPieces[i].pinned) {
 			pinnerPiece = pinnedPieces[i].pinner;
 			break;
 		}
 	}
-	if (pieceToMove.dataset.name !== 'pawn') {
-		// provides id path from pinner piece to pinned piece
-		checkingSpace(pinnerPiece, pieceToMove.id);
-		tempLitIds = pathOfCheck;
-		// provides id path for pinned piece to its own king
-		checkingSpace(pieceToMove, activeKing.id);
-		pinnedLitIds = [...pathOfCheck, ...tempLitIds];
-		// if pinned piece can eat its pinnerPiece, add it to pinnedIds 
-		if (checkingSpace(pieceToMove, pinnerPiece.id)) {
-			pinnedLitIds.push(pinnerPiece.id);
-		}
+	// provides pinned pieceToMove's id path to pinner piece 
+	checkingSpace(pieceToMove, pinnerPiece.id);
+	tempLitIds = pathOfCheck;
+	// provides pinned pieceToMove's id path to its own king
+	checkingSpace(pieceToMove, activeKing.id);
+	pinnedLitIds = [...pathOfCheck, ...tempLitIds];
+	// if pinned piece can eat its pinnerPiece, add it to pinnedIds 
+	if (checkingSpace(pieceToMove, pinnerPiece.id)) {
+		pinnedLitIds.push(pinnerPiece.id);
 	}
 }
 
@@ -1356,10 +1355,14 @@ function checkingSpace(somePiece, checkSpaceId) {
 			rookMoves.forEach(rookMove => {
 				if (onBoard(rookMove)) {
 					blocker = document.getElementById( rookMove );
-					if (blocker.dataset.side !== 'empty') { nails.push(blocker); }
+					if (blocker.dataset.side !== 'empty') {
+						if (rookMove !== behindKingId) {
+							nails.push(blocker);
+						}
+					}
 				}
 			});
-			// console.log('nails -->');  console.log(nails);
+			console.log('nails -->');  console.log(nails);
 		}
 		// returns true/false if no piece blocks rook's path to checkSpaceId
 		if (!nails.length) { // nails can be both sides
@@ -1370,6 +1373,15 @@ function checkingSpace(somePiece, checkSpaceId) {
 			else { pathOfCheck = rookMoves; }
 			return true; // rook can attack checkSpaceId
 		}
+		/*
+		if (nails.length === 2) {
+			nails.forEach(nailId => {
+				if (rook.id[o] === nailId[0]) {
+
+				}
+			});
+		}
+		*/
 		if (nails.length === 1) { // if only one nail
 			// if that nail & rook aren't on the same side
 			if (nails[0].dataset.side !== rook.dataset.side) {
@@ -1389,10 +1401,16 @@ function checkingSpace(somePiece, checkSpaceId) {
 
 	// returns true/false if queen can attack checkSpaceId
 	function queenAttacks(queen) {
-		return (
-			bishopAttacks(queen, checkSpaceId) 
-			|| rookAttacks(queen, checkSpaceId)
-		);
+
+		if (bishopAttacks(queen, checkSpaceId)) {
+			queenAttack = 'bishop';
+			return true;
+		}
+		if (rookAttacks(queen, checkSpaceId)) {
+			queenAttack = 'rook';
+			return true;
+		}
+		return false;
 	}
 
 	// returns true if king can attack checkSpaceId
@@ -1470,7 +1488,7 @@ function lit() {
     }  console.log('activeKing -->');  console.log(activeKing);
 
     // pushes passivePieces that check activeKing into kingAttackers
-	passiveSide.forEach(passivePiece => {	
+	passiveSide.forEach(passivePiece => {
 		if (checkingSpace(passivePiece, activeKing.id)) {
             kingAttackers.push(passivePiece);
 			console.log('pathOfCheck -->');  console.log(pathOfCheck);
@@ -1485,6 +1503,7 @@ function lit() {
 		// for each previousPinnedPiece, if not in pins, un-pins that piece
 		for (let i = 0; i < previousPinnedPieces.length; i++) {
 			if (!pins.includes(previousPinnedPieces[i])) {
+				console.log('unpins '+previousPinnedPieces[i]);
 				// sets dataset.pinned to 'false' & dataset.pinner to 'empty'
 				previousPinnedPieces[i].setAttribute('data-pinned', 'false');
 			}

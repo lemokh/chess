@@ -36,12 +36,16 @@ addLitDivHandler(pieceToMove, movePiece);
 
 /*
 ERRORS:
-1.  pinnedPiece needs to move between its path to king
-        and its path to its pinner --> rewrite pinnedPieceLit()
+1.  pinnedPieces need to be added when nails.length > 1
+        if nails[i] is between king and passivePiece
+
+2.  when king checked by queen, needs to enter inCheck()
+        and be able to eat uncovered queen
+            need to add queen to kingAttackers
 
 METHOD: step through entire file to find mistakes... open flood gates    
 
-SCENARIOS:  1.  pinnedPiece clicked --> move where able
+SCENARIOS:
 
 BUILD:
 
