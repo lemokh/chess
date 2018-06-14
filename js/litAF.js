@@ -1,5 +1,5 @@
 var pieces, knightCells, pinningPiece, rubbishIds, pawnBlocksKingAttacker, pathToCheck, idToBlock, kingAttackers= [], greyLitPieces = [], defenders = [], pawnDefenders = [], enPassantCell = '', orangeTakenBoxIdCounter = -16, blueTakenBoxIdCounter = -1, enPassanting = false,
-heroics = [], anId, pins, kingLitIds = [], tempIds, pinnedLitIds, behindKingId, kingLitPiece, kingStuck, preventMateIds = [], kingMovesOutOfCheck = [], possiblePinnedMoves, kingMovesOutOfCheck, newPieceClicked, pinnerPiece, tempPinnedPieces, greyPieceToMove, pathPiece, activePieceIsPinned, litSpace, blocker, mate = false, passiveSideCoversId, canEatKingAttacker = [], greyLitDivs, canBlockPathOfCheck = [], gameOver, kingSlayer, checkPath, emptySpaces, knightLight, bishopPathId, rookPathId, blueKingFirstMove, blueRook1FirstMove, activeKing, blueRook2FirstMove,  orangeKingFirstMove, orangeRook1FirstMove, orangeRook2FirstMove, castleIds = [], noCastle, kingAble, pieceToMove, goToDiv, enPassantDiv, prevGoToDiv, enPassantGoToDiv, pawnJumpDiv, enPassantables2 = [], enPassantedPawn, knightLight, takenOrangeBox, takenBlueBox, gameEnds, tempSide, movedPiece, mainLitDiv, litIds, unLitDivs, img, index1, index2, tempPiece, moves, takenBox, activeCells, openAndOpponentHeldKingSpaces, kingSpacesUnderAttack, orangeKingSpacesUnderAttack, orangelessKingSpaces, orangelessKingSpaces, blueKingSpaces, bluelessKingSpaces, orangeKingSpacesUnderAttack, vacantKingSpaces, whiteKing, blackKing, knightMoves, bishopMoves, bishopX, bishopY, rookMoves, kingSpaces, kingOpenSpaces, occupiedKingSpaces, defenders, pinnedPieces, pathOfCheck = [], nails, whites, blacks;
+heroics = [], anId, pins, kingLitIds = [], tempLitIds, pinnedLitIds, behindKingId, kingLitPiece, kingStuck, preventMateIds = [], kingMovesOutOfCheck = [], possiblePinnedMoves, kingMovesOutOfCheck, newPieceClicked, pinnerPiece, tempPinnedPieces, greyPieceToMove, pathPiece, activePieceIsPinned, litSpace, blocker, mate = false, passiveSideCoversId, canEatKingAttacker = [], greyLitDivs, canBlockPathOfCheck = [], gameOver, kingSlayer, checkPath, emptySpaces, knightLight, bishopPathId, rookPathId, blueKingFirstMove, blueRook1FirstMove, activeKing, blueRook2FirstMove,  orangeKingFirstMove, orangeRook1FirstMove, orangeRook2FirstMove, castleIds = [], noCastle, kingAble, pieceToMove, goToDiv, enPassantDiv, prevGoToDiv, enPassantGoToDiv, pawnJumpDiv, enPassantables2 = [], enPassantedPawn, knightLight, takenOrangeBox, takenBlueBox, gameEnds, tempSide, movedPiece, mainLitDiv, litIds, unLitDivs, img, index1, index2, tempPiece, moves, takenBox, activeCells, openAndOpponentHeldKingSpaces, kingSpacesUnderAttack, orangeKingSpacesUnderAttack, orangelessKingSpaces, orangelessKingSpaces, blueKingSpaces, bluelessKingSpaces, orangeKingSpacesUnderAttack, vacantKingSpaces, whiteKing, blackKing, knightMoves, bishopMoves, bishopX, bishopY, rookMoves, kingSpaces, kingOpenSpaces, occupiedKingSpaces, defenders, pinnedPieces, pathOfCheck = [], nails, whites, blacks;
 
 const board = document.getElementById('board');
 
@@ -39,13 +39,13 @@ function inCheck() {
 	
 	console.log('greyLitPieces -->');  console.log(greyLitPieces);
 
-	if (pieceToMove.dataset.pinned === 'true') {
+	// if (pieceToMove.dataset.pinned === 'true') {
 		// WRITE THE LOGIC FOR IN-CHECK PINNED PIECE
 		// 1. 
 
 
 
-	}
+	// }
 	// if king can move, handles moving activeKing
 	if (litIds.length) {
 		
@@ -613,13 +613,17 @@ function pinnedPieceLit() {
 			pinnerPiece = pinnedPieces[i].pinner;
 			break;
 		}
-	}	
+	}
 	// provides id path from pinner piece to pinned piece
 	checkingSpace(pinnerPiece, pieceToMove.id);
-	tempIds = pathOfCheck;
+	tempLitIds = pathOfCheck;
 	// provides id path for pinned piece to its own king
 	checkingSpace(pieceToMove, activeKing.id);
-	pinnedIds = [...pathOfCheck, ...tempIds];
+	pinnedLitIds = [...pathOfCheck, ...tempLitIds];
+	// if pinned piece can eat its pinnerPiece, add it to pinnedIds 
+	if (checkingSpace(pieceToMove, pinnerPiece.id)) {
+		pinnedLitIds.push(pinnerPiece.id);
+	}
 }
 
 function toggleSides() {
@@ -1102,7 +1106,7 @@ function checkingSpace(somePiece, checkSpaceId) {
 			}
 			return false;
 		}
-	}
+	} // returns true/false if pawn can attack checkSpaceId
 
 	// returns true/false if knight can attack checkSpaceId
 	function knightAttacks(knight) {
