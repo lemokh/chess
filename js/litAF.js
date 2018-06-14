@@ -39,26 +39,13 @@ function inCheck() {
 	
 	console.log('greyLitPieces -->');  console.log(greyLitPieces);
 
-	/* IMPORTANT?
-	if (pieceToMove.dataset.pinned === 'true') {
-		// WRITE THE LOGIC FOR IN-CHECK PINNED PIECE
-		pinnedPieceLit(); // gets pinnedIds where pinned pieceToMove can go
-		if (pinnedLitIds.length) {
-			pinnedLitIds.forEach( pinnedLitId => {
-				litPiece = document.getElementById( pinnedLitId );
-				litPiece.classList.add( 'lit' );
-				litPiece.addEventListener( 'click', moveGreyPiece );
-			});
-		}
-	}
-	*/
 	// if king can move, handles moving activeKing
 	if (litIds.length) {
 		
 		console.log('checkPath -->');  console.log(checkPath);
 		console.log('litIds -->');  console.log(litIds);
 	
-		// excludes checkPath id from litIds array
+		// excludes checkPath id from litIds then assigns to kingLitIds
 		kingLitIds = litIds.filter(litId =>
 			!checkPath.some( id => litId === id )
 		);
@@ -150,11 +137,9 @@ function inCheck() {
 				});
 		}
 	}
-	else { // since multiple kingAttackers,
-		// only activeKing can prevent checkmate...
+	else { // since multiple kingAttackers, only activeKing prevents checkmate...
 		// checkmate if king stuck
 		if (kingStuck) { return endOfGame(); }
-
 		// else move activeKing
 		else { addLitDivHandler(selectGreyPiece); }
 	}
@@ -626,15 +611,17 @@ function pinnedPieceLit() {
 			break;
 		}
 	}
-	// provides id path from pinner piece to pinned piece
-	checkingSpace(pinnerPiece, pieceToMove.id);
-	tempLitIds = pathOfCheck;
-	// provides id path for pinned piece to its own king
-	checkingSpace(pieceToMove, activeKing.id);
-	pinnedLitIds = [...pathOfCheck, ...tempLitIds];
-	// if pinned piece can eat its pinnerPiece, add it to pinnedIds 
-	if (checkingSpace(pieceToMove, pinnerPiece.id)) {
-		pinnedLitIds.push(pinnerPiece.id);
+	if (pieceToMove.dataset.name !== 'pawn') {
+		// provides id path from pinner piece to pinned piece
+		checkingSpace(pinnerPiece, pieceToMove.id);
+		tempLitIds = pathOfCheck;
+		// provides id path for pinned piece to its own king
+		checkingSpace(pieceToMove, activeKing.id);
+		pinnedLitIds = [...pathOfCheck, ...tempLitIds];
+		// if pinned piece can eat its pinnerPiece, add it to pinnedIds 
+		if (checkingSpace(pieceToMove, pinnerPiece.id)) {
+			pinnedLitIds.push(pinnerPiece.id);
+		}
 	}
 }
 
