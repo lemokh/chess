@@ -49,7 +49,7 @@ function inCheck() {
 		kingLitIds = litIds.filter(litId =>
 			!checkPath.some( id => litId === id )
 		);
-		
+		// excludes from checkPath any id that is in litIds
 		checkPath = checkPath.filter(id =>
 			!litIds.some( litId => id === litId )			
 		);
@@ -1493,7 +1493,16 @@ function lit() {
 			console.log('pathOfCheck -->');  console.log(pathOfCheck);
 		}
 	});
-	
+
+	// REWRITE wAY TO PREVENT KING FROM MOVING ONE BACK IN LINE OF CHECK
+	// --> REMOVE BEHINDKINGID FROM KINGSPACES IN KINGLIT()
+
+	// removes behindKingId from pathOfCheck to prevent activePieces from 
+	// removing this also allows king to move backwards in line of check
+	// if (pathOfCheck.includes(behindKingId)) {
+	// 	pathOfCheck.splice(pathOfCheck.indexOf(behindKingId), 1);
+	// }
+
 	if (previousPinnedPieces.length) {
 		// collects each pinned piece into pins
 		pinnedPieces.forEach(obj => { pins.push(obj.pinned); });
