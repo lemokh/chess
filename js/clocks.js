@@ -1,108 +1,158 @@
-// one clock function to run two separate clocks
-// start & stop & alert(activeSide + " resigns"); & resetBtn()
-function clock() {
+$( document ).ready( function page() {
 
-  let seconds, timer, time,
-    abrv1 = 2500,
-    abrv2 = 500,
-    stopped = false;
+  var interval = null,
+      minute_num = null,
+      colon = ':',
+      tenth_second_str = '5',
+      tenth_second_num = +tenth_second_str,
+      hundredth_second_str = '9',
+      hundredth_second_num = +hundredth_second_str,
+      main_time = '',
+      focus_time = 25,
+      relax_time = 8;
 
-  function convert() {
-    let temp = "" + abrv1;
-    if (temp[2] === '0' && temp[3] === '0') {
-      time = temp[0] + temp[1];
+
+  $( 'reset' ).addClass( 'noClick' );
+
+
+  function countDown() {
+    interval = setInterval( runClock,  1000 );
+  }
+
+
+  function runClock() { // runs clock down to 0, then swaps times and repeats
+
+    minute_str = minute_num.toString();
+
+    tenth_second_str = tenth_second_num.toString();
+
+    hundredth_second_str = hundredth_second_num.toString();
+
+    main_time = minute_str + colon + tenth_second_str + hundredth_second_str;
+
+    $( 'countDown' ).html( main_time );
+
+    hundredth_second_num -= 1;
+
+    if( hundredth_second_num < 0 ) {
+      tenth_second_num -= 1;
+      hundredth_second_num = 9;
     }
-    else if (abrv1 < 1000) { time = temp[0]; }
-  } // converts time
+    if( tenth_second_num < 0 ) {
+      minute_num -= 1;
+      tenth_second_num = 5;
+    }
+    if( minute_num < 0 ) {
+      transition();
+    }
+  }
 
-  function down() { // runs convert()
-    if (+abrv1 > 100) { abrv1 -= 100; }
-    convert();
-    document.getElementById('time').html(time);
-    stopped = false;
-  } // decreases timer by one second
+  function transition() {
 
-  function up() { // runs convert()
-    if (+time < 60) { abrv1 = (+abrv1 + 100); }
-    convert();
-    document.getElementById('time1').html(time);
-    stopped = false;
+    if ( $( 'clocks' ).hasClass( 'focusMode' ) ) { 
 
-  } // inceases timer by one second
-
-  function page() { // runs convert()
-    convert();
-    document.getElementById('time1').html(time);
-  }; // displays timers
-
-  function start() {
-    if (!stopped) { seconds = (+time * 60); }
-
-    stopped = false;
-    document.getElementById('start1').html('Stop');
-    document.getElementById('down1').setAttribute('onclick', '');
-    document.getElementById('up1').setAttribute('onclick', '');
-    document.getElementById('start1').setAttribute('onclick', 'stop()');
-    timer = setTimeout(countDown1, 1000);
-
-    function countDown() {
-      if (seconds > 0) { seconds--; }
-      if (seconds > 0 && !stopped) {
-        timer = setTimeout(countDown, 1000);
-      }
-      if (!stopped && seconds % 60 >= 10) {
-        document.getElementById('time1').html(
-          Math.floor(seconds / 60) + ':' + seconds % 60
-        );
-      }
-      else if (seconds % 60 < 10) {
-        if (seconds % 60 >= 0) {
-          if (seconds / 60 !== 0) {
-            document.getElementById('time1').html(
-              Math.floor(seconds / 60) + ':0' + seconds % 60
-            );
-          }
-        }
-      }
-      else if (seconds / 60 === 0) {
-        document.getElementById('time1').html('BREAK');
-      }
-    } // counts down clock
-  } // starts clock
-
-  function stop() {
-    clearTimeout(timer);
-    stopped = true;
-    document.getElementById('start1').html('Start');
-    document.getElementById('down1').setAttribute('onclick', 'down()');
-    document.getElementById('up1').setAttribute('onclick', 'up()');
-    document.getElementById('start1').setAttribute('onclick', 'start()');
-
-    if (seconds % 60 >= 10) {
-      document.getElementById('time1').html(
-        Math.floor(seconds / 60) + ':' + seconds % 60
-      );
+      clearInterval( interval );
+      minute_num = relax_time;
+      $( 'clocks' ).removeClass( 'focusMode' );
+      $( 'focus, clock1' ).removeClass( 'active' );
+      $( 'relax' ).trigger( 'click' );
+      $( '#relax' ).trigger( 'play' );
     }
     else {
-      document.getElementById('time1').html(
-        Math.floor(seconds / 60) + ':0' + seconds % 60
-      );
-    }
-  } // stops clock
 
-  function reset() {
-    if (stopped === false) {
-      clearTimeout(timer1);
-      document.getElementById('down1').setAttribute('onclick', 'down()');
-      document.getElementById('up1').setAttribute('onclick', 'up()');
-      document.getElementById('start1').setAttribute('onclick', 'start()');
-      document.getElementById('start1').html('Start');
-      stopped = true;
+      clearInterval( interval );
+      minute_num = focus_time;
+      $( 'clocks' ).removeClass( 'relaxMode' );
+      $( 'relax, clock2' ).removeClass( 'active' );
+      $( 'focus' ).trigger( 'click' );
+      $( '#focus' ).trigger( 'play' );
     }
-    seconds = 1500;
-    abrv1 = 2500;
-    time1 = '25';
+  }
 
-    document.getElementById('time1').html(time1);
-  } // resets clock
-}
+
+  $( 'focusTime' ).html( focus_time );
+
+
+  $( 'relaxTime' ).html( relax_time );
+
+
+  $( 'focus' ).on( 'click', function runFocus() {
+
+      minute_num = focus_time - 1;
+      $( 'adjust1, adjust2, focus, relax' ).addClass( 'darken' );
+      $( 'reset' ).removeClass( 'noClick' ).addClass( 'lighten' );
+      $( 'countDown span' ).html( focus_time + ':00' );
+      $( 'focus, clock1' ).addClass( 'active' );
+      $( 'clocks' ).addClass( 'focusMode' );
+      $( 'reset' ).html( 'RESET' );
+
+      countDown();
+  } );
+
+
+  $( 'relax' ).on( 'click', function runRelax() {
+
+      minute_num = relax_time - 1;
+      $( 'adjust1, adjust2, focus, relax' ).addClass( 'darken' );
+      $( 'reset' ).removeClass( 'noClick' ).addClass( 'lighten' );
+      $( 'countDown span' ).html( relax_time + ':00' );
+      $( 'relax, clock2' ).addClass( 'active' );
+      $( 'clocks' ).addClass( 'relaxMode' );
+      $( 'reset' ).html( 'RESET' );
+      countDown();
+  } );
+
+
+  $( 'reset' ).on( 'click', function reset() {
+    $( 'clocks' ).removeClass( 'focusMode relaxMode' );
+    location.reload();
+  } );
+
+
+  $( 'up1' ).on( 'click', function additionFocus() {
+
+    let plus_focus = focus_time + 1;
+
+    if( focus_time < 60 ) {
+      $( 'focusTime' ).html( plus_focus );
+      focus_time = plus_focus;
+    }
+  } );
+
+
+  $( 'up2' ).on( 'click', function additionRelax () {
+
+    let plus_relax = relax_time + 1;
+
+    if( relax_time < 60 ) {
+      $( 'relaxTime' ).html( plus_relax );
+      relax_time = plus_relax;
+    }
+  } );
+
+
+  $( 'down1' ).on( 'click', function subtractionFocus () {
+
+    let minus_focus = focus_time - 1;
+
+    if( minus_focus >= 1 ) {
+      $( 'focusTime' ).html( minus_focus );
+      focus_time = minus_focus;
+    }
+  } );
+
+
+  $( 'down2' ).on( 'click', function subtractionRelax () {
+
+    let minus_relax = relax_time - 1;
+
+    if ( minus_relax >= 1) {
+      $( 'relaxTime' ).html( minus_relax );
+      relax_time = minus_relax;
+    }
+  } );
+
+
+} ); // closes document... page()
+
+ // STILL-TO-DO: color gradients for focus and relax
