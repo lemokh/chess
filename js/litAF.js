@@ -36,20 +36,20 @@ function inCheck() {
 
 	checkPath = pathOfCheck;
 	
+	console.log('checkPath -->');  console.log(checkPath);
+
+	if (checkPath.includes(behindKingId)) {
+		checkPath.splice(checkPath.indexOf(behindKingId), 1);
+	}
+	console.log('checkPath -->');  console.log(checkPath);
+
 	pieceToMove = activeKing;
 	kingLit(); // fills litIds with ids where activeKing can move
 	
 	console.log('greyLitPieces -->');  console.log(greyLitPieces);
 
-	if (litIds.includes(behindKingId)) {
-		litIds.splice(litIds.indexOf(behindKingId), 1);
-	}
-
 	// if king can move, handles moving activeKing
 	if (litIds.length) {
-
-		console.log('checkPath -->');  console.log(checkPath);
-		console.log('litIds -->');  console.log(litIds);
 		
 		// kingLitIds = litIds that are not in checkPath
 		kingLitIds = litIds.filter(litId =>
@@ -1001,13 +1001,11 @@ function kingLit() {
 		].map(space => { // keeps only on-board kingSpaces
 			if (space !== behindKingId) {
 				// if space is on the board
-				if ( (+space[0] >= 0) && (+space[0] <= 7) ) {
-					if ( (+space[1] >= 0) && (+space[1] <= 7) ) {
-						return space;
-					}
-				}
+				if (onBoard(space)) { return space; }
 			}
 		}).filter(item => { return item !== undefined; });
+
+		console.log('kingSpaces -->');  console.log(kingSpaces);
 
 		// excludes activePiece occupied spaces from kingSpaces array
 		openAndOpponentHeldKingSpaces = kingSpaces.filter(kingSpace => {
@@ -1038,17 +1036,7 @@ function kingLit() {
 					}
 				}
 			}
-			if (!passiveSideCoversId) {
-				/*
-				kingAttackers.forEach(kingAttacker => {
-					if (kingAttacker.dataset.name === 'bishop') {
-					}
-					else if (kingAttacker.dataset.name === 'rook') {
-					}
-				});
-				*/
-				litIds.push(id);
-			}
+			if (!passiveSideCoversId) { litIds.push(id); }
 		});
 		console.log('litIds -->');  console.log(litIds);
 	}
