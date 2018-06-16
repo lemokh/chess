@@ -57,9 +57,9 @@ function inCheck() {
 		);
 
 		// checkPath = checkPath ids that are not in litIds
-		// checkPath = checkPath.filter(id =>
-		// 	!litIds.some( litId => id === litId )			
-		// );
+		checkPath = checkPath.filter(id =>
+			!litIds.some( litId => id === litId )			
+		);
 		
 		litIds = kingLitIds;
 		console.log('litIds -->'); console.log(litIds);
@@ -1145,9 +1145,9 @@ function checkingSpace(somePiece, checkSpaceId) {
 						if (onBoard(checkSpaceId)) {
 							behindKingId = (+checkSpaceId[0] + 1) + (+checkSpaceId[1] + 1).toString();
 							// collects space behind king in bishop's diagonal, if on-board
-							if (onBoard( behindKingId )) {
-								bishopMoves.push( behindKingId );
-							}
+							// if (onBoard( behindKingId )) {
+							// 	bishopMoves.push( behindKingId );
+							// }
 						}
 					}
 					// collects bishop's attack path to checkSpaceId
@@ -1171,9 +1171,9 @@ function checkingSpace(somePiece, checkSpaceId) {
 						if (onBoard(checkSpaceId)) {
 							behindKingId = (+checkSpaceId[0] + 1) + (+checkSpaceId[1] - 1).toString();
 							// collects space behind king in bishop's diagonal, if on-board
-							if (onBoard( behindKingId )) {
-								bishopMoves.push( behindKingId );
-							}
+							// if (onBoard( behindKingId )) {
+							// 	bishopMoves.push( behindKingId );
+							// }
 						}
 					}
 					// collects bishop's attack path to checkSpaceId
@@ -1200,9 +1200,9 @@ function checkingSpace(somePiece, checkSpaceId) {
 						if (onBoard(checkSpaceId)) {
 							behindKingId = (+checkSpaceId[0] - 1) + (+checkSpaceId[1] + 1).toString();
 							// collects space behind king in bishop's diagonal, if on-board
-							if (onBoard( behindKingId )) {
-								bishopMoves.push( behindKingId );
-							}
+							// if (onBoard( behindKingId )) {
+							// 	bishopMoves.push( behindKingId );
+							// }
 						}
 					}
 					// collects bishop's attack path to checkSpaceId
@@ -1222,9 +1222,9 @@ function checkingSpace(somePiece, checkSpaceId) {
 					if (checkSpaceId === activeKing.id) {
 						behindKingId = (+checkSpaceId[0] - 1) + (+checkSpaceId[1] - 1).toString();
 						// collects space behind king in bishop's diagonal, if on-board
-						if (onBoard( behindKingId )) {
-							bishopMoves.push( behindKingId );
-						}
+						// if (onBoard( behindKingId )) {
+						// 	bishopMoves.push( behindKingId );
+						// }
 					}
 					// collects bishop's attack path to checkSpaceId
 					while ( bishopX > (+checkSpaceId[0] + 1) ) {
