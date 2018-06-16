@@ -1289,9 +1289,9 @@ function checkingSpace(somePiece, checkSpaceId) {
 				if (checkSpaceId === activeKing.id) {
 					behindKingId = checkSpaceId[0] + (+checkSpaceId[1] + 1);
 					// collects space behind king in rook's row, if on-board
-					if (onBoard( behindKingId )) {
-						rookMoves.push( behindKingId );
-					}
+					// if (onBoard( behindKingId )) {
+					// 	rookMoves.push( behindKingId );
+					// }
 				}
 				for (let i = +rook.id[1] + 1; i < +checkSpaceId[1]; i++) {
 					rookMoves.push( checkSpaceId[0] + i );
@@ -1303,9 +1303,9 @@ function checkingSpace(somePiece, checkSpaceId) {
 					behindKingId = checkSpaceId[0] + (+checkSpaceId[1] - 1);
 					if (onBoard(checkSpaceId)) {
 						// collects space behind king in rook's row, if on-board
-						if (onBoard( behindKingId )) {
-							rookMoves.push( behindKingId );
-						}
+						// if (onBoard( behindKingId )) {
+						// 	rookMoves.push( behindKingId );
+						// }
 					}
 				}
 				for (let i = +rook.id[1] - 1; i > +checkSpaceId[1]; i--) {
@@ -1322,9 +1322,9 @@ function checkingSpace(somePiece, checkSpaceId) {
 				if (checkSpaceId === activeKing.id) {
 					behindKingId = (+checkSpaceId[0] + 1) + checkSpaceId[1];
 					// collects space behind king in rook's row, if on-board
-					if (onBoard( behindKingId )) {
-						rookMoves.push( behindKingId );
-					}
+					// if (onBoard( behindKingId )) {
+					// 	rookMoves.push( behindKingId );
+					// }
 				}
 				for (let i = +rook.id[0] + 1; i < +checkSpaceId[0]; i++) {
 					rookMoves.push( i + checkSpaceId[1] );
@@ -1336,9 +1336,9 @@ function checkingSpace(somePiece, checkSpaceId) {
 					behindKingId = (+checkSpaceId[0] - 1) + checkSpaceId[1];
 					if (onBoard(checkSpaceId)) {
 						// collects space behind king in rook's row, if on-board
-						if (onBoard( behindKingId )) {
-							rookMoves.push( behindKingId );
-						}
+						// if (onBoard( behindKingId )) {
+						// 	rookMoves.push( behindKingId );
+						// }
 					}
 				}
 				for (let i = +rook.id[0] - 1; i > +checkSpaceId[0]; i--) {
@@ -1372,14 +1372,6 @@ function checkingSpace(somePiece, checkSpaceId) {
 			else { pathOfCheck = rookMoves; }
 			return true; // rook can attack checkSpaceId
 		}
-		/*
-		if (nails.length === 2) {
-			nails.forEach(nailId => {
-				if (rook.id[o] === nailId[0]) {
-				}
-			});
-		}
-		*/
 		if (nails.length === 1) { // if only one nail
 			// if that nail & rook aren't on the same side
 			if (nails[0].dataset.side !== rook.dataset.side) {
