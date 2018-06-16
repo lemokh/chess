@@ -46,7 +46,7 @@ game {
     display: flex;
   }
   
-  .cell {
+  img {
     display: flex;
     justify-content: center;
     align-items: center;

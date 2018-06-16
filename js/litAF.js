@@ -657,7 +657,7 @@ function toggleSides() {
 }
 
 function endOfGame() {
-	// document.getElementById( 'board' ).classList.add( 'noClick' );
+	activeKing.classList.add('checkMate');
 	
 	activeSide.forEach(activePiece => {
 		activePiece.removeEventListener('click', wherePieceCanMove);
@@ -1236,7 +1236,7 @@ function bishopAttacks(bishop) {
 				// sets dataset.pinned & dataset.pinner for nails[0]
 				nails[0].setAttribute('data-pinned', true);
 				
-				alert(nails[0].dataset.side + ' ' + nails[0].dataset.name + ' IS PINNED');
+				// alert(nails[0].dataset.side + ' ' + nails[0].dataset.name + ' IS PINNED');
 				console.log('pinnedPieces -->');  console.log(pinnedPieces);
 			}
 		}
