@@ -1,5 +1,5 @@
 var pieces, knightCells, pinningPiece, rubbishIds, pawnBlocksKingAttacker, pathToCheck, idToBlock, kingAttackers= [], greyLitPieces = [], defenders = [], pawnDefenders = [], enPassantCell = '', orangeTakenBoxIdCounter = -16, blueTakenBoxIdCounter = -1, enPassanting = false,
-heroics = [], anId, pins, kingLitIds = [], tempLitIds, checkSpaceId, pinnedLitIds, behindKingId, kingLitPiece, kingStuck, preventMateIds = [], kingMovesOutOfCheck = [], possiblePinnedMoves, kingMovesOutOfCheck, newPieceClicked, pinnerPiece, tempPinnedPieces, greyPieceToMove, pathPiece, activePieceIsPinned, litSpace, blocker, mate = false, passiveSideCoversId, canEatKingAttacker = [], greyLitDivs, canBlockPathOfCheck = [], gameOver, kingSlayer, checkPath, emptySpaces, knightLight, bishopPathId, rookPathId, blueKingFirstMove, blueRook1FirstMove, activeKing, blueRook2FirstMove,  orangeKingFirstMove, orangeRook1FirstMove, orangeRook2FirstMove, castleIds = [], noCastle, kingAble, pieceToMove, goToDiv, enPassantDiv, prevGoToDiv, enPassantGoToDiv, pawnJumpDiv, enPassantables2 = [], enPassantedPawn, knightLight, takenOrangeBox, takenBlueBox, gameEnds, tempSide, movedPiece, mainLitDiv, litIds, unLitDivs, img, index1, index2, tempPiece, moves, takenBox, activeCells, openAndOpponentHeldKingSpaces, kingSpacesUnderAttack, orangeKingSpacesUnderAttack, orangelessKingSpaces, orangelessKingSpaces, blueKingSpaces, bluelessKingSpaces, orangeKingSpacesUnderAttack, vacantKingSpaces, whiteKing, blackKing, knightMoves, bishopMoves, bishopX, bishopY, rookMoves, kingSpaces, kingOpenSpaces, occupiedKingSpaces, defenders, pinnedPieces, pathOfCheck = [], nails, whites, blacks;
+heroics = [], anId, pins, kingInCheck, kingLitIds = [], tempLitIds, checkSpaceId, pinnedLitIds, behindKingId, kingLitPiece, kingStuck, preventMateIds = [], kingMovesOutOfCheck = [], possiblePinnedMoves, kingMovesOutOfCheck, newPieceClicked, pinnerPiece, tempPinnedPieces, greyPieceToMove, pathPiece, activePieceIsPinned, litSpace, blocker, mate = false, passiveSideCoversId, canEatKingAttacker = [], greyLitDivs, canBlockPathOfCheck = [], gameOver, kingSlayer, checkPath, emptySpaces, knightLight, bishopPathId, rookPathId, blueKingFirstMove, blueRook1FirstMove, activeKing, blueRook2FirstMove,  orangeKingFirstMove, orangeRook1FirstMove, orangeRook2FirstMove, castleIds = [], noCastle, kingAble, pieceToMove, goToDiv, enPassantDiv, prevGoToDiv, enPassantGoToDiv, pawnJumpDiv, enPassantables2 = [], enPassantedPawn, knightLight, takenOrangeBox, takenBlueBox, gameEnds, tempSide, movedPiece, mainLitDiv, litIds, unLitDivs, img, index1, index2, tempPiece, moves, takenBox, activeCells, openAndOpponentHeldKingSpaces, kingSpacesUnderAttack, orangeKingSpacesUnderAttack, orangelessKingSpaces, orangelessKingSpaces, blueKingSpaces, bluelessKingSpaces, orangeKingSpacesUnderAttack, vacantKingSpaces, whiteKing, blackKing, knightMoves, bishopMoves, bishopX, bishopY, rookMoves, kingSpaces, kingOpenSpaces, occupiedKingSpaces, defenders, pinnedPieces, pathOfCheck = [], nails, whites, blacks;
 
 const board = document.getElementById('board');
 
@@ -29,6 +29,8 @@ function inCheck() {
 	console.log('behindKingId -->');  console.log(behindKingId);
 
 	console.log('litIds -->');  console.log(litIds);
+
+	kingInCheck = true;
 
 	checkPath = pathOfCheck;
 	
@@ -995,9 +997,11 @@ function kingLit() {
 			(+pieceToMove.id[0] + 1) + (+pieceToMove.id[1] - 1).toString(),
 			(+pieceToMove.id[0] + 1) + (+pieceToMove.id[1] + 1).toString()
 		].map(space => { // keeps only on-board kingSpaces
-			if (space !== behindKingId) {
-				// if space is on the board
-				if (onBoard(space)) { return space; }
+			if (onBoard(space)) { // if space is on the board
+				if (kingInCheck) {
+					if (space !== behindKingId) { return space; }
+				}
+				else { return space; }
 			}
 		}).filter(item => { return item !== undefined; });
 
@@ -1335,7 +1339,7 @@ function rookAttacks(rook) {
 
 			nails[0].setAttribute('data-pinned', true);
 			
-			alert(nails[0].dataset.side + ' ' + nails[0].dataset.name + ' IS PINNED');
+			// alert(nails[0].dataset.side + ' ' + nails[0].dataset.name + ' IS PINNED');
 			console.log('pinnedPieces -->');  console.log(pinnedPieces);
 		}
 	}
@@ -1403,7 +1407,8 @@ function checkingSpace(somePiece, someId) {
 ////////////////////////////////////////////////////////////
 
 function lit() {
-
+	kingInCheck = false;
+	behindKingId = undefined;
 	pinnedLitIds = [];
 	pinnedPieces = [];
 	litIds = [];
