@@ -1442,15 +1442,6 @@ function lit() {
 		}
 	});
 
-	// REWRITE wAY TO PREVENT KING FROM MOVING ONE BACK IN LINE OF CHECK
-	// --> REMOVE BEHINDKINGID FROM KINGSPACES IN KINGLIT()
-
-	// removes behindKingId from pathOfCheck to prevent activePieces from 
-	// removing this also allows king to move backwards in line of check
-	// if (pathOfCheck.includes(behindKingId)) {
-	// 	pathOfCheck.splice(pathOfCheck.indexOf(behindKingId), 1);
-	// }
-
 	if (previousPinnedPieces.length) {
 		// collects each pinned piece into pins
 		pinnedPieces.forEach(obj => { pins.push(obj.pinned); });
