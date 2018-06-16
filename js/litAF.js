@@ -1139,16 +1139,8 @@ function checkingSpace(somePiece, checkSpaceId) {
 				=== +checkSpaceId[1] - +bishop.id[1]) {
 					// if bishop checks activeKing
 					if (checkSpaceId === activeKing.id) {
-						console.log(checkSpaceId);
-						console.log(onBoard(checkSpaceId));
-
-						if (onBoard(checkSpaceId)) {
-							behindKingId = (+checkSpaceId[0] + 1) + (+checkSpaceId[1] + 1).toString();
-							// collects space behind king in bishop's diagonal, if on-board
-							// if (onBoard( behindKingId )) {
-							// 	bishopMoves.push( behindKingId );
-							// }
-						}
+						// collects space behind king in bishop's diagonal
+						behindKingId = (+checkSpaceId[0] + 1) + (+checkSpaceId[1] + 1).toString();
 					}
 					// collects bishop's attack path to checkSpaceId
 					while ( bishopX < (+checkSpaceId[0] - 1) ) {
@@ -1165,16 +1157,8 @@ function checkingSpace(somePiece, checkSpaceId) {
 				=== +bishop.id[1] - +checkSpaceId[1]) {
 					// if bishop checks activeKing
 					if (checkSpaceId === activeKing.id) {
-						console.log(checkSpaceId);
-						console.log(onBoard(checkSpaceId));
-
-						if (onBoard(checkSpaceId)) {
-							behindKingId = (+checkSpaceId[0] + 1) + (+checkSpaceId[1] - 1).toString();
-							// collects space behind king in bishop's diagonal, if on-board
-							// if (onBoard( behindKingId )) {
-							// 	bishopMoves.push( behindKingId );
-							// }
-						}
+						// collects space behind king in bishop's diagonal, if on-board
+						behindKingId = (+checkSpaceId[0] + 1) + (+checkSpaceId[1] - 1).toString();							
 					}
 					// collects bishop's attack path to checkSpaceId
 					while ( bishopX < (+checkSpaceId[0] - 1) ) {
@@ -1194,16 +1178,8 @@ function checkingSpace(somePiece, checkSpaceId) {
 				=== +checkSpaceId[1] - +bishop.id[1]) {
 					// if bishop checks activeKing
 					if (checkSpaceId === activeKing.id) {
-						console.log(checkSpaceId);
-						console.log(onBoard(checkSpaceId));
-						
-						if (onBoard(checkSpaceId)) {
-							behindKingId = (+checkSpaceId[0] - 1) + (+checkSpaceId[1] + 1).toString();
-							// collects space behind king in bishop's diagonal, if on-board
-							// if (onBoard( behindKingId )) {
-							// 	bishopMoves.push( behindKingId );
-							// }
-						}
+						// collects space behind king in bishop's diagonal, if on-board
+						behindKingId = (+checkSpaceId[0] - 1) + (+checkSpaceId[1] + 1).toString();							
 					}
 					// collects bishop's attack path to checkSpaceId
 					while ( bishopX > (+checkSpaceId[0] + 1) ) {
@@ -1220,11 +1196,8 @@ function checkingSpace(somePiece, checkSpaceId) {
 				=== +bishop.id[1] - +checkSpaceId[1]) {
 					// if bishop checks activeKing
 					if (checkSpaceId === activeKing.id) {
-						behindKingId = (+checkSpaceId[0] - 1) + (+checkSpaceId[1] - 1).toString();
 						// collects space behind king in bishop's diagonal, if on-board
-						// if (onBoard( behindKingId )) {
-						// 	bishopMoves.push( behindKingId );
-						// }
+						behindKingId = (+checkSpaceId[0] - 1) + (+checkSpaceId[1] - 1).toString();
 					}
 					// collects bishop's attack path to checkSpaceId
 					while ( bishopX > (+checkSpaceId[0] + 1) ) {
