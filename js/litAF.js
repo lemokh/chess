@@ -29,7 +29,9 @@ function clocks() {
 
 function inCheck() {
 
-	console.log('ENTERS inCheck()');  
+	console.log('ENTERS inCheck()');
+	console.log('behindKingId -->');  console.log(behindKingId);
+
 	console.log('litIds -->');  console.log(litIds);
 
 	checkPath = pathOfCheck;
@@ -39,22 +41,28 @@ function inCheck() {
 	
 	console.log('greyLitPieces -->');  console.log(greyLitPieces);
 
+	if (litIds.includes(behindKingId)) {
+		litIds.splice(litIds.indexOf(behindKingId), 1);
+	}
+
 	// if king can move, handles moving activeKing
 	if (litIds.length) {
-		
+
 		console.log('checkPath -->');  console.log(checkPath);
 		console.log('litIds -->');  console.log(litIds);
-	
-		// excludes checkPath id from litIds then assigns to kingLitIds
+		
+		// kingLitIds = litIds that are not in checkPath
 		kingLitIds = litIds.filter(litId =>
 			!checkPath.some( id => litId === id )
 		);
-		// excludes from checkPath any id that is in litIds
+
+		// checkPath = checkPath ids that are not in litIds
 		checkPath = checkPath.filter(id =>
 			!litIds.some( litId => id === litId )			
 		);
 		
 		litIds = kingLitIds;
+		console.log('litIds -->'); console.log(litIds);
 		
 		console.log('checkPath -->');  console.log(checkPath);
 		console.log('litIds -->');  console.log(litIds);
@@ -152,7 +160,7 @@ function selectGreyPiece(e) {
 		greyPieceToMove.addEventListener('click', selectGreyPiece);
 	}
 
-	console.log(litIds);
+	console.log('litIds -->'); console.log(litIds);
 
 	// removeLitDivHandler(moveGreyPiece); --> without litIds = []
 	if (litIds.length) { // resets each litId of class & click-listeners
@@ -991,9 +999,12 @@ function kingLit() {
 			(+pieceToMove.id[0] + 1) + (+pieceToMove.id[1] - 1).toString(),
 			(+pieceToMove.id[0] + 1) + (+pieceToMove.id[1] + 1).toString()
 		].map(space => { // keeps only on-board kingSpaces
-			if ( (+space[0] >= 0) && (+space[0] <= 7) ) {
-				if ( (+space[1] >= 0) && (+space[1] <= 7) ) {
-					return space;
+			if (space !== behindKingId) {
+				// if space is on the board
+				if ( (+space[0] >= 0) && (+space[0] <= 7) ) {
+					if ( (+space[1] >= 0) && (+space[1] <= 7) ) {
+						return space;
+					}
 				}
 			}
 		}).filter(item => { return item !== undefined; });
