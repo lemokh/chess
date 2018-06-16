@@ -16,28 +16,29 @@ var passiveSide = oranges;
 ///////////////////////////
 
 var minuteNum = 10,
-    tenthSecondStr = '5',
+    tenthSecondStr = '0',
     tenthSecondNum = +tenthSecondStr,
-    hundredthSecondStr = '9',
-    hundredthSecondNum = +hundredthSecondStr,
+    hundredthSecondStr = '0',
+	hundredthSecondNum = +hundredthSecondStr,
 
-    clock1,
-    clock2,
+	minuteStr = minuteNum+'',
+	tenthSecondStr = tenthSecondNum+'',
+	hundredthSecondStr = hundredthSecondNum+'',
     
-    runClock1,
-    runClock2,
-	
 	clockToUpdate,
-    clockToRun;
+    blueTime,
+	orangeTime,
+
+	runTimer = function() {
+		setInterval(countDown, 1000);
+	};
+	
 
 ///////////////////////////
 ///////////////////////////
 
 function countDown() { // runs clock down to 0
-
-	minuteStr = minuteNum+'';
-	tenthSecondStr = tenthSecondNum+'';
-	hundredthSecondStr = hundredthSecondNum+'';
+	
 	hundredthSecondNum -= 1;
   
 	if( hundredthSecondNum < 0 ) {
@@ -50,32 +51,27 @@ function countDown() { // runs clock down to 0
 	  	tenthSecondNum = 5;
 	}
   
-	if( minuteNum < 0 ) {
-		resign();
-	}
-  
-	document.getElementById(clockToUpdate).html(
-		minuteStr + ':' + tenthSecondStr + hundredthSecondStr
-	);
-}
-
-function runClock(clock) {
-	while (clockToRun) { setInterval( countDown, 1000 ); }
+	if( minuteNum < 0 ) { return resign(); }
+		
+	sideTimer = minuteStr + ':' + tenthSecondStr + hundredthSecondStr;
+	
+	document.getElementById( clockToUpdate ).innerHTML = sideTimer;
 }
 
 function toggleClocks() {
 	if (activeKing.dataset.name === 'blue') {
-		clock2 = false;
-		clock1 = true;
-		clockToUpdate = 'clock1'
-		runClock(clock1);
+		orangeTime = minuteStr + ':' + tenthSecondStr + hundredthSecondStr;
+		clearInterval(runTimer);
+		sideTimer = blueTime;
+		clockToUpdate = 'time1';
 	}
-	else {
-		clock1 = false;
-		clock2 = true;
-		clockToUpdate = 'clock2'
-		runClock(clock2);
+	else { 
+		blueTime = minuteStr + ':' + tenthSecondStr + hundredthSecondStr;
+		clearInterval(runTimer);
+		sideTimer = orangeTime;
+		clockToUpdate = 'time2';
 	}
+	runTimer();
 }
 
 ///////////////////////////
@@ -696,7 +692,10 @@ function toggleSides() {
 	// console.log(activeKing);
 	// toggles side & starts next move 
 	if (activeSide[0].dataset.side === 'blue') {
-		// toggleClocks();
+		
+		// console.log('toggling clocks');
+		// clearInterval(runTimer);
+		
 		console.log('toggles activeSide to orange');
 		
 		activeSide = oranges;
@@ -706,7 +705,9 @@ function toggleSides() {
 	}
 	
 	else { // since activeKing is orange
-		// toggleClocks();
+		// console.log('toggling clocks');
+		// clearInterval(runTimer);
+
 		console.log('toggles activeSide to blue');
 		
 		activeSide = blues;
