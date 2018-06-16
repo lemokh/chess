@@ -50,16 +50,16 @@ function inCheck() {
 
 	// if king can move, handles moving activeKing
 	if (litIds.length) {
-		
+
 		// kingLitIds = litIds that are not in checkPath
 		kingLitIds = litIds.filter(litId =>
 			!checkPath.some( id => litId === id )
 		);
 
 		// checkPath = checkPath ids that are not in litIds
-		checkPath = checkPath.filter(id =>
-			!litIds.some( litId => id === litId )			
-		);
+		// checkPath = checkPath.filter(id =>
+		// 	!litIds.some( litId => id === litId )			
+		// );
 		
 		litIds = kingLitIds;
 		console.log('litIds -->'); console.log(litIds);
