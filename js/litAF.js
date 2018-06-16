@@ -1157,7 +1157,7 @@ function checkingSpace(somePiece, checkSpaceId) {
 				=== +bishop.id[1] - +checkSpaceId[1]) {
 					// if bishop checks activeKing
 					if (checkSpaceId === activeKing.id) {
-						// collects space behind king in bishop's diagonal, if on-board
+						// collects space behind king in bishop's diagonal
 						behindKingId = (+checkSpaceId[0] + 1) + (+checkSpaceId[1] - 1).toString();							
 					}
 					// collects bishop's attack path to checkSpaceId
@@ -1178,7 +1178,7 @@ function checkingSpace(somePiece, checkSpaceId) {
 				=== +checkSpaceId[1] - +bishop.id[1]) {
 					// if bishop checks activeKing
 					if (checkSpaceId === activeKing.id) {
-						// collects space behind king in bishop's diagonal, if on-board
+						// collects space behind king in bishop's diagonal
 						behindKingId = (+checkSpaceId[0] - 1) + (+checkSpaceId[1] + 1).toString();							
 					}
 					// collects bishop's attack path to checkSpaceId
@@ -1196,7 +1196,7 @@ function checkingSpace(somePiece, checkSpaceId) {
 				=== +bishop.id[1] - +checkSpaceId[1]) {
 					// if bishop checks activeKing
 					if (checkSpaceId === activeKing.id) {
-						// collects space behind king in bishop's diagonal, if on-board
+						// collects space behind king in bishop's diagonal
 						behindKingId = (+checkSpaceId[0] - 1) + (+checkSpaceId[1] - 1).toString();
 					}
 					// collects bishop's attack path to checkSpaceId
@@ -1260,11 +1260,8 @@ function checkingSpace(somePiece, checkSpaceId) {
 			if (+rook.id[1] < +checkSpaceId[1]) {
 				// if rook checks activeKing
 				if (checkSpaceId === activeKing.id) {
+					// collects space behind king in rook's row
 					behindKingId = checkSpaceId[0] + (+checkSpaceId[1] + 1);
-					// collects space behind king in rook's row, if on-board
-					// if (onBoard( behindKingId )) {
-					// 	rookMoves.push( behindKingId );
-					// }
 				}
 				for (let i = +rook.id[1] + 1; i < +checkSpaceId[1]; i++) {
 					rookMoves.push( checkSpaceId[0] + i );
@@ -1273,13 +1270,8 @@ function checkingSpace(somePiece, checkSpaceId) {
 			else { // since rook is above checkSpaceId, rook.id[1]--
 				// if rook checks activeKing
 				if (checkSpaceId === activeKing.id) {
+					// collects space behind king in rook's row
 					behindKingId = checkSpaceId[0] + (+checkSpaceId[1] - 1);
-					if (onBoard(checkSpaceId)) {
-						// collects space behind king in rook's row, if on-board
-						// if (onBoard( behindKingId )) {
-						// 	rookMoves.push( behindKingId );
-						// }
-					}
 				}
 				for (let i = +rook.id[1] - 1; i > +checkSpaceId[1]; i--) {
 					rookMoves.push( checkSpaceId[0] + i );
@@ -1293,11 +1285,8 @@ function checkingSpace(somePiece, checkSpaceId) {
 			if (+rook.id[0] < +checkSpaceId[0]) {
 				// if rook checks activeKing
 				if (checkSpaceId === activeKing.id) {
+					// collects space behind king in rook's row
 					behindKingId = (+checkSpaceId[0] + 1) + checkSpaceId[1];
-					// collects space behind king in rook's row, if on-board
-					// if (onBoard( behindKingId )) {
-					// 	rookMoves.push( behindKingId );
-					// }
 				}
 				for (let i = +rook.id[0] + 1; i < +checkSpaceId[0]; i++) {
 					rookMoves.push( i + checkSpaceId[1] );
@@ -1306,13 +1295,8 @@ function checkingSpace(somePiece, checkSpaceId) {
 			else { // since rook right of checkSpaceId, rook.id[0]--
 				// if rook checks activeKing
 				if (checkSpaceId === activeKing.id) {
+					// collects space behind king in rook's row
 					behindKingId = (+checkSpaceId[0] - 1) + checkSpaceId[1];
-					if (onBoard(checkSpaceId)) {
-						// collects space behind king in rook's row, if on-board
-						// if (onBoard( behindKingId )) {
-						// 	rookMoves.push( behindKingId );
-						// }
-					}
 				}
 				for (let i = +rook.id[0] - 1; i > +checkSpaceId[0]; i--) {
 					rookMoves.push( i + checkSpaceId[1] );
