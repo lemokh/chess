@@ -3,19 +3,19 @@ heroics = [], anId, pins, kingInCheck, kingLitIds = [], tempLitIds, checkSpaceId
 
 const board = document.getElementById('board');
 
-var blueNodes = board.querySelectorAll("[data-side='blue']");
-var orangeNodes = board.querySelectorAll("[data-side='orange']");
+var blueNodes = board.querySelectorAll("[data-side='blue']"),
+	orangeNodes = board.querySelectorAll("[data-side='orange']"),
 
-var blues = Array.from(blueNodes);
-var oranges = Array.from(orangeNodes);
+	blues = Array.from(blueNodes),
+	oranges = Array.from(orangeNodes),
 
-var activeSide = blues;
-var passiveSide = oranges;
+	activeSide = blues,
+	passiveSide = oranges,
 
 ///////////////////////////
 ///////////////////////////
 
-var userInput = 10,
+	userInput = 10,
 	obj,
 	runTimer,
 	blueTime = {
@@ -719,12 +719,11 @@ function toggleSides() {
 }
 
 function endOfGame() {
+	clearInterval(runTimer);
 	activeKing.classList.add('checkMate');
-	
 	activeSide.forEach(activePiece => {
 		activePiece.removeEventListener('click', wherePieceCanMove);
 	});
-
 
 	alert(activeKing.dataset.side + ' KING CHECKMATED!');
 	console.log(activeKing.dataset.side + ' KING CHECKMATED!');
@@ -737,6 +736,7 @@ function resign() {
 		activePiece.removeEventListener('click', wherePieceCanMove);
 	});
 	alert(activeKing.dataset.side + " resigns");
+	console.log('END OF GAME');
 }
 
 function pawnLit() {
