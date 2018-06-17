@@ -14,8 +14,8 @@
       <player1>
         <!-- <button class='btn'>RESIGN</button> -->
         <div id='blueTakenBox'>
-          <div class='modalBlue'>
-              <div class='modal-content'>
+          <div id='modalBlue' class='modal'>
+              <div class='modalContent'>
                   <img id='blueQueen' data-name='queen' data-side='blue' src='./images/blueQueen.png'>
                   <img id='blueKnight' data-name='knight' data-side='blue' src='./images/blueKnight.png'>
               </div>
@@ -42,6 +42,13 @@
         </div>
       </player1>
       <div id='time1' class='time'></div>
+      
+      <!-- <div class='modal'>
+          <div class='modalContent'>
+            <input type="number" onsubmit="getMinutes()"/>
+          </div>
+      </div> -->
+      
       <board id='board'>
         <row0 class="row">
           <img id='00' data-name='rook' data-side='orange' data-pinned='false' src='./images/orangeRook.png' class='white'></img>
@@ -124,12 +131,13 @@
           <img id='77' data-name='rook' data-side='blue' data-pinned='false' src='./images/blueRook.png' class='white'></img>
         </row7>
       </board>
+
       <div id='time2' class='time'></div>
       <player2>
         <!-- <button class='btn'>RESIGN</button> -->
         <div id='orangeTakenBox'>
-          <div class="modalOrange">
-              <div class="modal-content">
+          <div id="modalOrange" class='modal'>
+              <div class="modalContent">
                   <img id="orangeQueen" data-name='queen' data-side='orange' src="./images/orangeQueen.png">
                   <img id="orangeKnight" data-name='knight' data-side='orange' src="./images/orangeKnight.png">
               </div>
@@ -156,7 +164,6 @@
         </div>
       </player2>
     </game>
-    <script src="js/litAF.js" onload='lit()'></script>
-    <!-- <script src="js/scriptLit.js"></script> -->
+    <script src="js/lit.js" onload='lit()'></script>
   </body>
 </html>

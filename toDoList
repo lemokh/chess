@@ -1,0 +1,17 @@
+ERRORS:
+1.  pinnedPieces need to be added when nails.length > 1
+        
+
+2.  when king checked by queen, needs to enter inCheck()
+        and be able to eat uncovered queen
+            need to add queen to kingAttackers
+
+METHOD: step through entire file to find mistakes... open flood gates    
+
+SCENARIOS:
+
+BUILD:
+
+    0. add two clocks --> on-load, choose game duration
+
+    1. add one resign button to endGame() for activeSide

@@ -15,63 +15,64 @@ var passiveSide = oranges;
 ///////////////////////////
 ///////////////////////////
 
-var minuteNum = 10,
-    tenthSecondStr = '0',
-    tenthSecondNum = +tenthSecondStr,
-    hundredthSecondStr = '0',
-	hundredthSecondNum = +hundredthSecondStr,
-
-	minuteStr = minuteNum+'',
-	tenthSecondStr = tenthSecondNum+'',
-	hundredthSecondStr = hundredthSecondNum+'',
-    
-	clockToUpdate,
-    blueTime,
-	orangeTime,
-
-	runTimer = function() {
-		setInterval(countDown, 1000);
+var userInput = 10,
+	obj,
+	runTimer,
+	blueTime = {
+    	minutes: userInput,
+    	tenths: 0,
+    	hundredths: 0 
+    },
+    orangeTime = {
+    	minutes: userInput,
+    	tenths: 0,
+    	hundredths: 0 
 	};
-	
 
-///////////////////////////
-///////////////////////////
+function getMinutes() {
+	userInput = document.querySelector('input').innerHTML;
+} // userInput = this.innerHTML
+
+
+function startClock() {
+	runTimer = setInterval(countDown, 1000);
+};
+
+clock1 = document.getElementById('time1');
+clock1.innerHTML = userInput+':00';
+
+clock2 = document.getElementById('time2');
+clock2.innerHTML = userInput+':00';
 
 function countDown() { // runs clock down to 0
-	
-	hundredthSecondNum -= 1;
+
+	obj.hundredths -= 1;
   
-	if( hundredthSecondNum < 0 ) {
-		tenthSecondNum -= 1;
-	  	hundredthSecondNum = 9;
+	if ( obj.hundredths < 0 ) {
+		obj.tenths -= 1;
+		obj.hundredths = 9;
 	}
-  
-	if( tenthSecondNum < 0 ) {
-	  	minuteNum -= 1;
-	  	tenthSecondNum = 5;
+	if ( obj.tenths < 0 ) {
+	  	obj.minutes -= 1;
+	  	obj.tenths = 5;
 	}
-  
-	if( minuteNum < 0 ) { return resign(); }
-		
-	sideTimer = minuteStr + ':' + tenthSecondStr + hundredthSecondStr;
-	
-	document.getElementById( clockToUpdate ).innerHTML = sideTimer;
+	if ( obj.minutes < 0 ) { return resign(); }
+
+	clockToUpdate.innerHTML =  
+		obj.minutes + ':' + obj.tenths + obj.hundredths;
 }
 
 function toggleClocks() {
-	if (activeKing.dataset.name === 'blue') {
-		orangeTime = minuteStr + ':' + tenthSecondStr + hundredthSecondStr;
-		clearInterval(runTimer);
-		sideTimer = blueTime;
-		clockToUpdate = 'time1';
+	clearInterval(runTimer);
+	if (activeKing.dataset.side === 'blue') {	
+		obj = blueTime;
+		clockToUpdate = clock1;
 	}
 	else { 
-		blueTime = minuteStr + ':' + tenthSecondStr + hundredthSecondStr;
-		clearInterval(runTimer);
-		sideTimer = orangeTime;
-		clockToUpdate = 'time2';
+		obj = orangeTime;
+		clockToUpdate = clock2;
 	}
-	runTimer();
+	startClock();
 }
 
 ///////////////////////////
@@ -463,9 +464,9 @@ function pawnEvolve(e) {
 
 	// closes modal window
 	if (e.target.dataset.side === 'blue') {
-		document.querySelector('.modalBlue').classList.toggle("show-modal");
+		document.querySelector('.modalBlue').classList.toggle("showModal");
 	}
-	else if (e.target.dataset.side === 'orange') { document.querySelector('.modalOrange').classList.toggle("show-modal"); }
+	else if (e.target.dataset.side === 'orange') { document.querySelector('.modalOrange').classList.toggle("showModal"); }
 }
 
 function swapSide(fromDiv, toDiv) {
@@ -473,7 +474,7 @@ function swapSide(fromDiv, toDiv) {
 	console.log('ENTERS swapSide()');
 	// handles blue pawn evolution modal window
 	if ( (fromDiv.dataset.name === 'pawn') && (toDiv.id[1] === '0') ) {
-		document.querySelector('.modalBlue').classList.toggle("show-modal");
+		document.querySelector('#modalBlue').classList.toggle("showModal");
 		document.getElementById('blueQueen').addEventListener(
 			'click', pawnEvolve
 		);
@@ -482,7 +483,7 @@ function swapSide(fromDiv, toDiv) {
 		);
 	} // handles orange pawn evolution modal window
 	else if ( (fromDiv.dataset.name === 'pawn') && (toDiv.id[1] === '7') ) {
-		document.querySelector('.modalOrange').classList.toggle("show-modal");
+		document.querySelector('#modalOrange').classList.toggle("showModal");
 		document.getElementById('orangeQueen').addEventListener(
 			'click', pawnEvolve
 		);
@@ -731,6 +732,7 @@ function endOfGame() {
 }
 
 function resign() {
+	clearInterval(runTimer);
 	activeSide.forEach(activePiece => {
 		activePiece.removeEventListener('click', wherePieceCanMove);
 	});
