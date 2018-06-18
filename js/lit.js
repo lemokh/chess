@@ -1410,17 +1410,19 @@ function rookAttacks(rook) {
 		return true; // rook can attack checkSpaceId
 	}
 	if (nails.length === 1) { // if only one nail
-		// if that nail & rook aren't on the same side
-		if (nails[0].dataset.side !== rook.dataset.side) {
-			
-			pinnedPieces.push(
-				{ pinner: rook, pinned: nails[0] }
-			);
+		if (checkSpaceId === activeKing.id) {
+			// if that nail & rook aren't on the same side
+			if (nails[0].dataset.side !== rook.dataset.side) {
+				
+				pinnedPieces.push(
+					{ pinner: rook, pinned: nails[0] }
+				);
 
-			nails[0].setAttribute('data-pinned', true);
-			
-			// alert(nails[0].dataset.side + ' ' + nails[0].dataset.name + ' IS PINNED');
-			console.log('pinnedPieces -->');  console.log(pinnedPieces);
+				nails[0].setAttribute('data-pinned', true);
+				
+				// alert(nails[0].dataset.side + ' ' + nails[0].dataset.name + ' IS PINNED');
+				console.log('pinnedPieces -->');  console.log(pinnedPieces);
+			}
 		}
 	}
 	return false; // rook cannot attack checkSpaceId
