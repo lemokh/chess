@@ -440,26 +440,32 @@ function movePiece(e) {
 	}
 	// covers pawnToMove moving one or two empty spaces
 	swapSide(pieceToMove, goToDiv);
-	toggleSides();
+	if (noPawnEvolution) { toggleSides(); }
+	else {
+		// removes click-listeners from activePieces
+		activeSide.forEach(activePiece => {
+			activePiece.removeEventListener('click', wherePieceCanMove);
+		});
+	}
+	console.log('EXITS movePiece(e)');
 }
 
 function pawnEvolve(e) {
 	// uses pieceToMove for pawn & e.target for new piece
-
+	console.log('ENTERS pawnEvolve(e)');
 	// re-informs goToDiv
 	goToDiv.setAttribute('data-name', e.target.dataset.name);
 	goToDiv.setAttribute('data-side', e.target.dataset.side);
 	goToDiv.setAttribute('src', e.target.src);
 
 	// gets pieceToMove's activeSide index
-	index1 = passiveSide.indexOf(pieceToMove);
+	index1 = activeSide.indexOf(pieceToMove);
 
 	// removes now-empty pieceToMove from activeSide    
-	passiveSide.splice(index1, 1);
+	activeSide.splice(index1, 1);
 
 	// updates activeSide & pieces array
-	passiveSide.push(goToDiv);
-	// pieces = [...activeSide, ...passiveSide];
+	activeSide.push(goToDiv);
 
 	// un-informs pieceToMove
 	pieceToMove.setAttribute('data-name', 'empty');
@@ -468,9 +474,12 @@ function pawnEvolve(e) {
 
 	// closes modal window
 	if (e.target.dataset.side === 'blue') {
-		document.querySelector('.modalBlue').classList.toggle("showModal");
+		document.querySelector('#modalBlue').classList.toggle("showModal");
 	}
-	else if (e.target.dataset.side === 'orange') { document.querySelector('.modalOrange').classList.toggle("showModal"); }
+	else if (e.target.dataset.side === 'orange') { document.querySelector('#modalOrange').classList.toggle("showModal"); }
+
+	toggleSides();
+	console.log('EXITS pawnEvolve(e)');
 }
 
 function swapSide(fromDiv, toDiv) {
@@ -478,24 +487,21 @@ function swapSide(fromDiv, toDiv) {
 	console.log('ENTERS swapSide()');
 	// handles blue pawn evolution modal window
 	if ( (fromDiv.dataset.name === 'pawn') && (toDiv.id[1] === '0') ) {
-		document.querySelector('#modalBlue').classList.toggle("showModal");
-		document.getElementById('blueQueen').addEventListener(
-			'click', pawnEvolve
-		);
-		document.getElementById('blueKnight').addEventListener(
-			'click', pawnEvolve
-		);
+		document.querySelector('#modalBlue').classList.toggle('showModal');
+		document.getElementById('blueQueen').addEventListener('click', pawnEvolve);	
+		document.getElementById('blueKnight').addEventListener('click', pawnEvolve);
+		document.getElementById('blueRook').addEventListener('click', pawnEvolve);
+		document.getElementById('blueBishop').addEventListener('click', pawnEvolve);
 	} // handles orange pawn evolution modal window
 	else if ( (fromDiv.dataset.name === 'pawn') && (toDiv.id[1] === '7') ) {
-		document.querySelector('#modalOrange').classList.toggle("showModal");
-		document.getElementById('orangeQueen').addEventListener(
-			'click', pawnEvolve
-		);
-		document.getElementById('orangeKnight').addEventListener(
-			'click', pawnEvolve
-		);
+		document.querySelector('#modalOrange').classList.toggle('showModal');
+		document.getElementById('orangeQueen').addEventListener('click', pawnEvolve);
+		document.getElementById('orangeKnight').addEventListener('click', pawnEvolve);
+		document.getElementById('orangeRook').addEventListener('click', pawnEvolve);
+		document.getElementById('orangeBishop').addEventListener('click', pawnEvolve);
 	}
 	else { // since no pawn evolution
+		noPawnEvolution = true;
 		// re-informs goToDiv
 		toDiv.setAttribute('data-name', fromDiv.dataset.name);
 		toDiv.setAttribute('data-side', fromDiv.dataset.side);
@@ -522,7 +528,6 @@ function swapSide(fromDiv, toDiv) {
 		fromDiv.setAttribute('data-side', 'empty');
 		fromDiv.setAttribute('src', './images/transparent.png');
 	}
-	
 	console.log('EXITS swapSide()');
 }
 
@@ -1494,6 +1499,7 @@ function checkingSpace(somePiece, someId) {
 
 function lit() {
 	kingInCheck = false;
+	noPawnEvolution = false;
 	behindKingId = undefined;
 	pinnedLitIds = [];
 	pinnedPieces = [];
