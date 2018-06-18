@@ -18,6 +18,8 @@ var blueNodes = board.querySelectorAll("[data-side='blue']"),
 	userInput = 10,
 	obj,
 	runTimer,
+	clock1,
+	clock2,
 	blueTime = {
     	minutes: userInput,
     	tenths: 0,
@@ -63,7 +65,9 @@ function countDown() { // runs clock down to 0
 }
 
 function toggleClocks() {
+
 	clearInterval(runTimer);
+	
 	if (activeKing.dataset.side === 'blue') {	
 		obj = blueTime;
 		clockToUpdate = clock1;
@@ -1054,60 +1058,60 @@ function kingLit() {
 			document.getElementById(id).addEventListener('click', castling);
 		});
 	}
-	else { // since king not castling
-		kingSpaces = [
-			pieceToMove.id[0] + (+pieceToMove.id[1] - 1),
-			pieceToMove.id[0] + (+pieceToMove.id[1] + 1),
-			(+pieceToMove.id[0] - 1) + pieceToMove.id[1],
-			(+pieceToMove.id[0] + 1) + pieceToMove.id[1],
-			(+pieceToMove.id[0] - 1) + (+pieceToMove.id[1] - 1).toString(),
-			(+pieceToMove.id[0] - 1) + (+pieceToMove.id[1] + 1).toString(),
-			(+pieceToMove.id[0] + 1) + (+pieceToMove.id[1] - 1).toString(),
-			(+pieceToMove.id[0] + 1) + (+pieceToMove.id[1] + 1).toString()
-		].map(space => { // keeps only on-board kingSpaces
-			if (onBoard(space)) { // if space is on the board
-				if (kingInCheck) {
-					if (space !== behindKingId) { return space; }
-				}
-				else { return space; }
+	// whether or not king can castle, king must be able to move
+	kingSpaces = [
+		pieceToMove.id[0] + (+pieceToMove.id[1] - 1),
+		pieceToMove.id[0] + (+pieceToMove.id[1] + 1),
+		(+pieceToMove.id[0] - 1) + pieceToMove.id[1],
+		(+pieceToMove.id[0] + 1) + pieceToMove.id[1],
+		(+pieceToMove.id[0] - 1) + (+pieceToMove.id[1] - 1).toString(),
+		(+pieceToMove.id[0] - 1) + (+pieceToMove.id[1] + 1).toString(),
+		(+pieceToMove.id[0] + 1) + (+pieceToMove.id[1] - 1).toString(),
+		(+pieceToMove.id[0] + 1) + (+pieceToMove.id[1] + 1).toString()
+	].map(space => { // keeps only on-board kingSpaces
+		if (onBoard(space)) { // if space is on the board
+			if (kingInCheck) {
+				if (space !== behindKingId) { return space; }
 			}
-		}).filter(item => { return item !== undefined; });
+			else { return space; }
+		}
+	}).filter(item => { return item !== undefined; });
 
-		console.log('kingSpaces -->');  console.log(kingSpaces);
+	console.log('kingSpaces -->');  console.log(kingSpaces);
 
-		// excludes activePiece occupied spaces from kingSpaces array
-		openAndOpponentHeldKingSpaces = kingSpaces.filter(kingSpace => {
-			// for each kingSpace & each activePiece
-			return !activeSide.some(activePiece => {
-				// adds kingSpace to oAOHKS array if no activePiece there 
-				return (kingSpace === activePiece.id);
-			});
+	// excludes activePiece occupied spaces from kingSpaces array
+	openAndOpponentHeldKingSpaces = kingSpaces.filter(kingSpace => {
+		// for each kingSpace & each activePiece
+		return !activeSide.some(activePiece => {
+			// adds kingSpace to oAOHKS array if no activePiece there 
+			return (kingSpace === activePiece.id);
 		});
+	});
 
-		console.log('openAndOpponentHeldKingSpaces -->');
-		console.log(openAndOpponentHeldKingSpaces);
+	console.log('openAndOpponentHeldKingSpaces -->');
+	console.log(openAndOpponentHeldKingSpaces);
 
-		// populates litIds with safe kingSpaces
-		openAndOpponentHeldKingSpaces.forEach(id => {
-			passiveSideCoversId = false;
-			// for each oAOHKS & each passivePiece
-			for (let i = 0; i < passiveSide.length; i++) {
+	// populates litIds with safe kingSpaces
+	openAndOpponentHeldKingSpaces.forEach(id => {
+		passiveSideCoversId = false;
+		// for each oAOHKS & each passivePiece
+		for (let i = 0; i < passiveSide.length; i++) {
 
-				if (passiveSide[i].id !== id) {
-					// if a passivePiece can check that oAOHKS...(kingSpace id devoid of activePiece)
-					if (checkingSpace(passiveSide[i], id)) {
-						console.log(passiveSide[i].dataset.side + ' ' + passiveSide[i].dataset.name + ' can attack ' + id);
+			if (passiveSide[i].id !== id) {
+				// if a passivePiece can check that oAOHKS...(kingSpace id devoid of activePiece)
+				if (checkingSpace(passiveSide[i], id)) {
+					console.log(passiveSide[i].dataset.side + ' ' + passiveSide[i].dataset.name + ' can attack ' + id);
 
-						passiveSideCoversId = true;
-						break;
-						
-					}
+					passiveSideCoversId = true;
+					break;
+					
 				}
 			}
-			if (!passiveSideCoversId) { litIds.push(id); }
-		});
-		console.log('litIds -->');  console.log(litIds);
-	}
+		}
+		if (!passiveSideCoversId) { litIds.push(id); }
+	});
+	console.log('litIds -->');  console.log(litIds);
+	
 }  // fills litIds with ids where king can move
 
 ////////////////////////////////////////////////////////
@@ -1493,6 +1497,13 @@ function lit() {
 	pins = [];
 
     // ********** META-LOGIC **********
+
+	if (castleIds.length) { // if king is castling
+		castleIds.forEach(id => {
+			document.getElementById(id).classList.remove('castleLit');
+			document.getElementById(id).removeEventListener('click', castling);
+		});
+	}
 
 	previousPinnedPieces = board.querySelectorAll("[data-pinned='true']");
 	console.log('previousPinnedPieces -->');  console.log(previousPinnedPieces);
