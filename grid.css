@@ -223,3 +223,10 @@ game {
   font-size: 40px;
   background-color: rgba(127, 255, 212, 0.25);
 }
+
+.btn {
+  margin: auto;
+  text-align: center;
+  font-size: 20px;
+  background-color: rgba(253, 253, 253, 0.25);
+}
