@@ -341,7 +341,7 @@ function possibleMoves() {
 		case 'queen':   bishopLit(); rookLit(); break;
 		case 'king':    kingLit();              break;
 		
-		default: alert('default ERROR! pieceToMove is empty');
+		// default: alert('default ERROR! pieceToMove is empty');
 	}
 	// lightens & click-listens to litIds --> movePiece(e)
 	if (litIds.length) { addLitDivHandler(movePiece); }
@@ -391,9 +391,9 @@ function movePiece(e) {
 	
 	goToDiv = e.target; // unnecessary, use e.target instead
 	
-	console.log('pieceToMove -->');  console.log(pieceToMove);
-	console.log('goToDiv -->');      console.log(goToDiv);
-	console.log('pawnJumpDiv -->');  console.log(pawnJumpDiv);
+	// console.log('pieceToMove -->');  console.log(pieceToMove);
+	// console.log('goToDiv -->');      console.log(goToDiv);
+	// console.log('pawnJumpDiv -->');  console.log(pawnJumpDiv);
 	
 	// covers enPassant pawn attack
 	if (goToDiv.dataset.side === 'empty') {
@@ -559,7 +559,12 @@ function eat(piece) {
 }
 
 function castling(e) {
-	console.log('enters castling(e)')
+	
+	console.log('enters castling(e)');
+	// -------------------------------
+	if (litIds.length) {
+		removeLitDivHandler(movePiece);
+	}
 	// -------------------------------------------------
 	// un-lightens & stops click-listening all castleIds
 	castleIds.forEach(id => {
@@ -569,8 +574,8 @@ function castling(e) {
 	// -------------------------------------
 	pieceToMove.classList.remove('mainLit');
 	// -------------------------------------
-	castleIds = [];  litIds = [];
-	// ------------------------------------------------
+	castleIds = [];
+	// -----------------------------------------------------
 	// castles rook & prevents that side from castling again
 	switch (e.target.id) {
 		case '27':
@@ -600,11 +605,10 @@ function castling(e) {
 		).removeEventListener('click', wherePieceCanMove);
 	});
 	if (litIds.length) {
-		litIds.forEach(id => {
-			document.getElementById( id ).classList.remove('lit');
-			document.getElementById( id ).removeEventListener('click', movePiece)
-		});
+		console.log('________');
+		removeLitDivHandler(movePiece);
 	}
+	console.log('!!!!!');
 	toggleSides();
 }
 
@@ -1526,7 +1530,7 @@ function lit() {
 		}
     }  console.log('activeKing -->');  console.log(activeKing);
 
-	// toggleClocks();
+	toggleClocks();
 
     // pushes passivePieces that check activeKing into kingAttackers
 	passiveSide.forEach(passivePiece => {
