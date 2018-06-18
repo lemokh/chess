@@ -522,6 +522,7 @@ function swapSide(fromDiv, toDiv) {
 		fromDiv.setAttribute('data-side', 'empty');
 		fromDiv.setAttribute('src', './images/transparent.png');
 	}
+	
 	console.log('EXITS swapSide()');
 }
 
@@ -598,7 +599,12 @@ function castling(e) {
 			activePiece.id
 		).removeEventListener('click', wherePieceCanMove);
 	});
-	
+	if (litIds.length) {
+		litIds.forEach(id => {
+			document.getElementById( id ).classList.remove('lit');
+			document.getElementById( id ).removeEventListener('click', movePiece)
+		});
+	}
 	toggleSides();
 }
 
@@ -1015,6 +1021,7 @@ function kingLit() {
 							}
 						}
 						if (!noCastle) { castleIds.push('67'); }
+						console.log(castleIds);
 					}
 				}
 			}
@@ -1293,7 +1300,6 @@ function bishopAttacks(bishop) {
 		});
 		console.log('nails -->');  console.log(nails);
 	}
-
 	// returns true/false if no piece blocks bishop's path to checkSpaceId
 	if (!nails.length) { // note: nails may contain pieces from both sides
 		// pathOfCheck array becomes bishop's id route to checkSpaceId
@@ -1302,18 +1308,20 @@ function bishopAttacks(bishop) {
 		return true; // bishop can attack checkSpaceId
 	}
 	if (nails.length === 1) { // if only one nail
-		// if that nail & bishop aren't on the same side
-		if (nails[0].dataset.side !== bishop.dataset.side) {
-			if (nails[0] !== activeKing) {
-				// collects bishop & nails[0]
-				pinnedPieces.push(
-					{ pinner: bishop, pinned: nails[0] }
-				);
-				// sets dataset.pinned & dataset.pinner for nails[0]
-				nails[0].setAttribute('data-pinned', true);
-				
-				// alert(nails[0].dataset.side + ' ' + nails[0].dataset.name + ' IS PINNED');
-				console.log('pinnedPieces -->');  console.log(pinnedPieces);
+		if (checkSpaceId === activeKing.id) {
+			// if that nail & bishop aren't on the same side
+			if (nails[0].dataset.side !== bishop.dataset.side) {
+				if (nails[0] !== activeKing) {
+					// collects bishop & nails[0]
+					pinnedPieces.push(
+						{ pinner: bishop, pinned: nails[0] }
+					);
+					// sets dataset.pinned & dataset.pinner for nails[0]
+					nails[0].setAttribute('data-pinned', true);
+					
+					// alert(nails[0].dataset.side + ' ' + nails[0].dataset.name + ' IS PINNED');
+					console.log('pinnedPieces -->');  console.log(pinnedPieces);
+				}
 			}
 		}
 	}
@@ -1516,7 +1524,7 @@ function lit() {
 		}
     }  console.log('activeKing -->');  console.log(activeKing);
 
-	toggleClocks();
+	// toggleClocks();
 
     // pushes passivePieces that check activeKing into kingAttackers
 	passiveSide.forEach(passivePiece => {
