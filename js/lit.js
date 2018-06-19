@@ -12,8 +12,7 @@ var blueNodes = board.querySelectorAll("[data-side='blue']"),
 	activeSide = blues,
 	passiveSide = oranges,
 
-///////////////////////////
-///////////////////////////
+	///////////////////////////
 
 	userInput = 10,
 	obj,
@@ -21,30 +20,23 @@ var blueNodes = board.querySelectorAll("[data-side='blue']"),
 	clock1,
 	clock2,
 	blueTime = {
-    	minutes: userInput,
-    	tenths: 0,
-    	hundredths: 0 
-    },
-    orangeTime = {
-    	minutes: userInput,
-    	tenths: 0,
-    	hundredths: 0 
+		minutes: userInput,
+		tenths: 0,
+		hundredths: 0 
+	},
+	orangeTime = {
+		minutes: userInput,
+		tenths: 0,
+		hundredths: 0 
 	};
 
-function getMinutes() {
-	userInput = document.querySelector('input').innerHTML;
-} // userInput = this.innerHTML
-
+function setTimer() {
+	document.getElementById('start').addEventListener('click', getMinutes);
+}
 
 function startClock() {
 	runTimer = setInterval(countDown, 1000);
 };
-
-clock1 = document.getElementById('time1');
-clock1.innerHTML = userInput+':00';
-
-clock2 = document.getElementById('time2');
-clock2.innerHTML = userInput+':00';
 
 function countDown() { // runs clock down to 0
 
@@ -79,7 +71,6 @@ function toggleClocks() {
 	startClock();
 }
 
-///////////////////////////
 ///////////////////////////
 
 function inCheck() {
@@ -474,9 +465,11 @@ function pawnEvolve(e) {
 
 	// closes modal window
 	if (e.target.dataset.side === 'blue') {
-		document.querySelector('#modalBlue').classList.toggle("showModal");
+		document.getElementById('modalBlue').classList.toggle("showModal");
 	}
-	else if (e.target.dataset.side === 'orange') { document.querySelector('#modalOrange').classList.toggle("showModal"); }
+	else if (e.target.dataset.side === 'orange') { 
+		document.getElementById('modalOrange').classList.toggle("showModal");
+	}
 
 	toggleSides();
 	console.log('EXITS pawnEvolve(e)');
@@ -527,6 +520,7 @@ function swapSide(fromDiv, toDiv) {
 		fromDiv.setAttribute('data-name', 'empty');
 		fromDiv.setAttribute('data-side', 'empty');
 		fromDiv.setAttribute('src', './images/transparent.png');
+		fromDiv.removeEventListener('click', wherePieceCanMove);
 	}
 	console.log('EXITS swapSide()');
 }
@@ -1573,4 +1567,48 @@ function lit() {
 			activePiece.addEventListener('click', wherePieceCanMove);
 		});
 	}
+}
+
+window.onload = function () {
+	document.getElementById('start').addEventListener('click', function getMinutes() {
+		
+		if (document.getElementById('timeSet').value) {
+			if (document.getElementById('timeSet').value > 0) {
+			
+				userInput = +(document.getElementById('timeSet').value);
+				
+				clock1 = document.getElementById('time1');
+				clock1.innerHTML = userInput+':00';
+				
+				clock2 = document.getElementById('time2');
+				clock2.innerHTML = userInput+':00';
+
+				blueTime = {
+					minutes: userInput,
+					tenths: 0,
+					hundredths: 0 
+				};
+				
+				orangeTime = {
+					minutes: userInput,
+					tenths: 0,
+					hundredths: 0 
+				};
+
+				document.getElementById('modal').style.display = "none";
+				
+				function showTimers(timer) {
+					timer.style.visibility = "visible";
+					timer.style.opacity = '1';
+					timer.style.transform = 'scale(1.0)';
+					timer.style.transition = 'visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s';
+				}
+
+				showTimers(document.getElementById('time1'));
+				showTimers(document.getElementById('time2'));
+				
+				lit();
+			}
+		}
+	});
 }
