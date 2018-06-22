@@ -1,5 +1,5 @@
 var pieces, knightCells, pinningPiece, rubbishIds, pawnBlocksKingAttacker, pathToCheck, idToBlock, kingAttackers= [], greyLitPieces = [], defenders = [], pawnDefenders = [], enPassantCell = '', orangeTakenBoxIdCounter = -16, blueTakenBoxIdCounter = -1, enPassanting = false,
-heroics = [], anId, pins, kingInCheck, kingLitIds = [], tempLitIds, checkSpaceId, pinnedLitIds, behindKingId, kingLitPiece, kingStuck, preventMateIds = [], kingMovesOutOfCheck = [], possiblePinnedMoves, kingMovesOutOfCheck, newPieceClicked, pinnerPiece, tempPinnedPieces, greyPieceToMove, pathPiece, activePieceIsPinned, litSpace, blocker, mate = false, passiveSideCoversId, canEatKingAttacker = [], greyLitDivs, canBlockPathOfCheck = [], gameOver, kingSlayer, checkPath, emptySpaces, knightLight, bishopPathId, rookPathId, blueKingFirstMove, blueRook1FirstMove, activeKing, blueRook2FirstMove,  orangeKingFirstMove, orangeRook1FirstMove, orangeRook2FirstMove, castleIds = [], noCastle, kingAble, pieceToMove, goToDiv, enPassantDiv, prevGoToDiv, enPassantGoToDiv, pawnJumpDiv, enPassantables2 = [], enPassantedPawn, knightLight, takenOrangeBox, takenBlueBox, gameEnds, tempSide, movedPiece, mainLitDiv, litIds, unLitDivs, img, index1, index2, tempPiece, moves, takenBox, activeCells, openAndOpponentHeldKingSpaces, kingSpacesUnderAttack, orangeKingSpacesUnderAttack, orangelessKingSpaces, orangelessKingSpaces, blueKingSpaces, bluelessKingSpaces, orangeKingSpacesUnderAttack, vacantKingSpaces, whiteKing, blackKing, knightMoves, bishopMoves, bishopX, bishopY, rookMoves, kingSpaces, kingOpenSpaces, occupiedKingSpaces, defenders, pinnedPieces, pathOfCheck = [], nails, whites, blacks;
+heroics = [], anId, pins, kingInCheck, stuckActivePieces, kingLitIds = [], tempLitIds, checkSpaceId, pinnedLitIds, behindKingId, kingLitPiece, kingStuck, preventMateIds = [], kingMovesOutOfCheck = [], possiblePinnedMoves, kingMovesOutOfCheck, newPieceClicked, pinnerPiece, tempPinnedPieces, greyPieceToMove, pathPiece, activePieceIsPinned, litSpace, blocker, mate = false, passiveSideCoversId, canEatKingAttacker = [], greyLitDivs, canBlockPathOfCheck = [], gameOver, kingSlayer, checkPath, emptySpaces, knightLight, bishopPathId, rookPathId, blueKingFirstMove, blueRook1FirstMove, activeKing, blueRook2FirstMove,  orangeKingFirstMove, orangeRook1FirstMove, orangeRook2FirstMove, castleIds = [], noCastle, kingAble, pieceToMove, goToDiv, enPassantDiv, prevGoToDiv, enPassantGoToDiv, pawnJumpDiv, enPassantables2 = [], enPassantedPawn, knightLight, takenOrangeBox, takenBlueBox, gameEnds, tempSide, movedPiece, mainLitDiv, litIds, unLitDivs, img, index1, index2, tempPiece, moves, takenBox, activeCells, openAndOpponentHeldKingSpaces, kingSpacesUnderAttack, orangeKingSpacesUnderAttack, orangelessKingSpaces, orangelessKingSpaces, blueKingSpaces, bluelessKingSpaces, orangeKingSpacesUnderAttack, vacantKingSpaces, whiteKing, blackKing, knightMoves, bishopMoves, bishopX, bishopY, rookMoves, kingSpaces, kingOpenSpaces, occupiedKingSpaces, defenders, pinnedPieces, pathOfCheck = [], nails, whites, blacks;
 
 const board = document.getElementById('board');
 
@@ -316,14 +316,16 @@ function wherePieceCanMove(e) { // pieceLit(e)
 			});
 		}
 	}
-	else { possibleMoves(); }
+	else {
+		possibleMoves();
+		// lightens & click-listens to litIds --> movePiece(e)
+		if (litIds.length) { addLitDivHandler(movePiece); }
+	}
 }
 
 function possibleMoves() {
-
 	console.log('ENTERS possibleMoves()');
-	// highlights clicked piece's possible moves
-
+	// populates litIds with piece's possible moves
 	switch (pieceToMove.dataset.name) {
 		case 'pawn':    pawnLit();              break;
 		case 'knight':  knightLit();            break;
@@ -331,11 +333,8 @@ function possibleMoves() {
 		case 'rook':    rookLit();              break;
 		case 'queen':   bishopLit(); rookLit(); break;
 		case 'king':    kingLit();              break;
-		
 		// default: alert('default ERROR! pieceToMove is empty');
 	}
-	// lightens & click-listens to litIds --> movePiece(e)
-	if (litIds.length) { addLitDivHandler(movePiece); }
 }
 
 function movePiece(e) {
@@ -1509,21 +1508,11 @@ function lit() {
 	kingStuck = false;
 	findingKingAttackers = true;
 	pins = [];
+	stuckActivePieces = 0;
 
     // ********** META-LOGIC **********
 
-	// covers game ending in a draw 
-	if (activeSide.length === 1) {
-		pieceToMove = activeSide[0];
-		kingLit();
-		if (!litIds.length) {
-			clearInterval(runTimer);
-			alert("Game ends in a draw");
-			return;
-		}
-	}
-
-	if (castleIds.length) { // if king is castling
+	if (castleIds.length) {
 		castleIds.forEach(id => {
 			document.getElementById(id).classList.remove('castleLit');
 			document.getElementById(id).removeEventListener('click', castling);
@@ -1540,6 +1529,20 @@ function lit() {
             break;
 		}
     }  console.log('activeKing -->');  console.log(activeKing);
+
+	// covers game ending in a draw
+	activeSide.forEach(piece => {
+		pieceToMove = piece;
+		possibleMoves();
+		if (!litIds.length) {
+			stuckActivePieces += 1;
+		}
+	});
+	if (stuckActivePieces === activeSide.length) {
+		clearInterval(runTimer);
+		alert("Game ends in a draw");
+		return;
+	}
 
 	toggleClocks();
 
