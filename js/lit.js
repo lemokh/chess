@@ -1517,7 +1517,7 @@ function lit() {
 		pieceToMove = activeSide[0];
 		kingLit();
 		if (!litIds.length) {
-			clearInterval();
+			clearInterval(runTimer);
 			alert("Game ends in a draw");
 			return;
 		}
