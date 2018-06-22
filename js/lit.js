@@ -60,7 +60,7 @@ function toggleClocks() {
 
 	clearInterval(runTimer);
 	
-	if (activeKing.dataset.side === 'blue') {	
+	if (activeSide[0].dataset.side === 'blue') {	
 		obj = blueTime;
 		clockToUpdate = clock1;
 	}
@@ -994,72 +994,75 @@ function kingLit() {
 	// kingSpacesUnderAttack = [];  // unnecessary
 
 	// covers king castling
-	if (!kingAttackers.length) { // if king not in check
-		if (pieceToMove.dataset.side === 'blue') {
-			if (!blueKingFirstMove) {
-				if (!blueRook1FirstMove) {
-					if (['17', '27', '37'].every(id => document.getElementById(id).dataset.side === 'empty')) {
-						noCastle = false;
+	if (!testingDraw) {
+		if (!kingAttackers.length) { // if king not in check
+			if (pieceToMove.dataset.side === 'blue') {
+				if (!blueKingFirstMove) {
+					if (!blueRook1FirstMove) {
+						if (['17', '27', '37'].every(id => document.getElementById(id).dataset.side === 'empty')) {
+							noCastle = false;
 
-						for (let i = 0; i < 3; i++) {
-							for (let k = 0; k < passiveSide.length; k++) {
-								if (checkingSpace(passiveSide[k], ['17', '27', '37'][i])) {
-									noCastle = true;
+							for (let i = 0; i < 3; i++) {
+								for (let k = 0; k < passiveSide.length; k++) {
+									if (checkingSpace(passiveSide[k], ['17', '27', '37'][i])) {
+										noCastle = true;
+									}
 								}
 							}
+							if (!noCastle) { castleIds.push('27'); }
 						}
-						if (!noCastle) { castleIds.push('27'); }
 					}
-				}
-				if (!blueRook2FirstMove) {
-					if (['57', '67'].every(id => document.getElementById(id).dataset.side === 'empty')) {
-						noCastle = false;
+					if (!blueRook2FirstMove) {
+						if (['57', '67'].every(id => document.getElementById(id).dataset.side === 'empty')) {
+							noCastle = false;
 
-						for (let i = 0; i < 2; i++) {
-							for (let k = 0; k < passiveSide.length; k++) {
-								if (checkingSpace(passiveSide[k], ['57', '67'][i])) {
-									noCastle = true;
+							for (let i = 0; i < 2; i++) {
+								for (let k = 0; k < passiveSide.length; k++) {
+									if (checkingSpace(passiveSide[k], ['57', '67'][i])) {
+										noCastle = true;
+									}
 								}
 							}
+							if (!noCastle) { castleIds.push('67'); }
+							console.log(castleIds);
 						}
-						if (!noCastle) { castleIds.push('67'); }
-						console.log(castleIds);
 					}
 				}
 			}
-		}
-		else { // since activeSide is orange
-			if (!orangeKingFirstMove) {
-				if (!orangeRook1FirstMove) {
-					if (['10', '20', '30'].every(id => document.getElementById(id).dataset.side === 'empty')) {
-						for (let i = 0; i < 3; i++) {
+			else { // since activeSide is orange
+				if (!orangeKingFirstMove) {
+					if (!orangeRook1FirstMove) {
+						if (['10', '20', '30'].every(id => document.getElementById(id).dataset.side === 'empty')) {
+							for (let i = 0; i < 3; i++) {
+								noCastle = false;
+
+								for (let k = 0; k < passiveSide.length; k++) {
+									if (checkingSpace(passiveSide[k], ['10', '20', '30'][i])) {
+										noCastle = true;
+									}
+								}
+							}  if (!noCastle) { castleIds.push('20'); }
+						}
+					}
+					if (!orangeRook2FirstMove) {
+						if (['50', '60'].every(id => document.getElementById(id).dataset.side === 'empty')) {
 							noCastle = false;
 
-							for (let k = 0; k < passiveSide.length; k++) {
-								if (checkingSpace(passiveSide[k], ['10', '20', '30'][i])) {
-									noCastle = true;
+							for (let i = 0; i < 2; i++) {
+								for (let k = 0; k < passiveSide.length; k++) {
+									if (checkingSpace(passiveSide[k], ['50', '60'][i])) {
+										noCastle = true;
+									}
 								}
 							}
-						}  if (!noCastle) { castleIds.push('20'); }
-					}
-				}
-				if (!orangeRook2FirstMove) {
-					if (['50', '60'].every(id => document.getElementById(id).dataset.side === 'empty')) {
-						noCastle = false;
-
-						for (let i = 0; i < 2; i++) {
-							for (let k = 0; k < passiveSide.length; k++) {
-								if (checkingSpace(passiveSide[k], ['50', '60'][i])) {
-									noCastle = true;
-								}
-							}
+							if (!noCastle) { castleIds.push('60'); }
 						}
-						if (!noCastle) { castleIds.push('60'); }
 					}
 				}
 			}
 		}
 	}
+	
 	// lightens & click-listens all castleIds
 	if (castleIds.length) { // if king is castling
 		castleIds.forEach(id => {
@@ -1512,6 +1515,8 @@ function lit() {
 
     // ********** META-LOGIC **********
 
+	toggleClocks();
+
 	if (castleIds.length) {
 		castleIds.forEach(id => {
 			document.getElementById(id).classList.remove('castleLit');
@@ -1530,22 +1535,24 @@ function lit() {
 		}
     }  console.log('activeKing -->');  console.log(activeKing);
 
+	testingDraw = true;
 	// covers game ending in a draw
 	activeSide.forEach(piece => {
+		litIds = [];
 		pieceToMove = piece;
 		possibleMoves();
 		if (!litIds.length) {
 			stuckActivePieces += 1;
 		}
 	});
+	litIds = [];
+	testingDraw = false;
+	pieceToMove = undefined;
 	if (stuckActivePieces === activeSide.length) {
 		clearInterval(runTimer);
 		alert("Game ends in a draw");
 		return;
 	}
-
-	toggleClocks();
-
     // pushes passivePieces that check activeKing into kingAttackers
 	passiveSide.forEach(passivePiece => {
 		if (checkingSpace(passivePiece, activeKing.id)) {
