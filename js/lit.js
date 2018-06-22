@@ -1511,7 +1511,7 @@ function lit() {
 	pins = [];
 
     // ********** META-LOGIC **********
-	
+
 	// covers game ending in a draw 
 	if (activeSide.length === 1) {
 		pieceToMove = activeSide[0];
@@ -1523,7 +1523,7 @@ function lit() {
 		}
 	}
 
-	if (castleIds.length) {
+	if (castleIds.length) { // if king is castling
 		castleIds.forEach(id => {
 			document.getElementById(id).classList.remove('castleLit');
 			document.getElementById(id).removeEventListener('click', castling);
