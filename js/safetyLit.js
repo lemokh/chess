@@ -1543,3 +1543,50 @@ function lit() {
 		});
 	}
 }
+
+window.onload = function () {
+	document.getElementById('start').addEventListener('click', function getMinutes() {
+		
+		if (document.getElementById('timeSet').value) {
+			if (document.getElementById('timeSet').value > 0) {
+				if (!document.getElementById('timeSet').value.includes('.'))
+					if (!document.getElementById('timeSet').value.includes('e')) {
+				
+					userInput = +(document.getElementById('timeSet').value);
+					
+					clock1 = document.getElementById('time1');
+					clock1.innerHTML = userInput+':00';
+					
+					clock2 = document.getElementById('time2');
+					clock2.innerHTML = userInput+':00';
+
+					blueTime = {
+						minutes: userInput,
+						tenths: 0,
+						hundredths: 0 
+					};
+					
+					orangeTime = {
+						minutes: userInput,
+						tenths: 0,
+						hundredths: 0 
+					};
+
+					document.getElementById('modal').style.display = "none";
+					
+					function showTimers(timer) {
+						timer.style.visibility = "visible";
+						timer.style.opacity = '1';
+						timer.style.transform = 'scale(1.0)';
+						timer.style.transition = 'visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s';
+					}
+
+					showTimers(document.getElementById('time1'));
+					showTimers(document.getElementById('time2'));
+					
+					lit();
+				}
+			}
+		}
+	});
+}
