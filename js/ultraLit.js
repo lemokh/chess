@@ -528,14 +528,12 @@ function swapSide(fromDiv, toDiv) {
 }
 
 function eat(piece) {
-
+	console.log('ENTERS eat('+piece+')');
 	// eat(goToDiv); --> normal pawn attack
 	// eat(pawnJumpDiv); --> enPassant attack
 
-	console.log('ENTERS eat('+piece+')');
-
 	// puts piece in its takenBox
-	if (activeKing.dataset.side === 'blue') { // if blue side
+	if (activeKing.dataset.side === 'blue') {
 		document.getElementById(
 			blueTakenBoxIdCounter.toString()
 		).src = piece.src;
@@ -710,38 +708,25 @@ function toggleSides() {
 	activeSide.forEach(activePiece => {
 		activePiece.removeEventListener('click', wherePieceCanMove);
 	});
-	// console.log(activeKing);
-	// toggles side & starts next move 
 	if (activeSide[0].dataset.side === 'blue') {
-		
-		// console.log('toggling clocks');
-		// clearInterval(runTimer);
-		
 		console.log('toggles activeSide to orange');
-		
 		activeSide = oranges;
 		passiveSide = blues;
-		
-		lit();
 	}
-	
 	else { // since activeKing is orange
-		// console.log('toggling clocks');
-		// clearInterval(runTimer);
-
 		console.log('toggles activeSide to blue');
-		
 		activeSide = blues;
 		passiveSide = oranges;
-		
-		lit();
 	}
+	lit(); // starts next move 
 }
 
 function endOfGame() {
+	
 	clearInterval(runTimer);
 	activeKing.classList.add('checkMate');
 	board.classList.add('noClick');
+	
 	activeSide.forEach(activePiece => {
 		activePiece.removeEventListener('click', wherePieceCanMove);
 	});
@@ -754,25 +739,49 @@ function endOfGame() {
 function resign() {
 	clearInterval(runTimer);
 	board.classList.add('noClick');
+	
 	activeSide.forEach(activePiece => {
 		activePiece.removeEventListener('click', wherePieceCanMove);
 	});
+	
 	alert(activeKing.dataset.side + " resigns");
 	console.log('END OF GAME');
 }
 
 ///////////////////////////
 
+function onBoard(id) {
+	if (id[0] >= 0) {
+		if (id[0] <= 7) {
+			if (id[1] >= 0) {
+				if (id[1] <= 7) {
+					return true;
+				}
+			}
+		}
+	}
+}
+
+function onBoardNonActiveIds(id) {
+	
+	if (onBoard(id)) {
+		if (findingKingAttackers) {
+			if ( document.getElementById( id ).dataset.side 
+			!== passiveSide[0].dataset.side ) { return id; }
+		}
+		else {
+			if ( document.getElementById( id ).dataset.side 
+			!== activeKing.dataset.side ) { return id; }
+		}
+	}
+} // knightLit & knightAttacks helper
+
 function pawnLit() {
-
 	console.log('enters pawnLit()');
-
 	// highlights all possible moves for blue pawnToMove
 	if (activeKing.dataset.side === 'blue') {
-		// if enPassant attack is possible
+		// if enPassant attack is possible, covers enPassant attack
 		if (enPassanting) { // same as: if (pawnJumpDiv.length) ?
-			// covers enPassant attack
-			
 			// if bluePawnToMove is beside pawnJump,
 			if ((pieceToMove.id === (pawnJumpDiv.id[0] - 1) + pawnJumpDiv.id[1])
 			|| (pieceToMove.id === (+pawnJumpDiv.id[0] + 1) + pawnJumpDiv.id[1])) {
@@ -814,7 +823,7 @@ function pawnLit() {
 	}
 	else { // since orange's turn
 		// if enPassant attack is possible
-		if (enPassanting) { // if (pawnJumpDiv.length) {}
+		if (enPassanting) { // same as if pawnJumpDiv.length?
 			if ((pieceToMove.id === (pawnJumpDiv.id[0] - 1) + pawnJumpDiv.id[1])
 			|| (pieceToMove.id === (+pawnJumpDiv.id[0] + 1) + pawnJumpDiv.id[1])) {
 				// adds enPassant attack div to litIds
@@ -859,138 +868,83 @@ function pawnLit() {
 	}
 } // fills litIds with ids where pawn can move
 
-function onBoard(id) {
-	if (id[0] >= 0) {
-		if (id[0] <= 7) {
-			if (id[1] >= 0) {
-				if (id[1] <= 7) {
-					return true;
-				}
-			}
-		}
-	}
-}
-
-function onBoardNonActiveIds(id) {
-	if (onBoard(id)) {
-		if (findingKingAttackers) {
-			if ( document.getElementById( id ).dataset.side 
-			!== passiveSide[0].dataset.side ) { return id; }
-		}
-		else {
-			if ( document.getElementById( id ).dataset.side 
-			!== activeKing.dataset.side ) { return id; }
-		}
-	}
-}
-
 function knightSpaces(knight) { 
 	return [
 		(+knight.id[0] + 1) + (+knight.id[1] + 2).toString(),
-		(+knight.id[0] + 1) +  (knight.id[1] - 2).toString(),
+		(+knight.id[0] + 1) + (knight.id[1] - 2).toString(),
 		(knight.id[0] - 1) + (+knight.id[1] + 2).toString(),
-		(knight.id[0] - 1) +  (knight.id[1] - 2).toString(),
+		(knight.id[0] - 1) + (knight.id[1] - 2).toString(),
 		(+knight.id[0] + 2) + (+knight.id[1] + 1).toString(),
-		(+knight.id[0] + 2) +  (knight.id[1] - 1).toString(),
+		(+knight.id[0] + 2) + (knight.id[1] - 1).toString(),
 		(knight.id[0] - 2) + (+knight.id[1] + 1).toString(),
-		(knight.id[0] - 2) +  (knight.id[1] - 1).toString()
+		(knight.id[0] - 2) + (knight.id[1] - 1).toString()
 	];
-}
+} // knightLit helper
 
 function knightLit() {
 	litIds = knightSpaces(pieceToMove).filter(onBoardNonActiveIds);
 } // fills litIds with ids where knight can move
 
-function bishopLit() {
+function quadrant(x, y) { // x & y are a number
+	let bishopPath = document.getElementById(x+''+y);
 
-	function quadrant(x, y) { // x & y are a number
-
-		let bishopPath = document.getElementById( x.toString() + y );
-
-		if (x >= 0) {
-			if (x <= 7) {
-				if (y >= 0) {
-					if (y <= 7) { // since x & y are on the board..
-						// collects id, if empty or passivePiece
-						if (bishopPath.dataset.side === 'empty') {
-							litIds.push( bishopPath.id );
-							// rubbishIds.push( bishopPath.id );
-							
-							// increments x
-							// if x is east of pieceToMove, continue east
-							if (x > +pieceToMove.id[0]) { x += 1; }
-							else { x -= 1; } // continue west
-							
-							// increments y
-							// if y is south of pieceToMove, continue south
-							if (y > +pieceToMove.id[1]) { y += 1; }
-							else { y -= 1; } // continue north
-							
-							quadrant(x, y); // continue path
-						}
-						else if (bishopPath.dataset.side === passiveSide[0].dataset.side) {
-							litIds.push( bishopPath.id ); // path ends
-							// rubbishIds.push( bishopPath.id );
-						}
-					}
-				}
-			}
+	if (onBoard(x+''+y)) {
+		// collects id, if empty or passivePiece
+		if (bishopPath.dataset.side === 'empty') {
+			litIds.push( bishopPath.id );
+			// increments x
+			// if x is east of pieceToMove, continue east
+			if (x > +pieceToMove.id[0]) { x += 1; }
+			else { x -= 1; } // continue west
+			// increments y
+			// if y is south of pieceToMove, continue south
+			if (y > +pieceToMove.id[1]) { y += 1; }
+			else { y -= 1; } // continue north
+			quadrant(x, y); // continue path
+		}
+		else if (bishopPath.dataset.side === passiveSide[0].dataset.side) {
+			litIds.push( bishopPath.id ); // path ends
 		}
 	}
-	// rubbishIds.push(pieceToMove.id);
+} // bishopLit helper
+
+function bishopLit() {
 	quadrant(+pieceToMove.id[0] + 1, +pieceToMove.id[1] + 1);
-
-	// rubbishIds.push(pieceToMove.id);
 	quadrant(+pieceToMove.id[0] + 1, +pieceToMove.id[1] - 1);
-	
-	// rubbishIds.push(pieceToMove);
 	quadrant(+pieceToMove.id[0] - 1, +pieceToMove.id[1] + 1);
-
-	// rubbishIds.push(pieceToMove);
 	quadrant(+pieceToMove.id[0] - 1, +pieceToMove.id[1] - 1);
 }  // fills litIds with ids where bishop can move
 
+function line(x, y) { // x & y are a number
+	let rookPath = document.getElementById( x.toString() + y );
+
+	if (onBoard(x+''+y)) {
+		// collects id, if empty or passivePiece
+		if (rookPath.dataset.side === 'empty') {
+			litIds.push( rookPath.id );
+			// increments x
+			if (x !== +pieceToMove.id[0]) {
+				// if x is east of pieceToMove, continue east
+				if (x > +pieceToMove.id[0]) { x += 1; }
+				else { x -= 1; } // continue west
+			}
+			// increments y
+			if (y !== +pieceToMove.id[1]) {
+				// if y is south of pieceToMove, continue south
+				if (y > +pieceToMove.id[1]) { y += 1; }
+				else { y -= 1; } // continue north
+			}
+			line(x, y); // continue path
+		}
+		else if (rookPath.dataset.side === passiveSide[0].dataset.side) {
+			litIds.push( rookPath.id ); // path ends
+		}
+	}        
+} // rookLit helper
+
 function rookLit() {
 	// in case of queen
-	if (pieceToMove.dataset.name === 'rook') { litIds = []; }
-
-	function line(x, y) { // x & y are a number
-
-		let rookPath = document.getElementById( x.toString() + y );
-
-		if (x >= 0) {
-			if (x <= 7) {
-				if (y >= 0) {
-					if (y <= 7) { // since x & y are on the board..
-						// collects id, if empty or passivePiece
-						if (rookPath.dataset.side === 'empty') {
-
-							litIds.push( rookPath.id );
-							
-							// increments x
-							if (x !== +pieceToMove.id[0]) {
-								// if x is east of pieceToMove, continue east
-								if (x > +pieceToMove.id[0]) { x += 1; }
-								else { x -= 1; } // continue west
-							}
-							
-							// increments y
-							if (y !== +pieceToMove.id[1]) {
-								// if y is south of pieceToMove, continue south
-								if (y > +pieceToMove.id[1]) { y += 1; }
-								else { y -= 1; } // continue north
-							}
-
-							line(x, y); // continue path
-						}
-						else if (rookPath.dataset.side === passiveSide[0].dataset.side) {
-							litIds.push( rookPath.id ); // path ends
-						}
-					}
-				}
-			}
-		}           
-	} 
+	if (pieceToMove.dataset.name === 'rook') { litIds = []; } 
 
 	line(+pieceToMove.id[0] + 1, +pieceToMove.id[1]);
 	line(+pieceToMove.id[0] - 1, +pieceToMove.id[1]);
@@ -1202,14 +1156,11 @@ function pawnAttacks(pawn) {
 } // returns true/false if pawn can attack checkSpaceId
 
 function knightAttacks(knight) {
-
-	function attacks(id) {
-		if (id === checkSpaceId) { return id; }
-	}
-	
-	if (knightSpaces(knight).filter(onBoardNonActiveIds).filter(attacks).length) {
-		return true; 
-	}
+	return (
+		knightSpaces(knight).filter(onBoardNonActiveIds).filter(id => {
+			if (id === checkSpaceId) { return id; }
+		}).length
+	);
 } // returns true/false if knight can attack checkSpaceId
 
 function bishopAttacks(bishop) {
@@ -1263,8 +1214,7 @@ function bishopAttacks(bishop) {
 			else { return false; } // bishop cannot checkSpaceId
 		}
 	}
-	else {
-		// since bishop attacks in a southWest diagonal
+	else { // since bishop attacks in a southWest diagonal
 		if (+bishop.id[1] < +checkSpaceId[1]) {
 			// if bishop aligns with checkSpaceId
 			if ( +bishop.id[0] - +checkSpaceId[0]
@@ -1309,19 +1259,22 @@ function bishopAttacks(bishop) {
 		bishopMoves.forEach(bishopMove => {
 			if (onBoard(bishopMove)) {
 				blocker = document.getElementById( bishopMove );
-				if (blocker.dataset.side !== 'empty') { nails.push(blocker); }
+				if (blocker.dataset.side !== 'empty') {
+					nails.push(blocker);
+				}
 			}
 		});
 		console.log('nails -->');  console.log(nails);
 	}
+	// note: nails may contain pieces from both sides
 	// returns true/false if no piece blocks bishop's path to checkSpaceId
-	if (!nails.length) { // note: nails may contain pieces from both sides
+	if (!nails.length) {
 		// pathOfCheck array becomes bishop's id route to checkSpaceId
 		pathOfCheck = bishopMoves;
 		console.log('pathOfCheck -->');  console.log(pathOfCheck);
 		return true; // bishop can attack checkSpaceId
 	}
-	if (nails.length === 1) { // if only one nail
+	if (nails.length === 1) {
 		if (checkSpaceId === activeKing.id) {
 			// if that nail & bishop aren't on the same side
 			if (nails[0].dataset.side !== bishop.dataset.side) {
@@ -1444,14 +1397,8 @@ function rookAttacks(rook) {
 
 function queenAttacks(queen) {
 
-	if (bishopAttacks(queen, checkSpaceId)) {
-		queenAttack = 'bishop';
-		return true;
-	}
-	if (rookAttacks(queen, checkSpaceId)) {
-		queenAttack = 'rook';
-		return true;
-	}
+	if (bishopAttacks(queen, checkSpaceId)) { return true; }
+	if (rookAttacks(queen, checkSpaceId)) { return true; }
 	return false;
 } // returns true/false if queen can attack checkSpaceId
 
@@ -1460,27 +1407,26 @@ function kingAttacks(king) {
 	switch (+checkSpaceId[0]) { // if checkSpaceId's column equals...
 		case +king.id[0]: // king's column
 			return (
-				( +checkSpaceId[1] === (+king.id[1] + 1) )
+				+checkSpaceId[1] === (+king.id[1] + 1)
 				|| 
-				( +checkSpaceId[1] === (king.id[1] - 1) )
+				+checkSpaceId[1] === (king.id[1] - 1)
 			);
 		case +king.id[0] + 1: // king's column + 1
 			return (
-				(  checkSpaceId[1] ===   king.id[1] )
+				checkSpaceId[1] === king.id[1]
 				||
-				( +checkSpaceId[1] === (+king.id[1] + 1) )
+				+checkSpaceId[1] === (+king.id[1] + 1)
 				||
-				( +checkSpaceId[1] ===  (king.id[1] - 1) )
+				+checkSpaceId[1] === (king.id[1] - 1)
 			);
 		case king.id[0] - 1: // king's column - 1
 			return (
-				( checkSpaceId[1] === king.id[1] )
+				checkSpaceId[1] === king.id[1]
 				||
-				( +checkSpaceId[1] === (+king.id[1] + 1) )
+				+checkSpaceId[1] === (+king.id[1] + 1)
 				||
-				( +checkSpaceId[1] === (king.id[1] - 1) )
+				+checkSpaceId[1] === (king.id[1] - 1)
 			);
-
 		default: return false;
 	}
 } // returns true if king can attack checkSpaceId
