@@ -1522,6 +1522,7 @@ function lit() {
 			document.getElementById(id).classList.remove('castleLit');
 			document.getElementById(id).removeEventListener('click', castling);
 		});
+		castleIds = [];
 	}
 
 	previousPinnedPieces = board.querySelectorAll("[data-pinned='true']");
