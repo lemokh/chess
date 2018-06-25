@@ -87,9 +87,9 @@ function inCheck() {
 	
 	console.log('checkPath -->');  console.log(checkPath);
 
-	if (checkPath.includes(behindKingId)) {
-		checkPath.splice(checkPath.indexOf(behindKingId), 1);
-	}
+	// if (checkPath.includes(behindKingId)) {
+	// 	checkPath.splice(checkPath.indexOf(behindKingId), 1);
+	// }
 	console.log('checkPath -->');  console.log(checkPath);
 
 	pieceToMove = activeKing;
@@ -306,20 +306,11 @@ function wherePieceCanMove(e) {
 	// ----------------------------------------
 	pieceToMove = e.target;
 	pieceToMove.classList.add('mainLit');
-	// -----------------------------------------
-	if (pieceToMove.dataset.pinned === 'true') {
-		pinnedPieceLit(); // lights where pinned pieceToMove can go
-		if (pinnedLitIds.length) {
-			pinnedLitIds.forEach( pinnedLitId => {
-				litPiece = document.getElementById(pinnedLitId);
-				litPiece.classList.add('lit');
-				litPiece.addEventListener('click', movePiece);
-			});
-		}
-	}
+	// --------------------------------------
+	// lights where pinned pieceToMove can go
+	if (pieceToMove.dataset.pinned === 'true') { pinnedPieceLit(); }
 	else {
 		possibleMoves();
-		// lightens & click-listens to litIds --> movePiece(e)
 		if (litIds.length) { addLitDivHandler(movePiece); }
 	}
 }
@@ -681,7 +672,10 @@ function cleanUpAfterFirstClick() {
 ///////////////////////////
 
 function pinnedPieceLit() {
-	console.log('ENTERS pinnedPieceLit()')
+	console.log('ENTERS pinnedPieceLit()');
+	// ---------------------------------------------------
+	if (pieceToMove.dataset.name === 'knight') { return; }
+	// ---------------------------------------------------
 	// assigns pinned pieceToMove's pinnerPiece
 	for (let i = 0; i < pinnedPieces.length; i++) {
 		if (pieceToMove === pinnedPieces[i].pinned) {
@@ -689,15 +683,50 @@ function pinnedPieceLit() {
 			break;
 		}
 	}
-	// provides pinned pieceToMove's id path to pinner piece 
-	checkingSpace(pieceToMove, pinnerPiece.id);
-	tempLitIds = pathOfCheck;
-	// provides pinned pieceToMove's id path to its own king
-	checkingSpace(pieceToMove, activeKing.id);
-	pinnedLitIds = [...pathOfCheck, ...tempLitIds];
-	// if pinned piece can eat its pinnerPiece, add it to pinnedIds 
-	if (checkingSpace(pieceToMove, pinnerPiece.id)) {
-		pinnedLitIds.push(pinnerPiece.id);
+	// ---------------------------------------
+	if (pieceToMove.dataset.name === 'pawn') {
+		if (pieceToMove.dataset.side === 'blue') {
+			if (document.getElementById(pieceToMove.id[0] + (pieceToMove.id[1] - 1)).dataset === 'empty') {
+				pinnedLitIds.push(pieceToMove.id[0] + (pieceToMove.id[1] - 1));
+				if (pieceToMove.id[1] === '6') {
+					if (document.getElementById(pieceToMove.id[0] + (pieceToMove.id[1] - 2)).dataset === 'empty') {
+						pinnedLitIds.push(pieceToMove.id[0] + (pieceToMove.id[1] - 2));
+					}
+				}
+			}
+		} 
+		else {
+			if (document.getElementById(pieceToMove.id[0] + (+pieceToMove.id[1] + 1)).dataset === 'empty') {
+				pinnedLitIds.push(pieceToMove.id[0] + (+pieceToMove.id[1] + 1));
+				if (pieceToMove.id[1] === '1') {
+					if (document.getElementById(pieceToMove.id[0] + (+pieceToMove.id[1] + 2)).dataset === 'empty') {
+						pinnedLitIds.push(pieceToMove.id[0] + (+pieceToMove.id[1] + 2));
+					}
+				}
+			}
+		}
+	}
+	else { // since either a bishop, rook, or queen
+		// if pieceToMove can eat its pinnerPiece
+		if (checkingSpace(pieceToMove, pinnerPiece.id)) {
+			pinnedLitIds.push(pinnerPiece.id);
+		}
+		console.log('pathOfCheck -->');  console.log(pathOfCheck);
+		// includes ids from pieceToMove to its pinning piece
+		pinnedLitIds.push(...pathOfCheck);
+		// ---------------------------------------------
+		// includes ids from pieceToMove to its own king
+		checkingSpace(pieceToMove, activeKing.id);
+		pinnedLitIds.push(...pathOfCheck);
+		console.log('pinnedLitIds -->');  console.log(pinnedLitIds);
+		// ---------------------------------------------------------
+		if (pinnedLitIds.length) {
+			pinnedLitIds.forEach( pinnedLitId => {
+				litPiece = document.getElementById(pinnedLitId);
+				litPiece.classList.add('lit');
+				litPiece.addEventListener('click', movePiece);
+			});
+		}
 	}
 }
 
@@ -1065,7 +1094,7 @@ function kingLit() {
 			return (kingSpace === activePiece.id);
 		});
 	});
-
+	
 	console.log('openAndOpponentHeldKingSpaces -->');
 	console.log(openAndOpponentHeldKingSpaces);
 
@@ -1156,11 +1185,14 @@ function pawnAttacks(pawn) {
 } // returns true/false if pawn can attack checkSpaceId
 
 function knightAttacks(knight) {
-	return (
-		knightSpaces(knight).filter(onBoardNonActiveIds).filter(id => {
-			if (id === checkSpaceId) { return id; }
-		}).length
-	);
+
+	function attacks(id) {
+		if (id === checkSpaceId) { return id; }
+	}
+	
+	if (knightSpaces(knight).filter(onBoardNonActiveIds).filter(attacks).length) {
+		return true; 
+	}
 } // returns true/false if knight can attack checkSpaceId
 
 function bishopAttacks(bishop) {
@@ -1505,24 +1537,25 @@ function lit() {
 		litIds = [];
 		pieceToMove = piece;
 		possibleMoves();
-		if (!litIds.length) {
-			stuckActivePieces += 1;
-		}
+		if (!litIds.length) { stuckActivePieces += 1; }
 	});
 	litIds = [];
+	pathOfCheck = [];
 	testingDraw = false;
 	pieceToMove = undefined;
 	if (stuckActivePieces === activeSide.length) {
 		clearInterval(runTimer);
 		alert("Game ends in a draw");
 		return;
-    }
-    // -------------------------------------------------------------
-    // adds to kingAttackers all passivePieces that check activeKing 
+	}
+    // ---------------------------------------------------------------
+    // pushes to kingAttackers all passivePieces that check activeKing 
 	passiveSide.forEach(passivePiece => {
-		if (checkingSpace(passivePiece, activeKing.id)) {
-            kingAttackers.push(passivePiece);
-			console.log('pathOfCheck -->');  console.log(pathOfCheck);
+		if (passivePiece.dataset.name !== 'king') {
+			if (checkingSpace(passivePiece, activeKing.id)) {
+				kingAttackers.push(passivePiece);
+				console.log('pathOfCheck -->');  console.log(pathOfCheck);
+			}
 		}
 	});
 
