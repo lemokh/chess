@@ -96,7 +96,8 @@ function inCheck() {
 	kingLit(); // fills litIds with ids where activeKing can move
 	
 	console.log('greyLitPieces -->');  console.log(greyLitPieces);
-
+	console.log('litIds -->');  console.log(litIds);
+	
 	// if king can move, handles moving activeKing
 	if (litIds.length) {
 		
@@ -124,6 +125,8 @@ function inCheck() {
 	}
 	else { kingStuck = true; }
 	
+	console.log('kingAttackers -->');  console.log(kingAttackers);
+
 	if (kingAttackers.length === 1) { // if only one kingAttacker
 		/////////////////////////////////////////////////////
 		// populates canEatKingAttacker & canBlockPathOfCheck
@@ -1034,6 +1037,11 @@ function kingLit() {
 	// highlights all possible moves for activeKing
 	console.log('ENTERS kingLit()');
 
+	// FIX GREYLITPIECES ADDING INCORRECT EXTRA PIECES!!
+	// WHEN IN CHECK, DO NOT CHECK FOR ACTIVEPIECES THAT CAN BLOCK PATH OF KINGATTACKER'S PASSIVE SUPPORTING PIECES
+	// ALSO, WRITE THE LOGIC FOR WHEN PATH OF CHECK IS EMPTY (WHEN PIECES BORDER EACHOTHER)
+
+
 	passiveSideCoversId = false;
 
 	// covers king castling
@@ -1607,7 +1615,8 @@ function lit() {
     // adds to kingAttackers all passivePieces that check activeKing 
 	passiveSide.forEach(passivePiece => {
 		if (checkingSpace(passivePiece, activeKing.id)) {
-            kingAttackers.push(passivePiece);
+			kingAttackers.push(passivePiece);
+			console.log('kingAttackers -->');  console.log(kingAttackers);
 			console.log('pathOfCheck -->');  console.log(pathOfCheck);
 		}
 	});
