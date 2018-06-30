@@ -1,5 +1,5 @@
 var pieces, knightCells, pinningPiece, rubbishIds, pawnBlocksKingAttacker, pathToCheck, idToBlock, kingAttackers= [], greyLitPieces = [], defenders = [], pawnDefenders = [], enPassantCell = '', orangeTakenBoxIdCounter = -16, blueTakenBoxIdCounter = -1, enPassanting = false,
-heroics = [], anId, pins, kingInCheck, stuckActivePieces, kingLitIds = [], tempLitIds, checkSpaceId, pinnedLitIds, behindKingId, kingLitPiece, kingStuck, preventMateIds = [], kingMovesOutOfCheck = [], possiblePinnedMoves, kingMovesOutOfCheck, newPieceClicked, pinnerPiece, tempPinnedPieces, greyPieceToMove, pathPiece, activePieceIsPinned, litSpace, blocker, mate = false, passiveSideCoversId, canEatKingAttacker = [], greyLitDivs, canBlockPathOfCheck = [], gameOver, kingSlayer, checkPath, emptySpaces, knightLight, bishopPathId, rookPathId, blueKingFirstMove, blueRook1FirstMove, activeKing, blueRook2FirstMove,  orangeKingFirstMove, orangeRook1FirstMove, orangeRook2FirstMove, castleIds = [], noCastle, kingAble, pieceToMove, goToDiv, enPassantDiv, prevGoToDiv, enPassantGoToDiv, pawnJumpDiv, enPassantables2 = [], enPassantedPawn, knightLight, takenOrangeBox, takenBlueBox, gameEnds, tempSide, movedPiece, mainLitDiv, litIds, unLitDivs, img, index1, index2, tempPiece, moves, takenBox, activeCells, openAndOpponentHeldKingSpaces, kingSpacesUnderAttack, orangeKingSpacesUnderAttack, orangelessKingSpaces, orangelessKingSpaces, blueKingSpaces, bluelessKingSpaces, orangeKingSpacesUnderAttack, vacantKingSpaces, whiteKing, blackKing, knightMoves, bishopMoves, bishopX, bishopY, rookMoves, kingSpaces, kingOpenSpaces, occupiedKingSpaces, defenders, pinnedPieces, pathOfCheck = [], nails, whites, blacks;
+heroics = [], anId, pins, kingInCheck, kingAttackerSupporters, stuckActivePieces, kingLitIds = [], tempLitIds, checkSpaceId, pinnedLitIds, behindKingId, kingLitPiece, kingStuck, preventMateIds = [], kingMovesOutOfCheck = [], possiblePinnedMoves, kingMovesOutOfCheck, newPieceClicked, pinnerPiece, tempPinnedPieces, greyPieceToMove, pathPiece, activePieceIsPinned, litSpace, blocker, mate = false, passiveSideCoversId, canEatKingAttacker = [], greyLitDivs, canBlockPathOfCheck = [], gameOver, kingSlayer, checkPath, emptySpaces, knightLight, bishopPathId, rookPathId, blueKingFirstMove, blueRook1FirstMove, activeKing, blueRook2FirstMove,  orangeKingFirstMove, orangeRook1FirstMove, orangeRook2FirstMove, castleIds = [], noCastle, kingAble, pieceToMove, goToDiv, enPassantDiv, prevGoToDiv, enPassantGoToDiv, pawnJumpDiv, enPassantables2 = [], enPassantedPawn, knightLight, takenOrangeBox, takenBlueBox, gameEnds, tempSide, movedPiece, mainLitDiv, litIds, unLitDivs, img, index1, index2, tempPiece, moves, takenBox, activeCells, openAndOpponentHeldKingSpaces, kingSpacesUnderAttack, orangeKingSpacesUnderAttack, orangelessKingSpaces, orangelessKingSpaces, blueKingSpaces, bluelessKingSpaces, orangeKingSpacesUnderAttack, vacantKingSpaces, whiteKing, blackKing, knightMoves, bishopMoves, bishopX, bishopY, rookMoves, kingSpaces, kingOpenSpaces, occupiedKingSpaces, defenders, pinnedPieces, pathOfCheck = [], nails, whites, blacks;
 
 const board = document.getElementById('board');
 
@@ -77,6 +77,7 @@ function toggleClocks() {
 function inCheck() {
 
 	console.log('ENTERS inCheck()');
+
 	console.log('behindKingId -->');  console.log(behindKingId);
 
 	console.log('litIds -->');  console.log(litIds);
@@ -87,6 +88,7 @@ function inCheck() {
 	
 	console.log('checkPath -->');  console.log(checkPath);
 
+	// unnecessary?
 	if (checkPath.includes(behindKingId)) {
 		checkPath.splice(checkPath.indexOf(behindKingId), 1);
 	}
@@ -94,7 +96,8 @@ function inCheck() {
 
 	pieceToMove = activeKing;
 	kingLit(); // fills litIds with ids where activeKing can move
-	
+	// excludes behindKingId from kingSpaces
+
 	console.log('greyLitPieces -->');  console.log(greyLitPieces);
 	console.log('litIds -->');  console.log(litIds);
 	
@@ -683,31 +686,6 @@ function cleanUpAfterFirstClick() {
 }
 
 ///////////////////////////
-/* function pinnedPieceLit() {
-	console.log('ENTERS pinnedPieceLit()')
-	// assigns pinned pieceToMove's pinnerPiece
-	for (let i = 0; i < pinnedPieces.length; i++) {
-		if (pieceToMove === pinnedPieces[i].pinned) {
-			pinnerPiece = pinnedPieces[i].pinner;
-			break;
-		}
-	}
-	// -----------------------------------------
-	if (pieceToMove.dataset.name === 'knight') {
-		if (pinnerPiece.dataset.name !== 'knight') { return; }
-	} 
-	// provides pinned pieceToMove's id path to pinner piece 
-	checkingSpace(pieceToMove, pinnerPiece.id);
-	tempLitIds = pathOfCheck;
-	// provides pinned pieceToMove's id path to its own king
-	checkingSpace(pieceToMove, activeKing.id);
-	pinnedLitIds = [...pathOfCheck, ...tempLitIds];
-	// if pinned piece can eat its pinnerPiece, add it to pinnedIds 
-	if (checkingSpace(pieceToMove, pinnerPiece.id)) {
-		pinnedLitIds.push(pinnerPiece.id);
-	}
-} */
-
 function pinnedPieceLit() {
 	console.log('ENTERS pinnedPieceLit()');
 	// assigns pinned pieceToMove's pinnerPiece
@@ -726,6 +704,7 @@ function pinnedPieceLit() {
 		pinnedLitIds.push(pinnerPiece.id);
 	}
 	console.log('pathOfCheck -->');  console.log(pathOfCheck);
+
 	pinnedLitIds.push(...pathOfCheck);
 	// -----------------------------------------
 	if (pieceToMove.dataset.name !== 'knight') {
@@ -737,7 +716,6 @@ function pinnedPieceLit() {
 		}
 	}
 }
-
 ///////////////////////////
 
 function toggleSides() {
@@ -949,7 +927,6 @@ function bishopLit() {
 						// collects id, if empty or passivePiece
 						if (bishopPath.dataset.side === 'empty') {
 							litIds.push( bishopPath.id );
-							// rubbishIds.push( bishopPath.id );
 							
 							// increments x
 							// if x is east of pieceToMove, continue east
@@ -965,23 +942,15 @@ function bishopLit() {
 						}
 						else if (bishopPath.dataset.side === passiveSide[0].dataset.side) {
 							litIds.push( bishopPath.id ); // path ends
-							// rubbishIds.push( bishopPath.id );
 						}
 					}
 				}
 			}
 		}
-	}
-	// rubbishIds.push(pieceToMove.id);
+	}	
 	quadrant(+pieceToMove.id[0] + 1, +pieceToMove.id[1] + 1);
-
-	// rubbishIds.push(pieceToMove.id);
 	quadrant(+pieceToMove.id[0] + 1, +pieceToMove.id[1] - 1);
-	
-	// rubbishIds.push(pieceToMove);
 	quadrant(+pieceToMove.id[0] - 1, +pieceToMove.id[1] + 1);
-
-	// rubbishIds.push(pieceToMove);
 	quadrant(+pieceToMove.id[0] - 1, +pieceToMove.id[1] - 1);
 }  // fills litIds with ids where bishop can move
 
@@ -1026,7 +995,6 @@ function rookLit() {
 			}
 		}           
 	} 
-
 	line(+pieceToMove.id[0] + 1, +pieceToMove.id[1]);
 	line(+pieceToMove.id[0] - 1, +pieceToMove.id[1]);
 	line(+pieceToMove.id[0], +pieceToMove.id[1] + 1);
@@ -1040,7 +1008,8 @@ function kingLit() {
 	// FIX GREYLITPIECES ADDING INCORRECT EXTRA PIECES!!
 	// WHEN IN CHECK, DO NOT CHECK FOR ACTIVEPIECES THAT CAN BLOCK PATH OF KINGATTACKER'S PASSIVE SUPPORTING PIECES
 	// ALSO, WRITE THE LOGIC FOR WHEN PATH OF CHECK IS EMPTY (WHEN PIECES BORDER EACHOTHER)
-
+	// FINALLY, PINNEDPIECE QUEEN DOES NOT LIT CORRECTLY (ADDS TOO MANY SPACES)
+		// PATHOFCHECK & PINNEDLITIDS EACH HAVE INCORRECT IDS (ADDED FOUR TIMES)...  IS NOT CLEARING PROPERLY
 
 	passiveSideCoversId = false;
 
@@ -1556,9 +1525,11 @@ function lit() {
 	newPieceClicked = undefined;
 	behindKingId = undefined;
 	
+	kingAttackerSupporters = [];
 	canBlockPathOfCheck = [];
 	canEatKingAttacker = [];
 	kingAttackers = [];
+	// greyLitPieces = [];
 	pinnedLitIds = [];
 	pinnedPieces = [];
 	pathOfCheck = [];
@@ -1577,10 +1548,6 @@ function lit() {
 		});
 		castleIds = [];
 	}
-
-	// board.querySelectorAll('.lit').forEach(item => {
-    //     removeHandler('.lit', funcName);
-    // });
 
 	previousPinnedPieces = board.querySelectorAll("[data-pinned='true']");
 	console.log('previousPinnedPieces -->');  console.log(previousPinnedPieces);
@@ -1603,14 +1570,14 @@ function lit() {
 			stuckActivePieces += 1;
 		}
 	});
-	litIds = [];
-	testingDraw = false;
-	pieceToMove = undefined;
 	if (stuckActivePieces === activeSide.length) {
 		clearInterval(runTimer);
 		alert("Game ends in a draw");
 		return;
-    }
+	}
+	litIds = [];
+	testingDraw = false;
+	pieceToMove = undefined;
     // -------------------------------------------------------------
     // adds to kingAttackers all passivePieces that check activeKing 
 	passiveSide.forEach(passivePiece => {
@@ -1620,6 +1587,16 @@ function lit() {
 			console.log('pathOfCheck -->');  console.log(pathOfCheck);
 		}
 	});
+
+	if (kingAttackers.length === 1) {
+		passiveSide.forEach(piece => {
+			if (piece.id !== kingAttackers[0].id) {
+				if (checkingSpace(piece, kingAttackers[0].id)) {
+					kingAttackerSupporters.push(piece);
+				}
+			}
+		});
+	}
 
 	if (previousPinnedPieces.length) {
 		// collects each pinned piece into pins
