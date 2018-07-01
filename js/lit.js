@@ -84,7 +84,7 @@ function inCheck() {
 
 	kingInCheck = true;
 
-	checkPath = pathOfCheck;
+	checkPath = pathOfCheck; // why is this important?
 	
 	console.log('checkPath -->');  console.log(checkPath);
 
@@ -772,6 +772,11 @@ function resign() {
 	});
 	alert(activeKing.dataset.side + " resigns");
 	console.log('END OF GAME');
+}
+
+function draw() {
+	clearInterval(runTimer);
+	alert("Game ends in a draw");
 }
 
 ///////////////////////////
@@ -1529,7 +1534,7 @@ function lit() {
 	canBlockPathOfCheck = [];
 	canEatKingAttacker = [];
 	kingAttackers = [];
-	// greyLitPieces = [];
+	greyLitPieces = [];
 	pinnedLitIds = [];
 	pinnedPieces = [];
 	pathOfCheck = [];
@@ -1562,6 +1567,11 @@ function lit() {
     // --------------------------------------------------------
 	testingDraw = true;
 	// covers game ending in a draw
+	if (blues.length === 1) {
+		if (oranges.length === 1) {
+			return draw();
+		}
+	}
 	activeSide.forEach(piece => {
 		litIds = [];
 		pieceToMove = piece;
@@ -1571,9 +1581,7 @@ function lit() {
 		}
 	});
 	if (stuckActivePieces === activeSide.length) {
-		clearInterval(runTimer);
-		alert("Game ends in a draw");
-		return;
+		return draw();
 	}
 	litIds = [];
 	testingDraw = false;
