@@ -1524,6 +1524,7 @@ function lit() {
 	pawnBlocksKingAttacker = false;
 	noPawnEvolution = false;
 	kingInCheck = false;
+	activeDraw = false;
 	kingStuck = false;
 
 	greyPieceToMove = undefined;
@@ -1567,11 +1568,37 @@ function lit() {
     // --------------------------------------------------------
 	testingDraw = true;
 	// covers game ending in a draw
-	if (blues.length === 1) {
-		if (oranges.length === 1) {
+	if (activeSide.length === 1) {
+		if (passiveSide.length === 1) {
 			return draw();
 		}
 	}
+
+	if (activeSide.length === 2) {
+		for (let i = 0; i < activeSide.length; i++) {
+			if (activeSide[i].dataset.name === 'knight') {
+				if (passiveSide.length === 1) { return draw(); }
+				activeDraw = true;
+			}
+			if (activeSide[i].dataset.name === 'bishop') {
+				if (passiveSide.length === 1) { return draw(); }
+				activeDraw = true;
+			}
+		}
+		if (passiveSide.length === 2) {
+			for (let i = 0; i < passiveSide.length; i++) {
+				if (passiveSide[i].dataset.name === 'knight') {
+					if (activeSide.length === 1) { return draw(); }
+					if (activeDraw) { return draw(); }
+				}
+				if (passiveSide[i].dataset.name === 'bishop') {
+					if (activeSide.length === 1) { return draw(); }
+					if (activeDraw) { return draw(); }
+				}
+			}
+		}
+	}
+
 	activeSide.forEach(piece => {
 		litIds = [];
 		pieceToMove = piece;
