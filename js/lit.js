@@ -547,7 +547,7 @@ function swapSide(fromDiv, toDiv) {
 
 function eat(piece) {
 	
-	// if (removal) {piece === e.target;}
+	if (removal) {piece === e.target;}
 
 	// eat(goToDiv); --> normal pawn attack
 	// eat(pawnJumpDiv); --> enPassant attack
