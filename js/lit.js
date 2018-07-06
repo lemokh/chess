@@ -72,19 +72,6 @@ function toggleClocks() {
 }
 
 ///////////////////////////
-
-function removePiece() {
-	removal = true;
-
-	activeSide.forEach(piece => {
-		piece.addEventListener('click', eat);
-	});
-
-	passiveSide.forEach(piece => {
-		piece.addEventListener('click', eat);
-	});
-}
-
 ///////////////////////////
 
 function inCheck() {
@@ -546,9 +533,6 @@ function swapSide(fromDiv, toDiv) {
 }
 
 function eat(piece) {
-	
-	if (removal) {piece === e.target;}
-
 	// eat(goToDiv); --> normal pawn attack
 	// eat(pawnJumpDiv); --> enPassant attack
 
