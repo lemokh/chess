@@ -1544,6 +1544,8 @@ function lit() {
 
     // ********** META-LOGIC **********
 
+	debugger;
+
 	toggleClocks();
 
 	if (castleIds.length) {
