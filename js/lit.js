@@ -1663,7 +1663,7 @@ function lit() {
 
 /////////////////////////////
 
-window.onload = function () {
+window.onload = function() {
 	document.getElementById('start').addEventListener('click', function getMinutes() {
 		
 		if (document.getElementById('timeSet').value) {
