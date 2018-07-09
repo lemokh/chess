@@ -55,7 +55,6 @@ border-spacing: 0;
 } */
 
 html, body {
-  height: 100%;
   font-family: 'VarelaRound-Regular', sans-serif;
   }
 
@@ -70,142 +69,143 @@ body {
 game {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    grid-gap: 1rem;
-    margin-top: 1rem;
+    grid-gap: 2rem;
+    margin-top: 5rem;
 }
 
-  player1 {
-    display: grid;
-    grid-template-columns: 10rem;
-    /*background-color: rgba(219, 112, 147, 0.05);*/
-    background-color: black;
-    /*background-blend-mode: luminosity;*/
-    opacity: .2;
-  }
-  
-  player2 {
-    display: grid;
-    grid-template-columns: 10rem;
-    /*background-color: rgba(219, 112, 147, 0.05);*/
-    /*background-blend-mode: screen;*/
-    background-color: black;
-    opacity: .2;
-  }
+player1 {
+  display: grid;
+  grid-template-columns: 10rem;
+  /*background-color: rgba(219, 112, 147, 0.05);*/
+  background-color: black;
+  /*background-blend-mode: luminosity;*/
+  opacity: .2;
+}
 
-  board {
-    display: grid;
-    grid-template-columns: 1fr;
-    /*   background-color: #865541; */
-    /* filter: drop-shadow(0px 0px 5000px) invert(2%); */
-  }
-  
-  .btn {
-    text-align: center;
-  }
-  
-  #blueTakenBox {
-    display: flex;
-    flex-direction: row;
-  }
-  
-  #orangeTakenBox {
-    display: flex;
-    flex-direction: row;
-  }
-  
-  .row {
-    display: flex;
-  }
-  
-  img {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 5rem;
-    width: 5rem;
-    margin: 2px;
-  }
-  
-  .black {
-    /* background-image: url('images/boardDark.jpg'); */
-    /*background-color: #1A3E51; #F2D5BC; #F5ECE2; */
-    background-color: rgba(32, 178, 170, .25);
-    /* background-color: rgba(7, 146, 158, 0.2); */
-    /* background-blend-mode: luminosity; */
-  }
-  
-  .white {
-    /*background-image: url('images/boardLight.jpg');*/
-    /* background-color: #865541; #A07461; #697B6B; #827276; 
-  https://github.com/lemokh/Photos/blob/master/siennaSquare.jpg?raw=true
-    */
-    /* background-color: rgba(71, 105, 168, 0.2); */
-    background-color: rgba(100, 149, 237, .25);
-    /* background-blend-mode: luminosity; */
-  }
-  
-  .takenBox > * {
-    display: flex;
-    flex-direction: column;
-    width: 5rem;
-    height: 5rem;
-    opacity: .75;
-  }
-  
-  .mainLit {
-    background-color: rgba(199, 21, 133, .2) !important;
-    /*deep red --> use for check --> 220,20,60*/
-    /*background-blend-mode: luminosity;*/
-  }
-  
-  .lit {
-    /* background:
-      linear-gradient(purple 0%, red 90%), 
-      linear-gradient(to right, purple 0%, yellow 90%); */
-    /* background-blend-mode: screen, difference, lighten; */
-    /* background-color: rgba(205, 92, 92, 0.2); */
-    background-color: rgba(219, 112, 147, .2);
-    /*background-blend-mode: luminosity;*/
-  }
-  
-  .castleLit {
-    background-color: rgba(255, 0, 0, 0.2);
-  }
-  
-  .preventMateLit {
-    background-color: rgba(211, 211, 211, 0.2);
-  }
-  
-  .checkMate {
-    background-color: transparent;
-  }
+player2 {
+  display: grid;
+  grid-template-columns: 10rem;
+  /*background-color: rgba(219, 112, 147, 0.05);*/
+  /*background-blend-mode: screen;*/
+  background-color: black;
+  opacity: .2;
+}
 
-  .noClick {
-    pointer-events: none;
-  } 
-  
-  .timePawnEvolve {
-    display: flex;
-    flex-direction: column;
-    border-radius: 0.5rem;
-  }
+board {
+  display: grid;
+  grid-template-columns: 1fr;
+  margin-right: 4px;
+  /*   background-color: #865541; */
+  /* filter: drop-shadow(0px 0px 5000px) invert(2%); */
+}
 
-  .modal {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: rgba(0, 0, 0, 0.5);
-    opacity: 0;
-    visibility: hidden;
-    transform: scale(1.1);
-    transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
+.btn {
+  text-align: center;
+}
+
+#blueTakenBox {
+  display: flex;
+  flex-direction: row;
+}
+
+#orangeTakenBox {
+  display: flex;
+  flex-direction: row;
+}
+
+.row {
+  display: flex;
+}
+
+img {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 5rem;
+  width: 5rem;
+  margin-left: 4px;
+}
+
+.black {
+  /* background-image: url('images/boardDark.jpg'); */
+  /*background-color: #1A3E51; #F2D5BC; #F5ECE2; */
+  background-color: rgba(32, 178, 170, .25);
+  /* background-color: rgba(7, 146, 158, 0.2); */
+  /* background-blend-mode: luminosity; */
+}
+
+.white {
+  /*background-image: url('images/boardLight.jpg');*/
+  /* background-color: #865541; #A07461; #697B6B; #827276; 
+https://github.com/lemokh/Photos/blob/master/siennaSquare.jpg?raw=true
+  */
+  /* background-color: rgba(71, 105, 168, 0.2); */
+  background-color: rgba(100, 149, 237, .25);
+  /* background-blend-mode: luminosity; */
+}
+
+.takenBox > * {
+  display: flex;
+  flex-direction: column;
+  width: 5rem;
+  height: 5rem;
+  opacity: .75;
+}
+
+.mainLit {
+  background-color: rgba(199, 21, 133, .2) !important;
+  /*deep red --> use for check --> 220,20,60*/
+  /*background-blend-mode: luminosity;*/
+}
+
+.lit {
+  /* background:
+    linear-gradient(purple 0%, red 90%), 
+    linear-gradient(to right, purple 0%, yellow 90%); */
+  /* background-blend-mode: screen, difference, lighten; */
+  /* background-color: rgba(205, 92, 92, 0.2); */
+  background-color: rgba(219, 112, 147, .2);
+  /*background-blend-mode: luminosity;*/
+}
+
+.castleLit {
+  background-color: rgba(255, 0, 0, 0.2);
+}
+
+.preventMateLit {
+  background-color: rgba(211, 211, 211, 0.2);
+}
+
+.checkMate {
+  background-color: transparent;
+}
+
+.noClick {
+  pointer-events: none;
+} 
+
+.timePawnEvolve {
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.5rem;
+}
+
+.modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(1.1);
+  transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
 }
 
 .showModal {
-    opacity: 1;
-    visibility: visible;
-    transform: scale(1.0);
-    transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1.0);
+  transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
 }
 
 .time {
