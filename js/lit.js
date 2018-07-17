@@ -1,9 +1,9 @@
-let pieces, knightCells, pinningPiece, rubbishIds, pawnBlocksKingAttacker, pathToCheck, idToBlock, kingAttackers= [], greyLitPieces = [], defenders = [], pawnDefenders = [], enPassantCell = '', orangeTakenBoxIdCounter = -16, blueTakenBoxIdCounter = -1, enPassanting = false,
+var pieces, knightCells, pinningPiece, rubbishIds, pawnBlocksKingAttacker, pathToCheck, idToBlock, kingAttackers= [], greyLitPieces = [], defenders = [], pawnDefenders = [], enPassantCell = '', orangeTakenBoxIdCounter = -16, blueTakenBoxIdCounter = -1, enPassanting = false,
 heroics = [], anId, pins, removal, kingInCheck, kingAttackerSupporters, stuckActivePieces, kingLitIds = [], tempLitIds, checkSpaceId, pinnedLitIds, behindKingId, kingLitPiece, kingStuck, preventMateIds = [], kingMovesOutOfCheck = [], possiblePinnedMoves, kingMovesOutOfCheck, newPieceClicked, pinnerPiece, tempPinnedPieces, greyPieceToMove, pathPiece, activePieceIsPinned, litSpace, blocker, mate = false, passiveSideCoversId, canEatKingAttacker = [], greyLitDivs, canBlockPathOfCheck = [], gameOver, kingSlayer, checkPath, emptySpaces, knightLight, bishopPathId, rookPathId, blueKingFirstMove, blueRook1FirstMove, activeKing, blueRook2FirstMove,  orangeKingFirstMove, orangeRook1FirstMove, orangeRook2FirstMove, castleIds = [], noCastle, kingAble, pieceToMove, goToDiv, enPassantDiv, prevGoToDiv, enPassantGoToDiv, pawnJumpDiv, enPassantables2 = [], enPassantedPawn, knightLight, takenOrangeBox, takenBlueBox, gameEnds, tempSide, movedPiece, mainLitDiv, litIds, unLitDivs, img, index1, index2, tempPiece, moves, takenBox, activeCells, openAndOpponentHeldKingSpaces, kingSpacesUnderAttack, orangeKingSpacesUnderAttack, orangelessKingSpaces, orangelessKingSpaces, blueKingSpaces, bluelessKingSpaces, orangeKingSpacesUnderAttack, vacantKingSpaces, whiteKing, blackKing, knightMoves, bishopMoves, bishopX, bishopY, rookMoves, kingSpaces, kingOpenSpaces, occupiedKingSpaces, defenders, pinnedPieces, pathOfCheck = [], nails, whites, blacks;
 
 const board = document.getElementById('board');
 
-let blueNodes = board.querySelectorAll("[data-side='blue']"),
+var blueNodes = board.querySelectorAll("[data-side='blue']"),
 	orangeNodes = board.querySelectorAll("[data-side='orange']"),
 
 	blues = Array.from(blueNodes),
