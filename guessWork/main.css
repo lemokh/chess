@@ -2,7 +2,7 @@ body {
   background-image: url('images/boardBody.jpg');
   /*backdrop-filter: contrast(110%);*/
   filter: brightness(115%);
-  background-color: #F0FFFF;
+  background-color: rgba(240, 255, 255, 0.5);
   background-blend-mode: luminosity;
 }
 
@@ -108,6 +108,14 @@ https://github.com/lemokh/Photos/blob/master/siennaSquare.jpg?raw=true
   /* background-blend-mode: screen, difference, lighten; */
   background-color: rgba(219, 112, 147, .2);
   /*background-blend-mode: luminosity;*/
+}
+
+.castleLit {
+  background-color: rgba(255, 0, 0, 0.2);
+}
+
+.greyLit {
+  background-color: rgba(224, 168, 226, 0.2);
 }
 
 .noClick {
