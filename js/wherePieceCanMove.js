@@ -1,3 +1,6 @@
+// imports [cleanUpAfterFirstClick, movePiece, pinnedPieceLit, possibleMoves, addLitDivHandler]
+// exports to index.js
+
 function wherePieceCanMove(e) {
 	// if not first click of this turn
 	if (newPieceClicked !== undefined) {

@@ -1,3 +1,5 @@
+// imports [bishopAttacks.js, rookAttacks.js] --> exports to checkingSpace.js
+
 function queenAttacks(queen) {
     
 	if (bishopAttacks(queen, checkSpaceId)) { return true; }

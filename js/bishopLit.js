@@ -1,3 +1,4 @@
+// imports onBoard --> exports to possibleMoves
 function bishopLit() {
 
     function quadrant(x, y) { // x & y are a number

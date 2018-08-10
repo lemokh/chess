@@ -1,3 +1,4 @@
+// nothing to import, exports to possibleMoves.js 
 function pawnLit() {
 	console.log('enters pawnLit()');
 	// highlights all possible moves for blue pawnToMove

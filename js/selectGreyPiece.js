@@ -1,3 +1,5 @@
+// imports moveGreyPiece.js --> exports to inCheck.js
+
 function selectGreyPiece(e) {
 
 	if (greyPieceToMove !== undefined) {

@@ -1,3 +1,5 @@
+// imports checkingSpace.js --> exports to inCheck.js
+
 function pinnedPieceLit() {
 	console.log('ENTERS pinnedPieceLit()');
 	// ---------------------------------------------------

@@ -1,3 +1,6 @@
+// imports [pawnEvolve, enPassantReset, wherePieceCanMove]
+// exports to moveGrePiece.js
+
 function swapSide(fromDiv, toDiv) {
 	// swaps pieceToMove & goToDiv info
 	console.log('ENTERS swapSide()');

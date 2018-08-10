@@ -1,3 +1,6 @@
+// imports [lit(), wherePieceCanMove]
+// exports to moveGrePiece.js
+
 function toggleSides() {
 	// removes click-listeners from activePieces
 	activeSide.forEach(activePiece => {

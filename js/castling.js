@@ -1,3 +1,6 @@
+// imports [removeLitDivHandler, toggleSides, swapSide, movePiece]
+// exports to [wherePieceCanMove.js, cleanUpAfterFirstClick.js]
+
 function castling(e) {
 	
 	console.log('enters castling(e)');

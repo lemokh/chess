@@ -1,3 +1,4 @@
+// import all these files --> exports to index.js
 function possibleMoves() {
 	console.log('ENTERS possibleMoves()');
 	// populates litIds with piece's possible moves

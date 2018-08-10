@@ -1,3 +1,6 @@
+// imports all files below
+// exports to index.js
+
 function checkingSpace(somePiece, someId) {
 	checkSpaceId = someId;
 	// sees if somePiece can check someId

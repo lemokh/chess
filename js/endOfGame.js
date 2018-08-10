@@ -1,3 +1,6 @@
+// imports wherePieceCanMove.js
+// exports to inCheck.js
+
 function endOfGame() {
 	
 	clearInterval(runTimer);

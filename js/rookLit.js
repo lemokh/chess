@@ -1,3 +1,4 @@
+// imports onBoard --> exports to possibleMoves
 function rookLit() {
 	// in case of queen
 	if (pieceToMove.dataset.name === 'rook') { litIds = []; } 

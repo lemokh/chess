@@ -1,3 +1,5 @@
+// imports [knightSpaces.js, onBoard.js] --> exports to checkingSpace.js
+
 function knightAttacks(knight) {
 
 	function attacks(id) {
