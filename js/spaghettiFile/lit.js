@@ -1,5 +1,15 @@
-var pieces, knightCells, pinningPiece, rubbishIds, pawnBlocksKingAttacker, pathToCheck, idToBlock, kingAttackers= [], greyLitPieces = [], defenders = [], pawnDefenders = [], enPassantCell = '', orangeTakenBoxIdCounter = -16, blueTakenBoxIdCounter = -1, enPassanting = false,
-heroics = [], anId, pins, kingInCheck, stuckActivePieces, kingLitIds = [], tempLitIds, checkSpaceId, pinnedLitIds, behindKingId, kingLitPiece, kingStuck, preventMateIds = [], kingMovesOutOfCheck = [], possiblePinnedMoves, kingMovesOutOfCheck, newPieceClicked, pinnerPiece, tempPinnedPieces, greyPieceToMove, pathPiece, activePieceIsPinned, litSpace, blocker, mate = false, passiveSideCoversId, canEatKingAttacker = [], greyLitDivs, canBlockPathOfCheck = [], gameOver, kingSlayer, checkPath, emptySpaces, knightLight, bishopPathId, rookPathId, blueKingFirstMove, blueRook1FirstMove, activeKing, blueRook2FirstMove,  orangeKingFirstMove, orangeRook1FirstMove, orangeRook2FirstMove, castleIds = [], noCastle, kingAble, pieceToMove, goToDiv, enPassantDiv, prevGoToDiv, enPassantGoToDiv, pawnJumpDiv, enPassantables2 = [], enPassantedPawn, knightLight, takenOrangeBox, takenBlueBox, gameEnds, tempSide, movedPiece, mainLitDiv, litIds, unLitDivs, img, index1, index2, tempPiece, moves, takenBox, activeCells, openAndOpponentHeldKingSpaces, kingSpacesUnderAttack, orangeKingSpacesUnderAttack, orangelessKingSpaces, orangelessKingSpaces, blueKingSpaces, bluelessKingSpaces, orangeKingSpacesUnderAttack, vacantKingSpaces, whiteKing, blackKing, knightMoves, bishopMoves, bishopX, bishopY, rookMoves, kingSpaces, kingOpenSpaces, occupiedKingSpaces, defenders, pinnedPieces, pathOfCheck = [], nails, whites, blacks;
+var kingAttackers=[], greyLitPieces=[], kingLitIds=[], pathOfCheck=[],
+	canBlockPathOfCheck=[], canEatKingAttacker=[], castleIds=[],
+	orangeTakenBoxIdCounter = -16, blueTakenBoxIdCounter = -1, nails,
+	enPassanting = false, pins, kingInCheck, stuckActivePieces, litIds, 
+	checkSpaceId, pinnedLitIds, behindKingId, pawnBlocksKingAttacker,
+	kingStuck, newPieceClicked, pinnerPiece, greyPieceToMove, noCastle,
+	blocker, passiveSideCoversId, checkPath, blueKingFirstMove, 
+	blueRook1FirstMove, activeKing, blueRook2FirstMove, pieceToMove, 
+	orangeKingFirstMove, orangeRook1FirstMove, orangeRook2FirstMove, 
+	goToDiv, enPassantDiv, pawnJumpDiv,index1, index2, pinnedPieces, 
+	moves, bishopMoves, bishopX, bishopY, openAndOpponentHeldKingSpaces,
+	rookMoves, kingSpaces;
 
 const board = document.getElementById('board');
 
@@ -31,12 +41,11 @@ var blueNodes = board.querySelectorAll("[data-side='blue']"),
 	};
 
 function setTimer() {
-	document.getElementById('start').addEventListener('click', getMinutes);
+	document.getElementById('start')
+			.addEventListener('click', getMinutes);
 }
 
-function startClock() {
-	runTimer = setInterval(countDown, 1000);
-};
+function startClock() { runTimer = setInterval(countDown, 1000); };
 
 function countDown() {
 
@@ -984,7 +993,6 @@ function kingLit() {
 	console.log('ENTERS kingLit()');
 
 	passiveSideCoversId = false;
-	// kingSpacesUnderAttack = [];  // unnecessary
 
 	// covers king castling
 	if (!testingDraw) {
@@ -1590,7 +1598,7 @@ function lit() {
 
 window.onload = function () {
 	document.getElementById('start').addEventListener('click', function getMinutes() {
-	timerSet = document.getElementById('timeSet').value;	
+		timerSet = document.getElementById('timeSet').value;	
 		if (timerSet) {
 			if (timerSet > 0) {
 				if (timerSet < 1000) {	

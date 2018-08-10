@@ -5,18 +5,18 @@
     <meta charset='UTF-8'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <meta http-2equiv='X-UA-Compatible' content='ie=edge'>
-    <link rel='stylesheet' href='grid.css'>
+    <link rel='stylesheet' href='index.css'>
     <title>Chess</title>
   </head>
 
   <body>
-      <div id='modal'>
-          <div class='modalContent'>
-            <h1>SET TIMER</h1>
-            <input type='number' id='timeSet'/>
-            <button id='start'>START</button>
-          </div>
-      </div>
+    <div id='modal'>
+        <div class='modalContent'>
+          <h1>SET TIMER</h1>
+          <input type='number' id='timeSet'/>
+          <button id='start'>START</button>
+        </div>
+    </div>
     <game>
       <player1>
         <button class='btn' onclick="resign()">RESIGN</button>
@@ -151,7 +151,7 @@
       </div>
       
       <player2>
-        <button class='btn' onclick='resign()'>RESIGN</button>
+        <button class='btn' onclick='draw()'>DRAW</button>
         <div id='orangeTakenBox'>
           <div class='takenBox'>
             <img id='-24' src='./images/transparent.png'></img>
@@ -175,6 +175,6 @@
         </div>
       </player2>
     </game>
-    <script src='js/ultraLit.js'></script>
+    <script src='index.js'></script>
   </body>
 </html>
