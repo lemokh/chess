@@ -1,5 +1,5 @@
 // import all these files --> exports to index.js
-function possibleMoves() {
+var possibleMoves = function() {
 	console.log('ENTERS possibleMoves()');
 	// populates litIds with piece's possible moves
 	switch (pieceToMove.dataset.name) {
@@ -12,3 +12,4 @@ function possibleMoves() {
 		// default: alert('default ERROR! pieceToMove is empty');
 	}
 }
+module.exports = possibleMoves;

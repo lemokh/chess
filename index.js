@@ -1,3 +1,5 @@
+var possibleMoves = require("possibleMoves.js");
+
 var kingAttackers=[], greyLitPieces=[], kingLitIds=[], pathOfCheck=[],
 	canBlockPathOfCheck=[], canEatKingAttacker=[], castleIds=[],
 	orangeTakenBoxIdCounter = -16, blueTakenBoxIdCounter = -1, nails,
