@@ -1,5 +1,10 @@
-// import all these files --> exports to index.js
-var possibleMoves = function() {
+import pawnLit from './pawnLit.js';
+import knightLit from './knightLit.js';
+import bishopLit from './bishopLit.js';
+import rookLit from './rookLit.js';
+import kingLit from './kingLit.js';
+
+export default function possibleMoves() {
 	console.log('ENTERS possibleMoves()');
 	// populates litIds with piece's possible moves
 	switch (pieceToMove.dataset.name) {
@@ -12,4 +17,3 @@ var possibleMoves = function() {
 		// default: alert('default ERROR! pieceToMove is empty');
 	}
 }
-module.exports = possibleMoves;

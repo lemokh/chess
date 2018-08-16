@@ -1,6 +1,7 @@
-// imports checkingSpace.js --> exports to inCheck.js
+import checkingSpace from './checkingSpace.js';
 
-function pinnedPieceLit() {
+// exports to inCheck.js
+export default function pinnedPieceLit() {
 	console.log('ENTERS pinnedPieceLit()');
 	// ---------------------------------------------------
 	if (pieceToMove.dataset.name === 'knight') { return; }

@@ -1,6 +1,5 @@
-// nothing to import --> exports to checkingSpace.js
-
-function kingAttacks(king) {
+// exports to checkingSpace.js
+export default function kingAttacks(king) {
 	
 	switch (+checkSpaceId[0]) { // if checkSpaceId's column equals...
 		case +king.id[0]: // king's column

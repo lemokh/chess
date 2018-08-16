@@ -1,17 +1,13 @@
 import wherePieceCanMove from './wherePieceCanMove.js';
 
-// exports to inCheck.js
-export default function endOfGame() {
-	
+export default function resign() {
 	clearInterval(runTimer);
-	activeKing.classList.add('checkMate');
 	board.classList.add('noClick');
 	
 	activeSide.forEach(activePiece => {
 		activePiece.removeEventListener('click', wherePieceCanMove);
 	});
-
-	alert(activeKing.dataset.side + ' KING CHECKMATED!');
-	console.log(activeKing.dataset.side + ' KING CHECKMATED!');
+	
+	alert(activeKing.dataset.side + " resigns");
 	console.log('END OF GAME');
 }

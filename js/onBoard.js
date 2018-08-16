@@ -1,6 +1,5 @@
-// nothing to import, exports to many files
-
-function onBoard(id) {
+// exports to many files
+export default function onBoard(id) {
 	if (id[0] >= 0) {
 		if (id[0] <= 7) {
 			if (id[1] >= 0) {
@@ -11,16 +10,3 @@ function onBoard(id) {
 		}
 	}
 }
-
-function onBoardNonActiveIds(id) {
-	if (onBoard(id)) {
-		if (findingKingAttackers) {
-			if ( document.getElementById( id ).dataset.side 
-			!== passiveSide[0].dataset.side ) { return id; }
-		}
-		else {
-			if ( document.getElementById( id ).dataset.side 
-			!== activeKing.dataset.side ) { return id; }
-		}
-	}
-} // knightLit & knightAttacks helper

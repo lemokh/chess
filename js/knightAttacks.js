@@ -1,6 +1,8 @@
-// imports [knightSpaces.js, onBoard.js] --> exports to checkingSpace.js
+import knightSpaces from './knightSpaces.js';
+import onBoardNonActiveIds from './onBoardNonActiveIds.js';
 
-function knightAttacks(knight) {
+// exports to checkingSpace.js
+export default function knightAttacks(knight) {
 
 	function attacks(id) {
 		if (id === checkSpaceId) { return id; }

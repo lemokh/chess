@@ -1,5 +1,5 @@
-// nothing to import, exports to possibleMoves.js 
-function pawnLit() {
+// exports to possibleMoves.js 
+export default function pawnLit() {
 	console.log('enters pawnLit()');
 	// highlights all possible moves for blue pawnToMove
 	if (activeKing.dataset.side === 'blue') {

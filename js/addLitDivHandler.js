@@ -1,7 +1,6 @@
-// nothing to import --> exports to wherePieceCanMove.js
-
-function addLitDivHandler(funcName) {
-
+// exports to wherePieceCanMove.js
+export default function addLitDivHandler(funcName) {
+	
 	litIds.forEach( litDiv => {
 		litPiece = document.getElementById( litDiv );
 		litPiece.classList.add( 'lit' );

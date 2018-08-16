@@ -1,6 +1,5 @@
-// imports onBoard.js --> exports to checkingSpace.js
-
-function pawnAttacks(pawn) {
+// exports to checkingSpace.js
+export default function pawnAttacks(pawn) {
 
 	if (pawnBlocksKingAttacker) { // set by inCheck()
 		// sees if pawn can block checkSpaceId

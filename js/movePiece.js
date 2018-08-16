@@ -1,7 +1,11 @@
-// imports [removeLitDivHandler, toggleSides, eat, swapSide, wherePieceCanMove]
-// exports to wherePieceCanMove.js
+import removeLitDivHandler from './removeLitDivHandler.js';
+import toggleSides from './toggleSides.js';
+import eat from './eat.js';
+import swapSide from './swapSide.js';
+import wherePieceCanMove from './wherePieceCanMove.js';
 
-function movePiece(e) {
+// exports to wherePieceCanMove.js
+export default function movePiece(e) {
 
 	console.log('ENTERS movePiece(e)');
 	console.log('removes click-listener from litIds & pieceToMove');

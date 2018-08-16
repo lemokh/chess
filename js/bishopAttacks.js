@@ -1,5 +1,7 @@
-// imports onBoard.js --> exports to checkingSpace.js
-function bishopAttacks(bishop) {
+import onBoard from './onBoard.js';
+
+// exports to checkingSpace.js
+export default function bishopAttacks(bishop) {
 	// checks for clear path between bishop.id & checkSpaceId
 	bishopMoves = []; // collects spaces bishop attacks enroute to checkSpaceId
 	nails = []; // collects possible pinnedPieces

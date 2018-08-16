@@ -1,6 +1,5 @@
-// nothing to import --> exports to moveGreyPiece.js
-
-function eat(piece) {
+// exports to moveGreyPiece.js
+export default function eat(piece) {
 	console.log('ENTERS eat('+piece+')');
 	// eat(goToDiv); --> normal pawn attack
 	// eat(pawnJumpDiv); --> enPassant attack

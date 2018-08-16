@@ -1,7 +1,11 @@
-// import [kingLit.js, checkingSpace.js, pinnedPieceLit.js, endOfGame.js, selectGreyPiece.js]
-// exports to index.js
+import kingLit from './kingLit.js';
+import checkingSpace from './checkingSpace.js';
+import pinnedPieceLit from './pinnedPieceLit.js';
+import endOfGame from './endOfGame.js';
+import selectGreyPiece from './selectGreyPiece.js';
 
-function inCheck() {
+// exports to index.js
+export default function inCheck() {
 
 	console.log('ENTERS inCheck()');
 	console.log('behindKingId -->');  console.log(behindKingId);

@@ -1,4 +1,7 @@
-function kingLit() {
+import checkingSpace from './checkingSpace.js';
+
+// exports to wherePieceCanMove.js
+export default function kingLit() {
 	// highlights all possible moves for activeKing
 	console.log('ENTERS kingLit()');
 

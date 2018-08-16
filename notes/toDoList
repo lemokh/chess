@@ -10,4 +10,4 @@ ERRORS:
 
 BUILD:
 
-    1. on create, check if mobile device --> redirects to index page
+    1. on create, check if mobile device --> redirect to index page
