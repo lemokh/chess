@@ -1,5 +1,6 @@
-import lit from './lit.js';
+import { lit } from './lit.js';
 import wherePieceCanMove from './wherePieceCanMove.js';
+import { activeSide, passiveSide } from './index.js';
 
 // exports to moveGrePiece.js
 export default function toggleSides() {

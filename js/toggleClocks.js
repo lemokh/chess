@@ -1,5 +1,5 @@
 import countDown from './countDown.js';
-import activeSide from './index.js';
+import { activeSide, blueTime, obj } from './index.js';
 
 export default function toggleClocks() {
 	var runTimer;

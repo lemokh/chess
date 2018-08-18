@@ -1,4 +1,4 @@
-import lit from './lit.js';
+import {lit} from './lit.js';
 
 var kingAttackers=[], greyLitPieces=[], kingLitIds=[], pathOfCheck=[],
 	canBlockPathOfCheck=[], canEatKingAttacker=[], castleIds=[],
@@ -48,7 +48,7 @@ var blueNodes = board.querySelectorAll("[data-side='blue']"),
 ////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////
 
-export default [activeSide, passiveSide];
+export { activeSide, passiveSide, blueTime, obj };
 
 window.onload = function () {
 	document.getElementById('start')

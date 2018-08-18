@@ -4,7 +4,7 @@ import possibleMoves from "./possibleMoves.js";
 import toggleClocks from "./toggleClocks.js"
 import wherePieceCanMove from "./wherePieceCanMove.js";
 
-export default function lit() {
+export function lit() {
 
 	var stuckActivePieces = 0,
 		findingKingAttackers = true,
