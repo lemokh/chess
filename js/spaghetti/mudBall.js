@@ -40,11 +40,6 @@ var blueNodes = board.querySelectorAll("[data-side='blue']"),
 		hundredths: 0 
 	};
 
-function setTimer() {
-	document.getElementById('start')
-			.addEventListener('click', getMinutes);
-}
-
 function startClock() { runTimer = setInterval(countDown, 1000); };
 
 function countDown() {

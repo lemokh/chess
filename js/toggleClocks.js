@@ -1,8 +1,12 @@
 import countDown from './countDown.js';
+import activeSide from './index.js';
 
 export default function toggleClocks() {
+	var runTimer;
 
-	function startClock() { runTimer = setInterval(countDown, 1000); };
+	function startClock() { 
+		runTimer = setInterval(countDown, 1000);
+	};
 
 	clearInterval(runTimer);
 	
