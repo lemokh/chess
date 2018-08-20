@@ -3,6 +3,7 @@ import inCheck from "./inCheck.js";
 import possibleMoves from "./possibleMoves.js";
 import toggleClocks from "./toggleClocks.js"
 import wherePieceCanMove from "./wherePieceCanMove.js";
+import { obj } from './index.js';
 
 export function lit() {
 
