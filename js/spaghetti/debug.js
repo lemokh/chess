@@ -94,7 +94,8 @@ function inCheck() {
 	// if (checkPath.includes(behindKingId)) {
 	// 	checkPath.splice(checkPath.indexOf(behindKingId), 1);
 	// }
-	console.log('checkPath -->');  console.log(checkPath);
+
+	// console.log('checkPath -->');  console.log(checkPath);
 
 	pieceToMove = activeKing;
 	kingLit(); // fills litIds with ids where activeKing can move
@@ -114,7 +115,7 @@ function inCheck() {
 			!litIds.some( litId => id === litId )			
 		);
 		
-		litIds = kingLitIds;
+		litIds = kingLitIds; // this seems sloppy, not concise
 		console.log('litIds -->'); console.log(litIds);
 		
 		console.log('checkPath -->');  console.log(checkPath);
@@ -128,16 +129,19 @@ function inCheck() {
 		console.log('greyLitPieces -->');  console.log(greyLitPieces);
 	}
 	else { kingStuck = true; }
-	
+
 	if (kingAttackers.length === 1) { // if only one kingAttacker
 		/////////////////////////////////////////////////////
+		console.log('ONLY ONE KING ATTACKER');
 		// populates canEatKingAttacker & canBlockPathOfCheck
 		activeSide.forEach(activePiece => {
 			pieceToMove = activePiece; // IMPORTANT
 			// for each activePiece, if not pinned
 			if (activePiece.dataset.pinned === 'false') {
+				console.log('NOT PINNED');
 				// if not activeKing
 				if (activePiece.dataset.name !== 'king') {
+					console.log('NOT KING');
 					//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 					// if activePiece checks kingAttacker
 					if (checkingSpace(activePiece, kingAttackers[0].id)) {
@@ -148,27 +152,32 @@ function inCheck() {
 					//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
 					// prevents pawns from attacking
 					pawnBlocksKingAttacker = true;
-					// sees if activePiece can move to pathId
-					checkPath.forEach(pathId => {
-						if (checkingSpace(activePiece, pathId)) {
-							console.log(activePiece.id+' can block at '+pathId);
 
-							canBlockPathOfCheck.push(
-								{ pathBlocker: activePiece, emptyDivId: pathId }
-							);
-						}
-					});
+					if (kingAttackers[0].dataset.name !== 'pawn') {
+						// sees if activePiece can move to pathId
+						checkPath.forEach(pathId => {
+							if (checkingSpace(activePiece, pathId)) {
+								console.log(activePiece.id+' can block at '+pathId);
+
+								canBlockPathOfCheck.push(
+									{ pathBlocker: activePiece, emptyDivId: pathId }
+								);
+							}
+						});
+					}
+
 					pawnBlocksKingAttacker = false;
 				}
 			}
 			// pinnedPiece can only attack in line of its pinner path to king
+			/* FIXED A MISTAKE IN THE LOGIC HERE BY COMMENTING THIS OUT
 			else { // since activePiece is pinned
 				console.log(activePiece.id+' is pinned');
-				pinnedPieceLit();
-				return;
+				if (kingAttacker.id === activePiece.id) { return pinnedPieceLit(); }
 			}
+			*/
 		}); // excludes activeKing
-		//////////////////////////
+		
 		// ------------------------------------
 		// begins interceptKingAttacker() logic
 		// -------------------------------------
@@ -179,15 +188,14 @@ function inCheck() {
 		canBlockPathOfCheck.forEach(obj => {
 			greyLitPieces.push(obj.pathBlocker);
 		});
-		
+	
 		console.log('greyLitPieces');  console.log(greyLitPieces);
 		
 		if (!greyLitPieces.length) {
 			if (kingStuck) {
-				console.log('since no greyLitPieces and king stuck...endOfGame 1');
+				console.log('since no greyLitPieces and king stuck...endOfGame');
 				endOfGame();
 			}
-
 		}
 		else { // since able to prevent check mate
 			console.log('since only one kingAttacker and at least one greyLitPiece, no check mate');
@@ -200,7 +208,10 @@ function inCheck() {
 	}
 	else { // since multiple kingAttackers, only moving activeKing prevents checkmate
 		if (kingStuck) { return endOfGame(); } // checkmate if king stuck
-		else { addLitDivHandler(selectGreyPiece); } // move activeKing
+		else {
+			console.log('BINGO');
+			addLitDivHandler(selectGreyPiece); 
+		} // move activeKing
 	}
 }
 
