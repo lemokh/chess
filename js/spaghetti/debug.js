@@ -12,7 +12,7 @@ var kingAttackers=[], greyLitPieces=[], kingLitIds=[], pathOfCheck=[],
 	rookMoves, kingSpaces;
 
 
-// when king not in check, 
+// when king not in check,
 // if pinned piece has only one pinner pieces 
 // and can eat that one pinner piece... let it eat it.
 
@@ -83,16 +83,13 @@ function toggleClocks() {
 
 ///////////////////////////
 ///////////////////////////
-
+// FIND NEW CHECKPATH WITHOUT USING PATHOFCHECK
+// RUN A SPECIAL FUNCTION IF YOU MUST!
 function inCheck() {
-
 	console.log('ENTERS inCheck()');
 	console.log('behindKingId -->');  console.log(behindKingId);
-	console.log('litIds before kingLit() -->');  console.log(litIds);
 
-	// checkPath = pathOfCheck;
-	console.log('checkPath -->');  console.log(checkPath);
-		
+	checkPath = [];		
 	kingInCheck = true;
 	pieceToMove = activeKing;
 	
@@ -136,6 +133,18 @@ function inCheck() {
 	if (kingAttackers.length === 1) { // if only one kingAttacker
 		/////////////////////////////////////////////////////
 		console.log('ONLY ONE KING ATTACKER');
+		// populates checkPath with kingAttacker's id path to king
+		switch(kingAttackers[0].dataset.name) {
+			case 'bishop': case 'queen':
+				checkSpaceId = activeKing.id;
+				bishopAttacks(kingAttackers[0]);
+				checkPath.push(...bishopMoves);
+			case 'rook': case 'queen':
+				checkSpaceId = activeKing.id;
+				rookAttacks(kingAttackers[0]);
+				checkPath.push(...rookMoves);
+		}
+
 		// populates canEatKingAttacker & canBlockPathOfCheck
 		activeSide.forEach(activePiece => {
 			pieceToMove = activePiece; // IMPORTANT
@@ -161,9 +170,6 @@ function inCheck() {
 							pawnBlocksKingAttacker = true;
 							
 							// CAN ACTIVEPIECE BLOCK KINGATTACKER?
-														
-							// COLLECT KA CHECK PATH !!
-
 							// sees if activePiece can move to pathId
 							checkPath.forEach(pathId => {
 								if (checkingSpace(activePiece, pathId)) {
@@ -181,7 +187,7 @@ function inCheck() {
 					}
 				}
 			}
-		}); // excludes activeKing
+		});
 
 		greyLitPieces.push(...canEatKingAttacker);
 		console.log('greyLitPieces');  console.log(greyLitPieces);
@@ -1205,7 +1211,7 @@ function bishopAttacks(bishop) {
 	bishopY = +bishop.id[1];
 
 	// bishop & checkSpaceId cannot have the same id
-	if (bishop.id === checkSpaceId) { return false; }
+	if (bishop.id === checkSpaceId) { return false; } // unnecessary?
 
 	// collects ids between bishop & checkSpaceId
 	if (bishop.id[0] < checkSpaceId[0]) {
