@@ -28,7 +28,7 @@ var blueNodes = board.querySelectorAll("[data-side='blue']"),
 	activeSide = blues,
 	passiveSide = oranges,
 
-	///////////////////////////
+	//////////////////////
 
 	userInput = 10,
 	obj,
@@ -113,12 +113,12 @@ function inCheck() {
 
 		// kingLitIds = litIds that are not in checkPath
 		kingLitIds = litIds.filter(litId =>
-			!checkPath.some( id => litId === id )
+			!checkPath.some(id => litId === id)
 		);
 
 		// checkPath = checkPath ids that are not in litIds
 		checkPath = checkPath.filter(id =>
-			!litIds.some( litId => id === litId )			
+			!litIds.some(litId => id === litId)			
 		);
 		
 		litIds = kingLitIds; // this seems sloppy, not concise
@@ -233,19 +233,19 @@ function selectGreyPiece(e) {
 	// removeLitDivHandler(moveGreyPiece); --> without litIds = []
 	if (litIds.length) { // resets each litId of class & click-listeners
 		litIds.forEach( id => {
-			litPiece = document.getElementById( id );
-			// --------------------------------------
-			litPiece.classList.remove( 'lit' );
-			litPiece.removeEventListener( 'click', moveGreyPiece );
+			litPiece = document.getElementById(id);
+			// ------------------------------------
+			litPiece.classList.remove('lit');
+			litPiece.removeEventListener('click', moveGreyPiece);
 		});
 	} litIds = [];
 
 	if (kingLitIds.length) {
-		kingLitIds.forEach( id => {
-			litPiece = document.getElementById( id );
+		kingLitIds.forEach(id => {
+			litPiece = document.getElementById(id);
 			// --------------------------------------
-			litPiece.classList.remove( 'lit' );
-			litPiece.removeEventListener( 'click', moveGreyPiece );
+			litPiece.classList.remove('lit');
+			litPiece.removeEventListener('click', moveGreyPiece);
 		});
 	}
 
@@ -256,9 +256,9 @@ function selectGreyPiece(e) {
 
 	if (greyPieceToMove.dataset.name === 'king') {
 		kingLitIds.forEach(id => {
-			litPiece = document.getElementById( id );
-			litPiece.classList.add( 'lit' );
-			litPiece.addEventListener( 'click', moveGreyPiece );
+			litPiece = document.getElementById(id);
+			litPiece.classList.add('lit');
+			litPiece.addEventListener('click', moveGreyPiece);
 		});
 	}
 
@@ -285,9 +285,9 @@ function moveGreyPiece(e) {
 
 	if (greyPieceToMove.dataset.name === 'king') {
 		kingLitIds.forEach(id => {
-			litPiece = document.getElementById( id );
-			litPiece.classList.remove( 'lit' );
-			litPiece.removeEventListener( 'click', moveGreyPiece );
+			litPiece = document.getElementById(id);
+			litPiece.classList.remove('lit');
+			litPiece.removeEventListener('click', moveGreyPiece);
 		});
 	}
 
@@ -355,16 +355,16 @@ function movePiece(e) {
 	console.log('removes click-listener from litIds & pieceToMove');
 
 	// removes click-listener from pieceToMove
-	pieceToMove.removeEventListener( 'click', wherePieceCanMove );
+	pieceToMove.removeEventListener('click', wherePieceCanMove);
 
 	// un-lightens mainDiv
-	pieceToMove.classList.remove( 'mainLit' );
+	pieceToMove.classList.remove('mainLit');
 
 	if (pieceToMove.dataset.pinned === 'true') {
 		pinnedLitIds.forEach( pinnedLitId => {
 			litPiece = document.getElementById( pinnedLitId );
-			litPiece.classList.remove( 'lit' );
-			litPiece.removeEventListener( 'click', movePiece );
+			litPiece.classList.remove('lit');
+			litPiece.removeEventListener('click', movePiece);
 		});
 	}
 	else { removeLitDivHandler(movePiece); }
@@ -391,10 +391,6 @@ function movePiece(e) {
 	console.log('un-lightens mainDiv & litIds');
 	
 	goToDiv = e.target; // unnecessary, use e.target instead
-	
-	// console.log('pieceToMove -->');  console.log(pieceToMove);
-	// console.log('goToDiv -->');      console.log(goToDiv);
-	// console.log('pawnJumpDiv -->');  console.log(pawnJumpDiv);
 	
 	// covers enPassant pawn attack
 	if (goToDiv.dataset.side === 'empty') {
@@ -571,9 +567,7 @@ function castling(e) {
 	
 	console.log('enters castling(e)');
 	// -------------------------------
-	if (litIds.length) {
-		removeLitDivHandler(movePiece);
-	}
+	if (litIds.length) { removeLitDivHandler(movePiece); }
 	// -------------------------------------------------
 	// un-lightens & stops click-listening all castleIds
 	castleIds.forEach(id => {
@@ -613,11 +607,9 @@ function castling(e) {
 			activePiece.id
 		).removeEventListener('click', wherePieceCanMove);
 	});
-	if (litIds.length) {
-		console.log('________');
-		removeLitDivHandler(movePiece);
-	}
-	console.log('!!!!!');
+
+	if (litIds.length) { removeLitDivHandler(movePiece); }
+	
 	toggleSides();
 }
 
@@ -662,8 +654,8 @@ function cleanUpAfterFirstClick() {
 	// resets litIds on clicking multiple activeSide pieces
 	if (pieceToMove !== undefined) {
 		// un-lightens & stops click-listening to pieceToMove
-		pieceToMove.removeEventListener( 'click', movePiece );
-		pieceToMove.classList.remove( 'mainLit' );
+		pieceToMove.removeEventListener('click', movePiece);
+		pieceToMove.classList.remove('mainLit');
 		
 		// un-lightens, clears out & stops click-listening to litIds
 		if (litIds.length) { removeLitDivHandler(movePiece); }
@@ -680,8 +672,8 @@ function cleanUpAfterFirstClick() {
 		if (castleIds.length) { // if king ready to castle
 			
 			castleIds.forEach(id => { // resets castling process
-				document.getElementById( id ).classList.remove( 'castleLit' );
-				document.getElementById( id ).removeEventListener( 'click', castling );
+				document.getElementById(id).classList.remove('castleLit');
+				document.getElementById(id).removeEventListener('click', castling);
 			});
 			castleIds = [];
 		}
@@ -918,14 +910,14 @@ function pawnLit() {
 
 function knightSpaces(knight) { 
 	return [
-		(+knight.id[0] + 1) + (+knight.id[1] + 2).toString(),
-		(+knight.id[0] + 1) + (knight.id[1] - 2).toString(),
-		(knight.id[0] - 1) + (+knight.id[1] + 2).toString(),
-		(knight.id[0] - 1) + (knight.id[1] - 2).toString(),
-		(+knight.id[0] + 2) + (+knight.id[1] + 1).toString(),
-		(+knight.id[0] + 2) + (knight.id[1] - 1).toString(),
-		(knight.id[0] - 2) + (+knight.id[1] + 1).toString(),
-		(knight.id[0] - 2) + (knight.id[1] - 1).toString()
+		(+knight.id[0] + 1) + '' + (+knight.id[1] + 2),
+		(+knight.id[0] + 1) + '' + (knight.id[1] - 2),
+		(knight.id[0] - 1) + '' + (+knight.id[1] + 2),
+		(knight.id[0] - 1) + '' + (knight.id[1] - 2),
+		(+knight.id[0] + 2) + '' + (+knight.id[1] + 1),
+		(+knight.id[0] + 2) + '' + (knight.id[1] - 1),
+		(knight.id[0] - 2) + '' + (+knight.id[1] + 1),
+		(knight.id[0] - 2) + '' + (knight.id[1] - 1)
 	];
 } // knightLit helper
 
@@ -942,11 +934,11 @@ function quadrant(x, y) { // x & y are a number
 			litIds.push( bishopPath.id );
 			// increments x
 			// if x is east of pieceToMove, continue east
-			if (x > +pieceToMove.id[0]) { x += 1; }
+			if (x > pieceToMove.id[0]) { x += 1; }
 			else { x -= 1; } // continue west
 			// increments y
 			// if y is south of pieceToMove, continue south
-			if (y > +pieceToMove.id[1]) { y += 1; }
+			if (y > pieceToMove.id[1]) { y += 1; }
 			else { y -= 1; } // continue north
 			quadrant(x, y); // continue path
 		}
@@ -958,28 +950,28 @@ function quadrant(x, y) { // x & y are a number
 
 function bishopLit() {
 	quadrant(+pieceToMove.id[0] + 1, +pieceToMove.id[1] + 1);
-	quadrant(+pieceToMove.id[0] + 1, +pieceToMove.id[1] - 1);
-	quadrant(+pieceToMove.id[0] - 1, +pieceToMove.id[1] + 1);
-	quadrant(+pieceToMove.id[0] - 1, +pieceToMove.id[1] - 1);
+	quadrant(+pieceToMove.id[0] + 1, pieceToMove.id[1] - 1);
+	quadrant(pieceToMove.id[0] - 1, +pieceToMove.id[1] + 1);
+	quadrant(pieceToMove.id[0] - 1, pieceToMove.id[1] - 1);
 }  // fills litIds with ids where bishop can move
 
 function line(x, y) { // x & y are a number
-	let rookPath = document.getElementById( x.toString() + y );
+	let rookPath = document.getElementById(x+''+y);
 
 	if (onBoard(x+''+y)) {
 		// collects id, if empty or passivePiece
 		if (rookPath.dataset.side === 'empty') {
 			litIds.push( rookPath.id );
 			// increments x
-			if (x !== +pieceToMove.id[0]) {
+			if (x != pieceToMove.id[0]) {
 				// if x is east of pieceToMove, continue east
-				if (x > +pieceToMove.id[0]) { x += 1; }
+				if (x > pieceToMove.id[0]) { x += 1; }
 				else { x -= 1; } // continue west
 			}
 			// increments y
-			if (y !== +pieceToMove.id[1]) {
+			if (y != pieceToMove.id[1]) {
 				// if y is south of pieceToMove, continue south
-				if (y > +pieceToMove.id[1]) { y += 1; }
+				if (y > pieceToMove.id[1]) { y += 1; }
 				else { y -= 1; } // continue north
 			}
 			line(x, y); // continue path
@@ -995,9 +987,9 @@ function rookLit() {
 	if (pieceToMove.dataset.name === 'rook') { litIds = []; } 
 
 	line(+pieceToMove.id[0] + 1, +pieceToMove.id[1]);
-	line(+pieceToMove.id[0] - 1, +pieceToMove.id[1]);
+	line(pieceToMove.id[0] - 1, +pieceToMove.id[1]);
 	line(+pieceToMove.id[0], +pieceToMove.id[1] + 1);
-	line(+pieceToMove.id[0], +pieceToMove.id[1] - 1);
+	line(+pieceToMove.id[0], pieceToMove.id[1] - 1);
 } // fills litIds with ids where rook can move
 
 function kingLit() {
@@ -1085,14 +1077,14 @@ function kingLit() {
 	}
 	// whether or not king can castle, king must be able to move
 	kingSpaces = [
-		pieceToMove.id[0] + (+pieceToMove.id[1] - 1),
+		pieceToMove.id[0] + (pieceToMove.id[1] - 1),
 		pieceToMove.id[0] + (+pieceToMove.id[1] + 1),
-		(+pieceToMove.id[0] - 1) + pieceToMove.id[1],
+		(pieceToMove.id[0] - 1) + pieceToMove.id[1],
 		(+pieceToMove.id[0] + 1) + pieceToMove.id[1],
-		(+pieceToMove.id[0] - 1) + (+pieceToMove.id[1] - 1).toString(),
-		(+pieceToMove.id[0] - 1) + (+pieceToMove.id[1] + 1).toString(),
-		(+pieceToMove.id[0] + 1) + (+pieceToMove.id[1] - 1).toString(),
-		(+pieceToMove.id[0] + 1) + (+pieceToMove.id[1] + 1).toString()
+		(pieceToMove.id[0] - 1) + '' + (pieceToMove.id[1] - 1),
+		(pieceToMove.id[0] - 1) + '' + (+pieceToMove.id[1] + 1),
+		(+pieceToMove.id[0] + 1) + '' + (pieceToMove.id[1] - 1),
+		(+pieceToMove.id[0] + 1) + '' + (+pieceToMove.id[1] + 1)
 	].map(space => { // keeps only on-board kingSpaces
 		if (onBoard(space)) { // if space is on the board
 			if (kingInCheck) {
@@ -1105,23 +1097,19 @@ function kingLit() {
 	console.log('kingSpaces -->');  console.log(kingSpaces);
 
 	// excludes activePiece occupied spaces from kingSpaces array
-	openAndOpponentHeldKingSpaces = kingSpaces.filter(kingSpace => {
-		// for each kingSpace & each activePiece
-		return !activeSide.some(activePiece => {
-			// adds kingSpace to oAOHKS array if no activePiece there 
-			return (kingSpace === activePiece.id);
-		});
-	});
+	openAndOpponentHeldKingSpaces = kingSpaces.filter(kingSpace =>
+		!activeSide.some(activePiece => kingSpace === activePiece.id)
+	);	// for each kingSpace & each activePiece
+		// adds kingSpace to oAOHKS array if no activePiece there 
 	
 	console.log('openAndOpponentHeldKingSpaces -->');
 	console.log(openAndOpponentHeldKingSpaces);
 
-	// populates litIds with safe kingSpaces
+	// populates litIds with ids where king can move
 	openAndOpponentHeldKingSpaces.forEach(id => {
 		passiveSideCoversId = false;
 		// for each oAOHKS & each passivePiece
 		for (let i = 0; i < passiveSide.length; i++) {
-
 			if (passiveSide[i].id !== id) {
 				// if a passivePiece can check that oAOHKS...(kingSpace id devoid of activePiece)
 				if (checkingSpace(passiveSide[i], id)) {
@@ -1129,14 +1117,12 @@ function kingLit() {
 
 					passiveSideCoversId = true;
 					break;
-					
 				}
 			}
 		}
 		if (!passiveSideCoversId) { litIds.push(id); }
 	});
 	console.log('litIds -->');  console.log(litIds);
-	
 }  // fills litIds with ids where king can move
 
 ////////////////////////////////////////////////////////
@@ -1189,7 +1175,7 @@ function pawnAttacks(pawn) {
 	}
 	else { // since !pawnBlocksKingAttacker
 		// sees if pawn can eat checkSpaceId
-		if (+pawn.id[0] - 1 == checkSpaceId[0]
+		if (pawn.id[0] - 1 == checkSpaceId[0]
 		|| (+pawn.id[0] + 1) == checkSpaceId[0]) {
 			// if pawn is blue
 			if (pawn.dataset.side === 'blue') {
@@ -1225,78 +1211,78 @@ function bishopAttacks(bishop) {
 	if (bishop.id === checkSpaceId) { return false; }
 
 	// collects ids between bishop & checkSpaceId
-	if (+bishop.id[0] < +checkSpaceId[0]) {
+	if (bishop.id[0] < checkSpaceId[0]) {
 		// bishop attacks in a southEast diagonal
-		if (+bishop.id[1] < +checkSpaceId[1]) {
+		if (bishop.id[1] < checkSpaceId[1]) {
 			// if bishop's path aligns with checkSpaceId
-			if (+checkSpaceId[0] - +bishop.id[0]
-			=== +checkSpaceId[1] - +bishop.id[1]) {
+			if (checkSpaceId[0] - bishop.id[0]
+			=== checkSpaceId[1] - bishop.id[1]) {
 				// if bishop checks activeKing
 				if (checkSpaceId === activeKing.id) {
 					// collects space behind king in bishop's diagonal
-					behindKingId = (+checkSpaceId[0] + 1) + (+checkSpaceId[1] + 1).toString();
+					behindKingId = (+checkSpaceId[0] + 1) + '' + (+checkSpaceId[1] + 1);
 				}
 				// collects bishop's attack path to checkSpaceId
-				while ( bishopX < (+checkSpaceId[0] - 1) ) {
+				while ( bishopX < (checkSpaceId[0] - 1) ) {
 					bishopX += 1;
 					bishopY += 1;
-					bishopMoves.push( bishopX + bishopY.toString() );
+					bishopMoves.push( bishopX + '' + bishopY );
 				}
 			}
 			else { return false; } // bishop can't checkSpaceId
 		}
 		else { // since bishop attacks in a northEast diagonal
 			// if bishop aligns with checkSpaceId
-			if ( +checkSpaceId[0] - +bishop.id[0]
-			=== +bishop.id[1] - +checkSpaceId[1]) {
+			if ( checkSpaceId[0] - bishop.id[0]
+			=== bishop.id[1] - checkSpaceId[1]) {
 				// if bishop checks activeKing
 				if (checkSpaceId === activeKing.id) {
 					// collects space behind king in bishop's diagonal
-					behindKingId = (+checkSpaceId[0] + 1) + (+checkSpaceId[1] - 1).toString();							
+					behindKingId = (+checkSpaceId[0] + 1) + '' + (+checkSpaceId[1] - 1);							
 				}
 				// collects bishop's attack path to checkSpaceId
-				while ( bishopX < (+checkSpaceId[0] - 1) ) {
+				while ( bishopX < (checkSpaceId[0] - 1) ) {
 					bishopX += 1;
 					bishopY -= 1;
-					bishopMoves.push( bishopX + bishopY.toString() );
+					bishopMoves.push( bishopX + '' + bishopY );
 				}
 			}
 			else { return false; } // bishop cannot checkSpaceId
 		}
 	}
 	else { // since bishop attacks in a southWest diagonal
-		if (+bishop.id[1] < +checkSpaceId[1]) {
+		if (bishop.id[1] < checkSpaceId[1]) {
 			// if bishop aligns with checkSpaceId
-			if ( +bishop.id[0] - +checkSpaceId[0]
-			=== +checkSpaceId[1] - +bishop.id[1]) {
+			if (bishop.id[0] - checkSpaceId[0]
+			=== checkSpaceId[1] - bishop.id[1]) {
 				// if bishop checks activeKing
 				if (checkSpaceId === activeKing.id) {
 					// collects space behind king in bishop's diagonal
-					behindKingId = (+checkSpaceId[0] - 1) + (+checkSpaceId[1] + 1).toString();							
+					behindKingId = (checkSpaceId[0] - 1) + '' + (+checkSpaceId[1] + 1);							
 				}
 				// collects bishop's attack path to checkSpaceId
 				while ( bishopX > (+checkSpaceId[0] + 1) ) {
 					bishopX -= 1;
 					bishopY += 1;
-					bishopMoves.push( bishopX + bishopY.toString() );
+					bishopMoves.push( bishopX + '' + bishopY );
 				}
 			}
 			else { return false; } // bishop can't checkSpaceId
 		}
 		else { // since bishop attacks in a northWest diagonal
 			// if bishop aligns with checkSpaceId
-			if ( +bishop.id[0] - +checkSpaceId[0]
-			=== +bishop.id[1] - +checkSpaceId[1]) {
+			if (bishop.id[0] - checkSpaceId[0]
+			=== bishop.id[1] - checkSpaceId[1]) {
 				// if bishop checks activeKing
 				if (checkSpaceId === activeKing.id) {
 					// collects space behind king in bishop's diagonal
-					behindKingId = (+checkSpaceId[0] - 1) + (+checkSpaceId[1] - 1).toString();
+					behindKingId = (checkSpaceId[0] - 1) + '' + (checkSpaceId[1] - 1);
 				}
 				// collects bishop's attack path to checkSpaceId
 				while ( bishopX > (+checkSpaceId[0] + 1) ) {
 					bishopX -= 1;
 					bishopY -= 1;
-					bishopMoves.push( bishopX + bishopY.toString() );
+					bishopMoves.push( bishopX + '' + bishopY );
 				}
 			}
 			else { return false; } // bishop can't attack king
@@ -1354,13 +1340,13 @@ function rookAttacks(rook) {
 	// if rook & checkSpaceId share column
 	if (rook.id[0] === checkSpaceId[0]) {
 		// if rook below checkSpaceId, rook.y++
-		if (+rook.id[1] < +checkSpaceId[1]) {
+		if (rook.id[1] < checkSpaceId[1]) {
 			// if rook checks activeKing
 			if (checkSpaceId === activeKing.id) {
 				// collects space behind king in rook's row
 				behindKingId = checkSpaceId[0] + (+checkSpaceId[1] + 1);
 			}
-			for (let i = +rook.id[1] + 1; i < +checkSpaceId[1]; i++) {
+			for (let i = +rook.id[1] + 1; i < checkSpaceId[1]; i++) {
 				rookMoves.push( checkSpaceId[0] + i );
 			}
 		}
@@ -1368,9 +1354,9 @@ function rookAttacks(rook) {
 			// if rook checks activeKing
 			if (checkSpaceId === activeKing.id) {
 				// collects space behind king in rook's row
-				behindKingId = checkSpaceId[0] + (+checkSpaceId[1] - 1);
+				behindKingId = checkSpaceId[0] + (checkSpaceId[1] - 1);
 			}
-			for (let i = +rook.id[1] - 1; i > +checkSpaceId[1]; i--) {
+			for (let i = rook.id[1] - 1; i > checkSpaceId[1]; i--) {
 				rookMoves.push( checkSpaceId[0] + i );
 			}
 		}
@@ -1379,13 +1365,13 @@ function rookAttacks(rook) {
 	// else if rook & checkSpaceId share row
 	else if (rook.id[1] === checkSpaceId[1]) {
 		// if rook left of checkSpaceId, rook.id[0]++
-		if (+rook.id[0] < +checkSpaceId[0]) {
+		if (rook.id[0] < checkSpaceId[0]) {
 			// if rook checks activeKing
 			if (checkSpaceId === activeKing.id) {
 				// collects space behind king in rook's row
 				behindKingId = (+checkSpaceId[0] + 1) + checkSpaceId[1];
 			}
-			for (let i = +rook.id[0] + 1; i < +checkSpaceId[0]; i++) {
+			for (let i = +rook.id[0] + 1; i < checkSpaceId[0]; i++) {
 				rookMoves.push( i + checkSpaceId[1] );
 			}
 		}
@@ -1393,9 +1379,9 @@ function rookAttacks(rook) {
 			// if rook checks activeKing
 			if (checkSpaceId === activeKing.id) {
 				// collects space behind king in rook's row
-				behindKingId = (+checkSpaceId[0] - 1) + checkSpaceId[1];
+				behindKingId = (checkSpaceId[0] - 1) + checkSpaceId[1];
 			}
-			for (let i = +rook.id[0] - 1; i > +checkSpaceId[0]; i--) {
+			for (let i = rook.id[0] - 1; i > checkSpaceId[0]; i--) {
 				rookMoves.push( i + checkSpaceId[1] );
 			}
 		}
@@ -1430,7 +1416,6 @@ function rookAttacks(rook) {
 		if (checkSpaceId === activeKing.id) {
 			// if that nail & rook aren't on the same side
 			if (nails[0].dataset.side !== rook.dataset.side) {
-				
 				pinnedPieces.push(
 					{ pinner: rook, pinned: nails[0] }
 				);
@@ -1454,28 +1439,28 @@ function queenAttacks(queen) {
 
 function kingAttacks(king) {
 	
-	switch (+checkSpaceId[0]) { // if checkSpaceId's column equals...
-		case +king.id[0]: // king's column
+	switch (checkSpaceId[0]) { // if checkSpaceId's column equals...
+		case king.id[0]: // king's column
 			return (
-				+checkSpaceId[1] === (+king.id[1] + 1)
+				checkSpaceId[1] == (+king.id[1] + 1)
 				|| 
-				+checkSpaceId[1] === (king.id[1] - 1)
+				checkSpaceId[1] == (king.id[1] - 1)
 			);
-		case +king.id[0] + 1: // king's column + 1
+		case (+king.id[0] + 1).toString(): // king's column + 1
 			return (
 				checkSpaceId[1] === king.id[1]
 				||
-				+checkSpaceId[1] === (+king.id[1] + 1)
+				checkSpaceId[1] == (+king.id[1] + 1)
 				||
-				+checkSpaceId[1] === (king.id[1] - 1)
+				checkSpaceId[1] == (king.id[1] - 1)
 			);
-		case king.id[0] - 1: // king's column - 1
+		case (king.id[0] - 1).toString(): // king's column - 1
 			return (
 				checkSpaceId[1] === king.id[1]
 				||
-				+checkSpaceId[1] === (+king.id[1] + 1)
+				checkSpaceId[1] == (+king.id[1] + 1)
 				||
-				+checkSpaceId[1] === (king.id[1] - 1)
+				checkSpaceId[1] == (king.id[1] - 1)
 			);
 		default: return false;
 	}
