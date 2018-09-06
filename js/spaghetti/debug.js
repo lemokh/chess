@@ -12,11 +12,6 @@ var kingAttackers=[], greyLitPieces=[], kingLitIds=[], pathOfCheck=[],
 	rookMoves, kingSpaces;
 
 
-// when king not in check,
-// if pinned piece has only one pinner pieces 
-// and can eat that one pinner piece... let it eat it.
-
-
 const board = document.getElementById('board');
 
 var blueNodes = board.querySelectorAll("[data-side='blue']"),
@@ -697,35 +692,14 @@ function pinnedPieceLit() {
 			break;
 		}
 	}
-	// ---------------------------------------
-	if (pieceToMove.dataset.name === 'pawn') {
-		if (pieceToMove.dataset.side === 'blue') {
-			if (document.getElementById(pieceToMove.id[0] + (pieceToMove.id[1] - 1)).dataset === 'empty') {
-				pinnedLitIds.push(pieceToMove.id[0] + (pieceToMove.id[1] - 1));
-				if (pieceToMove.id[1] === '6') {
-					if (document.getElementById(pieceToMove.id[0] + (pieceToMove.id[1] - 2)).dataset === 'empty') {
-						pinnedLitIds.push(pieceToMove.id[0] + (pieceToMove.id[1] - 2));
-					}
-				}
-			}
-		} 
-		else {
-			if (document.getElementById(pieceToMove.id[0] + (+pieceToMove.id[1] + 1)).dataset === 'empty') {
-				pinnedLitIds.push(pieceToMove.id[0] + (+pieceToMove.id[1] + 1));
-				if (pieceToMove.id[1] === '1') {
-					if (document.getElementById(pieceToMove.id[0] + (+pieceToMove.id[1] + 2)).dataset === 'empty') {
-						pinnedLitIds.push(pieceToMove.id[0] + (+pieceToMove.id[1] + 2));
-					}
-				}
-			}
-		}
+	// --------------------------------------
+	// if pieceToMove can eat its pinnerPiece
+	if (checkingSpace(pieceToMove, pinnerPiece.id)) {
+		pinnedLitIds.push(pinnerPiece.id);
 	}
-	else { // since either a bishop, rook, or queen
-		// if pieceToMove can eat its pinnerPiece
-		if (checkingSpace(pieceToMove, pinnerPiece.id)) {
-			pinnedLitIds.push(pinnerPiece.id);
-		}
-		console.log('pathOfCheck -->');  console.log(pathOfCheck);
+	// -------------------------------------
+	// since either a bishop, rook, or queen
+	if (pieceToMove.dataset.name !== 'pawn') {	
 		// includes ids from pieceToMove to its pinning piece
 		pinnedLitIds.push(...pathOfCheck);
 		// ---------------------------------------------
@@ -733,14 +707,14 @@ function pinnedPieceLit() {
 		checkingSpace(pieceToMove, activeKing.id);
 		pinnedLitIds.push(...pathOfCheck);
 		console.log('pinnedLitIds -->');  console.log(pinnedLitIds);
-		// ---------------------------------------------------------
-		if (pinnedLitIds.length) {
-			pinnedLitIds.forEach( pinnedLitId => {
-				litPiece = document.getElementById(pinnedLitId);
-				litPiece.classList.add('lit');
-				litPiece.addEventListener('click', movePiece);
-			});
-		}
+	}
+	// -----------------------
+	if (pinnedLitIds.length) {
+		pinnedLitIds.forEach( pinnedLitId => {
+			litPiece = document.getElementById(pinnedLitId);
+			litPiece.classList.add('lit');
+			litPiece.addEventListener('click', movePiece);
+		});
 	}
 }
 
