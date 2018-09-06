@@ -11,6 +11,12 @@ var kingAttackers=[], greyLitPieces=[], kingLitIds=[], pathOfCheck=[],
 	moves, bishopMoves, bishopX, bishopY, openAndOpponentHeldKingSpaces,
 	rookMoves, kingSpaces;
 
+
+// when king not in check, 
+// if pinned piece has only one pinner pieces 
+// and can eat that one pinner piece... let it eat it.
+
+
 const board = document.getElementById('board');
 
 var blueNodes = board.querySelectorAll("[data-side='blue']"),
@@ -88,7 +94,6 @@ function inCheck() {
 	kingInCheck = true;
 
 	checkPath = pathOfCheck;
-	
 	console.log('checkPath -->');  console.log(checkPath);
 
 	// if (checkPath.includes(behindKingId)) {
@@ -131,42 +136,143 @@ function inCheck() {
 	else { kingStuck = true; }
 
 	if (kingAttackers.length === 1) { // if only one kingAttacker
-		/////////////////////////////////////////////////////
+		
 		console.log('ONLY ONE KING ATTACKER');
+
+		let checker = kingAttackers[0];
+		checkPath = [];
+		
+		/////////////////////////////////////////////////////
 		// populates canEatKingAttacker & canBlockPathOfCheck
 		activeSide.forEach(activePiece => {
 			pieceToMove = activePiece; // IMPORTANT
+
+			//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+		// prevents pawns from attacking
+		pawnBlocksKingAttacker = true;
+
+		if (checker.dataset.name !== 'knight') {
+			
+			if (!openAndOpponentHeldKingSpaces.includes(checker.id)) {
+				
+				var checkerX = +checker.id[0],
+					checkerY = +checker.id[1];
+
+				console.log('ENTERS SWITCH');
+				console.log(checker.dataset.name);
+				
+				switch(checker.dataset.name) {
+
+					case 'bishop':
+					case 'queen':
+						if (checkerX < activeKing.id[0]) {
+							// if checker left of and above king 
+							if (checkerY < activeKing.id[1]) {
+								while (checkerX < activeKing.id[0]) {
+									checkPath.push(
+										(checkerX + 1) + '' + (checkerY + 1)
+									);
+									checkerX++;
+								}
+							}
+							else { // since checker left of and beneath king
+								while (checkerX < activeKing.id[0]) {
+									checkPath.push(
+										(checkerX + 1) + '' + (checkerY - 1)
+									);
+									checkerX++;
+									}
+							}
+						} else { // since checker right of and above king
+							if (checkerY < activeKing.id[1]) {
+								while (checkerX > activeKing.id[0]) {
+									checkPath.push(
+										(checkerX - 1) + '' + (checkerY + 1)
+									);
+									checkerX--;
+								}
+							}
+							else { // since checker right of and beneath king
+								while (checkerX > activeKing.id[0]) {
+									checkPath.push(
+										(checkerX + 1) + '' + (checkerY - 1)
+									);
+									checkerX--;
+								}
+							}
+						}
+					case 'rook':
+					case 'queen':
+						// if checker and king share a column
+						if (checkerX === activeKing.id[0]) {
+							// if checker above king
+							if (checkerY < activeKing.id[1]) {
+								while (checkerY < activeKing.id[0]) {
+									checkPath.push(
+										checkerX + '' + (checkerY + 1)
+									);
+									checkerY++;
+								}
+							}
+							else { // since checker above king
+								while (checkerX < activeKing.id[0]) {
+									checkPath.push(
+										(checkerX + 1) + '' + (checkerY + 1)
+									);
+									checkerX++;
+								}
+							}
+						} else { // since checker and king share a row
+							if (checkerX < activeKing.id[0]) {
+								while (checkerX < activeKing.id[0]) {
+									checkPath.push(
+										(checkerX + 1) + '' + checkerY
+									);
+									checkerX++;
+								}
+							}
+							else { // since checker right of king
+								while (checkerX > activeKing.id[0]) {
+									checkPath.push(
+										(checkerX - 1) + '' + checkerY
+									);
+									checkerX--;
+								}
+							}
+						}
+				}
+				// sees if activePiece can move to pathId
+				checkPath.forEach(pathId => {
+					if (checkingSpace(activePiece, pathId)) {
+						console.log(activePiece.id+' can block at '+pathId);
+
+						canBlockPathOfCheck.push(
+							{ pathBlocker: activePiece, emptyDivId: pathId }
+						);
+					}
+				});
+			}
+		}			
+		
+		pawnBlocksKingAttacker = false;
+
 			// for each activePiece, if not pinned
-			if (activePiece.dataset.pinned === 'false') {
+
+			if (activePiece.dataset.pinned === 'true') {
+				let unpin = pinnedPieces.map(function(obj) {return obj.pinner});
+				if (unpin.includes(activePiece));
+			} else {
 				console.log('NOT PINNED');
 				// if not activeKing
 				if (activePiece.dataset.name !== 'king') {
 					console.log('NOT KING');
-					//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+					//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 					// if activePiece checks kingAttacker
-					if (checkingSpace(activePiece, kingAttackers[0].id)) {
-						console.log(activePiece.id+' can eat '+kingAttackers[0].id);
+					if (checkingSpace(activePiece, checker.id)) {
+						console.log(activePiece.id+' can eat '+checker.id);
 
 						canEatKingAttacker.push(activePiece);
 					}
-					//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-					// prevents pawns from attacking
-					pawnBlocksKingAttacker = true;
-
-					if (kingAttackers[0].dataset.name !== 'pawn') {
-						// sees if activePiece can move to pathId
-						checkPath.forEach(pathId => {
-							if (checkingSpace(activePiece, pathId)) {
-								console.log(activePiece.id+' can block at '+pathId);
-
-								canBlockPathOfCheck.push(
-									{ pathBlocker: activePiece, emptyDivId: pathId }
-								);
-							}
-						});
-					}
-
-					pawnBlocksKingAttacker = false;
 				}
 			}
 			// pinnedPiece can only attack in line of its pinner path to king
@@ -1441,8 +1547,8 @@ function rookAttacks(rook) {
 
 function queenAttacks(queen) {
 
-	if (bishopAttacks(queen, checkSpaceId)) { return true; }
-	if (rookAttacks(queen, checkSpaceId)) { return true; }
+	if (bishopAttacks(queen)) { return true; }
+	if (rookAttacks(queen)) { return true; }
 	return false;
 } // returns true/false if queen can attack checkSpaceId
 
