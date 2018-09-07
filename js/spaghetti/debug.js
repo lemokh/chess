@@ -191,37 +191,20 @@ function inCheck() {
 			greyLitPieces.push(obj.pathBlocker);
 		});
 		console.log('greyLitPieces');  console.log(greyLitPieces);
-		
-		//////////////////////////////////////////////
-		//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-		//////////////////////////////////////////////
-
-		// capsulate this into a function?
-		if (greyLitPieces.length) { // since able to prevent check mate
-			console.log('since only one kingAttacker and at least one greyLitPiece, no check mate');
-			
-			// lightens & click-listens to each greyLitPiece
-			greyLitPieces.forEach(greyLitPiece => {
-				greyLitPiece.classList.add('preventMateLit');
-				greyLitPiece.addEventListener('click', selectGreyPiece);
-			});
-		}
-		else { 
-			console.log('since no greyLitPieces... endOfGame');
-			return endOfGame();
-		}
 	}
-	else { // since multiple kingAttackers, only moving activeKing prevents checkmate
-		console.log('> 1 kingAttackers');
-
-		if (greyLitPieces.length) {
-			// lightens & click-listens to each greyLitPiece
-			greyLitPieces.forEach(greyLitPiece => {
-				greyLitPiece.classList.add('preventMateLit');
-				greyLitPiece.addEventListener('click', selectGreyPiece);
-			});
-		}
-		else { return endOfGame(); }
+	//////////////////////////////////////////////
+	//-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+	//////////////////////////////////////////////
+	if (greyLitPieces.length) { // since able to prevent check mate		
+		// lightens & click-listens to each greyLitPiece
+		greyLitPieces.forEach(greyLitPiece => {
+			greyLitPiece.classList.add('preventMateLit');
+			greyLitPiece.addEventListener('click', selectGreyPiece);
+		});
+	}
+	else { 
+		console.log('since no greyLitPieces... endOfGame');
+		return endOfGame();
 	}
 }
 

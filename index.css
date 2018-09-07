@@ -178,7 +178,7 @@ https://github.com/lemokh/Photos/blob/master/siennaSquare.jpg?raw=true
 }
 
 .checkMate {
-  background-color: transparent;
+  background-color: rgba(189, 72, 26, 0.609);
 }
 
 .noClick {
@@ -239,15 +239,6 @@ https://github.com/lemokh/Photos/blob/master/siennaSquare.jpg?raw=true
   width: 100%;
   border-radius: 0.5rem;
 }
-
-/* .modalContent {
-  flex-direction: column;
-  margin: auto;
-  transform: translate(-50%, -50%);
-  padding: 1rem 1.5rem;
-  width: 24rem;
-  border-radius: 0.5rem;
-} */
 
 .modalContent {
   position: absolute;
