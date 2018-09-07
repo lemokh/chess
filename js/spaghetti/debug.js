@@ -77,9 +77,7 @@ function toggleClocks() {
 }
 
 ///////////////////////////
-///////////////////////////
-// FIND NEW CHECKPATH WITHOUT USING PATHOFCHECK
-// RUN A SPECIAL FUNCTION IF YOU MUST!
+
 function inCheck() {
 	console.log('ENTERS inCheck()');
 	console.log('behindKingId -->');  console.log(behindKingId);
@@ -88,6 +86,8 @@ function inCheck() {
 	kingInCheck = true;
 	pieceToMove = activeKing;
 	
+	console.log('litIds before kingLit() -->');  console.log(litIds);
+
 	kingLit(); // fills litIds with ids where activeKing can move
 
 	console.log('litIds after kingLit() -->');  console.log(litIds);
@@ -126,7 +126,7 @@ function inCheck() {
 	} // else { kingStuck = true; } unnecessary
 
 	if (kingAttackers.length === 1) { // if only one kingAttacker
-		/////////////////////////////////////////////////////
+		/////////////////////////////////////////////////////////
 		console.log('ONLY ONE KING ATTACKER');
 		// populates checkPath with kingAttacker's id path to king
 		switch(kingAttackers[0].dataset.name) {
@@ -214,10 +214,18 @@ function inCheck() {
 	else { // since multiple kingAttackers, only moving activeKing prevents checkmate
 		console.log('> 1 kingAttackers');
 
-		if (greyLitPieces.length) { addLitDivHandler(selectGreyPiece); }
+		if (greyLitPieces.length) {
+			// lightens & click-listens to each greyLitPiece
+			greyLitPieces.forEach(greyLitPiece => {
+				greyLitPiece.classList.add('preventMateLit');
+				greyLitPiece.addEventListener('click', selectGreyPiece);
+			});
+		}
 		else { return endOfGame(); }
 	}
 }
+
+///////////////////////////
 
 function selectGreyPiece(e) {
 
@@ -1145,7 +1153,7 @@ function kingLit() {
 		// for each oAOHKS & each passivePiece
 		for (let i = 0; i < passiveSide.length; i++) {
 			if (passiveSide[i].id !== id) {
-				// if a passivePiece can check that oAOHKS...(kingSpace id devoid of activePiece)
+				// if a passivePiece can check that oAOHKS
 				if (checkingSpace(passiveSide[i], id)) {
 					console.log(passiveSide[i].dataset.side + ' ' + passiveSide[i].dataset.name + ' can attack ' + id);
 
