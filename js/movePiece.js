@@ -8,19 +8,20 @@ import wherePieceCanMove from './wherePieceCanMove.js';
 export default function movePiece(e) {
 
 	console.log('ENTERS movePiece(e)');
+
 	console.log('removes click-listener from litIds & pieceToMove');
 
 	// removes click-listener from pieceToMove
-	pieceToMove.removeEventListener( 'click', wherePieceCanMove );
+	pieceToMove.removeEventListener('click', wherePieceCanMove);
 
 	// un-lightens mainDiv
-	pieceToMove.classList.remove( 'mainLit' );
+	pieceToMove.classList.remove('mainLit');
 
 	if (pieceToMove.dataset.pinned === 'true') {
 		pinnedLitIds.forEach( pinnedLitId => {
 			litPiece = document.getElementById( pinnedLitId );
-			litPiece.classList.remove( 'lit' );
-			litPiece.removeEventListener( 'click', movePiece );
+			litPiece.classList.remove('lit');
+			litPiece.removeEventListener('click', movePiece);
 		});
 	}
 	else { removeLitDivHandler(movePiece); }
@@ -47,10 +48,6 @@ export default function movePiece(e) {
 	console.log('un-lightens mainDiv & litIds');
 	
 	goToDiv = e.target; // unnecessary, use e.target instead
-	
-	// console.log('pieceToMove -->');  console.log(pieceToMove);
-	// console.log('goToDiv -->');      console.log(goToDiv);
-	// console.log('pawnJumpDiv -->');  console.log(pawnJumpDiv);
 	
 	// covers enPassant pawn attack
 	if (goToDiv.dataset.side === 'empty') {
