@@ -8,9 +8,7 @@ export default function castling(e) {
 	
 	console.log('enters castling(e)');
 	// -------------------------------
-	if (litIds.length) {
-		removeLitDivHandler(movePiece);
-	}
+	if (litIds.length) { removeLitDivHandler(movePiece); }
 	// -------------------------------------------------
 	// un-lightens & stops click-listening all castleIds
 	castleIds.forEach(id => {
@@ -50,10 +48,8 @@ export default function castling(e) {
 			activePiece.id
 		).removeEventListener('click', wherePieceCanMove);
 	});
-	if (litIds.length) {
-		console.log('________');
-		removeLitDivHandler(movePiece);
-	}
-	console.log('!!!!!');
+
+	if (litIds.length) { removeLitDivHandler(movePiece); }
+	
 	toggleSides();
 }
