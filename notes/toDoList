@@ -1,13 +1,3 @@
-ERRORS:
-1.  pinnedPieces need to be added when nails.length > 1
-2.  pinnedPieces need pawn to move toward pinner piece (rook/queen)
-3.  orange king has red lit (left castleDiv) option when no rooks left
-        
-
-4.  when king checked by queen, needs to enter inCheck()
-        and be able to eat uncovered queen
-            need to add queen to kingAttackers
-
 BUILD:
 
     1. on create, check if mobile device --> redirect to index page
