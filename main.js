@@ -9,7 +9,7 @@ var kingAttackers=[], greyLitPieces=[], kingLitIds=[], pathOfCheck=[],
 	orangeKingFirstMove, orangeRook1FirstMove, orangeRook2FirstMove, 
 	goToDiv, enPassantDiv, pawnJumpDiv,index1, index2, pinnedPieces, 
 	moves, bishopMoves, bishopX, bishopY, openAndOpponentHeldKingSpaces,
-	rookMoves, kingSpaces;
+	rookMoves, kingSpaces, moveHistory = [];
 
 
 const board = document.getElementById('board');
@@ -1508,6 +1508,16 @@ function checkingSpace(somePiece, someId) {
 
 ////////////////////////////////////////////////////////////
 
+function showPreviousMove() {
+	let index = moveHistory.length - 1;
+	if (index >= 1) {
+		index -= 1;
+		document.body = moveHistory[index];
+	}
+}
+
+////////////////////////////////////////////////////////////
+
 function lit() {
 
 	stuckActivePieces = 0;
@@ -1534,6 +1544,8 @@ function lit() {
 
     // ********** META-LOGIC **********
 
+	moveHistory.push(document.body);
+
 	toggleClocks();
 
 	if (castleIds.length) {
@@ -1543,10 +1555,6 @@ function lit() {
 		});
 		castleIds = [];
 	}
-
-	// board.querySelectorAll('.lit').forEach(item => {
-    //     removeHandler('.lit', funcName);
-    // });
 
 	previousPinnedPieces = board.querySelectorAll("[data-pinned='true']");
 	console.log('previousPinnedPieces -->');  console.log(previousPinnedPieces);
