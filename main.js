@@ -9,10 +9,10 @@ var kingAttackers=[], greyLitPieces=[], kingLitIds=[], pathOfCheck=[],
 	orangeKingFirstMove, orangeRook1FirstMove, orangeRook2FirstMove, 
 	goToDiv, enPassantDiv, pawnJumpDiv,index1, index2, pinnedPieces, 
 	moves, bishopMoves, bishopX, bishopY, openAndOpponentHeldKingSpaces,
-	rookMoves, kingSpaces, moveHistory = [];
+	rookMoves, kingSpaces, isCastle, enPassantMove, moveHistory = [];
 
 
-const board = document.getElementById('board');
+var board = document.getElementById('board');
 
 var blueNodes = board.querySelectorAll("[data-side='blue']"),
 	orangeNodes = board.querySelectorAll("[data-side='orange']"),
@@ -379,7 +379,7 @@ function movePiece(e) {
 	}
 	console.log('un-lightens mainDiv & litIds');
 	
-	goToDiv = e.target; // unnecessary, use e.target instead
+	goToDiv = e.target;
 	
 	// covers enPassant pawn attack
 	if (goToDiv.dataset.side === 'empty') {
@@ -390,7 +390,12 @@ function movePiece(e) {
 			if (enPassanting) {
 				if (goToDiv === enPassantDiv) {
 					console.log('enPassant pawn attack is happening');
-					eat(pawnJumpDiv);                       
+					eat(pawnJumpDiv);
+					// collects pawnJumpDiv for moveHistory
+					enPassantMove = true;
+					moveHistory.push( 
+						{ from: [pawnJumpDiv.id], image: [pawnJumpDiv.src] }
+					);
 					// sets pawnJumpDiv to empty cell
 					pawnJumpDiv.setAttribute('data-name', 'empty');
 					pawnJumpDiv.setAttribute('data-side', 'empty');
@@ -440,6 +445,7 @@ function movePiece(e) {
 ///////////////////////////
 
 function pawnEvolve(e) {
+	moveHistory.push([goToDiv, e.target]);
 	// uses pieceToMove for pawn & e.target for new piece
 	console.log('ENTERS pawnEvolve(e)');
 	// re-informs goToDiv
@@ -474,6 +480,18 @@ function pawnEvolve(e) {
 }
 
 function swapSide(fromDiv, toDiv) {
+	if (isCastle || enPassantMove) {
+		moveHistory[moveHistory.length - 1].from.push(fromDiv.id);
+		moveHistory[moveHistory.length - 1].from.push(toDiv.id);
+		moveHistory[moveHistory.length - 1].image.push(fromDiv.src);
+		moveHistory[moveHistory.length - 1].image.push(toDiv.src);
+	}
+	else {
+		moveHistory.push(
+			{ from: [fromDiv.id, toDiv.id],
+			  image: [fromDiv.src, toDiv.src] }
+		);
+	}
 	// swaps pieceToMove & goToDiv info
 	console.log('ENTERS swapSide()');
 	// handles blue pawn evolution modal window
@@ -496,7 +514,7 @@ function swapSide(fromDiv, toDiv) {
 		// re-informs goToDiv
 		toDiv.setAttribute('data-name', fromDiv.dataset.name);
 		toDiv.setAttribute('data-side', fromDiv.dataset.side);
-		toDiv.setAttribute('src', fromDiv.src);
+		toDiv.setAttribute('src', fromDiv.src); // ___!___
 
 		// gets pieceToMove's activeSide index
 		index1 = activeSide.indexOf(fromDiv);
@@ -527,7 +545,7 @@ function eat(piece) {
 	// eat(goToDiv); --> normal pawn attack
 	// eat(pawnJumpDiv); --> enPassant attack
 
-	// puts piece in its takenBox
+	// 1. puts eaten piece in its takenBox
 	if (activeKing.dataset.side === 'blue') {
 		document.getElementById(
 			blueTakenBoxIdCounter.toString()
@@ -543,10 +561,10 @@ function eat(piece) {
 		orangeTakenBoxIdCounter -= 1;
 	}
 
-	// gets piece's passiveSide index
+	// gets eaten piece's index within passiveSide array
 	index2 = passiveSide.indexOf(piece);
 
-	// removes piece from passiveSide array
+	// 2. removes eaten piece from passiveSide array
 	passiveSide.splice(index2, 1);
 
 	console.log('EXITS eat()');
@@ -587,6 +605,7 @@ function castling(e) {
 			orangeKingFirstMove = true;
 			break;
 	}
+	isCastle = true;
 	// castles king
 	swapSide(pieceToMove, e.target);
 	// -----------------------------------------
@@ -1510,9 +1529,10 @@ function checkingSpace(somePiece, someId) {
 
 function showPreviousMove() {
 	let index = moveHistory.length - 1;
-	if (index >= 1) {
+
+	if (index > 1) {
 		index -= 1;
-		document.body = moveHistory[index];
+		// board.children = moveHistory[index];
 	}
 }
 
@@ -1525,8 +1545,10 @@ function lit() {
 	
 	pawnBlocksKingAttacker = false;
 	noPawnEvolution = false;
+	enPassantMove = false;
 	kingInCheck = false;
 	kingStuck = false;
+	isCastle = false;
 
 	greyPieceToMove = undefined;
 	newPieceClicked = undefined;
@@ -1544,7 +1566,7 @@ function lit() {
 
     // ********** META-LOGIC **********
 
-	moveHistory.push(document.body);
+	// moveHistory.push(board.children);
 
 	toggleClocks();
 
