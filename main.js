@@ -7,7 +7,7 @@ var kingAttackers=[], greyLitPieces=[], kingLitIds=[], pathOfCheck=[],
 	blocker, passiveSideCoversId, checkPath, blueKingFirstMove, 
 	blueRook1FirstMove, activeKing, blueRook2FirstMove, pieceToMove, 
 	orangeKingFirstMove, orangeRook1FirstMove, orangeRook2FirstMove, 
-	goToDiv, enPassantDiv, pawnJumpDiv,index1, index2, pinnedPieces, 
+	goToDiv, enPassantDiv, pawnJumpDiv, index, index1, index2, pinnedPieces, 
 	moves, bishopMoves, bishopX, bishopY, openAndOpponentHeldKingSpaces,
 	rookMoves, kingSpaces, isCastle, enPassantMove, moveHistory = [];
 
@@ -1527,12 +1527,35 @@ function checkingSpace(somePiece, someId) {
 
 ////////////////////////////////////////////////////////////
 
-function showPreviousMove() {
+function showPriorMove() {
+	// index = moveHistory.length;
+	console.log('index -->');
+	console.log(index);
+
+	if (index > 0) {
+		index -= 1;
+		
+		for (let i = 0; i < moveHistory[index].from.length; i++) {
+			document.getElementById(moveHistory[index].from[i]).src = moveHistory[index].image[i];
+		}
+	}
+}
+
+function showNextMove() {
 	let index = moveHistory.length - 1;
 
-	if (index > 1) {
+	if (index > 0) {
 		index -= 1;
-		// board.children = moveHistory[index];
+		
+		for (let i = 0; i < moveHistory[index].from.length; i++) {
+			document.getElementById(moveHistory[index].from[i]).src = moveHistory[index].src[i];
+		}
+
+		/*switch(moveHistory[index].from.length) {
+			case 2: ; // regular move
+			case 3: ; // enPassant
+			case 4: ; // castle
+		}*/
 	}
 }
 
@@ -1542,6 +1565,7 @@ function lit() {
 
 	stuckActivePieces = 0;
 	findingKingAttackers = true;
+	index = moveHistory.length;
 	
 	pawnBlocksKingAttacker = false;
 	noPawnEvolution = false;
@@ -1565,8 +1589,6 @@ function lit() {
 	pins = [];
 
     // ********** META-LOGIC **********
-
-	// moveHistory.push(board.children);
 
 	toggleClocks();
 
