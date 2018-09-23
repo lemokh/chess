@@ -9,7 +9,8 @@ var kingAttackers=[], greyLitPieces=[], kingLitIds=[], pathOfCheck=[],
 	orangeKingFirstMove, orangeRook1FirstMove, orangeRook2FirstMove, 
 	goToDiv, enPassantDiv, pawnJumpDiv, index, index1, index2, pinnedPieces, 
 	moves, bishopMoves, bishopX, bishopY, openAndOpponentHeldKingSpaces,
-	rookMoves, kingSpaces, isCastle, enPassantMove, moveHistory = [];
+	rookMoves, kingSpaces, isCastle, enPassantMove, currentBoard, pieceIds,
+	moveHistory = [];
 
 
 var board = document.getElementById('board');
@@ -23,7 +24,9 @@ var blueNodes = board.querySelectorAll("[data-side='blue']"),
 	activeSide = blues,
 	passiveSide = oranges,
 
-	//////////////////////
+	setBoard = blues.concat(oranges).map(piece => [piece.id, piece.src]),
+
+	/////////////////////////////////////////////////////////////////////
 
 	userInput = 10,
 	obj,
@@ -40,6 +43,15 @@ var blueNodes = board.querySelectorAll("[data-side='blue']"),
 		tenths: 0,
 		hundredths: 0 
 	};
+
+// collects all initial piece positions 
+for (let k = 2; k < 6; k++) {
+	for (let i = 0; i < 8; i++) {
+		setBoard.push([i+''+k,'./images/transparent.png']);
+	}
+}
+
+///////////////////////////////////////////////////////////////////
 
 function startClock() { runTimer = setInterval(countDown, 1000); };
 
@@ -1529,14 +1541,44 @@ function checkingSpace(somePiece, someId) {
 
 ////////////////////////////////////////////////////////////
 
-// function showFirstMove() {}
+function reviewMode() {
+	// interrupts game flow to review move history
+	// activeSide.forEach(piece => piece.removeEventListener('click', wherePieceCanMove));
+	
+	// saves currentBoard .src map
+	currentBoard = activeSide.concat(passiveSide).map(piece => [piece.id, piece.src]);
+	// collects only the ids in currentBoard
+	pieceIds = currentBoard.map(piece => piece[0]);
+	// given all on board pieces,
+	// adds to currentBoard all empty spaces [id, src]
+	for (let k = 0; k < 8; k++) {
+		for (let i = 0; i < 8; i++) {
+			if (!pieceIds.includes(i+''+k)) {
+				currentBoard.push([i+''+k,'./images/transparent.png']);
+			}
+		}
+	}
+	// when board clicked, exits reviewMode
+	board.addEventListener('click', () => {
+		// loads currentBoard .src map
+		currentBoard.forEach(piece => document.getElementById(piece[0]).src = piece[1]);
+		// sets index to current move
+		index = moveHistory.length;
+		
+		// resumes game flow
+		// activeSide.forEach(piece => piece.addEventListener('click', wherePieceCanMove));
+	});
+}
+
+function showFirstMove() {
+	reviewMode();
+	index = 0;
+	setBoard.forEach(piece => document.getElementById(piece[0]).src = piece[1]);
+}
 
 function showPriorMove() {
-	// index = moveHistory.length;
-	console.log('- index -->');
-	console.log(index);            
-
 	if (index > 0) { // if after game's first move
+		reviewMode();
 		index -= 1; // begins with previous move
 		// displays that previous move
 		for (let i = 0; i < moveHistory[index].from.length; i++) {
@@ -1546,9 +1588,7 @@ function showPriorMove() {
 }
 
 function showNextMove() {
-	console.log('+ index -->'); console.log(index);
-
-	if (index < moveHistory.length) { // if before game's last move
+	if (index < moveHistory.length) { // if index before last move
 		switch(moveHistory[index].from.length) {
 			case 2: // covers normal moves and pawn promotion
 				document.getElementById(moveHistory[index].from[0]).src = './images/transparent.png';
@@ -1570,7 +1610,14 @@ function showNextMove() {
 	}
 }
 
-// function showLastMove() {}
+function showLastMove() {
+	if (index !== moveHistory.length) { // if index before last move
+		// sets index to current move
+		index === moveHistory.length;
+		// loads currentBoard .src map
+		currentBoard.forEach(piece => document.getElementById(piece[0]).src = piece[1]);
+	}
+}
 
 ////////////////////////////////////////////////////////////
 
