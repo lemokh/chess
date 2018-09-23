@@ -432,7 +432,7 @@ function movePiece(e) {
 	// covers pawnToMove moving one or two empty spaces
 	swapSide(pieceToMove, goToDiv);
 	if (noPawnEvolution) { toggleSides(); }
-	else {
+	else { // since pawn evolves
 		// removes click-listeners from activePieces
 		activeSide.forEach(activePiece => {
 			activePiece.removeEventListener('click', wherePieceCanMove);
@@ -445,7 +445,6 @@ function movePiece(e) {
 ///////////////////////////
 
 function pawnEvolve(e) {
-	moveHistory.push([goToDiv, e.target]);
 	// uses pieceToMove for pawn & e.target for new piece
 	console.log('ENTERS pawnEvolve(e)');
 	// re-informs goToDiv
@@ -1529,12 +1528,12 @@ function checkingSpace(somePiece, someId) {
 
 function showPriorMove() {
 	// index = moveHistory.length;
-	console.log('index -->');
+	console.log('- index -->');
 	console.log(index);
 
-	if (index > 0) {
-		index -= 1;
-		
+	if (index > 0) { // if after game's first move
+		index -= 1; // begins with previous move
+		// displays that previous move
 		for (let i = 0; i < moveHistory[index].from.length; i++) {
 			document.getElementById(moveHistory[index].from[i]).src = moveHistory[index].image[i];
 		}
@@ -1542,20 +1541,37 @@ function showPriorMove() {
 }
 
 function showNextMove() {
-	let index = moveHistory.length - 1;
+	console.log('+ index -->'); console.log(index);
 
-	if (index > 0) {
-		index -= 1;
-		
-		for (let i = 0; i < moveHistory[index].from.length; i++) {
-			document.getElementById(moveHistory[index].from[i]).src = moveHistory[index].src[i];
+	if (index < moveHistory.length) { // if before game's last move
+		// debugger; 
+
+		switch( moveHistory[index].from.length) {
+			case 2: // covers normal moves and pawn promotion
+				let evolving = document.getElementById(moveHistory[index].from[0]);
+				if (evolving.dataset.name === 'pawn') {
+					if (evolving.id[1] === '0' || evolving.id[1] === '7') {
+						// if pawn is evolving
+						// turn the goToDiv (toDiv) to e.target?
+						break;
+					}
+				}
+				document.getElementById(moveHistory[index].from[0]).src = './images/transparent.png';
+				document.getElementById(moveHistory[index].from[1]).src = moveHistory[index].image[0];
+				break;
+			case 3: // covers enPassant
+				document.getElementById(moveHistory[index].from[0]).src = moveHistory[index].image[2];
+				document.getElementById(moveHistory[index].from[1]).src = moveHistory[index].image[2];
+				document.getElementById(moveHistory[index].from[2]).src = moveHistory[index].image[1];
+				break;
+			case 4: // covers castle
+				document.getElementById(moveHistory[index].from[0]).src = moveHistory[index].image[1];
+				document.getElementById(moveHistory[index].from[1]).src = moveHistory[index].image[0];
+				document.getElementById(moveHistory[index].from[2]).src = moveHistory[index].image[3];
+				document.getElementById(moveHistory[index].from[3]).src = moveHistory[index].image[2];
+				break;
 		}
-
-		/*switch(moveHistory[index].from.length) {
-			case 2: ; // regular move
-			case 3: ; // enPassant
-			case 4: ; // castle
-		}*/
+		index += 1;
 	}
 }
 
