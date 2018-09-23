@@ -10,7 +10,7 @@ var kingAttackers=[], greyLitPieces=[], kingLitIds=[], pathOfCheck=[],
 	goToDiv, enPassantDiv, pawnJumpDiv, index, index1, index2, pinnedPieces, 
 	moves, bishopMoves, bishopX, bishopY, openAndOpponentHeldKingSpaces,
 	rookMoves, kingSpaces, isCastle, enPassantMove, currentBoard, pieceIds,
-	moveHistory = [];
+	firstReview, moveHistory = [];
 
 
 var board = document.getElementById('board');
@@ -1542,9 +1542,13 @@ function checkingSpace(somePiece, someId) {
 ////////////////////////////////////////////////////////////
 
 function reviewMode() {
+	// add a resume button that appears and disappers to toggle off .noClick to board
+
 	// interrupts game flow to review move history
 	// activeSide.forEach(piece => piece.removeEventListener('click', wherePieceCanMove));
 	
+	board.classList.add('noClick');
+
 	// saves currentBoard .src map
 	currentBoard = activeSide.concat(passiveSide).map(piece => [piece.id, piece.src]);
 	// collects only the ids in currentBoard
@@ -1571,7 +1575,10 @@ function reviewMode() {
 }
 
 function showFirstMove() {
-	reviewMode();
+	if (firstReview) {
+		firstReview = false;
+		reviewMode();
+	}
 	index = 0;
 	setBoard.forEach(piece => document.getElementById(piece[0]).src = piece[1]);
 }
@@ -1613,7 +1620,7 @@ function showNextMove() {
 function showLastMove() {
 	if (index !== moveHistory.length) { // if index before last move
 		// sets index to current move
-		index === moveHistory.length;
+		index === moveHistory.length - 1; // ?????
 		// loads currentBoard .src map
 		currentBoard.forEach(piece => document.getElementById(piece[0]).src = piece[1]);
 	}
@@ -1624,8 +1631,9 @@ function showLastMove() {
 function lit() {
 
 	stuckActivePieces = 0;
-	findingKingAttackers = true;
 	index = moveHistory.length;
+	findingKingAttackers = true;
+	firstReview = true;
 	
 	pawnBlocksKingAttacker = false;
 	noPawnEvolution = false;
