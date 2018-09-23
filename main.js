@@ -452,6 +452,9 @@ function pawnEvolve(e) {
 	goToDiv.setAttribute('data-side', e.target.dataset.side);
 	goToDiv.setAttribute('src', e.target.src);
 
+	// replaces moveHistory pawn image with e.target.src
+	moveHistory[moveHistory.length - 1].image.splice(0, 1, e.target.src);
+
 	// gets pieceToMove's activeSide index
 	index1 = activeSide.indexOf(pieceToMove);
 
@@ -1526,10 +1529,12 @@ function checkingSpace(somePiece, someId) {
 
 ////////////////////////////////////////////////////////////
 
+// function showFirstMove() {}
+
 function showPriorMove() {
 	// index = moveHistory.length;
 	console.log('- index -->');
-	console.log(index);
+	console.log(index);            
 
 	if (index > 0) { // if after game's first move
 		index -= 1; // begins with previous move
@@ -1544,36 +1549,28 @@ function showNextMove() {
 	console.log('+ index -->'); console.log(index);
 
 	if (index < moveHistory.length) { // if before game's last move
-		// debugger; 
-
-		switch( moveHistory[index].from.length) {
+		switch(moveHistory[index].from.length) {
 			case 2: // covers normal moves and pawn promotion
-				let evolving = document.getElementById(moveHistory[index].from[0]);
-				if (evolving.dataset.name === 'pawn') {
-					if (evolving.id[1] === '0' || evolving.id[1] === '7') {
-						// if pawn is evolving
-						// turn the goToDiv (toDiv) to e.target?
-						break;
-					}
-				}
 				document.getElementById(moveHistory[index].from[0]).src = './images/transparent.png';
 				document.getElementById(moveHistory[index].from[1]).src = moveHistory[index].image[0];
 				break;
 			case 3: // covers enPassant
-				document.getElementById(moveHistory[index].from[0]).src = moveHistory[index].image[2];
-				document.getElementById(moveHistory[index].from[1]).src = moveHistory[index].image[2];
+				document.getElementById(moveHistory[index].from[0]).src = './images/transparent.png';
+				document.getElementById(moveHistory[index].from[1]).src = './images/transparent.png';
 				document.getElementById(moveHistory[index].from[2]).src = moveHistory[index].image[1];
 				break;
 			case 4: // covers castle
-				document.getElementById(moveHistory[index].from[0]).src = moveHistory[index].image[1];
+				document.getElementById(moveHistory[index].from[0]).src = './images/transparent.png';
 				document.getElementById(moveHistory[index].from[1]).src = moveHistory[index].image[0];
-				document.getElementById(moveHistory[index].from[2]).src = moveHistory[index].image[3];
+				document.getElementById(moveHistory[index].from[2]).src = './images/transparent.png';
 				document.getElementById(moveHistory[index].from[3]).src = moveHistory[index].image[2];
 				break;
 		}
 		index += 1;
 	}
 }
+
+// function showLastMove() {}
 
 ////////////////////////////////////////////////////////////
 
