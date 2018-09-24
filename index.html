@@ -11,11 +11,11 @@
 
   <body>
     <div id='modal'>
-        <div class='modalContent'>
-          <h1>SET TIMER</h1>
-          <input type='number' id='timeSet'/>
-          <button id='start'>START</button>
-        </div>
+      <div class='modalContent'>
+        <h1>SET TIMER</h1>
+        <input type='number' id='timeSet' />
+        <button id='start'>START</button>
+      </div>
     </div>
     <game>
       <player1>
@@ -52,7 +52,7 @@
           <img id="blueBishop" data-name='bishop' data-side='blue' src="./images/blueBishop.png">
         </div>
       </div>
-      
+
       <board id='board'>
         <row0 class="row">
           <img id='00' data-name='rook' data-side='orange' data-pinned='false' src='./images/orangeRook.png' class='white'></img>
@@ -129,7 +129,7 @@
           <img id='17' data-name='knight' data-side='blue' data-pinned='false' src='./images/blueKnight.png' class='white'></img>
           <img id='27' data-name='bishop' data-side='blue' data-pinned='false' src='./images/blueBishop.png' class='black'></img>
           <img id='37' data-name='queen' data-side='blue' data-pinned='false' src='./images/blueQueen.png' class='white'></img>
-          <img id='47' data-name='king' data-side='blue'data-pinned='false' src='./images/blueKing.png' class='black'></img>
+          <img id='47' data-name='king' data-side='blue' data-pinned='false' src='./images/blueKing.png' class='black'></img>
           <img id='57' data-name='bishop' data-side='blue' data-pinned='false' src='./images/blueBishop.png' class='white'></img>
           <img id='67' data-name='knight' data-side='blue' data-pinned='false' src='./images/blueKnight.png' class='black'></img>
           <img id='77' data-name='rook' data-side='blue' data-pinned='false' src='./images/blueRook.png' class='white'></img>
@@ -139,21 +139,21 @@
       <div class='timePawnEvolve'>
         <div id='time2' class='time'></div>
         <div id="modalOrange" class='modal'>
-            <img id="orangeQueen" data-name='queen' data-side='orange' src="./images/orangeQueen.png">
-            <img id="orangeKnight" data-name='knight' data-side='orange' src="./images/orangeKnight.png">
-            <img id="orangeRook" data-name='rook' data-side='orange' src="./images/orangeRook.png">
-            <img id="orangeBishop" data-name='bishop' data-side='orange' src="./images/orangeBishop.png">
+          <img id="orangeQueen" data-name='queen' data-side='orange' src="./images/orangeQueen.png">
+          <img id="orangeKnight" data-name='knight' data-side='orange' src="./images/orangeKnight.png">
+          <img id="orangeRook" data-name='rook' data-side='orange' src="./images/orangeRook.png">
+          <img id="orangeBishop" data-name='bishop' data-side='orange' src="./images/orangeBishop.png">
         </div>
       </div>
-      
+
       <player2>
         <showMoves>
           <button class='btn' onclick='showFirstMove()'>|<</button>
           <button class='btn' onclick='showPriorMove()'><</button>
           <button class='btn' onclick='showNextMove()'>></button>
-          <button class='btn' onclick='showLastMove()'>>|</button>
+          <!--<button class='btn' onclick='showLastMove()'>>|</button>-->
         </showMoves>
-        
+
         <div id='orangeTakenBox'>
           <div class='takenBox'>
             <img id='-24' src='./images/transparent.png'></img>
@@ -180,4 +180,5 @@
     <script src='main.js'></script>
     <!-- <script type='module' src='./js/index.js'></script> -->
   </body>
+
 </html>
