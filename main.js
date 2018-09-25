@@ -7,7 +7,9 @@ var kingAttackers = [],
 	castleIds = [],
 	orangeTakenBoxIdCounter = -16,
 	blueTakenBoxIdCounter = -1,
-	nails,
+	nails, a = false,
+	b = false,
+	c = false,
 	enPassanting = false,
 	pins, kingInCheck, stuckActivePieces, litIds,
 	checkSpaceId, pinnedLitIds, behindKingId, pawnBlocksKingAttacker,
@@ -1579,28 +1581,32 @@ function checkingSpace(somePiece, someId) {
 
 function reviewMode() {
 
-	if (pieceToMove) {
-		// unplug all lit cells & clickListeners 
-		pieceToMove.classList.remove('mainLit');
-
-		litIds.forEach(id => {
-			document.getElementById(id).classList.remove('lit');
-			document.getElementById(id).removeEventListener('click', movePiece);
-		});
-	}
-
 	if (greyLitPieces.length) {
+		a = true;
 		greyLitPieces.forEach(greyPiece => {
 			greyPiece.classList.remove('preventMateLit');
-			greyPiece.removeEventListener('click', selectGreyPiece);
+			greyPiece.classList.add('noClick');
 		});
+		if (greyPieceToMove !== undefined) {
+			b = true;
+			greyPieceToMove.classList.remove('mainLit');
+			litIds.forEach(id => {
+				document.getElementById(id).classList.remove('lit');
+				document.getElementById(id).classList.add('noClick');
+			});
+		}
 	}
 
-	if (greyPieceToMove) {
-		greyPieceToMove.classList.remove('mainLit');
-		greyPieceToMove.removeEventListener('click', moveGreyPiece);
+	if (pieceToMove) {
+		if (pieceToMove.classList.contains('mainLit')) {
+			c = true;
+			pieceToMove.classList.remove('mainLit');
+			litIds.forEach(id => {
+				document.getElementById(id).classList.remove('lit');
+				document.getElementById(id).classList.add('noClick');
+			});
+		}
 	}
-
 	// saves currentBoard .src map
 	currentBoard = activeSide.concat(passiveSide).map(piece => [piece.id, piece.src]);
 
@@ -1626,37 +1632,29 @@ function reviewMode() {
 		index = moveHistory.length;
 
 		// resumes game flow
-		/*
-		if (litIds.length) {
-			litIds.forEach(id => {
-				document.getElementById(id).classList.remove('lit');
-				document.getElementById(id).removeEventListener('click', movePiece);
-			});
-		}
-		*/
-
-		if (!greyLitPieces.length) {
-			if (pieceToMove) {
-				// unplug all lit cells & clickListeners 
+		switch (true) {
+			case a:
+				greyLitPieces.forEach(greyPiece => {
+					greyPiece.classList.add('preventMateLit');
+					greyPiece.classList.remove('noClick');
+				});
+				a = false;
+			case b:
+				greyPieceToMove.classList.add('mainLit');
+				litIds.forEach(id => {
+					document.getElementById(id).classList.remove('lit');
+					document.getElementById(id).classList.add('noClick');
+				});
+				b = false;
+				break;
+			case c:
 				pieceToMove.classList.add('mainLit');
-
 				litIds.forEach(id => {
 					document.getElementById(id).classList.add('lit');
-					document.getElementById(id).addEventListener('click', movePiece);
+					document.getElementById(id).classList.remove('noClick');
 				});
-			}
+				c = false;
 		}
-		else {
-			greyLitPieces.forEach(greyPiece => {
-				greyPiece.classList.add('preventMateLit');
-				greyPiece.addEventListener('click', selectGreyPiece);
-			});
-		}
-		if (greyPieceToMove) {
-			greyPieceToMove.classList.add('mainLit');
-			greyPieceToMove.addEventListener('click', moveGreyPiece);
-		}
-
 	});
 }
 
@@ -1704,20 +1702,6 @@ function showNextMove() {
 		index += 1;
 	}
 }
-
-/*
-function showLastMove() {
-
-	if (index !== moveHistory.length) { // if index before last move
-		// sets index to current move
-		index = moveHistory.length;
-		// loads currentBoard .src map
-		currentBoard.forEach(piece => document.getElementById(piece[0]).src = piece[1]);
-
-		// if (setProgress) { activeSide.forEach(piece => piece.classList.remove('noClick')); }
-	}
-}
-*/
 
 ////////////////////////////////////////////////////////////
 
