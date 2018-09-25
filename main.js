@@ -7,7 +7,7 @@ var kingAttackers = [],
 	castleIds = [],
 	orangeTakenBoxIdCounter = -16,
 	blueTakenBoxIdCounter = -1,
-	nails, setProgress,
+	nails,
 	enPassanting = false,
 	pins, kingInCheck, stuckActivePieces, litIds,
 	checkSpaceId, pinnedLitIds, behindKingId, pawnBlocksKingAttacker,
@@ -1580,15 +1580,26 @@ function checkingSpace(somePiece, someId) {
 function reviewMode() {
 
 	if (pieceToMove) {
-		// unplug all possible lits & clickListeners 
+		// unplug all lit cells & clickListeners 
 		pieceToMove.classList.remove('mainLit');
-		// also for litIds & greyLitIds
 
+		litIds.forEach(id => {
+			document.getElementById(id).classList.remove('lit');
+			document.getElementById(id).removeEventListener('click', movePiece);
+		});
 	}
 
+	if (greyLitPieces.length) {
+		greyLitPieces.forEach(greyPiece => {
+			greyPiece.classList.remove('preventMateLit');
+			greyPiece.removeEventListener('click', selectGreyPiece);
+		});
+	}
 
-	// interrupts game flow to review move history
-	// activeSide.forEach(piece => { piece.classList.add('noClick'); });
+	if (greyPieceToMove) {
+		greyPieceToMove.classList.remove('mainLit');
+		greyPieceToMove.removeEventListener('click', moveGreyPiece);
+	}
 
 	// saves currentBoard .src map
 	currentBoard = activeSide.concat(passiveSide).map(piece => [piece.id, piece.src]);
@@ -1604,10 +1615,9 @@ function reviewMode() {
 			}
 		}
 	}
+	// ------------------------------------
 	// when board clicked, exits reviewMode
-	board.addEventListener('mousedown', (e) => {
-
-		setProgress = true;
+	board.addEventListener('mousedown', () => {
 
 		// loads currentBoard .src map
 		currentBoard.forEach(piece => document.getElementById(piece[0]).src = piece[1]);
@@ -1615,10 +1625,38 @@ function reviewMode() {
 		// sets index to current move
 		index = moveHistory.length;
 
-		// e.target.click();
-
 		// resumes game flow
-		// activeSide.forEach(piece => { piece.classList.remove('noClick'); });
+		/*
+		if (litIds.length) {
+			litIds.forEach(id => {
+				document.getElementById(id).classList.remove('lit');
+				document.getElementById(id).removeEventListener('click', movePiece);
+			});
+		}
+		*/
+
+		if (!greyLitPieces.length) {
+			if (pieceToMove) {
+				// unplug all lit cells & clickListeners 
+				pieceToMove.classList.add('mainLit');
+
+				litIds.forEach(id => {
+					document.getElementById(id).classList.add('lit');
+					document.getElementById(id).addEventListener('click', movePiece);
+				});
+			}
+		}
+		else {
+			greyLitPieces.forEach(greyPiece => {
+				greyPiece.classList.add('preventMateLit');
+				greyPiece.addEventListener('click', selectGreyPiece);
+			});
+		}
+		if (greyPieceToMove) {
+			greyPieceToMove.classList.add('mainLit');
+			greyPieceToMove.addEventListener('click', moveGreyPiece);
+		}
+
 	});
 }
 
@@ -1693,7 +1731,6 @@ function lit() {
 	pawnBlocksKingAttacker = false;
 	noPawnEvolution = false;
 	enPassantMove = false;
-	setProgress = false;
 	kingInCheck = false;
 	kingStuck = false;
 	isCastle = false;
