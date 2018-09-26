@@ -1619,16 +1619,18 @@ function exitReviewClickHandler() { // resumes game flow
 
 		if (greyPieceToMove) {
 			greyPieceToMove.classList.add('mainLit');
-			litIds.forEach(id => {
-				document.getElementById(id).classList.add('lit');
-				document.getElementById(id).classList.remove('noClick');
-			});
 			if (greyPieceToMove.id === activeKing.id) {
 				kingLitIds.forEach(id => {
 					document.getElementById(id).classList.add('lit');
 					document.getElementById(id).classList.remove('noClick');
 				});
 				kingLitIds = [];
+			}
+			else {
+				litIds.forEach(id => {
+					document.getElementById(id).classList.add('lit');
+					document.getElementById(id).classList.remove('noClick');
+				});
 			}
 		}
 	}
