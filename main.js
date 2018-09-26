@@ -1624,7 +1624,6 @@ function exitReviewClickHandler() { // resumes game flow
 					document.getElementById(id).classList.add('lit');
 					document.getElementById(id).classList.remove('noClick');
 				});
-				kingLitIds = [];
 			}
 			else {
 				litIds.forEach(id => {
@@ -1635,14 +1634,12 @@ function exitReviewClickHandler() { // resumes game flow
 		}
 	}
 
-	if (pieceToMove) {
-		if (pieceToMove.classList.contains('mainLit')) {
-			pieceToMove.classList.add('mainLit');
-			litIds.forEach(id => {
-				document.getElementById(id).classList.add('lit');
-				document.getElementById(id).classList.remove('noClick');
-			});
-		}
+	else if (pieceToMove) {
+		pieceToMove.classList.add('mainLit');
+		litIds.forEach(id => {
+			document.getElementById(id).classList.add('lit');
+			document.getElementById(id).classList.remove('noClick');
+		});
 	}
 }
 
@@ -1688,7 +1685,6 @@ function showFirstMove() {
 	reviewClickHandler();
 }
 
-
 function showPriorMove() {
 	if (index > 0) { // if after game's first move
 		if (firstReview) {
@@ -1703,7 +1699,6 @@ function showPriorMove() {
 		reviewClickHandler();
 	}
 }
-
 
 function showNextMove() {
 	if (index < moveHistory.length) { // if index before last move
