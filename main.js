@@ -7,11 +7,9 @@ var kingAttackers = [],
 	castleIds = [],
 	orangeTakenBoxIdCounter = -16,
 	blueTakenBoxIdCounter = -1,
-	nails, a = false,
-	b = false,
-	c = false,
+	nails, storedGreyPieceToMove,
 	enPassanting = false,
-	pins, kingInCheck, stuckActivePieces, litIds,
+	pins, kingInCheck, stuckActivePieces, litIds, storedLitIds,
 	checkSpaceId, pinnedLitIds, behindKingId, pawnBlocksKingAttacker,
 	kingStuck, newPieceClicked, pinnerPiece, greyPieceToMove, noCastle,
 	blocker, passiveSideCoversId, checkPath, blueKingFirstMove,
@@ -1579,27 +1577,29 @@ function checkingSpace(somePiece, someId) {
 
 ////////////////////////////////////////////////////////////
 
-function reviewMode() {
-
+function reviewClickHandler() {
 	if (greyLitPieces.length) {
-		a = true;
 		greyLitPieces.forEach(greyPiece => {
 			greyPiece.classList.remove('preventMateLit');
 			greyPiece.classList.add('noClick');
 		});
-		if (greyPieceToMove !== undefined) {
-			b = true;
+		if (greyPieceToMove) {
 			greyPieceToMove.classList.remove('mainLit');
 			litIds.forEach(id => {
 				document.getElementById(id).classList.remove('lit');
 				document.getElementById(id).classList.add('noClick');
 			});
+			if (greyPieceToMove.id === activeKing.id) {
+				kingLitIds.forEach(id => {
+					document.getElementById(id).classList.remove('lit');
+					document.getElementById(id).classList.add('noClick');
+				});
+			}
 		}
 	}
 
 	if (pieceToMove) {
 		if (pieceToMove.classList.contains('mainLit')) {
-			c = true;
 			pieceToMove.classList.remove('mainLit');
 			litIds.forEach(id => {
 				document.getElementById(id).classList.remove('lit');
@@ -1607,6 +1607,45 @@ function reviewMode() {
 			});
 		}
 	}
+}
+
+function exitReviewClickHandler() { // resumes game flow
+
+	if (greyLitPieces.length) {
+		greyLitPieces.forEach(greyPiece => {
+			greyPiece.classList.add('preventMateLit');
+			greyPiece.classList.remove('noClick');
+		});
+
+		if (greyPieceToMove) {
+			greyPieceToMove.classList.add('mainLit');
+			litIds.forEach(id => {
+				document.getElementById(id).classList.add('lit');
+				document.getElementById(id).classList.remove('noClick');
+			});
+			if (greyPieceToMove.id === activeKing.id) {
+				kingLitIds.forEach(id => {
+					document.getElementById(id).classList.add('lit');
+					document.getElementById(id).classList.remove('noClick');
+				});
+				kingLitIds = [];
+			}
+		}
+	}
+
+	if (pieceToMove) {
+		if (pieceToMove.classList.contains('mainLit')) {
+			pieceToMove.classList.add('mainLit');
+			litIds.forEach(id => {
+				document.getElementById(id).classList.add('lit');
+				document.getElementById(id).classList.remove('noClick');
+			});
+		}
+	}
+}
+
+function reviewMode() {
+
 	// saves currentBoard .src map
 	currentBoard = activeSide.concat(passiveSide).map(piece => [piece.id, piece.src]);
 
@@ -1623,39 +1662,18 @@ function reviewMode() {
 	}
 	// ------------------------------------
 	// when board clicked, exits reviewMode
-	board.addEventListener('mousedown', () => {
+	board.addEventListener('mousedown', exitReviewMode);
+}
 
-		// loads currentBoard .src map
-		currentBoard.forEach(piece => document.getElementById(piece[0]).src = piece[1]);
+function exitReviewMode() {
 
-		// sets index to current move
-		index = moveHistory.length;
+	// loads currentBoard .src map
+	currentBoard.forEach(piece => document.getElementById(piece[0]).src = piece[1]);
 
-		// resumes game flow
-		switch (true) {
-			case a:
-				greyLitPieces.forEach(greyPiece => {
-					greyPiece.classList.add('preventMateLit');
-					greyPiece.classList.remove('noClick');
-				});
-				a = false;
-			case b:
-				greyPieceToMove.classList.add('mainLit');
-				litIds.forEach(id => {
-					document.getElementById(id).classList.remove('lit');
-					document.getElementById(id).classList.add('noClick');
-				});
-				b = false;
-				break;
-			case c:
-				pieceToMove.classList.add('mainLit');
-				litIds.forEach(id => {
-					document.getElementById(id).classList.add('lit');
-					document.getElementById(id).classList.remove('noClick');
-				});
-				c = false;
-		}
-	});
+	// sets index to current move
+	index = moveHistory.length;
+
+	exitReviewClickHandler();
 }
 
 function showFirstMove() {
@@ -1665,17 +1683,22 @@ function showFirstMove() {
 	}
 	index = 0;
 	setBoard.forEach(piece => document.getElementById(piece[0]).src = piece[1]);
+	reviewClickHandler();
 }
 
 
 function showPriorMove() {
 	if (index > 0) { // if after game's first move
-		reviewMode();
+		if (firstReview) {
+			firstReview = false;
+			reviewMode();
+		}
 		index -= 1; // begins with previous move
 		// displays that previous move
 		for (let i = 0; i < moveHistory[index].from.length; i++) {
 			document.getElementById(moveHistory[index].from[i]).src = moveHistory[index].image[i];
 		}
+		reviewClickHandler();
 	}
 }
 
@@ -1700,12 +1723,15 @@ function showNextMove() {
 				break;
 		}
 		index += 1;
+		if (index === moveHistory.length) { exitReviewClickHandler(); }
 	}
 }
 
 ////////////////////////////////////////////////////////////
 
 function lit() {
+
+	board.removeEventListener('mousedown', exitReviewMode);
 
 	stuckActivePieces = 0;
 	index = moveHistory.length;
