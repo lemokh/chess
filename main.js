@@ -1851,7 +1851,7 @@ window.onload = function() {
 		if (timerSet) {
 			if (timerSet > 0) {
 				if (timerSet < 1000) {
-					if (!timerSet.includes('.'))
+					if (!timerSet.includes('.')) {
 						if (!timerSet.includes('e')) {
 
 							userInput = +(timerSet);
@@ -1888,6 +1888,7 @@ window.onload = function() {
 
 							lit();
 						}
+					}
 				}
 			}
 		}
