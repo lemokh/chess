@@ -18,7 +18,7 @@ var kingAttackers = [],
 	goToDiv, enPassantDiv, pawnJumpDiv, index, index1, index2, pinnedPieces,
 	moves, bishopMoves, bishopX, bishopY, openAndOpponentHeldKingSpaces,
 	rookMoves, kingSpaces, isCastle, enPassantMove, currentBoard, pieceIds,
-	firstReview, moveHistory = [];
+	firstReview, gameOver, moveHistory = [];
 
 
 var board = document.getElementById('board');
@@ -120,26 +120,8 @@ function inCheck() {
 	// if king can move, handles moving activeKing
 	if (litIds.length) {
 
+		// kingLitIds occurs in selectGreyPiece() & moveGreyPiece()
 		kingLitIds = litIds;
-
-		/*  kingLitIds is used in selectGreyPiece() & moveGreyPiece()
-
-		// kingLitIds = litIds that are not in checkPath
-		kingLitIds = litIds.filter(litId =>
-			!checkPath.some(id => litId === id)
-		);
-		
-		// checkPath = checkPath ids that are not in litIds
-		checkPath = checkPath.filter(id =>
-			!litIds.some(litId => id === litId)			
-		);
-		
-		// litIds = kingLitIds; // this seems sloppy, not concise
-		*/
-
-		// console.log('checkPath -->');  console.log(checkPath);
-		// console.log('litIds -->');  console.log(litIds);
-		// console.log('kingLitIds -->');  console.log(kingLitIds);
 
 		// click-handling greyLit activeKing
 		greyLitPieces.push(activeKing);
@@ -231,7 +213,8 @@ function inCheck() {
 	}
 	else {
 		console.log('since no greyLitPieces... endOfGame');
-		return endOfGame();
+		// return
+		endOfGame();
 	}
 }
 
@@ -523,10 +506,12 @@ function pawnEvolve(e) {
 
 function swapSide(fromDiv, toDiv) {
 	if (isCastle || enPassantMove) {
-		moveHistory[moveHistory.length - 1].from.push(fromDiv.id);
-		moveHistory[moveHistory.length - 1].from.push(toDiv.id);
-		moveHistory[moveHistory.length - 1].image.push(fromDiv.src);
-		moveHistory[moveHistory.length - 1].image.push(toDiv.src);
+		let priorMove = moveHistory[moveHistory.length - 1];
+		
+		priorMove.from.push(fromDiv.id);
+		priorMove.from.push(toDiv.id);
+		priorMove.image.push(fromDiv.src);
+		priorMove.image.push(toDiv.src);
 	}
 	else {
 		moveHistory.push({
@@ -802,21 +787,6 @@ function pinnedPieceLit() {
 		pinnedLitIds.push(...pathOfCheck);
 		console.log('pinnedLitIds -->');
 		console.log(pinnedLitIds);
-
-		/*
-		switch(pieceToMove.dataset.name) {
-			case pinnerPiece.dataset.name:
-			case 'queen':
-
-			// includes ids from pieceToMove to its pinning piece
-			pinnedLitIds.push(...pathOfCheck);
-			// ---------------------------------------------
-			// includes ids from pieceToMove to its own king
-			checkingSpace(pieceToMove, activeKing.id);
-			pinnedLitIds.push(...pathOfCheck);
-			console.log('pinnedLitIds -->');  console.log(pinnedLitIds);
-		}
-		*/
 	}
 	// -----------------------
 	if (pinnedLitIds.length) {
@@ -849,10 +819,10 @@ function toggleSides() {
 }
 
 function endOfGame() {
+	gameOver = true;
 
 	clearInterval(runTimer);
 	activeKing.classList.add('checkMate');
-	board.classList.add('noClick');
 
 	activeSide.forEach(activePiece => {
 		activePiece.removeEventListener('click', wherePieceCanMove);
@@ -864,8 +834,9 @@ function endOfGame() {
 }
 
 function resign() {
+	gameOver = true;
+
 	clearInterval(runTimer);
-	board.classList.add('noClick');
 
 	activeSide.forEach(activePiece => {
 		activePiece.removeEventListener('click', wherePieceCanMove);
@@ -1578,6 +1549,9 @@ function checkingSpace(somePiece, someId) {
 ////////////////////////////////////////////////////////////
 
 function reviewClickHandler() {
+	
+	if (gameOver) { return activeKing.classList.remove('checkMate'); }
+
 	if (greyLitPieces.length) {
 		greyLitPieces.forEach(greyPiece => {
 			greyPiece.classList.remove('preventMateLit');
@@ -1610,6 +1584,8 @@ function reviewClickHandler() {
 }
 
 function exitReviewClickHandler() { // resumes game flow
+
+	if (gameOver) { return activeKing.classList.add('checkMate'); }
 
 	if (greyLitPieces.length) {
 		greyLitPieces.forEach(greyPiece => {
@@ -1644,22 +1620,21 @@ function exitReviewClickHandler() { // resumes game flow
 }
 
 function reviewMode() {
-
 	// saves currentBoard .src map
 	currentBoard = activeSide.concat(passiveSide).map(piece => [piece.id, piece.src]);
 
-	// collects only the ids in currentBoard
+	// collects currentBoard ids
 	pieceIds = currentBoard.map(piece => piece[0]);
 
-	// adds to currentBoard all empty spaces [id, src]
+	// pushes to currentBoard all empty spaces [id, src]
 	for (let k = 0; k < 8; k++) {
 		for (let i = 0; i < 8; i++) {
 			if (!pieceIds.includes(i + '' + k)) {
 				currentBoard.push([i + '' + k, './images/transparent.png']);
 			}
 		}
-	}
-	// ------------------------------------
+	} // ----------------------------------
+	
 	// when board clicked, exits reviewMode
 	board.addEventListener('mousedown', exitReviewMode);
 }
@@ -1692,6 +1667,7 @@ function showPriorMove() {
 			reviewMode();
 		}
 		index -= 1; // begins with previous move
+		
 		// displays that previous move
 		for (let i = 0; i < moveHistory[index].from.length; i++) {
 			document.getElementById(moveHistory[index].from[i]).src = moveHistory[index].image[i];
