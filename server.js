@@ -3,14 +3,18 @@
 var http = require('http'),
     fs = require('fs');
 
+function load_album() {
+    
+}
+
 function load_album_list(callback) {
-    fs.readdir('albums', function(err, files) {
+    fs.readdir("albums", function(err, files) {
         if (err) {
             callback(err);
             return;
         }
         var only_dirs = [];
-        (function interator(index) {    
+        (function interator(index) { // iife
             if (index == files.length) {
                 callback(null, only_dirs);
                 return;
