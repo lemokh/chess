@@ -5,6 +5,7 @@ var kingAttackers = [],
 	canBlockPathOfCheck = [],
 	canEatKingAttacker = [],
 	castleIds = [],
+	moveHistory = [],
 	orangeTakenBoxIdCounter = -16,
 	blueTakenBoxIdCounter = -1,
 	nails, storedGreyPieceToMove,
@@ -18,7 +19,7 @@ var kingAttackers = [],
 	goToDiv, enPassantDiv, pawnJumpDiv, index, index1, index2, pinnedPieces,
 	moves, bishopMoves, bishopX, bishopY, openAndOpponentHeldKingSpaces,
 	rookMoves, kingSpaces, isCastle, enPassantMove, currentBoard, pieceIds,
-	firstReview, gameOver, moveHistory = [];
+	firstReview, gameOver;
 
 
 var board = document.getElementById('board');
@@ -93,6 +94,20 @@ function toggleClocks() {
 		obj = orangeTime;
 		clockToUpdate = clock2;
 	}
+	// transitions player views
+	if (moveHistory.length) {
+		board.classList.toggle('noClick');
+		board.classList.toggle('fade');
+		
+		setTimeout( () => {
+			setBoard.forEach(arr => document.getElementById(arr[0]).classList.toggle('rotateBoard'));
+			board.classList.toggle('rotateBoard');
+			board.classList.toggle('noClick');
+		}, 750);
+
+		setTimeout( () => board.classList.toggle('fade'), 1600);
+	}
+
 	startClock();
 }
 
@@ -1709,7 +1724,7 @@ function showNextMove() {
 	}
 }
 
-////////////////////////////////////////////////////////////
+////////////////////////////
 
 function lit() {
 
@@ -1767,8 +1782,8 @@ function lit() {
 	console.log('activeKing -->');
 	console.log(activeKing);
 	// --------------------------------------------------------
+	// covers game ending in a draw if activeSide unable to move
 	testingDraw = true;
-	// covers game ending in a draw
 	activeSide.forEach(piece => {
 		litIds = [];
 		pieceToMove = piece;
@@ -1779,11 +1794,7 @@ function lit() {
 	pathOfCheck = [];
 	testingDraw = false;
 	pieceToMove = undefined;
-	if (stuckActivePieces === activeSide.length) {
-		clearInterval(runTimer);
-		alert("Game ends in a draw");
-		return;
-	}
+
 	// ---------------------------------------------------------------
 	// pushes to kingAttackers all passivePieces that check activeKing 
 	passiveSide.forEach(passivePiece => {
@@ -1822,6 +1833,11 @@ function lit() {
 	if (kingAttackers.length) { inCheck(); }
 	// -------------------------------------
 	else { // since not in check
+		if (stuckActivePieces === activeSide.length) {
+			clearInterval(runTimer);
+			alert("Game ends in a draw");
+			return;
+		}
 		activeSide.forEach(activePiece => {
 			activePiece.addEventListener('click', wherePieceCanMove);
 		});
@@ -1831,6 +1847,7 @@ function lit() {
 /////////////////////////////
 
 window.onload = function() {
+	
 	document.getElementById('start').addEventListener('click', function getMinutes() {
 		timerSet = document.getElementById('timeSet').value;
 		if (timerSet) {

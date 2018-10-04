@@ -56,7 +56,8 @@ border-spacing: 0;
 
 html, body {
   font-family: 'VarelaRound-Regular', sans-serif;
-  }
+  margin: auto;
+}
 
 body {
     background-image: url('images/boardBody.jpg');
@@ -68,13 +69,11 @@ body {
 game {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    grid-gap: 2rem;
-    margin-top: 4rem;
 }
 
 player1 {
   display: grid;
-  grid-template-columns: 10rem;
+  /* grid-template-columns: 15%; */
   /*background-color: rgba(219, 112, 147, 0.05);*/
   background-color: black;
   /*background-blend-mode: luminosity;*/
@@ -83,7 +82,7 @@ player1 {
 
 player2 {
   display: grid;
-  grid-template-columns: 10rem;
+  /* grid-template-columns: 15%; */
   /*background-color: rgba(219, 112, 147, 0.05);*/
   /*background-blend-mode: screen;*/
   background-color: black;
@@ -98,9 +97,18 @@ board {
   /* filter: drop-shadow(0px 0px 5000px) invert(2%); */
 }
 
-.btn {
-  text-align: center;
-  font-size: 30px;
+@keyframes fadeOutIn {
+  0%   { opacity:1; }
+  50%  { opacity:0; }
+  100% { opacity:1; }
+}
+
+.fade {
+  animation: fadeOutIn 1.5s ease-in-out;
+}
+
+.rotateBoard {
+  transform: rotate(180deg);
 }
 
 #blueTakenBox {
@@ -115,7 +123,7 @@ board {
 
 .row {
   display: flex;
-  margin-bottom: 5px;
+  /* margin-bottom: 5px; */
 }
 
 img {
@@ -224,7 +232,7 @@ https://github.com/lemokh/Photos/blob/master/siennaSquare.jpg?raw=true
 .btn {
   margin: auto;
   text-align: center;
-  font-size: 20px;
+  font-size: 30px;
   background-color: rgba(253, 253, 253, 0.25);
   background-color: white;
 }
@@ -273,4 +281,9 @@ input {
   width: 15%;
   border-radius: 0.5rem;
   outline: 0;
+}
+
+showMoves {
+  display: flex;
+  justify-content: space-evenly;
 }
