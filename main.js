@@ -475,8 +475,9 @@ function pawnEvolve(e) {
 	goToDiv.setAttribute('data-side', e.target.dataset.side);
 	goToDiv.setAttribute('src', e.target.src);
 
-	// replaces moveHistory pawn image with e.target.src
-	moveHistory[moveHistory.length - 1].image.splice(0, 1, e.target.src);
+	// replaces moveHistory's current move (pawn) image with e.target.src
+	// moveHistory[moveHistory.length - 1].image.splice(0, 1, e.target.src);
+	moveHistory[moveHistory.length - 1].image.push(e.target.src);
 
 	// gets pieceToMove's activeSide index
 	index1 = activeSide.indexOf(pieceToMove);
@@ -880,14 +881,16 @@ function pawnLit() {
 	if (activeKing.dataset.side === 'blue') {
 		// if enPassant attack is possible, covers enPassant attack
 		if (enPassanting) { // same as: if (pawnJumpDiv.length) ?
-			// if bluePawnToMove is beside pawnJump,
-			if ((pieceToMove.id === (pawnJumpDiv.id[0] - 1) + pawnJumpDiv.id[1]) ||
-				(pieceToMove.id === (+pawnJumpDiv.id[0] + 1) + pawnJumpDiv.id[1])) {
-				// adds bluePawnToMove's enPassant-attack-div to litIds
-				enPassantDiv = document.getElementById(
-					pawnJumpDiv.id[0] + (pawnJumpDiv.id[1] - 1)
-				);
-				litIds.push(enPassantDiv.id);
+			if (pieceToMove.id[1] === '3') { // if in row 3
+				// if bluePawnToMove is beside pawnJump,
+				if ((pieceToMove.id === (pawnJumpDiv.id[0] - 1) + pawnJumpDiv.id[1]) ||
+					(pieceToMove.id === (+pawnJumpDiv.id[0] + 1) + pawnJumpDiv.id[1])) {
+					// adds bluePawnToMove's enPassant-attack-div to litIds
+					enPassantDiv = document.getElementById(
+						pawnJumpDiv.id[0] + (pawnJumpDiv.id[1] - 1)
+					);
+					litIds.push(enPassantDiv.id);
+				}
 			}
 		}
 		// collects potential normal attack divs
@@ -922,13 +925,15 @@ function pawnLit() {
 	else { // since orange's turn
 		// if enPassant attack is possible
 		if (enPassanting) { // same as if pawnJumpDiv.length?
-			if ((pieceToMove.id === (pawnJumpDiv.id[0] - 1) + pawnJumpDiv.id[1]) ||
-				(pieceToMove.id === (+pawnJumpDiv.id[0] + 1) + pawnJumpDiv.id[1])) {
-				// adds enPassant attack div to litIds
-				enPassantDiv = document.getElementById(
-					pawnJumpDiv.id[0] + (+pawnJumpDiv.id[1] + 1)
-				);
-				litIds.push(enPassantDiv.id);
+			if (pieceToMove.id[1] === '4') { // if in row 4
+				if ((pieceToMove.id === (pawnJumpDiv.id[0] - 1) + pawnJumpDiv.id[1]) ||
+					(pieceToMove.id === (+pawnJumpDiv.id[0] + 1) + pawnJumpDiv.id[1])) {
+					// adds enPassant attack div to litIds
+					enPassantDiv = document.getElementById(
+						pawnJumpDiv.id[0] + (+pawnJumpDiv.id[1] + 1)
+					);
+					litIds.push(enPassantDiv.id);
+				}
 			}
 		}
 		// collects potential normal attack divs
@@ -1626,7 +1631,7 @@ function reviewMode() {
 	// collects currentBoard ids
 	pieceIds = currentBoard.map(piece => piece[0]);
 
-	// pushes to currentBoard all empty spaces [id, src]
+	// pushes to currentBoard all empty spaces as [id, src] each
 	for (let k = 0; k < 8; k++) {
 		for (let i = 0; i < 8; i++) {
 			if (!pieceIds.includes(i + '' + k)) {
@@ -1681,8 +1686,13 @@ function showNextMove() {
 		switch (moveHistory[index].from.length) {
 			case 2: // covers normal moves and pawn promotion
 				document.getElementById(moveHistory[index].from[0]).src = './images/transparent.png';
+				if (moveHistory[index].image.length === 3) {
+					document.getElementById(moveHistory[index].from[1]).src = moveHistory[index].image[2];
+					break;
+				}
 				document.getElementById(moveHistory[index].from[1]).src = moveHistory[index].image[0];
 				break;
+				
 			case 3: // covers enPassant
 				document.getElementById(moveHistory[index].from[0]).src = './images/transparent.png';
 				document.getElementById(moveHistory[index].from[1]).src = './images/transparent.png';
@@ -1693,7 +1703,6 @@ function showNextMove() {
 				document.getElementById(moveHistory[index].from[1]).src = moveHistory[index].image[0];
 				document.getElementById(moveHistory[index].from[2]).src = './images/transparent.png';
 				document.getElementById(moveHistory[index].from[3]).src = moveHistory[index].image[2];
-				break;
 		}
 		index += 1;
 		if (index === moveHistory.length) { exitReviewClickHandler(); }
