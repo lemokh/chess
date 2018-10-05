@@ -283,7 +283,7 @@ input {
   outline: 0;
 }
 
-showMoves {
+showMoves, options {
   display: flex;
   justify-content: space-evenly;
 }
