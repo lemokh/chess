@@ -878,8 +878,7 @@ function resign() {
 	console.log('END OF GAME');
 }
 
-function forceDraw() {
-	// array1.every(function(value, index) { return value === array2[index]})
+function forceDraw() { // discerns if a draw is forced
 	
 	let thisMove = moveHistory[moveHistory.length - 1],
 		threeMovesAgo = moveHistory[moveHistory.length - 3],
@@ -900,33 +899,6 @@ function forceDraw() {
 			}
 		}
 	}
-	/*
-	if (thisMove.from[0] === fiveMovesAgo.from[0]) {
-		if (thisMove.from[1] === fiveMovesAgo.from[1]) {
-			if (thisMove.image[0] === fiveMovesAgo.image[0]) {
-				if (thisMove.image[1] === fiveMovesAgo.image[1]) {
-					if (thisMove.from[0] === nineMovesAgo.from[0]) {
-						if (thisMove.from[1] === nineMovesAgo.from[1]) {
-							if (thisMove.image[0] === nineMovesAgo.image[0]) {
-								if (thisMove.image[1] === nineMovesAgo.image[1]) {
-									if (threeMovesAgo.from[0] === sevenMovesAgo.from[0]) {
-										if (threeMovesAgo.from[1] === sevenMovesAgo.from[1]) {
-											if (threeMovesAgo.image[0] === sevenMovesAgo.image[0]) {
-												if (threeMovesAgo.image[1] === sevenMovesAgo.image[1]) {
-													drawForced = true;
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-	*/
 }
 ///////////////////////////
 

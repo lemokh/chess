@@ -57,6 +57,7 @@ border-spacing: 0;
 html, body {
   font-family: 'VarelaRound-Regular', sans-serif;
   margin: auto;
+  height: 100vh;
 }
 
 body {
@@ -91,8 +92,8 @@ player2 {
 
 board {
   display: grid;
-  grid-template-columns: 1fr;
-  margin-right: 5px;
+  /* grid-template-columns: 1fr; */
+  margin-right: 5px; */
   /*   background-color: #865541; */
   /* filter: drop-shadow(0px 0px 5000px) invert(2%); */
 }
@@ -261,9 +262,7 @@ https://github.com/lemokh/Photos/blob/master/siennaSquare.jpg?raw=true
   border-radius: 0.5rem;
 }
 
-h1 {
-  padding-right: 20px;
-}
+h1 { padding-right: 20px; }
 
 #start {
   margin-left: 2.5%;
