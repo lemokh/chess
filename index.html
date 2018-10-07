@@ -10,6 +10,7 @@
   </head>
 
   <body>
+    
     <div id='modal'>
       <div class='modalContent'>
         <h1>SET TIMER</h1>
@@ -17,13 +18,25 @@
         <button id='start'>START</button>
       </div>
     </div>
+
     <game>
+
       <player1>
         <options>
           <button class='btn' onclick="resign()">RESIGN</button>
           <button class='btn' onclick="flipBoard()"">()</button>
         </options>
         <div id='blueTakenBox'>
+          <div class='takenBox'>
+            <img id='p-1' src='./images/transparent.png'></img>
+            <img id='p-2' src='./images/transparent.png'></img>
+            <img id='p-3' src='./images/transparent.png'></img>
+            <img id='p-4' src='./images/transparent.png'></img>
+            <img id='p-5' src='./images/transparent.png'></img>
+            <img id='p-6' src='./images/transparent.png'></img>
+            <img id='p-7' src='./images/transparent.png'></img>
+            <img id='p-8' src='./images/transparent.png'></img>
+          </div>
           <div class='takenBox'>
             <img id='-1' src='./images/transparent.png'></img>
             <img id='-2' src='./images/transparent.png'></img>
@@ -33,15 +46,6 @@
             <img id='-6' src='./images/transparent.png'></img>
             <img id='-7' src='./images/transparent.png'></img>
             <img id='-8' src='./images/transparent.png'></img>
-          </div>
-          <div class='takenBox'>
-            <img id='-9' src='./images/transparent.png'></img>
-            <img id='-10' src='./images/transparent.png'></img>
-            <img id='-11' src='./images/transparent.png'></img>
-            <img id='-12' src='./images/transparent.png'></img>
-            <img id='-13' src='./images/transparent.png'></img>
-            <img id='-14' src='./images/transparent.png'></img>
-            <img id='-15' src='./images/transparent.png'></img>
           </div>
         </div>
       </player1>
@@ -154,33 +158,34 @@
           <button class='btn' onclick='showFirstMove()'>|<</button>
           <button class='btn' onclick='showPriorMove()'><</button>
           <button class='btn' onclick='showNextMove()'>></button>
-          <!--<button class='btn' onclick='showLastMove()'>>|</button>-->
         </showMoves>
-
+        
         <div id='orangeTakenBox'>
           <div class='takenBox'>
-            <img id='-24' src='./images/transparent.png'></img>
-            <img id='-25' src='./images/transparent.png'></img>
-            <img id='-26' src='./images/transparent.png'></img>
-            <img id='-27' src='./images/transparent.png'></img>
-            <img id='-28' src='./images/transparent.png'></img>
-            <img id='-29' src='./images/transparent.png'></img>
-            <img id='-30' src='./images/transparent.png'></img>
+            <img id='1' src='./images/transparent.png'></img>
+            <img id='2' src='./images/transparent.png'></img>
+            <img id='3' src='./images/transparent.png'></img>
+            <img id='4' src='./images/transparent.png'></img>
+            <img id='5' src='./images/transparent.png'></img>
+            <img id='6' src='./images/transparent.png'></img>
+            <img id='7' src='./images/transparent.png'></img>
+            <img id='8' src='./images/transparent.png'></img>
           </div>
           <div class='takenBox'>
-            <img id='-16' src='./images/transparent.png'></img>
-            <img id='-17' src='./images/transparent.png'></img>
-            <img id='-18' src='./images/transparent.png'></img>
-            <img id='-19' src='./images/transparent.png'></img>
-            <img id='-20' src='./images/transparent.png'></img>
-            <img id='-21' src='./images/transparent.png'></img>
-            <img id='-22' src='./images/transparent.png'></img>
-            <img id='-23' src='./images/transparent.png'></img>
-          </div>
+            <img id='p1' src='./images/transparent.png'></img>
+            <img id='p2' src='./images/transparent.png'></img>
+            <img id='p3' src='./images/transparent.png'></img>
+            <img id='p4' src='./images/transparent.png'></img>
+            <img id='p5' src='./images/transparent.png'></img>
+            <img id='p6' src='./images/transparent.png'></img>
+            <img id='p7' src='./images/transparent.png'></img>
+            <img id='p8' src='./images/transparent.png'></img>
+          </div>      
         </div>
       </player2>
+
     </game>
+    
     <script src='main.js'></script>
   </body>
-
 </html>

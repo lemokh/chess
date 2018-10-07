@@ -6,8 +6,10 @@ var kingAttackers = [],
 	canEatKingAttacker = [],
 	castleIds = [],
 	moveHistory = [],
-	orangeTakenBoxIdCounter = -16,
+	bluePawnTakenBoxIdCounter = -1,
 	blueTakenBoxIdCounter = -1,
+	orangeTakenBoxIdCounter = 1,
+	orangePawnTakenBoxIdCounter = 1,
 	nails, storedGreyPieceToMove,
 	enPassanting = false, drawForced = false,
 	pins, kingInCheck, stuckActivePieces, litIds, storedLitIds,
@@ -354,8 +356,6 @@ function possibleMoves() {
 			break;
 		case 'king':
 			kingLit();
-			break;
-			// default: alert('default ERROR! pieceToMove is empty');
 	}
 }
 
@@ -542,25 +542,38 @@ function swapSide(fromDiv, toDiv) {
 }
 
 function eat(piece) {
-	// eat(goToDiv); --> normal pawn attack
+	// eat(goToDiv); --> normal attack
 	// eat(pawnJumpDiv); --> enPassant attack
 
 	// 1. puts eaten piece in its takenBox
 	if (activeKing.dataset.side === 'blue') {
-		document.getElementById(
-			blueTakenBoxIdCounter.toString()
-		).src = piece.src;
-
-		blueTakenBoxIdCounter -= 1;
+		if (piece.dataset.name === 'pawn') {
+			document.getElementById(
+				'p' + bluePawnTakenBoxIdCounter
+			).src = piece.src;
+			bluePawnTakenBoxIdCounter -= 1;
+		}
+		else {
+			document.getElementById(
+				'' + blueTakenBoxIdCounter
+			).src = piece.src;
+			blueTakenBoxIdCounter -= 1;
+		}
 	}
 	else { // since orange turn, does the same
-		document.getElementById(
-			orangeTakenBoxIdCounter.toString()
-		).src = piece.src;
-
-		orangeTakenBoxIdCounter -= 1;
+		if (piece.dataset.name === 'pawn') {
+			document.getElementById(
+				'p' + orangePawnTakenBoxIdCounter
+			).src = piece.src;
+			orangePawnTakenBoxIdCounter += 1;
+		}
+		else {
+			document.getElementById(
+				'' + orangeTakenBoxIdCounter
+			).src = piece.src;
+			orangeTakenBoxIdCounter += 1;
+		}
 	}
-
 	// gets eaten piece's index within passiveSide array
 	index2 = passiveSide.indexOf(piece);
 
