@@ -1,11 +1,5 @@
-sort taken-pieces into a column for pawns, 
-then rank them from queen to knight 
-
-board-flip needs to fit properly
-
---------------------------------
-
-profile register and account log in --> database
+------------------------------------------------
+register profile and account log in --> database
 
 socket.io chat window
 

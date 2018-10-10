@@ -57,7 +57,7 @@ border-spacing: 0;
 html, body {
   font-family: 'VarelaRound-Regular', sans-serif;
   margin: auto;
-  height: 100vh;
+  height: 100%;
 }
 
 body {
@@ -74,34 +74,36 @@ game {
 
 player1 {
   display: grid;
+  background-color: black;
+  opacity: .2;
   /* grid-template-columns: 15%; */
   /*background-color: rgba(219, 112, 147, 0.05);*/
-  background-color: black;
   /*background-blend-mode: luminosity;*/
-  opacity: .2;
 }
 
 player2 {
   display: grid;
+  background-color: black;
+  opacity: .2;
   /* grid-template-columns: 15%; */
   /*background-color: rgba(219, 112, 147, 0.05);*/
   /*background-blend-mode: screen;*/
-  background-color: black;
-  opacity: .2;
 }
 
 board {
   display: grid;
-  /* grid-template-columns: 1fr; */
-  margin-right: 5px; */
-  /*   background-color: #865541; */
-  /* filter: drop-shadow(0px 0px 5000px) invert(2%); */
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-columns: repeat(8, 1fr);
+  grid-gap: 5px;
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-bottom: 15px;
 }
 
 @keyframes fadeOutIn {
-  0%   { opacity:1; }
-  50%  { opacity:0; }
-  100% { opacity:1; }
+  0%   { opacity: 1; }
+  50%  { opacity: 0; }
+  100% { opacity: 1; }
 }
 
 .fade {
@@ -122,35 +124,28 @@ board {
   flex-direction: row;
 }
 
-.row {
-  display: flex;
-  /* margin-bottom: 5px; */
-}
 
 img {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   height: 5rem;
   width: 5rem;
-  margin-left: 5px;
+  /* margin: auto; */
 }
 
 .black {
+  background-color: rgba(32, 178, 170, .25);
   /* background-image: url('images/boardDark.jpg'); */
   /*background-color: #1A3E51; #F2D5BC; #F5ECE2; */
-  background-color: rgba(32, 178, 170, .25);
   /* background-color: rgba(7, 146, 158, 0.2); */
   /* background-blend-mode: luminosity; */
 }
 
 .white {
+  background-color: rgba(100, 149, 237, .25);
   /*background-image: url('images/boardLight.jpg');*/
   /* background-color: #865541; #A07461; #697B6B; #827276; 
 https://github.com/lemokh/Photos/blob/master/siennaSquare.jpg?raw=true
   */
   /* background-color: rgba(71, 105, 168, 0.2); */
-  background-color: rgba(100, 149, 237, .25);
   /* background-blend-mode: luminosity; */
 }
 
@@ -169,12 +164,12 @@ https://github.com/lemokh/Photos/blob/master/siennaSquare.jpg?raw=true
 }
 
 .lit {
+  background-color: rgba(219, 112, 147, .2);
   /* background:
     linear-gradient(purple 0%, red 90%), 
     linear-gradient(to right, purple 0%, yellow 90%); */
   /* background-blend-mode: screen, difference, lighten; */
   /* background-color: rgba(205, 92, 92, 0.2); */
-  background-color: rgba(219, 112, 147, .2);
   /*background-blend-mode: luminosity;*/
 }
 
@@ -221,7 +216,6 @@ https://github.com/lemokh/Photos/blob/master/siennaSquare.jpg?raw=true
 .time {
   text-align: center;
   height: 40px;
-  /* font-family: VarelaRound-Regular; */
   font-size: 40px;
   background-color: rgba(127, 255, 212, 0.25);
   opacity: 0;
@@ -230,11 +224,17 @@ https://github.com/lemokh/Photos/blob/master/siennaSquare.jpg?raw=true
   transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
 }
 
+#modalGameOverOrange, #modalGameOverBlue {
+  text-align: center;
+  font-size: 60px;
+  background-color:rgba(253, 253, 253, 0.25);
+  margin-top: 5px;
+}
+
 .btn {
   margin: auto;
   text-align: center;
   font-size: 30px;
-  background-color: rgba(253, 253, 253, 0.25);
   background-color: white;
 }
 

@@ -21,11 +21,14 @@ var kingAttackers = [],
 	goToDiv, enPassantDiv, pawnJumpDiv, index, index1, index2, pinnedPieces,
 	moves, bishopMoves, bishopX, bishopY, openAndOpponentHeldKingSpaces,
 	rookMoves, kingSpaces, isCastle, enPassantMove, currentBoard, pieceIds,
-	firstReview, gameOver;
+	firstReview, message, gameOver;
 
-var board = document.getElementById('board');
-
-var blueNodes = board.querySelectorAll("[data-side='blue']"),
+var board = document.getElementById('board'),
+	
+	blueGameOverModal = document.getElementById('modalGameOverBlue'),
+	OrangeGameOverModal = document.getElementById('modalGameOverOrange'),
+	
+	blueNodes = board.querySelectorAll("[data-side='blue']"),
 	orangeNodes = board.querySelectorAll("[data-side='orange']"),
 
 	blues = Array.from(blueNodes),
@@ -452,7 +455,6 @@ function pawnEvolve(e) {
 	goToDiv.setAttribute('src', e.target.src);
 
 	// replaces moveHistory's current move (pawn) image with e.target.src
-	// moveHistory[moveHistory.length - 1].image.splice(0, 1, e.target.src);
 	moveHistory[moveHistory.length - 1].image.push(e.target.src);
 
 	// gets pieceToMove's activeSide index
@@ -498,14 +500,14 @@ function swapSide(fromDiv, toDiv) {
 	// swaps pieceToMove & goToDiv info
 	// handles blue pawn evolution modal window
 	if ((fromDiv.dataset.name === 'pawn') && (toDiv.id[1] === '0')) {
-		document.querySelector('#modalBlue').classList.toggle('showModal');
+		document.getElementById('modalBlue').classList.toggle('showModal');
 		document.getElementById('blueQueen').addEventListener('click', pawnEvolve);
 		document.getElementById('blueKnight').addEventListener('click', pawnEvolve);
 		document.getElementById('blueRook').addEventListener('click', pawnEvolve);
 		document.getElementById('blueBishop').addEventListener('click', pawnEvolve);
 	} // handles orange pawn evolution modal window
 	else if ((fromDiv.dataset.name === 'pawn') && (toDiv.id[1] === '7')) {
-		document.querySelector('#modalOrange').classList.toggle('showModal');
+		document.getElementById('modalOrange').classList.toggle('showModal');
 		document.getElementById('orangeQueen').addEventListener('click', pawnEvolve);
 		document.getElementById('orangeKnight').addEventListener('click', pawnEvolve);
 		document.getElementById('orangeRook').addEventListener('click', pawnEvolve);
@@ -785,6 +787,18 @@ function toggleSides() {
 	lit(); // starts next move 
 }
 
+function gameOverModal() {
+
+	if (activeKing.dataset.side === 'blue') {
+		blueGameOverModal.classList.add('showModal');
+		blueGameOverModal.innerHTML = message;
+	}
+	else {
+		OrangeGameOverModal.classList.add('showModal');
+		OrangeGameOverModal.innerHTML = message;
+	}
+}
+
 function endOfGame() {
 	gameOver = true;
 
@@ -795,7 +809,10 @@ function endOfGame() {
 		activePiece.removeEventListener('click', wherePieceCanMove);
 	});
 
-	alert(activeKing.dataset.side + ' KING CHECKMATED!');
+	document.getElementById('resign').classList.add('noClick');
+
+	message = activeKing.dataset.side + ' king checkmated!';
+	gameOverModal();
 }
 
 function resign() {
@@ -807,7 +824,10 @@ function resign() {
 		activePiece.removeEventListener('click', wherePieceCanMove);
 	});
 
-	alert(activeKing.dataset.side + " resigns");
+	document.getElementById('resign').classList.add('noClick');
+
+	message = activeKing.dataset.side + " king resigns";
+	gameOverModal();
 }
 
 function forceDraw() { // discerns if a draw is forced
@@ -1670,11 +1690,13 @@ function lit() {
 
 	board.removeEventListener('mousedown', exitReviewMode);
 
-	if (moveHistory.length > 8) {
+	if (moveHistory.length > 8) { // covers a forced draw
 		forceDraw();
 		if (drawForced) {
-			setTimeout(() => alert("Game ends in a draw"), 500);
+			message = activeKing.dataset.side + " " + goToDiv.dataset.name + " forces a draw";
+			setTimeout(() => gameOverModal(), 500);
 			clearInterval(runTimer);
+			document.getElementById('resign').classList.add('noClick');
 			return;
 		}
 	}
@@ -1769,7 +1791,8 @@ function lit() {
 	// -------------------------------------
 	else { // since not in check
 		if (stuckActivePieces === activeSide.length) {
-			setTimeout(() => alert("Game ends in a draw"), 500);
+			message = "game ends in a draw";
+			setTimeout(() => gameOverModal(), 500);
 			clearInterval(runTimer);
 			return;
 		}
