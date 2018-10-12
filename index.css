@@ -93,8 +93,7 @@ player2 {
 board {
   display: grid;
   grid-template-columns: repeat(8, 1fr);
-  grid-template-columns: repeat(8, 1fr);
-  grid-gap: 5px;
+  grid-gap: 4px;
   margin-left: 5px;
   margin-right: 5px;
   margin-bottom: 15px;
@@ -266,7 +265,7 @@ h1 { padding-right: 20px; }
 #start {
   margin-left: 2.5%;
   font-size: 40px;
-  text-align: center;
+  font-weight: bold;
   background-color: aquamarine;
   border-radius: 0.5rem;
   outline: 0;
@@ -275,6 +274,7 @@ h1 { padding-right: 20px; }
 input {
   font-size: 40px;
   text-align: center;
+  font-weight: bold;
   background-color: slategray;
   width: 15%;
   border-radius: 0.5rem;

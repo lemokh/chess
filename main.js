@@ -811,7 +811,7 @@ function endOfGame() {
 
 	document.getElementById('resign').classList.add('noClick');
 
-	message = activeKing.dataset.side + ' king checkmated!';
+	message = activeKing.dataset.side + ' king check mated!';
 	gameOverModal();
 }
 
