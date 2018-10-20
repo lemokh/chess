@@ -98,21 +98,7 @@ function toggleClocks() {
 		obj = orangeTime;
 		clockToUpdate = clock2;
 	}
-	/*
-	// transitions player views
-	if (moveHistory.length) {
-		board.classList.toggle('noClick');
-		board.classList.toggle('fade');
-		
-		setTimeout( () => {
-			setBoard.forEach(arr => document.getElementById(arr[0]).classList.toggle('rotateBoard'));
-			board.classList.toggle('rotateBoard');
-			board.classList.toggle('noClick');
-		}, 800);
-
-		setTimeout( () => board.classList.toggle('fade'), 1500);
-	}
-	*/
+	
 	startClock();
 }
 
@@ -126,9 +112,9 @@ function flipBoard() {
 			setBoard.forEach(arr => document.getElementById(arr[0]).classList.toggle('rotateBoard'));
 			board.classList.toggle('rotateBoard');
 			board.classList.toggle('noClick');
-		}, 800);
+		}, 800 );
 
-		setTimeout( () => board.classList.toggle('fade'), 1500);
+		setTimeout( () => board.classList.toggle('fade'), 1500 );
 	}
 }
 
@@ -659,6 +645,7 @@ function removeLitDivHandler(funcName) {
 		litPiece.classList.remove('lit');
 		litPiece.removeEventListener('click', funcName);
 	});
+
 	litIds = [];
 }
 
@@ -811,7 +798,7 @@ function endOfGame() {
 
 	document.getElementById('resign').classList.add('noClick');
 
-	message = activeKing.dataset.side + ' king check mated!';
+	message = activeKing.dataset.side + ' king check mated';
 	gameOverModal();
 }
 
@@ -1509,18 +1496,12 @@ function checkingSpace(somePiece, someId) {
 	checkSpaceId = someId;
 	// sees if somePiece can check someId
 	switch (somePiece.dataset.name) {
-		case 'pawn':
-			return pawnAttacks(somePiece);
-		case 'knight':
-			return knightAttacks(somePiece);
-		case 'bishop':
-			return bishopAttacks(somePiece);
-		case 'rook':
-			return rookAttacks(somePiece);
-		case 'queen':
-			return queenAttacks(somePiece);
-		case 'king':
-			return kingAttacks(somePiece);
+		case 'pawn': 	return pawnAttacks(somePiece);
+		case 'knight': 	return knightAttacks(somePiece);
+		case 'bishop': 	return bishopAttacks(somePiece);
+		case 'rook': 	return rookAttacks(somePiece);
+		case 'queen': 	return queenAttacks(somePiece);
+		case 'king': 	return kingAttacks(somePiece);
 	}
 } // returns true/false if somePiece can attack someId
 
@@ -1689,6 +1670,17 @@ function showNextMove() {
 function lit() {
 
 	board.removeEventListener('mousedown', exitReviewMode);
+
+	// covers a draw if only kings remain for each side
+	if (activeSide.length === 1) {
+		if (passiveSide.length === 1) {
+			message = "only kings remain: game ends in a draw";
+			setTimeout( () => gameOverModal(), 500 );
+			clearInterval(runTimer);
+			document.getElementById('resign').classList.add('noClick');
+			return;
+		}
+	}
 
 	if (moveHistory.length > 8) { // covers a forced draw
 		forceDraw();
