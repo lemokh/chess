@@ -1797,7 +1797,21 @@ function lit() {
 /////////////////////////////
 
 window.onload = function() {
-	
+	/*
+	var socket = io();
+	document.querySelector('button').addEventListener('click', function(e) {
+		e.preventDefault();
+		socket.emit('chat message', document.querySelector('#m').value);
+		document.querySelector('#m').value = '';
+		return false;
+	});
+	socket.on('chat message', function(msg) {
+		var elem = document.createElement('LI');
+		var text = document.createTextNode(msg);
+		elem.appendChild(text);
+		document.querySelector('#messages').appendChild(elem);
+	});
+	*/
 	document.getElementById('start').addEventListener('click', function getMinutes() {
 		timerSet = document.getElementById('timeSet').value;
 		if (timerSet) {
@@ -1845,4 +1859,6 @@ window.onload = function() {
 			}
 		}
 	});
+
+	
 }

@@ -8,13 +8,16 @@
     <link rel='stylesheet' href='index.css'>
     <title>Chess</title>
   </head>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.slim.js"></script> -->
 
-  <body>
-    
+  <body class='noselect'>
+
     <div id='modal'>
       <div class='modalContent'>
         <h1>SET TIMER</h1>
-        <input type='number' id='timeSet' autofocus />
+        <input type='number' value='10' min='1' id='timeSet' autofocus
+          onkeydown='javascript: return event.keyCode !== 69'
+        />
         <button id='start'>START</button>
       </div>
     </div>
@@ -24,7 +27,9 @@
       <player1>
         <options>
           <button id='resign' class='btn' onclick='resign()'>RESIGN</button>
-          <button class='btn' onclick='flipBoard()'>()</button>
+          <button class='btn' onclick='flipBoard()'>
+            <img id='rotation' src='./images/rotateBoard.png' />
+          </button>
         </options>
         <div id='blueTakenBox'>
           <div class='takenBox'>
@@ -59,6 +64,31 @@
           <img id="blueRook" data-name='rook' data-side='blue' src="./images/blueRook.png">
           <img id="blueBishop" data-name='bishop' data-side='blue' src="./images/blueBishop.png">
         </div>
+        <!-- <div id='chat'>
+          <ul id="messages"></ul>
+          <form action="">
+            <input id="m" autocomplete="off" />
+            <button>Send</button>
+          </form>
+          <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+          <script>
+              window.onload = function() {
+                var socket = io();
+                document.querySelector('button').addEventListener('click', function(e) {
+                  e.preventDefault();
+                  socket.emit('chat message', document.querySelector('#m').value);
+                  document.querySelector('#m').value = '';
+                  return false;
+                });
+                socket.on('chat message', function(msg) {
+                  var elem = document.createElement('LI');
+                  var text = document.createTextNode(msg);
+                  elem.appendChild(text);
+                  document.querySelector('#messages').appendChild(elem);
+                });
+              }
+          </script>
+        </div> -->
       </div>
 
       <board id='board'>
@@ -187,7 +217,34 @@
       </player2>
 
     </game>
-    
     <script src='main.js'></script>
+    <!-- <script src=''></script> -->
+    <!-- <script>
+      var app = require('express')();
+      var http = require('http').Server(app);
+      var io = require()(http);
+
+      app.get('/', function(req, res){
+        res.sendFile(__dirname + '/index.html');
+      });
+
+      io.on('connection', function(socket){
+        console.log('a user connected');
+        
+        socket.on('disconnect', function(){
+          console.log('user disconnected');
+        });
+        
+        socket.on('chat message', function(msg){
+          console.log('message: ' + msg);
+          io.emit('chat message', msg);
+        });
+      });
+
+      http.listen(3000, function(){
+        console.log('listening on *:3000');
+      });
+    </script> -->
+    <!-- <script src='chat.js'></script> -->
   </body>
 </html>
