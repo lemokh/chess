@@ -14,8 +14,9 @@
 
     <div id='modal'>
       <div class='modalContent'>
+        <!-- <h1>OFFER GAME:</h1> -->
         <h1>SET TIMER</h1>
-        <input type='number' value='10' min='1' id='timeSet' autofocus
+        <input type='number' value='10' min='1' id='timeSet' required autofocus
           onkeydown='javascript: return event.keyCode !== 69'
         />
         <button id='start'>START</button>
@@ -28,7 +29,7 @@
         <options>
           <button id='resign' class='btn' onclick='resign()'>RESIGN</button>
           <button class='btn' onclick='flipBoard()'>
-            <img id='rotation' src='./images/rotateBoard.png' />
+            <img class='view' src='./images/rotateBoard.png' />
           </button>
         </options>
         <div id='blueTakenBox'>
@@ -187,9 +188,15 @@
 
       <player2>
         <showMoves>
-          <button class='btn' onclick='showFirstMove()'>|<</button>
-          <button class='btn' onclick='showPriorMove()'><</button>
-          <button class='btn' onclick='showNextMove()'>></button>
+          <button class='btn' onclick='showFirstMove()'>
+            <img class='view' src="./images/moveZero.png" />
+          </button>
+          <button class='btn' onclick='showPriorMove()'>
+              <img class='view' src="./images/rewind.png" />
+          </button>
+          <button class='btn' onclick='showNextMove()'>
+              <img class='view' src="./images/play.png" />
+          </button>
         </showMoves>
         
         <div id='orangeTakenBox'>

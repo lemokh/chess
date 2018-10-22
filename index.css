@@ -234,6 +234,7 @@ https://github.com/lemokh/Photos/blob/master/siennaSquare.jpg?raw=true
   text-align: center;
   font-size: 30px;
   background-color: white;
+  font-weight: bold;
 }
 
 #modal {
@@ -249,6 +250,7 @@ https://github.com/lemokh/Photos/blob/master/siennaSquare.jpg?raw=true
 .modalContent {
   position: absolute;
   display: flex;
+  /* justify-content: space-between; */
   justify-content: center;
   top: 50%;
   left: 50%;
@@ -271,7 +273,7 @@ h1 { padding-right: 20px; }
 }
 
 input {
-  font-size: 40px;
+  font-size: 81px;
   text-align: center;
   font-weight: bold;
   background-color: slategray;
@@ -285,10 +287,9 @@ showMoves, options {
   justify-content: space-evenly;
 }
 
-#rotation {
+.view {
   height: 1.5rem;
   width: 1.5rem;
-  /* margin-top: 4px; */
 }
 
 .noselect { 
