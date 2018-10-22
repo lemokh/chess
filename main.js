@@ -807,8 +807,44 @@ function resign() {
 
 	clearInterval(runTimer);
 
-	activeSide.forEach(activePiece => {
+	if (litIds.length) {
+		litIds.forEach( id => {
+			document.getElementById(id).removeEventListener('click', movePiece);
+			document.getElementById(id).classList.remove('lit');
+		});
+	}
+	if (kingLitIds.length) {
+		kingLitIds.forEach( id => {
+			document.getElementById(id).removeEventListener('click', movePiece);
+			document.getElementById(id).removeEventListener('click', moveGreyPiece);
+			document.getElementById(id).classList.remove('lit');
+		})
+	}
+	if (pieceToMove) {
+		if (pieceToMove.classList.contains('mainLit')) {
+			pieceToMove.classList.remove('mainLit');
+			pieceToMove.removeEventListener('click', movePiece);
+		}
+	}
+	if (greyPieceToMove) {
+		if (greyPieceToMove.classList.contains('mainLit')) {
+			greyPieceToMove.classList.remove('mainLit');
+			greyPieceToMove.removeEventListener('click', selectGreyPiece);
+		}
+	}
+	if (greyLitPieces.length) {
+		greyLitPieces.forEach( piece => {
+			piece.classList.remove('preventMateLit');
+			piece.removeEventListener('click', selectGreyPiece);
+		});
+	}
+
+	activeSide.forEach( activePiece => {
 		activePiece.removeEventListener('click', wherePieceCanMove);
+	});
+
+	passiveSide.forEach( passivePiece => {
+		passivePiece.removeEventListener('click', wherePieceCanMove);
 	});
 
 	document.getElementById('resign').classList.add('noClick');

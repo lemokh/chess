@@ -184,7 +184,8 @@ img {
 
 .checkMate {
   /* background-color: rgba(255, 94, 31, 0.35); */
-  background-color: rgba(189, 72, 26, 0.36);
+  /* background-color: rgba(189, 72, 26, 0.36); */
+  background-color: rgba(10, 255, 77, 0.33);
 }
 
 .noClick {
@@ -217,7 +218,6 @@ img {
 
 .time {
   text-align: center;
-  height: 40px;
   font-size: 40px;
   background-color: rgba(127, 255, 212, 0.25);
   opacity: 0;
@@ -231,6 +231,7 @@ img {
   font-size: 60px;
   background-color:rgba(253, 253, 253, 0.25);
   margin-top: 5px;
+  color: rgba(12, 22, 22, 0.9);
 }
 
 .btn {
@@ -282,11 +283,12 @@ h1 {
   background-color: rgba(57, 224, 255, 0);
   border-radius: 0.5rem;
   outline: 0;
-  color: rgba(189, 72, 26, 0.36);
+  color: rgba(189, 72, 26, 0.65);
+  border-color: rgba(189, 72, 26, 0.65);
 }
 
 #start:hover {
-  color: rgba(189, 72, 26, 0.65);
+  border-color: rgba(189, 72, 26, 0.33);
 }
 
 input {
@@ -299,6 +301,7 @@ input {
   width: 15%;
   border-radius: 0.5rem;
   outline: 0;
+  border-color: transparent;
 }
 
 showMoves, options {
@@ -309,6 +312,10 @@ showMoves, options {
 .view {
   height: 1.5rem;
   width: 1.5rem;
+}
+
+.btn:hover {
+  opacity: .75;
 }
 
 .noselect { 
