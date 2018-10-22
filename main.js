@@ -570,7 +570,7 @@ function eat(piece) {
 }
 
 function castling(e) {
-	// -------------------------------
+	
 	if (litIds.length) { removeLitDivHandler(movePiece); }
 	// -------------------------------------------------
 	// un-lightens & stops click-listening all castleIds
@@ -807,6 +807,9 @@ function resign() {
 
 	clearInterval(runTimer);
 
+	document.getElementById('modalBlue').classList.remove("showModal");
+	document.getElementById('modalOrange').classList.remove("showModal");
+
 	if (litIds.length) {
 		litIds.forEach( id => {
 			document.getElementById(id).removeEventListener('click', movePiece);
@@ -837,6 +840,13 @@ function resign() {
 			piece.classList.remove('preventMateLit');
 			piece.removeEventListener('click', selectGreyPiece);
 		});
+	}
+
+	if (castleIds.length) {
+		castleIds.forEach( id => {
+			document.getElementById(id).classList.remove('castleLit');
+			document.getElementById(id).removeEventListener('click', castling);
+		})
 	}
 
 	activeSide.forEach( activePiece => {
@@ -1895,6 +1905,4 @@ window.onload = function() {
 			}
 		}
 	});
-
-	
 }
