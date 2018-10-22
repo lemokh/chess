@@ -137,15 +137,15 @@ img {
   /* background-blend-mode: luminosity; */
 }
 
-.white {
-  background-color: rgba(100, 149, 237, .25);
+/* .white { */
+  /* background-color: rgba(100, 149, 237, .25); */
   /*background-image: url('images/boardLight.jpg');*/
   /* background-color: #865541; #A07461; #697B6B; #827276; 
 https://github.com/lemokh/Photos/blob/master/siennaSquare.jpg?raw=true
   */
   /* background-color: rgba(71, 105, 168, 0.2); */
   /* background-blend-mode: luminosity; */
-}
+/* } */
 
 .takenBox > * {
   display: flex;
