@@ -810,18 +810,22 @@ function resign() {
 	document.getElementById('modalBlue').classList.remove("showModal");
 	document.getElementById('modalOrange').classList.remove("showModal");
 
-	if (litIds.length) {
-		litIds.forEach( id => {
-			document.getElementById(id).removeEventListener('click', movePiece);
-			document.getElementById(id).classList.remove('lit');
-		});
+	if (litIds) {
+		if (litIds.length) {
+			litIds.forEach( id => {
+				document.getElementById(id).removeEventListener('click', movePiece);
+				document.getElementById(id).classList.remove('lit');
+			});
+		}
 	}
-	if (kingLitIds.length) {
-		kingLitIds.forEach( id => {
-			document.getElementById(id).removeEventListener('click', movePiece);
-			document.getElementById(id).removeEventListener('click', moveGreyPiece);
-			document.getElementById(id).classList.remove('lit');
-		})
+	if (kingLitIds) {
+		if (kingLitIds.length) {
+			kingLitIds.forEach( id => {
+				document.getElementById(id).removeEventListener('click', movePiece);
+				document.getElementById(id).removeEventListener('click', moveGreyPiece);
+				document.getElementById(id).classList.remove('lit');
+			});
+		}
 	}
 	if (pieceToMove) {
 		if (pieceToMove.classList.contains('mainLit')) {
@@ -835,18 +839,21 @@ function resign() {
 			greyPieceToMove.removeEventListener('click', selectGreyPiece);
 		}
 	}
-	if (greyLitPieces.length) {
-		greyLitPieces.forEach( piece => {
-			piece.classList.remove('preventMateLit');
-			piece.removeEventListener('click', selectGreyPiece);
-		});
+	if (greyLitPieces) {
+		if (greyLitPieces.length) {
+			greyLitPieces.forEach( piece => {
+				piece.classList.remove('preventMateLit');
+				piece.removeEventListener('click', selectGreyPiece);
+			});
+		}
 	}
-
-	if (castleIds.length) {
-		castleIds.forEach( id => {
-			document.getElementById(id).classList.remove('castleLit');
-			document.getElementById(id).removeEventListener('click', castling);
-		})
+	if (castleIds) {
+		if (castleIds.length) {
+			castleIds.forEach( id => {
+				document.getElementById(id).classList.remove('castleLit');
+				document.getElementById(id).removeEventListener('click', castling);
+			})
+		}
 	}
 
 	activeSide.forEach( activePiece => {
@@ -860,6 +867,7 @@ function resign() {
 	document.getElementById('resign').classList.add('noClick');
 
 	message = activeKing.dataset.side + " king resigns";
+	
 	gameOverModal();
 }
 
