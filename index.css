@@ -316,6 +316,7 @@ showMoves, options {
 
 .btn:hover {
   opacity: .75;
+  background-color: bisque;
 }
 
 .noselect { 
