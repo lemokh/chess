@@ -137,15 +137,14 @@ img {
   /* background-blend-mode: luminosity; */
 }
 
-/* .white { */
+.white {
+  background-color: rgba(97, 111, 136, 0.25);
   /* background-color: rgba(100, 149, 237, .25); */
   /*background-image: url('images/boardLight.jpg');*/
-  /* background-color: #865541; #A07461; #697B6B; #827276; 
-https://github.com/lemokh/Photos/blob/master/siennaSquare.jpg?raw=true
-  */
+  /* background-color: #865541; #A07461; #697B6B; #827276;
   /* background-color: rgba(71, 105, 168, 0.2); */
   /* background-blend-mode: luminosity; */
-/* } */
+}
 
 .takenBox > * {
   display: flex;
@@ -156,13 +155,16 @@ https://github.com/lemokh/Photos/blob/master/siennaSquare.jpg?raw=true
 }
 
 .mainLit {
-  background-color: rgba(199, 21, 133, .2) !important;
+  /* background-color: rgba(199, 21, 133, .2) !important; */
+  /* background-color: rgba(121, 30, 87, 0.2) !important; */
+  background-color: rgba(130, 30, 30, 0.2) !important;
   /*deep red --> use for check --> 220,20,60*/
   /*background-blend-mode: luminosity;*/
 }
 
 .lit {
-  background-color: rgba(219, 112, 147, .2);
+  background-color: rgba(224, 116, 116, 0.2);
+  /* background-color: rgba(219, 112, 147, .2); */
   /* background:
     linear-gradient(purple 0%, red 90%), 
     linear-gradient(to right, purple 0%, yellow 90%); */
@@ -176,11 +178,13 @@ https://github.com/lemokh/Photos/blob/master/siennaSquare.jpg?raw=true
 }
 
 .preventMateLit {
-  background-color: rgba(211, 211, 211, 0.2);
+  background-color: rgba(138, 174, 202, 0.35);
+  /* background-color: rgba(211, 211, 211, 0.2); */
 }
 
 .checkMate {
-  background-color: rgba(189, 72, 26, 0.609);
+  /* background-color: rgba(255, 94, 31, 0.35); */
+  background-color: rgba(189, 72, 26, 0.36);
 }
 
 .noClick {
@@ -235,6 +239,11 @@ https://github.com/lemokh/Photos/blob/master/siennaSquare.jpg?raw=true
   font-size: 30px;
   background-color: white;
   font-weight: bold;
+  color: #655b80;
+}
+
+.btn:hover {
+  color: black;
 }
 
 #modal {
@@ -255,28 +264,38 @@ https://github.com/lemokh/Photos/blob/master/siennaSquare.jpg?raw=true
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: rgb(105, 47, 47);
+  background: rgba(53, 20, 20, 0.62);
   width: 80%;
   padding: 20px;
   border-radius: 0.5rem;
 }
 
-h1 { padding-right: 20px; }
+h1 { 
+  padding-right: 20px;
+  color: #967a5e;
+}
 
 #start {
   margin-left: 2.5%;
   font-size: 40px;
   font-weight: bold;
-  background-color: aquamarine;
+  background-color: rgba(57, 224, 255, 0);
   border-radius: 0.5rem;
   outline: 0;
+  color: rgba(189, 72, 26, 0.36);
+}
+
+#start:hover {
+  color: rgba(189, 72, 26, 0.65);
 }
 
 input {
   font-size: 81px;
   text-align: center;
   font-weight: bold;
-  background-color: slategray;
+  background-color: rgba(71, 105, 168, 0.25);
+  /* color: #ceb08cb0; */
+  color: #967a5e;
   width: 15%;
   border-radius: 0.5rem;
   outline: 0;
