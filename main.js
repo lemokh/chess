@@ -1880,7 +1880,13 @@ window.onload = function() {
 		document.querySelector('#messages').appendChild(elem);
 	});
 	*/
+
+	document.getElementById('resign').classList.add('noClick');
+
 	document.getElementById('start').addEventListener('click', function getMinutes() {
+		
+		document.getElementById('resign').classList.remove('noClick');
+		
 		timerSet = document.getElementById('timeSet').value;
 		if (timerSet) {
 			if (timerSet > 0) {

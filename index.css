@@ -123,7 +123,6 @@ board {
   flex-direction: row;
 }
 
-
 img {
   height: 5rem;
   width: 5rem;
@@ -238,13 +237,16 @@ img {
   margin: auto;
   text-align: center;
   font-size: 30px;
-  background-color: white;
   font-weight: bold;
   color: #655b80;
+  opacity: .75;
 }
 
 .btn:hover {
   color: black;
+  opacity: 1;
+  background-color: bisque;
+  border-color: rgba(189, 72, 26, 0.65);
 }
 
 #modal {
@@ -312,11 +314,7 @@ showMoves, options {
 .view {
   height: 1.5rem;
   width: 1.5rem;
-}
-
-.btn:hover {
-  opacity: .75;
-  background-color: bisque;
+  margin-top: 5px;
 }
 
 .noselect { 
