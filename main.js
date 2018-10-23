@@ -1584,14 +1584,23 @@ function reviewClickHandler() {
 			}
 		}
 	}
-
 	if (pieceToMove) {
 		if (pieceToMove.classList.contains('mainLit')) {
 			pieceToMove.classList.remove('mainLit');
-			litIds.forEach(id => {
-				document.getElementById(id).classList.remove('lit');
-				document.getElementById(id).classList.add('noClick');
-			});
+			if (litIds) {
+				if (litIds.length) {
+					litIds.forEach(id => {
+						document.getElementById(id).classList.remove('lit');
+						document.getElementById(id).classList.add('noClick');
+					});
+				}
+			}
+			if (castleIds.length) {
+				castleIds.forEach(id => {
+					document.getElementById(id).classList.remove('castleLit');
+					document.getElementById(id).classList.add('noClick');
+				});
+			}
 		}
 	}
 }
@@ -1631,6 +1640,11 @@ function exitReviewClickHandler() { // resumes game flow
 			document.getElementById(id).classList.add('lit');
 			document.getElementById(id).classList.remove('noClick');
 		});
+		castleIds.forEach(id => {
+			document.getElementById(id).classList.add('castleLit');
+			document.getElementById(id).classList.remove('noClick');
+		});
+			
 	}
 }
 
