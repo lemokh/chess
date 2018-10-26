@@ -1,9 +1,8 @@
 ------------------------------------------------
-register profile and account log in --> database
+1. a server that streams moves between players
 
-socket.io chat window
+2. socket.io chat window
 
-a server that streams a game
+3. routes / pages
 
-routes / pages
-
+4. register profile and account log in --> database

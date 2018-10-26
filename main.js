@@ -469,6 +469,11 @@ function pawnEvolve(e) {
 }
 
 function swapSide(fromDiv, toDiv) {
+
+	console.log('swapSide');
+
+	
+
 	if (isCastle || enPassantMove) {
 		let priorMove = moveHistory[moveHistory.length - 1];
 		
@@ -1865,6 +1870,7 @@ function lit() {
 /////////////////////////////
 
 window.onload = function() {
+
 	/*
 	var socket = io();
 	document.querySelector('button').addEventListener('click', function(e) {
@@ -1888,7 +1894,8 @@ window.onload = function() {
 		document.getElementById('resign').classList.remove('noClick');
 		
 		timerSet = document.getElementById('timeSet').value;
-		if (timerSet) {
+        
+        if (timerSet) {
 			if (timerSet > 0) {
 				if (timerSet < 1000) {
 					if (!timerSet.includes('.')) {
@@ -1931,6 +1938,6 @@ window.onload = function() {
 					}
 				}
 			}
-		}
+        }
 	});
 }
