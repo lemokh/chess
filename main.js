@@ -1894,6 +1894,10 @@ window.onload = function() {
 		document.getElementById('resign').classList.remove('noClick');
 		
 		timerSet = document.getElementById('timeSet').value;
+
+		var elem = document.createElement('BUTTON');
+		elem.innerHTML = timerSet;
+		document.querySelector('#chooseGame').appendChild(elem);
         
         if (timerSet) {
 			if (timerSet > 0) {

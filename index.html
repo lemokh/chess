@@ -13,13 +13,18 @@
   <body class='noselect'>
 
     <div id='modal'>
-      <div class='modalContent'>
-        <!-- <h1>OFFER GAME:</h1> -->
-        <h1>SET TIMER</h1>
-        <input type='number' value='10' min='1' id='timeSet' required autofocus
-          onkeydown='javascript: return event.keyCode !== 69'
-        />
-        <button id='start'>START</button>
+      <div id='container'>
+        <div id="chooseGame">
+          <h1>ACCEPT GAME :</h1>
+          <div id='gameList'></div>
+        </div>
+        <div class='modalContent'>
+          <h1>OFFER GAME :</h1>
+          <input type='number' value='10' min='1' id='timeSet' required autofocus
+            onkeydown='javascript: return event.keyCode !== 69'
+          />
+          <button id='start'>SET TIMER</button>
+        </div>
       </div>
     </div>
 

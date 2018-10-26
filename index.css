@@ -219,6 +219,7 @@ img {
   text-align: center;
   font-size: 40px;
   background-color: rgba(127, 255, 212, 0.25);
+  color: rgba(12, 22, 22, 0.9);
   opacity: 0;
   visibility: hidden;
   transform: scale(1.1);
@@ -251,6 +252,8 @@ img {
 
 #modal {
   position: fixed;
+  display: flex;
+  flex-direction: column;
   font-family: Arial, Helvetica, sans-serif;
   top: 0;
   left: 0;
@@ -260,21 +263,43 @@ img {
 }
 
 .modalContent {
-  position: absolute;
+  /* position: absolute; */
   display: flex;
   /* justify-content: space-between; */
   justify-content: center;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  /* top: 50%; */
+  /* left: 50%; */
+  /* transform: translate(-50%, -50%); */
   background: rgba(53, 20, 20, 0.62);
-  width: 80%;
+  width: 100%;
   padding: 20px;
-  border-radius: 0.5rem;
+  /* border-radius: 0.5rem; */
+}
+
+#chooseGame {
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  /* margin: auto; */
+  /* border-radius: 0.5rem; */
+  background-color: rgba(71, 105, 168, 0.2);
+
+}
+
+#gameList {
+  display: flex;
+  justify-content: space-between;
+}
+
+#container {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
 }
 
 h1 { 
   padding-right: 20px;
+  padding-left: 20px;
   color: #967a5e;
 }
 
