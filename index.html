@@ -15,13 +15,13 @@
     <div id='modal'>
       <div id='container'>
         <div id="chooseGame">
-          <h1>ACCEPT GAME :</h1>
+          <h1 id='acceptGame'>ACCEPT GAME :</h1>
           <div id='gameList'></div>
         </div>
         <div class='modalContent'>
-          <h1>OFFER GAME :</h1>
-          <input type='number' value='10' min='1' id='timeSet' required autofocus
-            onkeydown='javascript: return event.keyCode !== 69'
+          <h1 id='offerGame'>OFFER GAME :</h1>
+          <input id='timeSet' type='number' value='10' min='1' 
+            required autofocus onkeydown='javascript: return event.keyCode !== 69';
           />
           <button id='start'>SET TIMER</button>
         </div>
@@ -63,19 +63,12 @@
 
       <div class='timePawnEvolve'>
         <div id='time1' class='time'></div>
-        <div id='modalGameOverBlue' class='modal'></div>
-        <div id='modalBlue' class='modal'>
-          <img id='blueQueen' data-name='queen' data-side='blue' src='./images/blueQueen.png'>
-          <img id='blueKnight' data-name='knight' data-side='blue' src='./images/blueKnight.png'>
-          <img id="blueRook" data-name='rook' data-side='blue' src="./images/blueRook.png">
-          <img id="blueBishop" data-name='bishop' data-side='blue' src="./images/blueBishop.png">
-        </div>
         <!-- <div id='chat'>
-          <ul id="messages"></ul>
           <form action="">
             <input id="m" autocomplete="off" />
             <button>Send</button>
           </form>
+          <ul id="messages"></ul>
           <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
           <script>
               window.onload = function() {
@@ -95,6 +88,14 @@
               }
           </script>
         </div> -->
+        <div id='modalGameOverBlue' class='modal'></div>
+        <div id='modalBlue' class='modal'>
+          <img id='blueQueen' data-name='queen' data-side='blue' src='./images/blueQueen.png'>
+          <img id='blueKnight' data-name='knight' data-side='blue' src='./images/blueKnight.png'>
+          <img id="blueRook" data-name='rook' data-side='blue' src="./images/blueRook.png">
+          <img id="blueBishop" data-name='bishop' data-side='blue' src="./images/blueBishop.png">
+        </div>
+        
       </div>
 
       <board id='board'>

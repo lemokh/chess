@@ -195,6 +195,7 @@ img {
   display: flex;
   flex-direction: column;
   border-radius: 0.5rem;
+  height: 100%;
 }
 
 .modal {
@@ -272,7 +273,11 @@ img {
   /* transform: translate(-50%, -50%); */
   background: rgba(53, 20, 20, 0.62);
   width: 100%;
-  padding: 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  text-align: center;
+  color: rgba(71, 105, 168, 0.2);
+  font-weight: bold;
   /* border-radius: 0.5rem; */
 }
 
@@ -283,12 +288,19 @@ img {
   /* margin: auto; */
   /* border-radius: 0.5rem; */
   background-color: rgba(71, 105, 168, 0.2);
-
 }
 
 #gameList {
   display: flex;
   justify-content: space-between;
+}
+
+.gameLengths:hover {
+  color: rgba(189, 72, 26, 0.65);
+}
+
+.gameLengths {
+  color: rgba(189, 72, 26, 0.33);
 }
 
 #container {
@@ -299,7 +311,6 @@ img {
 
 h1 { 
   padding-right: 20px;
-  padding-left: 20px;
   color: #967a5e;
 }
 
@@ -318,17 +329,21 @@ h1 {
   border-color: rgba(189, 72, 26, 0.33);
 }
 
-input {
+#timeSet {
   font-size: 81px;
   text-align: center;
   font-weight: bold;
   background-color: rgba(71, 105, 168, 0.25);
-  /* color: #ceb08cb0; */
+  /* margin-left: 2.5%; */
   color: #967a5e;
   width: 15%;
   border-radius: 0.5rem;
   outline: 0;
   border-color: transparent;
+}
+
+#m, button {
+  font-size: 35px;
 }
 
 showMoves, options {
@@ -358,14 +373,30 @@ showMoves, options {
   }
 
   #chat {
-    display: flex;
-    flex-direction: column;
-    margin: 0; padding: 0; box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
     font: 13px Helvetica, Arial;
   }
-  form { background: #000; padding: 1px; }
-  form input { border: 0; padding: 1px; margin-right: .5%; }
-  form button { background: rgb(130, 224, 255); border: none; padding: 1px; }
+
+  form {
+    background: #000;
+    padding: 1px;
+    display: grid;
+    /* grid-template-columns: repeat(2, 1fr); */
+  }
+
+  form input {
+    border: 0;
+    /* padding: 1px;
+    margin-right: .5%; */
+  }
+
+  form button {
+    background: rgb(130, 224, 255);
+    border: none;
+    padding: 1px;
+  }
   
   #messages {
     list-style-type: none;

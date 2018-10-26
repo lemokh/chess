@@ -39,6 +39,7 @@ var board = document.getElementById('board'),
 
 	setBoard = blues.concat(oranges).map(piece => [piece.id, piece.src]),
 
+	elem = document.createElement('H1'),
 	/////////////////////////////////////////////////////////////////////
 
 	userInput = 10,
@@ -1867,6 +1868,13 @@ function lit() {
 	}
 }
 
+// enter = 13
+// function ignoreKeys(e) {
+// 	switch(e.keyCode) {
+// 		case 45, 46, 69: return false;
+// 	}
+// }
+
 /////////////////////////////
 
 window.onload = function() {
@@ -1889,21 +1897,25 @@ window.onload = function() {
 
 	document.getElementById('resign').classList.add('noClick');
 
-	document.getElementById('start').addEventListener('click', function getMinutes() {
+
+	function getMinutes() {
 		
 		document.getElementById('resign').classList.remove('noClick');
-		
+
 		timerSet = document.getElementById('timeSet').value;
 
-		var elem = document.createElement('BUTTON');
 		elem.innerHTML = timerSet;
+		elem.classList.add('gameLengths');
 		document.querySelector('#chooseGame').appendChild(elem);
-        
+		
         if (timerSet) {
 			if (timerSet > 0) {
 				if (timerSet < 1000) {
+					// MUST PREVENT THESE FROM KEYDOWN
 					if (!timerSet.includes('.')) {
 						if (!timerSet.includes('e')) {
+
+							document.getElementById('start').removeEventListener('click', getMinutes);
 
 							userInput = +(timerSet);
 
@@ -1925,7 +1937,31 @@ window.onload = function() {
 								hundredths: 0
 							};
 
-							document.getElementById('modal').style.display = "none";
+							// document.getElementById('acceptGame').style.display = "none";
+							document.getElementById('chooseGame').style.display = 'none';
+							document.getElementById('offerGame').style.display = 'none';
+							document.getElementById('timeSet').style.display = 'none';
+							document.getElementById('start').innerHTML = 'CANCEL GAME';
+							
+							elem.style.display = 'flex';
+							elem.innerHTML = 'AWAITING OPPONENT...';
+							document.querySelector('.modalContent').appendChild(elem).classList.remove('gameLengths');
+
+							function cancelGame() {
+								document.getElementById('start').removeEventListener('click', cancelGame);
+								document.getElementById('start').addEventListener('click', getMinutes);
+																
+								elem.classList.add('gameLengths');
+								document.querySelector('#chooseGame').appendChild(elem);
+
+								document.getElementById('start').innerHTML = 'SET TIMER';
+								document.getElementById('chooseGame').style.display = 'flex';
+								document.getElementById('offerGame').style.display = 'block';
+								document.getElementById('timeSet').style.display = 'block';
+								elem.style.display = 'none';
+							}
+
+							document.getElementById('start').addEventListener('click', cancelGame);
 
 							function showTimers(timer) {
 								timer.style.visibility = "visible";
@@ -1937,11 +1973,13 @@ window.onload = function() {
 							showTimers(document.getElementById('time1'));
 							showTimers(document.getElementById('time2'));
 
-							lit();
+							// lit();
 						}
 					}
 				}
 			}
-        }
-	});
+		}
+	}
+
+	document.getElementById('start').addEventListener('click', getMinutes);
 }
