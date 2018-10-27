@@ -130,7 +130,8 @@ img {
 
 .black {
   background-color: rgba(32, 178, 170, .25);
-  /* background-image: url('images/boardDark.jpg'); */
+  /* background-color: rgba(32, 178, 170, .25); */
+
   /*background-color: #1A3E51; #F2D5BC; #F5ECE2; */
   /* background-color: rgba(7, 146, 158, 0.2); */
   /* background-blend-mode: luminosity; */
@@ -139,7 +140,7 @@ img {
 .white {
   background-color: rgba(97, 111, 136, 0.25);
   /* background-color: rgba(100, 149, 237, .25); */
-  /*background-image: url('images/boardLight.jpg');*/
+
   /* background-color: #865541; #A07461; #697B6B; #827276;
   /* background-color: rgba(71, 105, 168, 0.2); */
   /* background-blend-mode: luminosity; */
@@ -154,29 +155,31 @@ img {
 }
 
 .mainLit {
+  background-color: rgba(255, 0, 0, 0.2) !important;
   /* background-color: rgba(199, 21, 133, .2) !important; */
   /* background-color: rgba(121, 30, 87, 0.2) !important; */
-  background-color: rgba(130, 30, 30, 0.2) !important;
+  /* background-color: rgba(231, 27, 122, 0.335) !important; */
   /*deep red --> use for check --> 220,20,60*/
   /*background-blend-mode: luminosity;*/
 }
 
 .lit {
-  background-color: rgba(224, 116, 116, 0.2);
-  /* background-color: rgba(219, 112, 147, .2); */
+  /* background-color: rgba(224, 116, 116, 0.2); */
+  background-color: rgba(219, 112, 147, .2);
   /* background:
-    linear-gradient(purple 0%, red 90%), 
-    linear-gradient(to right, purple 0%, yellow 90%); */
+  linear-gradient(purple 0%, red 90%), 
+  linear-gradient(to right, purple 0%, yellow 90%); */
   /* background-blend-mode: screen, difference, lighten; */
   /* background-color: rgba(205, 92, 92, 0.2); */
   /*background-blend-mode: luminosity;*/
 }
 
 .castleLit {
-  background-color: rgba(255, 0, 0, 0.2);
+  background-color: rgba(130, 30, 30, 0.2);
 }
 
 .preventMateLit {
+  /*  background-color: rgba(114, 156, 149, 0.45); */
   background-color: rgba(138, 174, 202, 0.35);
   /* background-color: rgba(211, 211, 211, 0.2); */
 }
@@ -326,6 +329,7 @@ h1 {
 }
 
 #start:hover {
+  background-color: rgba(130, 30, 30, 0.2);
   border-color: rgba(189, 72, 26, 0.33);
 }
 
