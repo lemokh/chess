@@ -3,6 +3,14 @@
 
 2. socket.io chat window
 
-3. routes / pages
+3. routes / pages ?
 
 4. register profile and account log in --> database
+
+
+
+ 
+sendMove(); -- Send your clicks to other player
+awaitMove(); -- Listen to socket for opponent's move
+lit();
+

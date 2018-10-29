@@ -346,10 +346,6 @@ h1 {
   border-color: transparent;
 }
 
-#m, button {
-  font-size: 35px;
-}
-
 showMoves, options {
   display: flex;
   justify-content: space-evenly;
@@ -376,7 +372,13 @@ showMoves, options {
   /* Non-prefixed version, currently not supported by any browser */ 
   }
 
+  #m, button {
+    font-size: 35px;
+  }
+
   #chat {
+    display: none;
+    /* visibility: hidden; */
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -384,22 +386,19 @@ showMoves, options {
   }
 
   form {
-    background: #000;
-    padding: 1px;
-    display: grid;
-    /* grid-template-columns: repeat(2, 1fr); */
+    display: flex;
   }
 
-  form input {
+  #m {
     border: 0;
-    /* padding: 1px;
-    margin-right: .5%; */
+    width: 90%;
   }
 
-  form button {
+  #send {
     background: rgb(130, 224, 255);
     border: none;
-    padding: 1px;
+    width: 10%rem;
+    color: rgba(12, 22, 22, 0.9);
   }
   
   #messages {
