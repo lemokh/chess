@@ -473,9 +473,6 @@ function pawnEvolve(e) {
 
 function swapSide(fromDiv, toDiv) {
 
-	console.log('swapSide');
-
-
 	if (isCastle || enPassantMove) {
 		let priorMove = moveHistory[moveHistory.length - 1];
 		
@@ -1955,12 +1952,27 @@ function getMinutes() {
 
 				showTimers(document.getElementById('time1'));
 				showTimers(document.getElementById('time2'));
-
-				// showTimers(document.getElementById('chat'));
-				// document.getElementById('chat').classList.toggle("showModal");
-				
+				showTimers(document.getElementById('chat'));
 				/////////////////////////////////////////////////
-				// once socket confirms that player2 accepts game
+/*
+				// starts up socket.io
+				var socket = io();
+				
+				document.getElementById('send').addEventListener('click', function(e) {
+					e.preventDefault();
+					socket.emit('chat message', document.querySelector('#m').value);
+					document.querySelector('#m').value = '';
+					return false;
+				});
+
+				socket.on('chat message', function(msg) {
+					var newLI = document.createElement('LI');
+					var text = document.createTextNode(msg);
+					newLI.appendChild(text);
+					document.querySelector('#messages').appendChild(newLI);
+				});
+*/
+				// once socket confirms that player2 accepts game, do this
 				// document.getElementById('modal').style.display = 'none';
 				// document.getElementById('resign').classList.remove('noClick');
 				// lit();
@@ -1991,19 +2003,22 @@ window.onload = function() {
 
 	document.getElementById('start').addEventListener('click', getMinutes);
 	
-	// var socket = io();
+	///////////////////////
+
+	// starts up socket.io
+	var socket = io();
 	
-	// document.querySelector('send').addEventListener('click', function(e) {
-	// 	e.preventDefault();
-	// 	socket.emit('chat message', document.querySelector('#m').value);
-	// 	document.querySelector('#m').value = '';
-	// 	return false;
-	// });
-	
-	// socket.on('chat message', function(msg) {
-	// 	var chatLine = document.createElement('LI');
-	// 	var text = document.createTextNode(msg);
-	// 	chatLine.appendChild(text);
-	// 	document.querySelector('#messages').appendChild(chatLine);
-	// });
+	document.getElementById('send').addEventListener('click', function(e) {
+		e.preventDefault();
+		socket.emit('chat message', document.getElementById('m').value);
+		document.getElementById('m').value = '';
+		return false;
+	});
+
+	socket.on('chat message', function(msg) {
+		var newLI = document.createElement('LI');
+		var text = document.createTextNode(msg);
+		newLI.appendChild(text);
+		document.getElementById('messages').appendChild(newLI);
+	});
 }
