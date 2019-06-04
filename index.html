@@ -1,222 +1,288 @@
 <!DOCTYPE html>
 <html lang="en">
 
-  <head>
-    <meta charset='UTF-8'>
-    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-    <meta http-2equiv='X-UA-Compatible' content='ie=edge'>
-    <link href="/css/stylesheet.css" rel="stylesheet" type="text/css" >
-    <title>Chess</title>
-  </head>
-  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.slim.js"></script>
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <meta http-2equiv='X-UA-Compatible' content='ie=edge'>
+  <link href="/css/index.css" rel="stylesheet" type="text/css">
+  <title>Chess</title>
+</head>
 
-  <body class='noselect'>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.slim.js"></script>
 
-    <div id='modal'>
-      <div id='container'>
-        <div id="chooseGame">
-          <h1 id='acceptGame'>ACCEPT GAME :</h1>
-          <div id='gameList'></div>
+<body class='noselect'>
+
+  <div id='modal'>
+    <div id='container'>
+      <div id="chooseGame">
+        <h1 id='acceptGame'>ACCEPT GAME :</h1>
+        <div id='gameList'></div>
+      </div>
+      <div class='modalContent'>
+        <h1 id='offerGame'>OFFER GAME :</h1>
+        <input id='timeSet' type='number' value='10' min='1' required autofocus
+          onkeydown='javascript: return event.keyCode !== 69' />
+        <button id='start'>SET TIMER</button>
+      </div>
+    </div>
+  </div>
+
+  <game>
+
+    <player1>
+      <options>
+        <button id='resign' class='btn' onclick='resign()'>RESIGN</button>
+        <button class='btn' onclick='flipBoard()'>
+          <img class='view' src='./images/rotateBoard.png' />
+        </button>
+      </options>
+      <div id='blueTakenBox'>
+        <div class='takenBox'>
+          <img id='p-1' src='./images/transparent.png'></img>
+          <img id='p-2' src='./images/transparent.png'></img>
+          <img id='p-3' src='./images/transparent.png'></img>
+          <img id='p-4' src='./images/transparent.png'></img>
+          <img id='p-5' src='./images/transparent.png'></img>
+          <img id='p-6' src='./images/transparent.png'></img>
+          <img id='p-7' src='./images/transparent.png'></img>
+          <img id='p-8' src='./images/transparent.png'></img>
         </div>
-        <div class='modalContent'>
-          <h1 id='offerGame'>OFFER GAME :</h1>
-          <input id='timeSet' type='number' value='10' min='1' required autofocus onkeydown='javascript: return event.keyCode !== 69' />
-          <button id='start'>SET TIMER</button>
+        <div class='takenBox'>
+          <img id='-1' src='./images/transparent.png'></img>
+          <img id='-2' src='./images/transparent.png'></img>
+          <img id='-3' src='./images/transparent.png'></img>
+          <img id='-4' src='./images/transparent.png'></img>
+          <img id='-5' src='./images/transparent.png'></img>
+          <img id='-6' src='./images/transparent.png'></img>
+          <img id='-7' src='./images/transparent.png'></img>
+          <img id='-8' src='./images/transparent.png'></img>
         </div>
+      </div>
+    </player1>
+
+    <div class='timePawnEvolve'>
+
+      <div id='time1' class='time'></div>
+
+      <div id='chat'>
+        <form action="">
+          <input id="m" autocomplete="off" />
+          <button id='send'>Send</button>
+        </form>
+        <ul id="messages"></ul>
+      </div>
+
+      <div id='modalGameOverBlue' class='modal'></div>
+
+      <div id='modalBlue' class='modal'>
+        <img id='blueQueen' data-name='queen' data-side='blue' src='./images/blueQueen.png'>
+        <img id='blueKnight' data-name='knight' data-side='blue' src='./images/blueKnight.png'>
+        <img id="blueRook" data-name='rook' data-side='blue' src="./images/blueRook.png">
+        <img id="blueBishop" data-name='bishop' data-side='blue' src="./images/blueBishop.png">
+      </div>
+
+    </div>
+
+    <board id='board'>
+      <column0>
+        <img id='00' data-name='rook' data-side='orange' data-pinned='false' src='./images/orangeRook.png'
+          class='white'></img>
+        <img id='01' data-name='pawn' data-side='orange' data-pinned='false' src='./images/orangePawn.png'
+          class='black'></img>
+        <img id='02' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png'
+          class='white'></img>
+        <img id='03' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png'
+          class='black'></img>
+        <img id='04' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png'
+          class='white'></img>
+        <img id='05' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png'
+          class='black'></img>
+        <img id='06' data-name='pawn' data-side='blue' data-pinned='false' src='./images/bluePawn.png'
+          class='white'></img>
+        <img id='07' data-name='rook' data-side='blue' data-pinned='false' src='./images/blueRook.png'
+          class='black'></img>
+      </column0>
+      <column1>
+        <img id='10' data-name='knight' data-side='orange' data-pinned='false' src='./images/orangeKnight.png'
+          class='black'></img>
+        <img id='11' data-name='pawn' data-side='orange' data-pinned='false' src='./images/orangePawn.png'
+          class='white'></img>
+        <img id='12' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png'
+          class='black'></img>
+        <img id='13' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png'
+          class='white'></img>
+        <img id='14' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png'
+          class='black'></img>
+        <img id='15' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png'
+          class='white'></img>
+        <img id='16' data-name='pawn' data-side='blue' data-pinned='false' src='./images/bluePawn.png'
+          class='black'></img>
+        <img id='17' data-name='knight' data-side='blue' data-pinned='false' src='./images/blueKnight.png'
+          class='white'></img>
+      </column1>
+      <column2>
+        <img id='20' data-name='bishop' data-side='orange' data-pinned='false' src='./images/orangeBishop.png'
+          class='white'></img>
+        <img id='21' data-name='pawn' data-side='orange' data-pinned='false' src='./images/orangePawn.png'
+          class='black'></img>
+        <img id='22' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png'
+          class='white'></img>
+        <img id='23' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png'
+          class='black'></img>
+        <img id='24' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png'
+          class='white'></img>
+        <img id='25' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png'
+          class='black'></img>
+        <img id='26' data-name='pawn' data-side='blue' data-pinned='false' src='./images/bluePawn.png'
+          class='white'></img>
+        <img id='27' data-name='bishop' data-side='blue' data-pinned='false' src='./images/blueBishop.png'
+          class='black'></img>
+      </column2>
+      <column3>
+        <img id='30' data-name='queen' data-side='orange' data-pinned='false' src='./images/orangeQueen.png'
+          class='black'></img>
+        <img id='31' data-name='pawn' data-side='orange' data-pinned='false' src='./images/orangePawn.png'
+          class='white'></img>
+        <img id='32' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png'
+          class='black'></img>
+        <img id='33' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png'
+          class='white'></img>
+        <img id='34' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png'
+          class='black'></img>
+        <img id='35' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png'
+          class='white'></img>
+        <img id='36' data-name='pawn' data-side='blue' data-pinned='false' src='./images/bluePawn.png'
+          class='black'></img>
+        <img id='37' data-name='queen' data-side='blue' data-pinned='false' src='./images/blueQueen.png'
+          class='white'></img>
+      </column3>
+      <column4>
+        <img id='40' data-name='king' data-side='orange' data-pinned='false' src='./images/orangeKing.png'
+          class='white'></img>
+        <img id='41' data-name='pawn' data-side='orange' data-pinned='false' src='./images/orangePawn.png'
+          class='black'></img>
+        <img id='42' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png'
+          class='white'></img>
+        <img id='43' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png'
+          class='black'></img>
+        <img id='44' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png'
+          class='white'></img>
+        <img id='45' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png'
+          class='black'></img>
+        <img id='46' data-name='pawn' data-side='blue' data-pinned='false' src='./images/bluePawn.png'
+          class='white'></img>
+        <img id='47' data-name='king' data-side='blue' data-pinned='false' src='./images/blueKing.png'
+          class='black'></img>
+      </column4>
+      <column5>
+        <img id='50' data-name='bishop' data-side='orange' data-pinned='false' src='./images/orangeBishop.png'
+          class='black'></img>
+        <img id='51' data-name='pawn' data-side='orange' data-pinned='false' src='./images/orangePawn.png'
+          class='white'></img>
+        <img id='52' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png'
+          class='black'></img>
+        <img id='53' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png'
+          class='white'></img>
+        <img id='54' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png'
+          class='black'></img>
+        <img id='55' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png'
+          class='white'></img>
+        <img id='56' data-name='pawn' data-side='blue' data-pinned='false' src='./images/bluePawn.png'
+          class='black'></img>
+        <img id='57' data-name='bishop' data-side='blue' data-pinned='false' src='./images/blueBishop.png'
+          class='white'></img>
+      </column5>
+      <column6>
+        <img id='60' data-name='knight' data-side='orange' data-pinned='false' src='./images/orangeKnight.png'
+          class='white'></img>
+        <img id='61' data-name='pawn' data-side='orange' data-pinned='false' src='./images/orangePawn.png'
+          class='black'></img>
+        <img id='62' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png'
+          class='white'></img>
+        <img id='63' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png'
+          class='black'></img>
+        <img id='64' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png'
+          class='white'></img>
+        <img id='65' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png'
+          class='black'></img>
+        <img id='66' data-name='pawn' data-side='blue' data-pinned='false' src='./images/bluePawn.png'
+          class='white'></img>
+        <img id='67' data-name='knight' data-side='blue' data-pinned='false' src='./images/blueKnight.png'
+          class='black'></img>
+      </column6>
+      <column7>
+        <img id='70' data-name='rook' data-side='orange' data-pinned='false' src='./images/orangeRook.png'
+          class='black'></img>
+        <img id='71' data-name='pawn' data-side='orange' data-pinned='false' src='./images/orangePawn.png'
+          class='white'></img>
+        <img id='72' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png'
+          class='black'></img>
+        <img id='73' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png'
+          class='white'></img>
+        <img id='74' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png'
+          class='black'></img>
+        <img id='75' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png'
+          class='white'></img>
+        <img id='76' data-name='pawn' data-side='blue' data-pinned='false' src='./images/bluePawn.png'
+          class='black'></img>
+        <img id='77' data-name='rook' data-side='blue' data-pinned='false' src='./images/blueRook.png'
+          class='white'></img>
+      </column7>
+    </board>
+
+    <div class='timePawnEvolve'>
+      <div id='time2' class='time'></div>
+      <div id='modalGameOverOrange' class='modal'></div>
+      <div id="modalOrange" class='modal'>
+        <img id="orangeQueen" data-name='queen' data-side='orange' src="./images/orangeQueen.png">
+        <img id="orangeKnight" data-name='knight' data-side='orange' src="./images/orangeKnight.png">
+        <img id="orangeRook" data-name='rook' data-side='orange' src="./images/orangeRook.png">
+        <img id="orangeBishop" data-name='bishop' data-side='orange' src="./images/orangeBishop.png">
       </div>
     </div>
 
-    <game>
+    <player2>
+      <showMoves>
+        <button class='btn' onclick='showFirstMove()'>
+          <img class='view' src="./images/moveZero.png" />
+        </button>
+        <button class='btn' onclick='showPriorMove()'>
+          <img class='view' src="./images/rewind.png" />
+        </button>
+        <button class='btn' onclick='showNextMove()'>
+          <img class='view' src="./images/play.png" />
+        </button>
+      </showMoves>
 
-      <player1>
-        <options>
-          <button id='resign' class='btn' onclick='resign()'>RESIGN</button>
-          <button class='btn' onclick='flipBoard()'>
-            <img class='view' src='./images/rotateBoard.png' />
-          </button>
-        </options>
-        <div id='blueTakenBox'>
-          <div class='takenBox'>
-            <img id='p-1' src='./images/transparent.png'></img>
-            <img id='p-2' src='./images/transparent.png'></img>
-            <img id='p-3' src='./images/transparent.png'></img>
-            <img id='p-4' src='./images/transparent.png'></img>
-            <img id='p-5' src='./images/transparent.png'></img>
-            <img id='p-6' src='./images/transparent.png'></img>
-            <img id='p-7' src='./images/transparent.png'></img>
-            <img id='p-8' src='./images/transparent.png'></img>
-          </div>
-          <div class='takenBox'>
-            <img id='-1' src='./images/transparent.png'></img>
-            <img id='-2' src='./images/transparent.png'></img>
-            <img id='-3' src='./images/transparent.png'></img>
-            <img id='-4' src='./images/transparent.png'></img>
-            <img id='-5' src='./images/transparent.png'></img>
-            <img id='-6' src='./images/transparent.png'></img>
-            <img id='-7' src='./images/transparent.png'></img>
-            <img id='-8' src='./images/transparent.png'></img>
-          </div>
+      <div id='orangeTakenBox'>
+        <div class='takenBox'>
+          <img id='1' src='./images/transparent.png'></img>
+          <img id='2' src='./images/transparent.png'></img>
+          <img id='3' src='./images/transparent.png'></img>
+          <img id='4' src='./images/transparent.png'></img>
+          <img id='5' src='./images/transparent.png'></img>
+          <img id='6' src='./images/transparent.png'></img>
+          <img id='7' src='./images/transparent.png'></img>
+          <img id='8' src='./images/transparent.png'></img>
         </div>
-      </player1>
-
-      <div class='timePawnEvolve'>
-        
-        <div id='time1' class='time'></div>
-        
-        <div id='chat'>
-          <form action="">
-            <input id="m" autocomplete="off" />
-            <button id='send'>Send</button>
-          </form>
-          <ul id="messages"></ul>
-        </div>
-        
-        <div id='modalGameOverBlue' class='modal'></div>
-        
-        <div id='modalBlue' class='modal'>
-          <img id='blueQueen' data-name='queen' data-side='blue' src='./images/blueQueen.png'>
-          <img id='blueKnight' data-name='knight' data-side='blue' src='./images/blueKnight.png'>
-          <img id="blueRook" data-name='rook' data-side='blue' src="./images/blueRook.png">
-          <img id="blueBishop" data-name='bishop' data-side='blue' src="./images/blueBishop.png">
-        </div>
-        
-      </div>
-
-      <board id='board'>
-        <column0>
-          <img id='00' data-name='rook' data-side='orange' data-pinned='false' src='./images/orangeRook.png' class='white'></img>
-          <img id='01' data-name='pawn' data-side='orange' data-pinned='false' src='./images/orangePawn.png' class='black'></img>
-          <img id='02' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png' class='white'></img>
-          <img id='03' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png' class='black'></img>
-          <img id='04' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png' class='white'></img>
-          <img id='05' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png' class='black'></img>
-          <img id='06' data-name='pawn' data-side='blue' data-pinned='false' src='./images/bluePawn.png' class='white'></img>
-          <img id='07' data-name='rook' data-side='blue' data-pinned='false' src='./images/blueRook.png' class='black'></img>
-        </column0>
-        <column1>
-          <img id='10' data-name='knight' data-side='orange' data-pinned='false' src='./images/orangeKnight.png' class='black'></img>
-          <img id='11' data-name='pawn' data-side='orange' data-pinned='false' src='./images/orangePawn.png' class='white'></img>
-          <img id='12' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png' class='black'></img>
-          <img id='13' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png' class='white'></img>
-          <img id='14' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png' class='black'></img>
-          <img id='15' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png' class='white'></img>
-          <img id='16' data-name='pawn' data-side='blue' data-pinned='false' src='./images/bluePawn.png' class='black'></img>
-          <img id='17' data-name='knight' data-side='blue' data-pinned='false' src='./images/blueKnight.png' class='white'></img>
-        </column1>
-        <column2>
-          <img id='20' data-name='bishop' data-side='orange' data-pinned='false' src='./images/orangeBishop.png' class='white'></img>
-          <img id='21' data-name='pawn' data-side='orange' data-pinned='false' src='./images/orangePawn.png' class='black'></img>
-          <img id='22' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png' class='white'></img>
-          <img id='23' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png' class='black'></img>
-          <img id='24' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png' class='white'></img>
-          <img id='25' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png' class='black'></img>
-          <img id='26' data-name='pawn' data-side='blue' data-pinned='false' src='./images/bluePawn.png' class='white'></img>
-          <img id='27' data-name='bishop' data-side='blue' data-pinned='false' src='./images/blueBishop.png' class='black'></img>
-        </column2>
-        <column3>
-          <img id='30' data-name='queen' data-side='orange' data-pinned='false' src='./images/orangeQueen.png' class='black'></img>
-          <img id='31' data-name='pawn' data-side='orange' data-pinned='false' src='./images/orangePawn.png' class='white'></img>
-          <img id='32' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png' class='black'></img>
-          <img id='33' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png' class='white'></img>
-          <img id='34' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png' class='black'></img>
-          <img id='35' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png' class='white'></img>
-          <img id='36' data-name='pawn' data-side='blue' data-pinned='false' src='./images/bluePawn.png' class='black'></img>
-          <img id='37' data-name='queen' data-side='blue' data-pinned='false' src='./images/blueQueen.png' class='white'></img>
-        </column3>
-        <column4>
-          <img id='40' data-name='king' data-side='orange' data-pinned='false' src='./images/orangeKing.png' class='white'></img>
-          <img id='41' data-name='pawn' data-side='orange' data-pinned='false' src='./images/orangePawn.png' class='black'></img>
-          <img id='42' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png' class='white'></img>
-          <img id='43' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png' class='black'></img>
-          <img id='44' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png' class='white'></img>
-          <img id='45' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png' class='black'></img>
-          <img id='46' data-name='pawn' data-side='blue' data-pinned='false' src='./images/bluePawn.png' class='white'></img>
-          <img id='47' data-name='king' data-side='blue' data-pinned='false' src='./images/blueKing.png' class='black'></img>
-        </column4>
-        <column5>
-          <img id='50' data-name='bishop' data-side='orange' data-pinned='false' src='./images/orangeBishop.png' class='black'></img>
-          <img id='51' data-name='pawn' data-side='orange' data-pinned='false' src='./images/orangePawn.png' class='white'></img>
-          <img id='52' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png' class='black'></img>
-          <img id='53' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png' class='white'></img>
-          <img id='54' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png' class='black'></img>
-          <img id='55' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png' class='white'></img>
-          <img id='56' data-name='pawn' data-side='blue' data-pinned='false' src='./images/bluePawn.png' class='black'></img>
-          <img id='57' data-name='bishop' data-side='blue' data-pinned='false' src='./images/blueBishop.png' class='white'></img>
-        </column5>
-        <column6>
-          <img id='60' data-name='knight' data-side='orange' data-pinned='false' src='./images/orangeKnight.png' class='white'></img>
-          <img id='61' data-name='pawn' data-side='orange' data-pinned='false' src='./images/orangePawn.png' class='black'></img>
-          <img id='62' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png' class='white'></img>
-          <img id='63' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png' class='black'></img>
-          <img id='64' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png' class='white'></img>
-          <img id='65' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png' class='black'></img>
-          <img id='66' data-name='pawn' data-side='blue' data-pinned='false' src='./images/bluePawn.png' class='white'></img>
-          <img id='67' data-name='knight' data-side='blue' data-pinned='false' src='./images/blueKnight.png' class='black'></img>
-        </column6>
-        <column7>
-          <img id='70' data-name='rook' data-side='orange' data-pinned='false' src='./images/orangeRook.png' class='black'></img>
-          <img id='71' data-name='pawn' data-side='orange' data-pinned='false' src='./images/orangePawn.png' class='white'></img>
-          <img id='72' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png' class='black'></img>
-          <img id='73' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png' class='white'></img>
-          <img id='74' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png' class='black'></img>
-          <img id='75' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png' class='white'></img>
-          <img id='76' data-name='pawn' data-side='blue' data-pinned='false' src='./images/bluePawn.png' class='black'></img>
-          <img id='77' data-name='rook' data-side='blue' data-pinned='false' src='./images/blueRook.png' class='white'></img>
-        </column7>
-      </board>
-
-      <div class='timePawnEvolve'>
-        <div id='time2' class='time'></div>
-        <div id='modalGameOverOrange' class='modal'></div>
-        <div id="modalOrange" class='modal'>
-          <img id="orangeQueen" data-name='queen' data-side='orange' src="./images/orangeQueen.png">
-          <img id="orangeKnight" data-name='knight' data-side='orange' src="./images/orangeKnight.png">
-          <img id="orangeRook" data-name='rook' data-side='orange' src="./images/orangeRook.png">
-          <img id="orangeBishop" data-name='bishop' data-side='orange' src="./images/orangeBishop.png">
+        <div class='takenBox'>
+          <img id='p1' src='./images/transparent.png'></img>
+          <img id='p2' src='./images/transparent.png'></img>
+          <img id='p3' src='./images/transparent.png'></img>
+          <img id='p4' src='./images/transparent.png'></img>
+          <img id='p5' src='./images/transparent.png'></img>
+          <img id='p6' src='./images/transparent.png'></img>
+          <img id='p7' src='./images/transparent.png'></img>
+          <img id='p8' src='./images/transparent.png'></img>
         </div>
       </div>
+    </player2>
 
-      <player2>
-        <showMoves>
-          <button class='btn' onclick='showFirstMove()'>
-            <img class='view' src="./images/moveZero.png" />
-          </button>
-          <button class='btn' onclick='showPriorMove()'>
-              <img class='view' src="./images/rewind.png" />
-          </button>
-          <button class='btn' onclick='showNextMove()'>
-              <img class='view' src="./images/play.png" />
-          </button>
-        </showMoves>
-        
-        <div id='orangeTakenBox'>
-          <div class='takenBox'>
-            <img id='1' src='./images/transparent.png'></img>
-            <img id='2' src='./images/transparent.png'></img>
-            <img id='3' src='./images/transparent.png'></img>
-            <img id='4' src='./images/transparent.png'></img>
-            <img id='5' src='./images/transparent.png'></img>
-            <img id='6' src='./images/transparent.png'></img>
-            <img id='7' src='./images/transparent.png'></img>
-            <img id='8' src='./images/transparent.png'></img>
-          </div>
-          <div class='takenBox'>
-            <img id='p1' src='./images/transparent.png'></img>
-            <img id='p2' src='./images/transparent.png'></img>
-            <img id='p3' src='./images/transparent.png'></img>
-            <img id='p4' src='./images/transparent.png'></img>
-            <img id='p5' src='./images/transparent.png'></img>
-            <img id='p6' src='./images/transparent.png'></img>
-            <img id='p7' src='./images/transparent.png'></img>
-            <img id='p8' src='./images/transparent.png'></img>
-          </div>      
-        </div>
-      </player2>
+  </game>
+  <!-- <script src="lib/socket.io-1.2.0.js"></script> -->
+  <!-- <script src='chat.js'></script> -->
+  <script src='js/main.js'></script>
+</body>
 
-    </game>
-    <!-- <script src="lib/socket.io-1.2.0.js"></script> -->
-    <!-- <script src='chat.js'></script> -->
-    <script src='main.js'></script>
-  </body>
 </html>
