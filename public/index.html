@@ -5,17 +5,18 @@
     <meta charset='UTF-8'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <meta http-2equiv='X-UA-Compatible' content='ie=edge'>
-    <link href="/css/stylesheet.css" rel="stylesheet" type="text/css" >
+    <!-- <base href="/"> -->
+    <link rel='stylesheet' type='text/css' href='/index.css'>
     <title>Chess</title>
   </head>
-  
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.slim.js"></script>
 
   <body class='noselect'>
 
     <div id='modal'>
       <div id='container'>
-        <div id="chooseGame">
+        <div id='chooseGame'>
           <h1 id='acceptGame'>ACCEPT GAME :</h1>
           <div id='gameList'></div>
         </div>
@@ -85,7 +86,7 @@
 
       <board id='board'>
         <column0>
-          <img id='00' data-name='rook' data-side='orange' data-pinned='false' src='./images/orangeRook.png' class='white'></img>
+          <img id='00' data-name='rook' data-side='orange' data-pinned='false' src='/images/orangeRook.png' class='white'></img>
           <img id='01' data-name='pawn' data-side='orange' data-pinned='false' src='./images/orangePawn.png' class='black'></img>
           <img id='02' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png' class='white'></img>
           <img id='03' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png' class='black'></img>

@@ -1964,7 +1964,6 @@ function getMinutes() {
 					document.querySelector('#m').value = '';
 					return false;
 				});
-
 				socket.on('chat message', function(msg) {
 					var newLI = document.createElement('LI');
 					var text = document.createTextNode(msg);
