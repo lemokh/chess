@@ -1989,8 +1989,16 @@ function sendMove() {
 //////////////////////
 
 function awaitMove() {
+	
+	console.log(passiveSide[0].dataset.side + ' waits to receive ' + activeSide[0].dataset.side + ' move');
+	
+	activeSide.forEach(activePiece => {
+		activePiece.removeEventListener('click', wherePieceCanMove);
+	});
 
+	console.log(activeSide[0].dataset.side + ' lacks click-listeners');
 } // listens to socket for opponent's move to arrive
+// then updates board & sends next move once made
 
 ////////////////////////////
 
