@@ -5,17 +5,17 @@
     <meta charset='UTF-8'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <meta http-2equiv='X-UA-Compatible' content='ie=edge'>
-    <link rel='stylesheet' type='text/css' href='/index.css'>
+    <link rel='stylesheet' type='text/css' href='index.css'>
     <title>Chess</title>
   </head>
-
+  
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.slim.js"></script>
-
+ 
   <body class='noselect'>
 
     <div id='modal'>
       <div id='container'>
-        <div id='chooseGame'>
+        <div id="chooseGame">
           <h1 id='acceptGame'>ACCEPT GAME :</h1>
           <div id='gameList'></div>
         </div>
@@ -66,10 +66,10 @@
         
         <div id='chat'>
           <form action="">
-            <input id="m" autocomplete="off" />
+            <input id="m" autocomplete="off" autofocus/>
             <button id='send'>Send</button>
           </form>
-          <ul id="messages"></ul>
+          <div id="messages"></div>
         </div>
         
         <div id='modalGameOverBlue' class='modal'></div>
@@ -85,7 +85,7 @@
 
       <board id='board'>
         <column0>
-          <img id='00' data-name='rook' data-side='orange' data-pinned='false' src='/images/orangeRook.png' class='white'></img>
+          <img id='00' data-name='rook' data-side='orange' data-pinned='false' src='./images/orangeRook.png' class='white'></img>
           <img id='01' data-name='pawn' data-side='orange' data-pinned='false' src='./images/orangePawn.png' class='black'></img>
           <img id='02' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png' class='white'></img>
           <img id='03' data-name='empty' data-side='empty' data-pinned='false' src='./images/transparent.png' class='black'></img>
@@ -215,10 +215,8 @@
       </player2>
 
     </game>
-    <!-- <script src="lib/socket.io-1.2.0.js"></script> -->
-    <!-- <script src='chat.js'></script> -->
-    <!-- <script src="index.js"></script> -->
-    <!-- <script src='main.js'></script> -->
-    <script src='azure.js'></script>
+    <!-- <script src="socket.io-1.2.0.js"></script> -->
+    <script src='index.js'></script>
+    <!-- <script src='index.js'></script> -->
   </body>
 </html>
