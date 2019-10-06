@@ -1,0 +1,28 @@
+{
+  "name": "chess",
+  "version": "1.0.0",
+  "description": "chess with socket.io",
+  "main": "app.js",
+  "dependencies": {
+    "express": "^4.16.4",
+    "socket.io": "^2.1.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lemokh/chess.git"
+  },
+  "author": "byndasma",
+  "license": "ISC",
+  "engines": {
+    "node": "~0.10.21"
+  },
+  "bugs": {
+    "url": "https://github.com/lemokh/chess/issues"
+  },
+  "homepage": "https://github.com/lemokh/chess#readme"
+}
