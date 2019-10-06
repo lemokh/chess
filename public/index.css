@@ -413,6 +413,8 @@ form {
   list-style-type: none;
   display: flex;
   flex-direction: column;
+  height: 284px;
+  overflow: auto;
 }
 #messages div {
   text-align: center;
