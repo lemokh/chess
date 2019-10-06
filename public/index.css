@@ -1,3 +1,58 @@
+/* @font-face {
+  font-family: VarelaRound-Regular;
+  src: url(Varela_Round/VarelaRound-Regular.ttf);
+} */
+
+/* reset browser styles */
+/*
+html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp,small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+margin: 0;
+padding: 0;
+border: 0;
+font-size: 100%;
+vertical-align: baseline;
+}
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+display: block;
+}
+body {
+line-height: 1.2;
+font-size: 62.5%;
+}
+ol {
+padding-left: 1.4em;
+list-style: decimal;
+}
+ul {
+padding-left: 1.4em;
+list-style: square;
+}
+table {
+border-collapse: collapse;
+border-spacing: 0;
+}
+*/
+/* end reset browser styles */
+
+/* player1, player2 {
+  animation: colorchange 10s;
+  -webkit-animation: colorchange 10s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+@keyframes colorchange
+{
+   0%   {background: rgba(233, 125, 123, 0.25);}
+  20%  {background: rgba(189, 68, 54, 0.25);}
+  40%  {background: rgba(161, 76, 83, 0.25);}
+  60%  {background: rgba(107, 89, 101, 0.25);}
+  80% {background: rgba(71, 105, 168, 0.25);}
+  100% {background: rgba(7, 146, 158, 0.25);}
+} */
+
 html,
 body {
   font-family: "VarelaRound-Regular", sans-serif;
@@ -173,6 +228,7 @@ img {
 .time {
   text-align: center;
   font-size: 40px;
+  font-weight: bold;
   background-color: rgba(127, 255, 212, 0.25);
   color: rgba(12, 22, 22, 0.9);
   opacity: 0;
@@ -219,13 +275,8 @@ img {
 }
 
 .modalContent {
-  /* position: absolute; */
   display: flex;
-  /* justify-content: space-between; */
   justify-content: center;
-  /* top: 50%; */
-  /* left: 50%; */
-  /* transform: translate(-50%, -50%); */
   background: rgba(53, 20, 20, 0.62);
   width: 100%;
   padding-top: 20px;
@@ -233,15 +284,11 @@ img {
   text-align: center;
   color: rgba(71, 105, 168, 0.2);
   font-weight: bold;
-  /* border-radius: 0.5rem; */
 }
 
 #chooseGame {
-  background-color: white;
   display: flex;
   justify-content: center;
-  /* margin: auto; */
-  /* border-radius: 0.5rem; */
   background-color: rgba(71, 105, 168, 0.2);
 }
 
@@ -269,7 +316,8 @@ h1 {
   color: #967a5e;
 }
 
-#start {
+#start,
+#send {
   margin-left: 2.5%;
   font-size: 40px;
   font-weight: bold;
@@ -280,7 +328,8 @@ h1 {
   border-color: rgba(189, 72, 26, 0.65);
 }
 
-#start:hover {
+#start:hover,
+#send:hover {
   background-color: rgba(130, 30, 30, 0.2);
   border-color: rgba(189, 72, 26, 0.33);
 }
@@ -332,93 +381,44 @@ button {
 
 #chat {
   display: none;
-  /* visibility: hidden; */
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font: 13px Helvetica, Arial;
+  /* font: 13px Helvetica, Arial; */
 }
 
 form {
   display: flex;
+  padding-top: 5px;
 }
 
 #m {
   border: 0;
   width: 90%;
+  background-color: rgba(71, 105, 168, 0.2);
+  color: rgba(87, 127, 133);
+  text-align: center;
+  font-weight: bold;
 }
 
 #send {
-  background: rgb(130, 224, 255);
-  border: none;
-  width: 10%rem;
-  color: rgba(12, 22, 22, 0.9);
+  /* background: rgb(130, 224, 255); */
+  /* border: none; */
+  width: 10% rem;
+  /* color: rgba(12, 22, 22, 0.9); */
+  border-radius: 0;
 }
 
 #messages {
   list-style-type: none;
-  /* margin: 0;
-    padding: 0; */
+  display: flex;
+  flex-direction: column;
 }
-#messages li {
-  padding: 1px 1px;
+#messages div {
+  text-align: center;
+  background: transparent;
+  color: rgba(87, 127, 133);
+  font-weight: bold;
+  font-size: 30px;
+  padding-top: 10px;
 }
-#messages li:nth-child(odd) {
-  background: #eee;
-}
-
-/* @font-face {
-  font-family: VarelaRound-Regular;
-  src: url(Varela_Round/VarelaRound-Regular.ttf);
-} */
-
-/* reset browser styles */
-/*
-html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp,small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed,
-figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-margin: 0;
-padding: 0;
-border: 0;
-font-size: 100%;
-vertical-align: baseline;
-}
-article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
-display: block;
-}
-body {
-line-height: 1.2;
-font-size: 62.5%;
-}
-ol {
-padding-left: 1.4em;
-list-style: decimal;
-}
-ul {
-padding-left: 1.4em;
-list-style: square;
-}
-table {
-border-collapse: collapse;
-border-spacing: 0;
-}
-*/
-/* end reset browser styles */
-
-/* player1, player2 {
-  animation: colorchange 10s;
-  -webkit-animation: colorchange 10s;
-  animation-iteration-count: infinite;
-  animation-direction: alternate;
-}
-@keyframes colorchange
-{
-   0%   {background: rgba(233, 125, 123, 0.25);}
-  20%  {background: rgba(189, 68, 54, 0.25);}
-  40%  {background: rgba(161, 76, 83, 0.25);}
-  60%  {background: rgba(107, 89, 101, 0.25);}
-  80% {background: rgba(71, 105, 168, 0.25);}
-  100% {background: rgba(7, 146, 158, 0.25);}
-} */
-ßß
