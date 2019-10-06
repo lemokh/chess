@@ -19,7 +19,7 @@
   "author": "byndasma",
   "license": "ISC",
   "engines": {
-    "node": "~0.10.21"
+    "node": "12.3.1"
   },
   "bugs": {
     "url": "https://github.com/lemokh/chess/issues"
