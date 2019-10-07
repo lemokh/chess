@@ -13,7 +13,7 @@ var kingAttackers = [],
 	orangeTakenBoxIdCounter = 1,
 	orangePawnTakenBoxIdCounter = 1,
 	nails, storedGreyPieceToMove,
-	enPassanting = false, drawForced = false, sendMove = true,
+	enPassanting = false, drawForced = false, sendMove = true, 
 	pins, kingInCheck, stuckActivePieces, litIds, storedLitIds,
 	checkSpaceId, pinnedLitIds, behindKingId, pawnBlocksKingAttacker,
 	kingStuck, newPieceClicked, pinnerPiece, greyPieceToMove, noCastle,
@@ -23,7 +23,7 @@ var kingAttackers = [],
 	goToDiv, enPassantDiv, pawnJumpDiv, index, index1, index2, pinnedPieces,
 	moves, bishopMoves, bishopX, bishopY, openAndOpponentHeldKingSpaces,
 	rookMoves, kingSpaces, isCastle, enPassantMove, currentBoard, pieceIds,
-	firstReview, message, gameOver, roomId;
+	firstReview, message, gameOver, roomId, awaitingMove = false;
 
 var board = document.getElementById('board'),
 	
@@ -1732,7 +1732,10 @@ function exitReviewClickHandler() { // resumes game flow
 	}
 
 	else if (pieceToMove) {
-		pieceToMove.classList.add('mainLit');
+		if (!awaitingMove) {
+			pieceToMove.classList.add('mainLit');
+			console.log('mainLit added to pieceToMove');
+		}
 		litIds.forEach(id => {
 			document.getElementById(id).classList.add('lit');
 			document.getElementById(id).classList.remove('noClick');
@@ -1741,7 +1744,6 @@ function exitReviewClickHandler() { // resumes game flow
 			document.getElementById(id).classList.add('castleLit');
 			document.getElementById(id).classList.remove('noClick');
 		});
-			
 	}
 }
 
@@ -1766,7 +1768,6 @@ function reviewMode() {
 }
 
 function exitReviewMode() {
-
 	// loads currentBoard .src map
 	currentBoard.forEach(piece => document.getElementById(piece[0]).src = piece[1]);
 
@@ -2035,7 +2036,8 @@ function getMinutes() {
 //////////////////////
 
 function awaitMove() {
-	
+	awaitingMove = true;
+
 	console.log(passiveSide[0].dataset.side + ' waits to receive ' + activeSide[0].dataset.side + ' move');
 	
 	activeSide.forEach(activePiece => {
@@ -2063,6 +2065,8 @@ window.onload = function() {
 		console.log(passiveSide[0].dataset.side + ' receives ' + activeSide[0].dataset.side + ' move --> ' + clicks);
 		
 		sendMove = clicks[0];
+		
+		awaitingMove = false;
 
 		lit(); // starts next move
 		console.log('lit();');
@@ -2129,6 +2133,8 @@ window.onload = function() {
 	document.getElementById('send').addEventListener('click', function(e) {
 		e.preventDefault(); // prevents default page refresh
 
+		// if (m.innerText !== "") { ... }
+
 		let newMessage = document.getElementById('m').value;
 		let newDIV = document.createElement('DIV');
 		
@@ -2148,12 +2154,16 @@ window.onload = function() {
 		let newDIV = document.createElement('DIV');
 		let text = document.createTextNode(msg);
 		newDIV.appendChild(text);
-		document.getElementById('messages').appendChild(newDIV);
+		document.getElementById('messages').appendChild(newDIV).scrollIntoView(false);
 		
 		if (socket.id === roomId) { newDIV.style.color = '#967a5e'; }
-		// .scrollIntoView(false);
 	});
 }
+
+// document.getElementsByClassName('modal').style.display = 'flex';
+// display the bare minimum modal
+// make only one modal for timeEvolve
+
 
 // on #start click, push [timerSet, socket.id] to gamesOffered on server
 
