@@ -2040,6 +2040,8 @@ function awaitMove() {
 
 	console.log(passiveSide[0].dataset.side + ' waits to receive ' + activeSide[0].dataset.side + ' move');
 	
+	index = moveHistory.length;
+
 	activeSide.forEach(activePiece => {
 		activePiece.removeEventListener('click', wherePieceCanMove);
 	});
@@ -2121,7 +2123,7 @@ window.onload = function() {
 	});
 
 	socket.on('gameOver', function() {
-		lit();
+		lit(); // make button appear that refreshes page on click then disappears
 	});
 
 	socket.on('opponentResigns', function() {

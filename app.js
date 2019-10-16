@@ -3,9 +3,9 @@ var express = require("express"); // check
 var app = express();
 app.use(express.static("public"));
 
-var http = require("http").Server(app); // check
+var http = require("http").Server(app);
 var port = process.env.PORT || 3000;
-var io = require("socket.io")(http); // check
+var io = require("socket.io")(http);
 
 var games = [],
   sendMoveToPlayer;
