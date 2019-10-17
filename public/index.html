@@ -32,9 +32,9 @@
       <player1>
         <options>
           <button id='resign' class='btn' onclick='resign()'>RESIGN</button>
-          <button class='btn' onclick='flipBoard()'>
+          <!-- <button class='btn' onclick='flipBoard()'>
             <img class='view' src='./images/rotateBoard.png' />
-          </button>
+          </button> -->
         </options>
         <div id='blueTakenBox'>
           <div class='takenBox'>
@@ -178,6 +178,9 @@
       </div>
 
       <player2>
+          <button class='btn' onclick='flipBoard()'>
+              <img class='view' src='./images/rotateBoard.png' />
+            </button>
         <!-- <showMoves>
           <button class='btn' onclick='showFirstMove()'>
             <img class='view' src="./images/moveZero.png" />
