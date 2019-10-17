@@ -1732,7 +1732,7 @@ function exitReviewClickHandler() { // resumes game flow
 	}
 
 	else if (pieceToMove) {
-		if (!awaitingMove) {
+		if (!awaitingMove) { // necessary?
 			pieceToMove.classList.add('mainLit');
 			console.log('mainLit added to pieceToMove');
 		}
@@ -1768,7 +1768,7 @@ function reviewMode() {
 }
 
 function exitReviewMode() {
-	// loads currentBoard .src map
+	// loads currentBoard .src image map
 	currentBoard.forEach(piece => document.getElementById(piece[0]).src = piece[1]);
 
 	// sets index to current move
@@ -2040,7 +2040,7 @@ function awaitMove() {
 
 	console.log(passiveSide[0].dataset.side + ' waits to receive ' + activeSide[0].dataset.side + ' move');
 	
-	index = moveHistory.length;
+	// index = moveHistory.length;
 
 	activeSide.forEach(activePiece => {
 		activePiece.removeEventListener('click', wherePieceCanMove);
@@ -2065,7 +2065,9 @@ window.onload = function() {
 
 	socket.on('movePiece', function(clicks) {
 		console.log(passiveSide[0].dataset.side + ' receives ' + activeSide[0].dataset.side + ' move --> ' + clicks);
-		
+
+        // index = moveHistory.length;
+
 		sendMove = clicks[0];
 		
 		awaitingMove = false;
